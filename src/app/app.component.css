@@ -1363,32 +1363,34 @@
   color: var(--text-secondary);
 }
 
-/* Lien accessibilité RGAA footer */
-.about-accessibility-link {
+/* Lien accessibilité RGAA, fixé en bas à droite */
+.accessibility-link {
   position: fixed;
-  bottom: 12px;
-  right: 12px;
+  right: max(12px, env(safe-area-inset-right));
+  bottom: max(12px, env(safe-area-inset-bottom));
   z-index: 100;
-}
-
-.about-accessibility-link a {
-  display: inline-block;
-  padding: 8px 12px;
-  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 8px 14px;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--text-accent);
-  background: var(--surface-lo);
-  border: 1px solid var(--border);
-  border-radius: 6px;
+  color: var(--ink);
+  background: var(--surface-hi);
+  border: 1px solid var(--surface-edge);
+  border-radius: 999px;
+  box-shadow: 0 2px 8px var(--band-shadow);
   text-decoration: none;
-  transition: all 200ms;
 }
 
-.about-accessibility-link a:hover,
-.about-accessibility-link a:focus-visible {
-  background: var(--fill-accent);
-  color: #fff;
-  outline: none;
+.accessibility-link:hover {
+  border-color: var(--bar);
+}
+
+.accessibility-link:focus-visible {
+  outline: 3px solid var(--bar);
+  outline-offset: 2px;
 }
 
 /* OpenDyslexic Font Mode */

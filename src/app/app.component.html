@@ -556,16 +556,13 @@
         </div>
       </div>
     </div>
-    <div class="about-accessibility-link">
-      <a
-        routerLink="/accessibility"
-        class="accessibility-link"
-        [attr.aria-label]="i18n.t('action.accessibilityInfo')"
-        title="Voir la documentation d'accessibilité RGAA 4.1"
-      >
-        ♿ Accessibilité RGAA
-      </a>
-    </div>
   </section>
+  <a
+    routerLink="/accessibility"
+    class="accessibility-link"
+    [attr.aria-label]="i18n.t('action.accessibilityInfo')"
+    title="Voir la documentation d'accessibilité RGAA 4.1"
+  >
+    <span aria-hidden="true">♿</span> Accessibilité RGAA
+  </a>
 </main>
-
