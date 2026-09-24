@@ -32,6 +32,22 @@ On voit le temps qui reste au lieu de le lire.
 ![Karma](https://img.shields.io/badge/Karma-6-56C5A8)
 ![Jasmine](https://img.shields.io/badge/Jasmine-7-8A4182?logo=jasmine&logoColor=white)
 
+![SwiftUI](https://img.shields.io/badge/SwiftUI-widget-0D96F6?logo=swift&logoColor=white)
+![WidgetKit](https://img.shields.io/badge/WidgetKit-iOS-000000?logo=apple&logoColor=white)
+![Xcode](https://img.shields.io/badge/Xcode-iOS-147EFB?logo=xcode&logoColor=white)
+![Java](https://img.shields.io/badge/Java-Android-ED8B00?logo=openjdk&logoColor=white)
+![Gradle](https://img.shields.io/badge/Gradle-Android-02303A?logo=gradle&logoColor=white)
+![Make](https://img.shields.io/badge/Make-scripts-6D6D6D)
+
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6)
+![Web Audio API](https://img.shields.io/badge/Web_Audio_API-sons-f3a52b)
+![Capacitor plugins](https://img.shields.io/badge/Capacitor_plugins-Haptics_·_Notifications_·_Keep_Awake_·_Filesystem-119EFF?logo=capacitor&logoColor=white)
+![OpenDyslexic](https://img.shields.io/badge/police-OpenDyslexic-8b6fd6)
+
+![RGAA](https://img.shields.io/badge/RGAA-4.1_partiellement_conforme-1d282d)
+![WCAG](https://img.shields.io/badge/WCAG-2.1_AA_partiellement_conforme-1d282d)
+
 <img src="docs/screenshot.png" alt="Pomodoro Accessibilité en mode clair" width="300">
 &nbsp;&nbsp;
 <img src="docs/screenshot-dark.png" alt="Pomodoro Accessibilité en mode sombre" width="300">
