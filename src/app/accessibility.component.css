@@ -384,6 +384,94 @@
   text-decoration-thickness: 2px;
 }
 
+/* NEURODIVERSITE */
+.neuro {
+  margin-bottom: 70px;
+}
+
+.neuro h2 {
+  font-size: 1.4em;
+  color: var(--text-primary);
+  margin: 0 0 20px 0;
+  font-weight: 600;
+  text-align: center;
+}
+
+.neuro p,
+.neuro-actions li {
+  line-height: 1.7;
+  color: var(--text-primary);
+}
+
+.neuro-intro {
+  max-width: 680px;
+  margin: 0 auto 28px auto;
+  text-align: center;
+}
+
+.neuro-subtitle {
+  font-size: 1.1em;
+  color: var(--text-primary);
+  margin: 32px 0 14px 0;
+  font-weight: 600;
+}
+
+.neuro-terms,
+.neuro-profiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.neuro-terms > div,
+.neuro-profiles > div {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.neuro-terms dt,
+.neuro-profiles dt {
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.neuro-terms dd,
+.neuro-profiles dd {
+  margin: 0;
+  font-size: 0.95em;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.neuro-actions {
+  list-style: disc;
+  margin: 0;
+  padding-left: 22px;
+}
+
+.neuro-source {
+  margin: 28px 0 0 0;
+  font-size: 0.9em;
+  color: var(--text-secondary);
+}
+
+.neuro-source a {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .neuro h2 {
+    font-size: 1.2em;
+  }
+}
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .accessibility-container {
