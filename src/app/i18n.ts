@@ -21,6 +21,17 @@ const fr = {
 
   'unit.minutes': 'minutes',
 
+  'color.purple': 'Violet',
+  'color.red': 'Rouge',
+  'color.orange': 'Orange',
+  'color.amber': 'Ambre',
+  'color.lime': 'Vert citron',
+  'color.green': 'Vert',
+  'color.cyan': 'Cyan',
+  'color.blue': 'Bleu',
+  'color.magenta': 'Magenta',
+  'color.gray': 'Gris',
+
   'tab.modes': 'Modes',
   'tab.stats': 'Stats',
   'tab.settings': 'Réglages',
@@ -104,6 +115,17 @@ const en: Dictionary = {
 
   'unit.minutes': 'minutes',
 
+  'color.purple': 'Purple',
+  'color.red': 'Red',
+  'color.orange': 'Orange',
+  'color.amber': 'Amber',
+  'color.lime': 'Lime green',
+  'color.green': 'Green',
+  'color.cyan': 'Cyan',
+  'color.blue': 'Blue',
+  'color.magenta': 'Magenta',
+  'color.gray': 'Gray',
+
   'tab.modes': 'Modes',
   'tab.stats': 'Stats',
   'tab.settings': 'Settings',
@@ -183,6 +205,17 @@ const es: Dictionary = {
   'action.dialHint': 'desliza sobre el dial para ajustar los minutos',
 
   'unit.minutes': 'minutos',
+
+  'color.purple': 'Púrpura',
+  'color.red': 'Rojo',
+  'color.orange': 'Naranja',
+  'color.amber': 'Ámbar',
+  'color.lime': 'Verde lima',
+  'color.green': 'Verde',
+  'color.cyan': 'Cian',
+  'color.blue': 'Azul',
+  'color.magenta': 'Magenta',
+  'color.gray': 'Gris',
 
   'tab.modes': 'Modos',
   'tab.stats': 'Estadísticas',
@@ -264,6 +297,17 @@ const de: Dictionary = {
 
   'unit.minutes': 'Minuten',
 
+  'color.purple': 'Violett',
+  'color.red': 'Rot',
+  'color.orange': 'Orange',
+  'color.amber': 'Bernstein',
+  'color.lime': 'Hellgrün',
+  'color.green': 'Grün',
+  'color.cyan': 'Cyan',
+  'color.blue': 'Blau',
+  'color.magenta': 'Magenta',
+  'color.gray': 'Grau',
+
   'tab.modes': 'Modi',
   'tab.stats': 'Statistik',
   'tab.settings': 'Einstellungen',
@@ -343,6 +387,17 @@ const it: Dictionary = {
   'action.dialHint': 'trascina sul quadrante per regolare i minuti',
 
   'unit.minutes': 'minuti',
+
+  'color.purple': 'Viola',
+  'color.red': 'Rosso',
+  'color.orange': 'Arancione',
+  'color.amber': 'Ambra',
+  'color.lime': 'Verde lime',
+  'color.green': 'Verde',
+  'color.cyan': 'Ciano',
+  'color.blue': 'Blu',
+  'color.magenta': 'Magenta',
+  'color.gray': 'Grigio',
 
   'tab.modes': 'Modalità',
   'tab.stats': 'Statistiche',
@@ -424,6 +479,17 @@ const pt: Dictionary = {
 
   'unit.minutes': 'minutos',
 
+  'color.purple': 'Roxo',
+  'color.red': 'Vermelho',
+  'color.orange': 'Laranja',
+  'color.amber': 'Âmbar',
+  'color.lime': 'Verde lima',
+  'color.green': 'Verde',
+  'color.cyan': 'Ciano',
+  'color.blue': 'Azul',
+  'color.magenta': 'Magenta',
+  'color.gray': 'Cinza',
+
   'tab.modes': 'Modos',
   'tab.stats': 'Estatísticas',
   'tab.settings': 'Configurações',
@@ -503,6 +569,17 @@ const ar: Dictionary = {
   'action.dialHint': 'اسحب على القرص لضبط الدقائق',
 
   'unit.minutes': 'دقيقة',
+
+  'color.purple': 'بنفسجي',
+  'color.red': 'أحمر',
+  'color.orange': 'برتقالي',
+  'color.amber': 'كهرماني',
+  'color.lime': 'أخضر فاتح',
+  'color.green': 'أخضر',
+  'color.cyan': 'سماوي',
+  'color.blue': 'أزرق',
+  'color.magenta': 'أرجواني',
+  'color.gray': 'رمادي',
 
   'tab.modes': 'الأوضاع',
   'tab.stats': 'الإحصاءات',

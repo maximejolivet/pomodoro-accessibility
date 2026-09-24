@@ -16,13 +16,18 @@
         <button
           type="button"
           class="face"
+          role="slider"
+          [attr.aria-valuemin]="1"
+          [attr.aria-valuemax]="maxMinutes"
+          [attr.aria-valuenow]="Math.ceil(displayMinutes)"
+          [attr.aria-valuetext]="Math.ceil(displayMinutes) + ' ' + i18n.t('unit.minutes') + ', ' + mainActionLabel"
           [class.dragging]="isDragging"
           (click)="onFaceClick()"
           (pointerdown)="onDragStart($event)"
           (pointermove)="onDragMove($event)"
           (pointerup)="onDragEnd($event)"
           (pointercancel)="onDragEnd($event)"
-          [attr.aria-label]="formatTime(displaySeconds) + ', ' + mainActionLabel + ' — ' + i18n.t('action.dialHint')"
+          [attr.aria-label]="i18n.t('action.dialHint')"
         >
           <svg #dial viewBox="0 0 420 420" class="dial" aria-hidden="true">
             <defs>
@@ -193,8 +198,11 @@
           type="button"
           role="tab"
           class="tab"
+          [id]="'tab-' + tab"
           [class.active]="sheetTab === tab"
           [attr.aria-selected]="sheetTab === tab"
+          [attr.tabindex]="sheetTab === tab ? 0 : -1"
+          [attr.aria-controls]="'panel-' + tab"
           (click)="setTab($any(tab))"
         >{{ i18n.t($any('tab.' + tab)) }}</button>
       </div>
@@ -205,7 +213,7 @@
 
     <div class="sheet-body">
       <!-- ================= Modes ================= -->
-      <ng-container *ngIf="sheetTab === 'modes'">
+      <div [id]="'panel-modes'" role="tabpanel" [attr.aria-labelledby]="'tab-modes'" *ngIf="sheetTab === 'modes'">
         <ng-container *ngIf="!draft; else editor">
           <label class="duration">
             <span class="duration-head">
@@ -306,7 +314,7 @@
                   class="swatch"
                   [class.active]="d.color === c"
                   [style.--c]="c"
-                  [attr.aria-label]="c"
+                  [attr.aria-label]="colorLabel(c)"
                   [attr.aria-pressed]="d.color === c"
                   (click)="d.color = c"
                 ></button>
@@ -326,10 +334,10 @@
             </div>
           </form>
         </ng-template>
-      </ng-container>
+      </div>
 
       <!-- ================= Stats ================= -->
-      <ng-container *ngIf="sheetTab === 'stats'">
+      <div [id]="'panel-stats'" role="tabpanel" [attr.aria-labelledby]="'tab-stats'" *ngIf="sheetTab === 'stats'">
         <div class="tiles">
           <div class="tile">
             <span class="tile-value">{{ history.today().focusMinutes }}<small> min</small></span>
@@ -408,10 +416,10 @@
           [class.danger]="confirming === 'clear'"
           (click)="clearHistory()"
         >{{ confirming === 'clear' ? i18n.t('preset.confirm') : i18n.t('stats.clear') }}</button>
-      </ng-container>
+      </div>
 
       <!-- ================= Réglages ================= -->
-      <ng-container *ngIf="sheetTab === 'settings'">
+      <div [id]="'panel-settings'" role="tabpanel" [attr.aria-labelledby]="'tab-settings'" *ngIf="sheetTab === 'settings'">
         <div class="settings">
           <label class="setting">
             <span class="setting-label">
@@ -509,7 +517,7 @@
             >{{ m.label }}</button>
           </div>
         </div>
-      </ng-container>
+      </div>
     </div>
   </section>
 </main>

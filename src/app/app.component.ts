@@ -75,6 +75,8 @@ interface PresetDraft {
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit, OnDestroy {
+  Math = Math;  // Expose Math to templates
+
   timerService = inject(TimerService);
   i18n = inject(I18nService);
   presetService = inject(PresetService);
@@ -315,6 +317,23 @@ export class AppComponent implements OnInit, OnDestroy {
     return this.i18n.t(`preset.kind.${kind}` as I18nKey);
   }
 
+  colorLabel(hex: string): string {
+    const colorNames: Record<string, I18nKey> = {
+      '#8b6fd6': 'color.purple',
+      '#d63f4f': 'color.red',
+      '#ef7d2d': 'color.orange',
+      '#f3a52b': 'color.amber',
+      '#c3cd36': 'color.lime',
+      '#56b27b': 'color.green',
+      '#5aa9c4': 'color.cyan',
+      '#5d6db3': 'color.blue',
+      '#b24f97': 'color.magenta',
+      '#56636a': 'color.gray'
+    };
+    const key = colorNames[hex];
+    return key ? this.i18n.t(key) : hex;
+  }
+
   // ---------- Commandes ----------
 
   toggle(): void {
@@ -384,6 +403,65 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.showSheet) {
       this.closeSheet();
     }
+  }
+
+  @HostListener('keydown.arrowLeft')
+  onArrowLeft(): void {
+    // Navigation onglets en mode sheet, ou réglage cadran en focus
+    if (this.showSheet) {
+      this.selectPrevTab();
+    } else if (document.activeElement?.className.includes('face')) {
+      this.applyMinutes(Math.max(1, Math.ceil(this.displayMinutes) - 1));
+    }
+  }
+
+  @HostListener('keydown.arrowRight')
+  onArrowRight(): void {
+    if (this.showSheet) {
+      this.selectNextTab();
+    } else if (document.activeElement?.className.includes('face')) {
+      this.applyMinutes(Math.min(MAX_MINUTES, Math.floor(this.displayMinutes) + 1));
+    }
+  }
+
+  @HostListener('keydown.pageUp')
+  onPageUp(): void {
+    if (document.activeElement?.className.includes('face')) {
+      this.applyMinutes(Math.max(1, Math.ceil(this.displayMinutes) - 5));
+    }
+  }
+
+  @HostListener('keydown.pageDown')
+  onPageDown(): void {
+    if (document.activeElement?.className.includes('face')) {
+      this.applyMinutes(Math.min(MAX_MINUTES, Math.floor(this.displayMinutes) + 5));
+    }
+  }
+
+  @HostListener('keydown.home')
+  onHome(): void {
+    if (document.activeElement?.className.includes('face')) {
+      this.applyMinutes(0);
+    }
+  }
+
+  @HostListener('keydown.end')
+  onEnd(): void {
+    if (document.activeElement?.className.includes('face')) {
+      this.applyMinutes(MAX_MINUTES);
+    }
+  }
+
+  private selectPrevTab(): void {
+    const tabs: SheetTab[] = ['modes', 'stats', 'settings'];
+    const idx = tabs.indexOf(this.sheetTab);
+    this.setTab(tabs[(idx - 1 + 3) % 3]);
+  }
+
+  private selectNextTab(): void {
+    const tabs: SheetTab[] = ['modes', 'stats', 'settings'];
+    const idx = tabs.indexOf(this.sheetTab);
+    this.setTab(tabs[(idx + 1) % 3]);
   }
 
   setTab(tab: SheetTab): void {
