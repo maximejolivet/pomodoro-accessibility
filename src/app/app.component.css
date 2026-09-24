@@ -1,3 +1,5 @@
+@import url('https://cdn.jsdelivr.net/npm/opendyslexic@1/fonts.css');
+
 :host {
   --bumper-light: #c6e2e9;
   --bumper: #a6ccd6;
@@ -1387,4 +1389,10 @@
   background: var(--fill-accent);
   color: #fff;
   outline: none;
+}
+
+/* OpenDyslexic Font Mode */
+:host.opendyslexic-mode,
+:host.opendyslexic-mode * {
+  font-family: 'OpenDyslexic', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }

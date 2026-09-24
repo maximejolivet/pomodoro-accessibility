@@ -120,6 +120,7 @@ export class AppComponent implements OnInit, OnDestroy {
   finished = false;
 
   @HostBinding('class.dark') darkMode = this.initialDarkMode();
+  @HostBinding('class.opendyslexic-mode') opendyslexicMode = readFlag('opendyslexic', false);
   soundOn = readFlag('sound');
   /** À 0, relance automatiquement 5 minutes pour terminer ce qui est en cours (sessions de travail). */
   autoExtra = readFlag('auto-extra');
@@ -501,6 +502,11 @@ export class AppComponent implements OnInit, OnDestroy {
     this.keepAwakeOn = on;
     writeFlag('keep-awake', on);
     this.keepAwake.set(on && this.isRunning);
+  }
+
+  setOpenDyslexic(on: boolean): void {
+    this.opendyslexicMode = on;
+    writeFlag('opendyslexic', on);
   }
 
   setLanguage(choice: LangChoice): void {

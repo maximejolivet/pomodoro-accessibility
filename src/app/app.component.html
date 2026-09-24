@@ -490,6 +490,14 @@
             </span>
             <input type="checkbox" role="switch" class="switch" [checked]="keepAwakeOn" (change)="setKeepAwake($any($event.target).checked)" />
           </label>
+          <label class="setting">
+            <span class="setting-label">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><text x="3" y="18" font-size="16" font-weight="bold">a</text></svg>
+              OpenDyslexic
+              <small style="display: block; font-size: 0.85em; color: var(--text-secondary);">Dyslexie-friendly</small>
+            </span>
+            <input type="checkbox" role="switch" class="switch" [checked]="opendyslexicMode" (change)="setOpenDyslexic($any($event.target).checked)" />
+          </label>
         </div>
 
         <label class="duration">
