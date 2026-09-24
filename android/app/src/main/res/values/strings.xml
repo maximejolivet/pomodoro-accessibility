@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Pomodoro Accessibilité</string>
+    <string name="title_activity_main">Pomodoro Accessibilité</string>
+    <string name="package_name">com.maximejolivet.pomodorotdah</string>
+    <string name="custom_url_scheme">com.maximejolivet.pomodorotdah</string>
+</resources>
