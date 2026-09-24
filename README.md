@@ -1,5 +1,7 @@
 <div align="center">
 
+🇫🇷 Français · [🇬🇧 English](README.en.md)
+
 <img src="public/apple-touch-icon.png" alt="Icône Pomodoro TDAH" width="96" height="96">
 
 # Pomodoro TDAH
