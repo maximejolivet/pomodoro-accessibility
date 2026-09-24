@@ -164,10 +164,6 @@
   background: rgba(74, 144, 226, 0.03);
 }
 
-.mode-keyboard .mode-icon {
-  filter: hue-rotate(200deg);
-}
-
 .mode-screen-reader {
   border-left-color: #8b6fd6;
   background: rgba(139, 111, 214, 0.03);
