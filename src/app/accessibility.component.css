@@ -137,6 +137,19 @@
   font-weight: 600;
 }
 
+.mode-list kbd {
+  display: inline-block;
+  background: var(--neutral);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-family: monospace;
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-right: 2px;
+}
+
 /* Mode couleurs distinctes */
 .mode-keyboard {
   border-left-color: #4a90e2;
