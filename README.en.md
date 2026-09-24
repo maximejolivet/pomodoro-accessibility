@@ -55,6 +55,13 @@ This concrete cue is especially helpful for people who are **ADHD, autistic or n
 - 🏠 **Every day**: homework, morning routines, screen time, Pomodoro work sessions, at home,
   in class or at the office.
 
+### Neurodiversity: a few definitions
+
+- **Neurodivergent**: a person whose neurological functioning diverges from societal norms. An autistic person, or someone with ADHD or dyslexia, is considered neurodivergent.
+- **Neurotypical**: a person whose neurological functioning matches the dominant norms of society.
+
+The concept of neurodiversity thus includes the idea that some brains perceive and understand the world differently, and that their strengths should also be recognized: creativity, branching thinking, systems thinking, perseverance, honesty.
+
 ### Time is hard to feel
 
 For many neurodivergent people, time does not "feel" like anything: ten minutes and an hour can
@@ -92,8 +99,6 @@ visual timer is a simple, discreet and free tool at that level.
   turned off in an open space.
 - 🧰 **A simple accommodation**: to offer alongside other workplace adjustments, without
   singling anyone out, since the tool is useful to everyone.
-
-To learn more about neurodiversity (article in French): ["La neurodiversité, de quoi parle-t-on ?"](https://rhf-hdf.fr/la-neurodiversite-de-quoi-parle-t-on/) (RHF Hauts-de-France).
 
 > [!NOTE]
 > Independent project, inspired by the visual timer principle. It is neither affiliated with

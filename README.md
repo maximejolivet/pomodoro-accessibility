@@ -55,6 +55,13 @@ Ce repère concret aide particulièrement les personnes **TDAH, autistes ou neur
 - 🏠 **Au quotidien** : devoirs, routines du matin, temps d'écran, séances de travail en
   Pomodoro, à la maison comme en classe ou au bureau.
 
+### Neurodiversité : quelques repères
+
+- **Neurodivergent** : personne dont le fonctionnement neurologique diverge des normes sociétales. Une personne autiste, ayant un TDAH ou dyslexique est considérée comme neurodivergente.
+- **Neurotypique** : personne dont le fonctionnement neurologique correspond aux normes dominantes de la société.
+
+Le concept de neurodiversité intègre ainsi l'idée que certains cerveaux perçoivent et comprennent le monde différemment, et qu'il convient aussi de reconnaître leurs forces : créativité, pensée en arborescence, pensée systémique, persévérance, honnêteté.
+
 ### Le temps, difficile à ressentir
 
 Pour beaucoup de personnes neurodivergentes, le temps ne se « sent » pas : dix minutes et une
@@ -91,8 +98,6 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
   open space.
 - 🧰 **Un aménagement simple** : à proposer avec les autres aménagements de poste, sans exposer
   la situation de la personne, puisque l'outil sert à tout le monde.
-
-Pour aller plus loin sur la neurodiversité : [« La neurodiversité, de quoi parle-t-on ? »](https://rhf-hdf.fr/la-neurodiversite-de-quoi-parle-t-on/) (RHF Hauts-de-France).
 
 > [!NOTE]
 > Projet indépendant, inspiré du principe des minuteurs visuels. Il n'est ni affilié ni
