@@ -1,4 +1,4 @@
-<router-outlet></router-outlet>
+<router-outlet *ngIf="router.url !== '/'"></router-outlet>
 
 <main class="stage" *ngIf="router.url === '/'">
   <!-- Zone d'annonces vocales pour lecteurs d'écran -->
