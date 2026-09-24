@@ -50,12 +50,16 @@
   min-height: 44px;
   color: var(--link);
   font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration: none;
   font-size: 1em;
 }
 
-.back-link:hover {
+.back-label {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.back-link:hover .back-label {
   text-decoration-thickness: 2px;
 }
 
