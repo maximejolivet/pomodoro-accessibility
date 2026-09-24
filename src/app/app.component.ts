@@ -1,8 +1,9 @@
 import { ChangeDetectorRef, Component, ElementRef, HostBinding, HostListener, OnDestroy, OnInit, ViewChild, computed, effect, inject, untracked } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, RouterModule, Router } from '@angular/router';
+import { Subscription, filter, map } from 'rxjs';
 import { App } from '@capacitor/app';
 import type { PluginListenerHandle } from '@capacitor/core';
 import { TimerService } from './timer.service';
@@ -78,6 +79,18 @@ interface PresetDraft {
 export class AppComponent implements OnInit, OnDestroy {
   Math = Math;  // Expose Math to templates
   readonly router = inject(Router);
+  private readonly location = inject(Location);
+  private static isHomePath(url: string): boolean {
+    const path = url.split(/[?#]/)[0];
+    return path === '' || path === '/';
+  }
+  readonly isHomeRoute = toSignal(
+    this.router.events.pipe(
+      filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+      map((e) => AppComponent.isHomePath(e.urlAfterRedirects))
+    ),
+    { initialValue: AppComponent.isHomePath(this.location.path()) }
+  );
 
   timerService = inject(TimerService);
   i18n = inject(I18nService);
