@@ -81,7 +81,7 @@
   --surface-hi: #2e343a;
   --surface-lo: #23282d;
   --surface-edge: #121518;
-  --muted: #8e999f;
+  --muted: #a0abb1;
   --muted-strong: #b8c2c7;
   --neutral: #3a4248;
   --neutral-edge: #1a1e22;
@@ -908,9 +908,9 @@
 }
 
 .segmented button.active {
-  background: var(--c, #8b6fd6);
+  background: color-mix(in srgb, var(--c, #8b6fd6) 78%, #000);
   color: #fff;
-  box-shadow: 0 2px 0 color-mix(in srgb, var(--c, #8b6fd6) 68%, #000), 0 3px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--c, #8b6fd6) 55%, #000), 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
 .swatches {
@@ -1131,7 +1131,7 @@
   align-self: center;
   font-size: 12px;
   font-weight: 600;
-  color: var(--muted);
+  color: var(--muted-strong);
   text-transform: capitalize;
 }
 

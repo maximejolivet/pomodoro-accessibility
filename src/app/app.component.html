@@ -1,6 +1,7 @@
 <router-outlet *ngIf="router.url !== '/'"></router-outlet>
 
 <main class="stage" *ngIf="router.url === '/'">
+  <h1 class="sr-only">Pomodoro TDAH</h1>
   <!-- Zone d'annonces vocales pour lecteurs d'écran -->
   <div aria-live="polite" aria-atomic="true" class="sr-only" id="a11y-announcements"></div>
 
@@ -416,7 +417,7 @@
           </table>
         </figure>
 
-        <h3 class="section-title">{{ i18n.t('stats.recent') }}</h3>
+        <h2 class="section-title">{{ i18n.t('stats.recent') }}</h2>
         <ul class="sessions" *ngIf="history.recent().length; else noSessions">
           <li *ngFor="let s of history.recent()" class="session" [style.--c]="s.color">
             <span class="preset-dot"></span>
@@ -560,9 +561,8 @@
   <a
     routerLink="/accessibility"
     class="accessibility-link"
-    [attr.aria-label]="i18n.t('action.accessibilityInfo')"
-    title="Voir la documentation d'accessibilité RGAA 4.1"
+    [attr.title]="i18n.t('action.accessibilityInfo')"
   >
-    <span aria-hidden="true">♿</span> Accessibilité RGAA
+    <span aria-hidden="true">♿</span> {{ i18n.t('action.accessibilityShort') }}
   </a>
 </main>

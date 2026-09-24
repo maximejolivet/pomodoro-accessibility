@@ -19,6 +19,7 @@ const fr = {
   'action.close': 'Fermer',
   'action.dialHint': 'glisser sur le cadran pour régler les minutes',
   'action.accessibilityInfo': 'Voir la documentation d\'accessibilité RGAA 4.1',
+  'action.accessibilityShort': 'Accessibilité RGAA',
 
   'unit.minutes': 'minutes',
 
@@ -117,6 +118,7 @@ const en: Dictionary = {
   'action.close': 'Close',
   'action.dialHint': 'drag on the dial to set the minutes',
   'action.accessibilityInfo': 'View RGAA 4.1 accessibility documentation',
+  'action.accessibilityShort': 'RGAA accessibility',
 
   'unit.minutes': 'minutes',
 
@@ -212,6 +214,7 @@ const es: Dictionary = {
   'action.close': 'Cerrar',
   'action.dialHint': 'desliza sobre el dial para ajustar los minutos',
   'action.accessibilityInfo': 'Ver documentación de accesibilidad RGAA 4.1',
+  'action.accessibilityShort': 'Accesibilidad RGAA',
 
   'unit.minutes': 'minutos',
 
@@ -307,6 +310,7 @@ const de: Dictionary = {
   'action.close': 'Schließen',
   'action.dialHint': 'auf dem Zifferblatt ziehen, um die Minuten einzustellen',
   'action.accessibilityInfo': 'RGAA 4.1-Barrierefreiheitsdokumentation ansehen',
+  'action.accessibilityShort': 'Barrierefreiheit RGAA',
 
   'unit.minutes': 'Minuten',
 
@@ -402,6 +406,7 @@ const it: Dictionary = {
   'action.close': 'Chiudi',
   'action.dialHint': 'trascina sul quadrante per regolare i minuti',
   'action.accessibilityInfo': 'Visualizza documentazione accessibilità RGAA 4.1',
+  'action.accessibilityShort': 'Accessibilità RGAA',
 
   'unit.minutes': 'minuti',
 
@@ -497,6 +502,7 @@ const pt: Dictionary = {
   'action.close': 'Fechar',
   'action.dialHint': 'arraste no mostrador para ajustar os minutos',
   'action.accessibilityInfo': 'Ver documentação de acessibilidade RGAA 4.1',
+  'action.accessibilityShort': 'Acessibilidade RGAA',
 
   'unit.minutes': 'minutos',
 
@@ -592,6 +598,7 @@ const ar: Dictionary = {
   'action.close': 'إغلاق',
   'action.dialHint': 'اسحب على القرص لضبط الدقائق',
   'action.accessibilityInfo': 'عرض وثائق إمكانية الوصول RGAA 4.1',
+  'action.accessibilityShort': 'إمكانية الوصول RGAA',
 
   'unit.minutes': 'دقيقة',
 
