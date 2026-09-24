@@ -264,7 +264,9 @@
           </div>
 
           <button type="button" class="link-btn" [class.danger]="confirming === 'restore'" (click)="restorePresets()">
-            {{ confirming === 'restore' ? i18n.t('preset.confirm') : i18n.t('preset.restore') }}
+            <span aria-live="polite" aria-atomic="true">
+              {{ confirming === 'restore' ? i18n.t('preset.confirm') : i18n.t('preset.restore') }}
+            </span>
           </button>
         </ng-container>
 
@@ -327,7 +329,11 @@
                 type="button"
                 class="link-btn danger"
                 (click)="deleteDraft()"
-              >{{ confirming === 'delete' ? i18n.t('preset.confirm') : i18n.t('preset.delete') }}</button>
+              >
+                <span aria-live="polite" aria-atomic="true">
+                  {{ confirming === 'delete' ? i18n.t('preset.confirm') : i18n.t('preset.delete') }}
+                </span>
+              </button>
               <span class="spacer"></span>
               <button type="button" class="btn3d btn-text btn-neutral" (click)="draft = null">{{ i18n.t('preset.cancel') }}</button>
               <button type="submit" class="btn3d btn-text">{{ i18n.t('preset.save') }}</button>
@@ -364,6 +370,7 @@
             aria-valuemin="0"
             [attr.aria-valuemax]="history.dailyGoal()"
             [attr.aria-valuenow]="history.today().focusMinutes"
+            [attr.aria-valuetext]="history.today().focusMinutes + ' / ' + history.dailyGoal() + ' ' + i18n.t('unit.minutes')"
             [attr.aria-label]="i18n.t('stats.goal')"
           >
             <span class="goal-bar" [style.width.%]="history.goalProgress() * 100"></span>
@@ -373,14 +380,13 @@
 
         <figure class="week">
           <figcaption>{{ i18n.t('stats.week') }}</figcaption>
-          <div class="week-chart" role="list">
+
+          <!-- Visuel (graphique en barres) -->
+          <div class="week-chart" aria-hidden="true">
             <div
               *ngFor="let bar of weekBars()"
               class="week-col"
-              role="listitem"
-              tabindex="0"
               [class.today]="bar.isToday"
-              [attr.aria-label]="weekBarLabel(bar)"
             >
               <span class="week-value" [class.shown]="bar.isToday || bar.isMax">{{ bar.minutes }}</span>
               <span class="week-track">
@@ -389,6 +395,23 @@
               <span class="week-day">{{ bar.label }}</span>
             </div>
           </div>
+
+          <!-- Tableau accessible (caché visuellement) -->
+          <table class="sr-only">
+            <caption>{{ i18n.t('stats.week') }}</caption>
+            <thead>
+              <tr>
+                <th scope="col">{{ i18n.t('stats.weekDay') }}</th>
+                <th scope="col">{{ i18n.t('stats.weekMinutes') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let bar of weekBars()">
+                <td>{{ bar.label }}</td>
+                <td>{{ bar.minutes }} min</td>
+              </tr>
+            </tbody>
+          </table>
         </figure>
 
         <h3 class="section-title">{{ i18n.t('stats.recent') }}</h3>
@@ -415,7 +438,11 @@
           class="link-btn"
           [class.danger]="confirming === 'clear'"
           (click)="clearHistory()"
-        >{{ confirming === 'clear' ? i18n.t('preset.confirm') : i18n.t('stats.clear') }}</button>
+        >
+          <span aria-live="polite" aria-atomic="true">
+            {{ confirming === 'clear' ? i18n.t('preset.confirm') : i18n.t('stats.clear') }}
+          </span>
+        </button>
       </div>
 
       <!-- ================= Réglages ================= -->
