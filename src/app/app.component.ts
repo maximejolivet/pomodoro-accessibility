@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, ElementRef, HostBinding, HostListener, OnDestroy, OnInit, ViewChild, computed, effect, inject, untracked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { App } from '@capacitor/app';
 import type { PluginListenerHandle } from '@capacitor/core';
@@ -77,6 +77,7 @@ interface PresetDraft {
 })
 export class AppComponent implements OnInit, OnDestroy {
   Math = Math;  // Expose Math to templates
+  readonly router = inject(Router);
 
   timerService = inject(TimerService);
   i18n = inject(I18nService);

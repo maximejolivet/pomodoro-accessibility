@@ -1,4 +1,6 @@
-<main class="stage">
+<router-outlet></router-outlet>
+
+<main class="stage" *ngIf="(router.url | slice:0:1) === '/'">
   <!-- Zone d'annonces vocales pour lecteurs d'écran -->
   <div aria-live="polite" aria-atomic="true" class="sr-only" id="a11y-announcements"></div>
 
