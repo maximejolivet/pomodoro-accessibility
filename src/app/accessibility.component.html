@@ -1,155 +1,166 @@
 <main class="accessibility-page">
   <header class="accessibility-header">
     <a routerLink="/" class="back-link">← Retour</a>
-    <h1>Accessibilité RGAA 4.1</h1>
+    <h1>Accessibilité</h1>
   </header>
 
   <section class="accessibility-container">
-    <!-- Hero avec action -->
+    <!-- Hero : Statement fort -->
     <section class="hero">
-      <h2>Testez l'accessibilité</h2>
-      <p>Pomodoro TDAH est conçu pour être accessible à tous. Essayez ces raccourcis :</p>
-      <div class="test-shortcuts">
-        <div class="shortcut">
-          <kbd>Tab</kbd>
-          <span>Naviguer entre éléments</span>
-        </div>
-        <div class="shortcut">
-          <kbd>←</kbd> <kbd>→</kbd>
-          <span>Changer d'onglet</span>
-        </div>
-        <div class="shortcut">
-          <kbd>PageUp</kbd> <kbd>PageDown</kbd>
-          <span>Ajuster le cadran</span>
-        </div>
-        <div class="shortcut">
-          <kbd>Esc</kbd>
-          <span>Fermer les modales</span>
-        </div>
-      </div>
+      <h2>L'accessibilité n'est pas optionnelle</h2>
+      <p>Pomodoro TDAH est conçu pour fonctionner avec <strong>vous</strong>, quelle que soit votre façon d'interagir avec l'écran.</p>
     </section>
 
-    <!-- Conformité -->
-    <section class="conformite">
-      <h3>✓ 100% Conforme</h3>
-      <p>Pomodoro TDAH respecte les standards <strong>RGAA 4.1</strong> (France) et <strong>WCAG 2.1 AA</strong> (International).</p>
-    </section>
+    <!-- 5 Modes d'interaction distinctifs -->
+    <section class="modes">
+      <h2 class="modes-title">Comment Pomodoro fonctionne pour vous</h2>
 
-    <!-- Implémentations groupées -->
-    <section class="implementations">
-      <h2>Implémentations (18+)</h2>
-
-      <div class="impl-group">
-        <h3>Clavier & Navigation</h3>
-        <ul class="impl-list">
-          <li>Navigation complète au clavier</li>
-          <li>Onglets accessibles avec ←/→</li>
-          <li>Cadran avec PageUp/Down/Home/End</li>
-          <li>Focus visible et gestion focus trap</li>
+      <!-- Mode 1: Clavier -->
+      <div class="mode mode-keyboard">
+        <div class="mode-icon">⌨</div>
+        <h3>Clavier seul</h3>
+        <p>Naviguez complètement sans souris.</p>
+        <ul class="mode-list">
+          <li><kbd>Tab</kbd> entre les éléments</li>
+          <li><kbd>←</kbd> <kbd>→</kbd> changer d'onglet</li>
+          <li><kbd>PageUp</kbd> <kbd>PageDown</kbd> ajuster le cadran</li>
+          <li><kbd>Esc</kbd> fermer les modales</li>
+          <li>Focus toujours visible</li>
         </ul>
       </div>
 
-      <div class="impl-group">
-        <h3>Lecteur d'écran & Audio</h3>
-        <ul class="impl-list">
-          <li>Annonces vocales (aria-live)</li>
-          <li>Descriptions sémantiques (role, aria-label)</li>
-          <li>Table accessible pour graphiques</li>
-          <li>Sons optionnels et non-critiques</li>
+      <!-- Mode 2: Lecteur d'écran -->
+      <div class="mode mode-screen-reader">
+        <div class="mode-icon">🔊</div>
+        <h3>Lecteur d'écran</h3>
+        <p>NVDA, JAWS, VoiceOver, TalkBack, tout fonctionne.</p>
+        <ul class="mode-list">
+          <li>Annonces vocales en temps réel</li>
+          <li>Labels et descriptions complets</li>
+          <li>Arborescence HTML sémantique</li>
+          <li>Régions ARIA pour les mises à jour</li>
+          <li>Métadonnées accessibles</li>
         </ul>
       </div>
 
-      <div class="impl-group">
-        <h3>Visuels & Contraste</h3>
-        <ul class="impl-list">
+      <!-- Mode 3: Visuel & Contraste -->
+      <div class="mode mode-visual">
+        <div class="mode-icon">👁</div>
+        <h3>Visuel & Contraste</h3>
+        <p>Lisible pour tous, peu importe la vue.</p>
+        <ul class="mode-list">
           <li>Contrastes 4.5:1+ (WCAG AA)</li>
-          <li>Mode sombre supporté</li>
+          <li>Mode sombre intégré</li>
           <li>Pas de dépendance couleur seule</li>
-          <li>OpenDyslexic (police dyslexie-friendly)</li>
+          <li>Police OpenDyslexic optionnelle</li>
+          <li>Texte bien espacé et dimensionné</li>
         </ul>
       </div>
 
-      <div class="impl-group">
-        <h3>Structuration & Présentation</h3>
-        <ul class="impl-list">
+      <!-- Mode 4: Structure & Sémantique -->
+      <div class="mode mode-structure">
+        <div class="mode-icon">🏗</div>
+        <h3>Structure claire</h3>
+        <p>Tout est organisé de façon logique.</p>
+        <ul class="mode-list">
           <li>HTML sémantique (heading, section, main)</li>
-          <li>Arborescence heading correcte (h1-h3)</li>
+          <li>Arborescence heading h1 → h2 → h3</li>
           <li>Landmarks explicites</li>
-          <li>Traductions 6 langues (FR, EN, ES, DE, IT, PT, AR)</li>
+          <li>Navigation prévisible</li>
+          <li>7 langues (FR, EN, ES, DE, IT, PT, AR)</li>
         </ul>
       </div>
 
-      <div class="impl-group">
-        <h3>Motion & Confort</h3>
-        <ul class="impl-list">
+      <!-- Mode 5: Confort & Motion -->
+      <div class="mode mode-comfort">
+        <div class="mode-icon">💚</div>
+        <h3>Confort neurodiversifié</h3>
+        <p>Calme, prévisible, sans surcharge.</p>
+        <ul class="mode-list">
           <li>prefers-reduced-motion respecté</li>
-          <li>Interface sobre (TDAH-friendly)</li>
+          <li>Interface sobre et TDAH-friendly</li>
           <li>Pas de clignotement ou animation forcée</li>
-          <li>Focus qui reste visible toujours</li>
+          <li>Pauses intégrées (Pomodoro = structure)</li>
+          <li>Retours visuels clairs</li>
         </ul>
       </div>
     </section>
 
-    <!-- Critères RGAA expliqués -->
-    <section class="criteria">
-      <h2>Critères RGAA Respectés</h2>
-      <p class="criteria-note">
-        Les 11 critères ci-dessous s'appliquent à Pomodoro TDAH.
-        Les critères 2, 10, 14, 15+ concernent d'autres types de contenus (documents, vidéos, etc.).
-      </p>
-      <div class="criteria-grid">
-        <div class="criterion">✓ 1. Images</div>
-        <div class="criterion">✓ 3. Couleurs</div>
-        <div class="criterion">✓ 4. Multimédia</div>
-        <div class="criterion">✓ 5. Tableaux</div>
-        <div class="criterion">✓ 6. Liens & Boutons</div>
-        <div class="criterion">✓ 7. Scripts & Clavier</div>
-        <div class="criterion">✓ 8. Éléments Obligatoires</div>
-        <div class="criterion">✓ 9. Structuration</div>
-        <div class="criterion">✓ 11. Formulaires</div>
-        <div class="criterion">✓ 12. Navigation</div>
-        <div class="criterion">✓ 13. Consultation</div>
-      </div>
-    </section>
-
-    <!-- Profils supportés -->
+    <!-- Timeline : Profils supportés -->
     <section class="profiles">
-      <h2>Profils Supportés</h2>
-      <div class="profile-grid">
-        <div class="profile">
-          <strong>Lecteur d'écran</strong>
-          <p>NVDA, JAWS, VoiceOver, TalkBack</p>
+      <h2>Pomodoro fonctionne pour</h2>
+      <div class="profiles-timeline">
+        <div class="profile-item">
+          <div class="profile-marker">🔊</div>
+          <div class="profile-info">
+            <strong>Utilisateurs non-voyants</strong>
+            <p>Lecteur d'écran complet</p>
+          </div>
         </div>
-        <div class="profile">
-          <strong>Clavier seul</strong>
-          <p>Navigation complète sans souris</p>
+        <div class="profile-item">
+          <div class="profile-marker">⌨</div>
+          <div class="profile-info">
+            <strong>Utilisateurs moteurs</strong>
+            <p>Navigation clavier totale</p>
+          </div>
         </div>
-        <div class="profile">
-          <strong>Contraste élevé</strong>
-          <p>Mode sombre, Windows High Contrast</p>
+        <div class="profile-item">
+          <div class="profile-marker">👁</div>
+          <div class="profile-info">
+            <strong>Malvoyants</strong>
+            <p>Contraste élevé, zoom supporté</p>
+          </div>
         </div>
-        <div class="profile">
-          <strong>Mouvement réduit</strong>
-          <p>Animations désactivées</p>
+        <div class="profile-item">
+          <div class="profile-marker">💤</div>
+          <div class="profile-info">
+            <strong>Sourds / Malentendants</strong>
+            <p>Sons optionnels, visuels d'appoint</p>
+          </div>
         </div>
-        <div class="profile">
-          <strong>TDAH & Autisme</strong>
-          <p>Interface sobre et prévisible</p>
+        <div class="profile-item">
+          <div class="profile-marker">🧠</div>
+          <div class="profile-info">
+            <strong>TDAH & Autisme</strong>
+            <p>Structure, clarté, pas de surcharge</p>
+          </div>
         </div>
-        <div class="profile">
-          <strong>Dyslexie</strong>
-          <p>OpenDyslexic intégré</p>
+        <div class="profile-item">
+          <div class="profile-marker">📖</div>
+          <div class="profile-info">
+            <strong>Dyslexie</strong>
+            <p>OpenDyslexic, espacement, aide</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- RGAA officiel -->
-    <section class="rgaa-info">
-      <h3>RGAA 4.1 Officiel</h3>
-      <p>Le <strong>RGAA 4.1</strong> (Référentiel Général d'Amélioration de l'Accessibilité) est le standard français obligatoire pour les services publics.</p>
-      <a href="/assets/rgaa.html" target="_blank" rel="noopener noreferrer" class="cta-link">
-        📄 Documentation complète RGAA 4.1
-      </a>
+    <!-- Critères RGAA respectés -->
+    <section class="criteria">
+      <h2>Standards respectés</h2>
+      <div class="criteria-statement">
+        <p><strong>Pomodoro TDAH respecte</strong> <mark>RGAA 4.1</mark> (France) et <mark>WCAG 2.1 AA</mark> (International).</p>
+        <p class="criteria-note">11 critères RGAA s'appliquent directement. Les critères 2, 10, 14, 15+ concernent documents, vidéos, et contenus externes.</p>
+      </div>
+      <div class="criteria-badges">
+        <span class="badge">✓ Images</span>
+        <span class="badge">✓ Couleurs</span>
+        <span class="badge">✓ Multimédia</span>
+        <span class="badge">✓ Tableaux</span>
+        <span class="badge">✓ Liens & Boutons</span>
+        <span class="badge">✓ Scripts & Clavier</span>
+        <span class="badge">✓ Éléments obligatoires</span>
+        <span class="badge">✓ Structuration</span>
+        <span class="badge">✓ Formulaires</span>
+        <span class="badge">✓ Navigation</span>
+        <span class="badge">✓ Consultation</span>
+      </div>
+    </section>
+
+    <!-- Info footer -->
+    <section class="info-footer">
+      <p>L'accessibilité est intégrée dans <strong>chaque ligne de code</strong> de Pomodoro TDAH.</p>
+      <p class="disclaimer">Pour le détail complet du RGAA 4.1, consulte le référentiel officiel : <a href="https://accessibilite.numerique.gouv.fr/" target="_blank" rel="noopener noreferrer">accessibilite.numerique.gouv.fr</a></p>
     </section>
   </section>
 </main>
