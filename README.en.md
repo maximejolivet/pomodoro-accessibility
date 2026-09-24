@@ -55,6 +55,46 @@ This concrete cue is especially helpful for people who are **ADHD, autistic or n
 - 🏠 **Every day**: homework, morning routines, screen time, Pomodoro work sessions, at home,
   in class or at the office.
 
+### Time is hard to feel
+
+For many neurodivergent people, time does not "feel" like anything: ten minutes and an hour can
+seem the same, and looking at a clock does not always tell how much is left. This is not a
+lack of willpower or a bad mood; it is a different way of perceiving duration. A shrinking
+disc replaces a calculation with an image.
+
+| Profile               | Common difficulty                                                       | What the app offers                                                                |
+| --------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| **ADHD**              | Estimating duration, starting, stopping on time                         | A visual cue, short sessions followed by breaks, a *Focus TDAH* mode               |
+| **Autism**            | Switching activities, coping with the unexpected and with noise         | Milestones announced in advance, soft sounds that can be turned off, a stable interface |
+| **DYS disorders**     | Reading numbers or a clock time, tiring quickly on text                 | Time you can read without numbers, the OpenDyslexic font, well-spaced text         |
+| **Other profiles**    | Need for clear instructions, an adapted pace, less pressure             | Free durations from 1 to 60 min, custom modes, no grades or penalties              |
+
+### A tool without pressure
+
+- **No judgment**: no punitive score; the daily goal is a target, not an obligation.
+- **A gentle ending**: at 0, five more minutes can be added to finish without being rushed.
+- **The person stays in control**: sounds, vibration and the always-on screen can be turned off or adjusted.
+- **A calm display**: no flashing, reduced animations if the device asks for it.
+
+### In the workplace too
+
+Neurodiversity concerns teams as well: creativity, branching thinking, perseverance and rigor
+are recognized strengths, provided the work environment does not add needless obstacles. A
+visual timer is a simple, discreet and free tool at that level.
+
+- 🎯 **Focus sessions**: split a task into Pomodoro blocks with breaks, without depending on a
+  colleague's or manager's watchful eye.
+- 🔄 **Switching tasks**: the 45, 30 and 15 min milestones help wrap up and change topic
+  without an abrupt cut.
+- 🤝 **Meetings and interviews**: keep a duration visible to everyone, which reassures and
+  frames the exchange.
+- 🎧 **Office or remote work**: discreet vibration and notifications, sounds that can be
+  turned off in an open space.
+- 🧰 **A simple accommodation**: to offer alongside other workplace adjustments, without
+  singling anyone out, since the tool is useful to everyone.
+
+To learn more about neurodiversity (article in French): ["La neurodiversité, de quoi parle-t-on ?"](https://rhf-hdf.fr/la-neurodiversite-de-quoi-parle-t-on/) (RHF Hauts-de-France).
+
 > [!NOTE]
 > Independent project, inspired by the visual timer principle. It is neither affiliated with
 > nor endorsed by Time Timer®, a registered trademark of its owner.

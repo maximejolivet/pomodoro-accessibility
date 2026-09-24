@@ -55,6 +55,45 @@ Ce repère concret aide particulièrement les personnes **TDAH, autistes ou neur
 - 🏠 **Au quotidien** : devoirs, routines du matin, temps d'écran, séances de travail en
   Pomodoro, à la maison comme en classe ou au bureau.
 
+### Le temps, difficile à ressentir
+
+Pour beaucoup de personnes neurodivergentes, le temps ne se « sent » pas : dix minutes et une
+heure peuvent paraître identiques, et regarder l'heure n'aide pas toujours à savoir combien il
+reste. Ce n'est ni un manque de volonté ni de la mauvaise humeur : c'est une autre façon de
+percevoir la durée. Un disque qui rétrécit remplace un calcul par une image.
+
+| Profil                | Difficulté fréquente                                                    | Ce que l'application apporte                                                       |
+| --------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| **TDAH**              | Estimer la durée, démarrer, s'arrêter à temps                           | Un repère visuel, des sessions courtes suivies de pauses, un mode *Focus TDAH*     |
+| **Autisme**           | Passer d'une activité à une autre, supporter l'imprévu et le bruit      | Des paliers annoncés à l'avance, des sons doux et désactivables, une interface stable |
+| **Troubles DYS**      | Lire des chiffres ou une heure, se fatiguer sur le texte                | Un temps lisible sans chiffres, la police OpenDyslexic, un texte bien espacé       |
+| **Autres profils**    | Besoin de consignes claires, d'un rythme adapté, de moins de pression   | Des durées libres de 1 à 60 min, des modes personnalisés, aucune note ni sanction  |
+
+### Un outil sans pression
+
+- **Pas de jugement** : aucun score punitif ; l'objectif quotidien est une cible, pas une obligation.
+- **Une fin en douceur** : à 0, cinq minutes de plus peuvent s'ajouter pour terminer sans être brusqué.
+- **Le contrôle reste à la personne** : sons, vibration et écran allumé se coupent ou se règlent.
+- **Un affichage calme** : pas de clignotement, animations réduites si l'appareil le demande.
+
+### Aussi dans le monde professionnel
+
+La neurodiversité concerne aussi les équipes : créativité, pensée en arborescence, persévérance
+et rigueur sont des atouts reconnus, à condition que l'environnement de travail ne dresse pas
+d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans coût à ce niveau.
+
+- 🎯 **Sessions de concentration** : découper une tâche en blocs Pomodoro avec des pauses, sans
+  dépendre du regard d'un collègue ou d'un manager.
+- 🔄 **Enchaîner les tâches** : les paliers à 45, 30 et 15 min aident à conclure et à changer de
+  sujet sans coupure brutale.
+- 🤝 **Réunions et entretiens** : garder une durée visible pour tous, qui rassure et cadre l'échange.
+- 🎧 **Bureau ou télétravail** : vibration et notifications discrètes, sons désactivables en
+  open space.
+- 🧰 **Un aménagement simple** : à proposer avec les autres aménagements de poste, sans exposer
+  la situation de la personne, puisque l'outil sert à tout le monde.
+
+Pour aller plus loin sur la neurodiversité : [« La neurodiversité, de quoi parle-t-on ? »](https://rhf-hdf.fr/la-neurodiversite-de-quoi-parle-t-on/) (RHF Hauts-de-France).
+
 > [!NOTE]
 > Projet indépendant, inspiré du principe des minuteurs visuels. Il n'est ni affilié ni
 > approuvé par Time Timer®, marque déposée de son propriétaire.
