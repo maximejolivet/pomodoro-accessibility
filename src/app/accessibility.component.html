@@ -1,39 +1,35 @@
-<main class="accessibility-page">
+<main class="accessibility-page" lang="fr">
   <header class="accessibility-header">
-    <a routerLink="/" class="back-link">← Retour</a>
-    <h1>Accessibilité</h1>
+    <a routerLink="/" class="back-link"><span aria-hidden="true">←</span> Retour au minuteur</a>
+    <h1 #pageTitle tabindex="-1">Accessibilité</h1>
   </header>
 
-  <section class="accessibility-container">
-    <!-- Hero : Statement fort -->
-    <section class="hero">
-      <h2>L'accessibilité n'est pas optionnelle</h2>
+  <div class="accessibility-container">
+    <section class="hero" aria-labelledby="hero-title">
+      <h2 id="hero-title">L'accessibilité n'est pas optionnelle</h2>
       <p>Pomodoro TDAH est conçu pour fonctionner avec <strong>vous</strong>, quelle que soit votre façon d'interagir avec l'écran.</p>
     </section>
 
-    <!-- 5 Modes d'interaction distinctifs -->
-    <section class="modes">
-      <h2 class="modes-title">Comment Pomodoro fonctionne pour vous</h2>
+    <section class="modes" aria-labelledby="modes-title">
+      <h2 id="modes-title" class="modes-title">Comment Pomodoro fonctionne pour vous</h2>
 
-      <!-- Mode 1: Clavier -->
-      <div class="mode mode-keyboard">
-        <div class="mode-icon">💻</div>
-        <h3>Clavier seul</h3>
+      <article class="mode mode-keyboard" aria-labelledby="mode-keyboard-title">
+        <div class="mode-icon" aria-hidden="true">💻</div>
+        <h3 id="mode-keyboard-title">Clavier seul</h3>
         <p>Naviguez complètement sans souris.</p>
         <ul class="mode-list">
           <li><kbd>Tab</kbd> entre les éléments</li>
-          <li><kbd>←</kbd> <kbd>→</kbd> changer d'onglet</li>
+          <li><kbd aria-label="Flèche gauche">←</kbd> <kbd aria-label="Flèche droite">→</kbd> changer d'onglet</li>
           <li><kbd>PageUp</kbd> <kbd>PageDown</kbd> ajuster le cadran</li>
           <li><kbd>Esc</kbd> fermer les modales</li>
           <li>Focus toujours visible</li>
         </ul>
-      </div>
+      </article>
 
-      <!-- Mode 2: Lecteur d'écran -->
-      <div class="mode mode-screen-reader">
-        <div class="mode-icon">🔊</div>
-        <h3>Lecteur d'écran</h3>
-        <p>NVDA, JAWS, VoiceOver, TalkBack, tout fonctionne.</p>
+      <article class="mode mode-screen-reader" aria-labelledby="mode-sr-title">
+        <div class="mode-icon" aria-hidden="true">🔊</div>
+        <h3 id="mode-sr-title">Lecteur d'écran</h3>
+        <p>NVDA, JAWS, VoiceOver, TalkBack : tout fonctionne.</p>
         <ul class="mode-list">
           <li>Annonces vocales en temps réel</li>
           <li>Labels et descriptions complets</li>
@@ -41,126 +37,120 @@
           <li>Régions ARIA pour les mises à jour</li>
           <li>Métadonnées accessibles</li>
         </ul>
-      </div>
+      </article>
 
-      <!-- Mode 3: Visuel & Contraste -->
-      <div class="mode mode-visual">
-        <div class="mode-icon">👁</div>
-        <h3>Visuel & Contraste</h3>
-        <p>Lisible pour tous, peu importe la vue.</p>
+      <article class="mode mode-visual" aria-labelledby="mode-visual-title">
+        <div class="mode-icon" aria-hidden="true">👁</div>
+        <h3 id="mode-visual-title">Visuel et contraste</h3>
+        <p>Lisible pour tous, quelle que soit la vue.</p>
         <ul class="mode-list">
-          <li>Contrastes 4.5:1+ (WCAG AA)</li>
+          <li>Contrastes 4.5:1 minimum (WCAG AA)</li>
           <li>Mode sombre intégré</li>
-          <li>Pas de dépendance couleur seule</li>
+          <li>Pas de dépendance à la couleur seule</li>
           <li>Police OpenDyslexic optionnelle</li>
           <li>Texte bien espacé et dimensionné</li>
         </ul>
-      </div>
+      </article>
 
-      <!-- Mode 4: Structure & Sémantique -->
-      <div class="mode mode-structure">
-        <div class="mode-icon">🏗</div>
-        <h3>Structure claire</h3>
+      <article class="mode mode-structure" aria-labelledby="mode-structure-title">
+        <div class="mode-icon" aria-hidden="true">🏗</div>
+        <h3 id="mode-structure-title">Structure claire</h3>
         <p>Tout est organisé de façon logique.</p>
         <ul class="mode-list">
-          <li>HTML sémantique (heading, section, main)</li>
-          <li>Arborescence heading h1 → h2 → h3</li>
+          <li>HTML sémantique (titres, sections, main)</li>
+          <li>Hiérarchie de titres h1, h2, h3</li>
           <li>Landmarks explicites</li>
           <li>Navigation prévisible</li>
           <li>7 langues (FR, EN, ES, DE, IT, PT, AR)</li>
         </ul>
-      </div>
+      </article>
 
-      <!-- Mode 5: Confort & Motion -->
-      <div class="mode mode-comfort">
-        <div class="mode-icon">💚</div>
-        <h3>Confort neurodiversifié</h3>
+      <article class="mode mode-comfort" aria-labelledby="mode-comfort-title">
+        <div class="mode-icon" aria-hidden="true">💚</div>
+        <h3 id="mode-comfort-title">Confort neurodivergent</h3>
         <p>Calme, prévisible, sans surcharge.</p>
         <ul class="mode-list">
           <li>prefers-reduced-motion respecté</li>
-          <li>Interface sobre et TDAH-friendly</li>
-          <li>Pas de clignotement ou animation forcée</li>
-          <li>Pauses intégrées (Pomodoro = structure)</li>
+          <li>Interface sobre, adaptée au TDAH</li>
+          <li>Pas de clignotement ni d'animation forcée</li>
+          <li>Pauses intégrées (le Pomodoro donne la structure)</li>
           <li>Retours visuels clairs</li>
         </ul>
-      </div>
+      </article>
     </section>
 
-    <!-- Timeline : Profils supportés -->
-    <section class="profiles">
-      <h2>Pomodoro fonctionne pour</h2>
-      <div class="profiles-timeline">
-        <div class="profile-item">
-          <div class="profile-marker">🔊</div>
+    <section class="profiles" aria-labelledby="profiles-title">
+      <h2 id="profiles-title">Pomodoro fonctionne pour</h2>
+      <ul class="profiles-timeline">
+        <li class="profile-item">
+          <span class="profile-marker" aria-hidden="true">🔊</span>
           <div class="profile-info">
             <strong>Utilisateurs non-voyants</strong>
             <p>Lecteur d'écran complet</p>
           </div>
-        </div>
-        <div class="profile-item">
-          <div class="profile-marker">💻</div>
+        </li>
+        <li class="profile-item">
+          <span class="profile-marker" aria-hidden="true">💻</span>
           <div class="profile-info">
-            <strong>Utilisateurs moteurs</strong>
+            <strong>Utilisateurs avec un handicap moteur</strong>
             <p>Navigation clavier totale</p>
           </div>
-        </div>
-        <div class="profile-item">
-          <div class="profile-marker">👁</div>
+        </li>
+        <li class="profile-item">
+          <span class="profile-marker" aria-hidden="true">👁</span>
           <div class="profile-info">
             <strong>Malvoyants</strong>
             <p>Contraste élevé, zoom supporté</p>
           </div>
-        </div>
-        <div class="profile-item">
-          <div class="profile-marker">💤</div>
+        </li>
+        <li class="profile-item">
+          <span class="profile-marker" aria-hidden="true">💤</span>
           <div class="profile-info">
-            <strong>Sourds / Malentendants</strong>
-            <p>Sons optionnels, visuels d'appoint</p>
+            <strong>Sourds et malentendants</strong>
+            <p>Sons optionnels, retours visuels</p>
           </div>
-        </div>
-        <div class="profile-item">
-          <div class="profile-marker">🧠</div>
+        </li>
+        <li class="profile-item">
+          <span class="profile-marker" aria-hidden="true">🧠</span>
           <div class="profile-info">
-            <strong>TDAH & Autisme</strong>
+            <strong>TDAH et autisme</strong>
             <p>Structure, clarté, pas de surcharge</p>
           </div>
-        </div>
-        <div class="profile-item">
-          <div class="profile-marker">📖</div>
+        </li>
+        <li class="profile-item">
+          <span class="profile-marker" aria-hidden="true">📖</span>
           <div class="profile-info">
             <strong>Dyslexie</strong>
-            <p>OpenDyslexic, espacement, aide</p>
+            <p>OpenDyslexic, espacement, aide à la lecture</p>
           </div>
-        </div>
-      </div>
+        </li>
+      </ul>
     </section>
 
-    <!-- Critères RGAA respectés -->
-    <section class="criteria">
-      <h2>Standards respectés</h2>
+    <section class="criteria" aria-labelledby="criteria-title">
+      <h2 id="criteria-title">Standards respectés</h2>
       <div class="criteria-statement">
         <p><strong>Pomodoro TDAH respecte</strong> <mark>RGAA 4.1</mark> (France) et <mark>WCAG 2.1 AA</mark> (International).</p>
-        <p class="criteria-note">11 critères RGAA s'appliquent directement. Les critères 2, 10, 14, 15+ concernent documents, vidéos, et contenus externes.</p>
+        <p class="criteria-note">11 critères RGAA s'appliquent directement. Les critères 2, 10, 14, 15 et suivants concernent documents, vidéos et contenus externes.</p>
       </div>
-      <div class="criteria-badges">
-        <span class="badge">✓ Images</span>
-        <span class="badge">✓ Couleurs</span>
-        <span class="badge">✓ Multimédia</span>
-        <span class="badge">✓ Tableaux</span>
-        <span class="badge">✓ Liens & Boutons</span>
-        <span class="badge">✓ Scripts & Clavier</span>
-        <span class="badge">✓ Éléments obligatoires</span>
-        <span class="badge">✓ Structuration</span>
-        <span class="badge">✓ Formulaires</span>
-        <span class="badge">✓ Navigation</span>
-        <span class="badge">✓ Consultation</span>
-      </div>
+      <ul class="criteria-badges" aria-label="Critères RGAA respectés">
+        <li class="badge"><span aria-hidden="true">✓</span> Images</li>
+        <li class="badge"><span aria-hidden="true">✓</span> Couleurs</li>
+        <li class="badge"><span aria-hidden="true">✓</span> Multimédia</li>
+        <li class="badge"><span aria-hidden="true">✓</span> Tableaux</li>
+        <li class="badge"><span aria-hidden="true">✓</span> Liens et boutons</li>
+        <li class="badge"><span aria-hidden="true">✓</span> Scripts et clavier</li>
+        <li class="badge"><span aria-hidden="true">✓</span> Éléments obligatoires</li>
+        <li class="badge"><span aria-hidden="true">✓</span> Structuration</li>
+        <li class="badge"><span aria-hidden="true">✓</span> Formulaires</li>
+        <li class="badge"><span aria-hidden="true">✓</span> Navigation</li>
+        <li class="badge"><span aria-hidden="true">✓</span> Consultation</li>
+      </ul>
     </section>
 
-    <!-- Info footer -->
-    <section class="info-footer">
+    <footer class="info-footer">
       <p>L'accessibilité est intégrée dans <strong>chaque ligne de code</strong> de Pomodoro TDAH.</p>
-      <p class="disclaimer">Pour le détail complet du RGAA 4.1, consulte le référentiel officiel : <a href="https://accessibilite.numerique.gouv.fr/" target="_blank" rel="noopener noreferrer">accessibilite.numerique.gouv.fr</a></p>
-    </section>
-  </section>
+      <p class="disclaimer">Référentiel officiel du RGAA 4.1 : <a href="https://accessibilite.numerique.gouv.fr/" target="_blank" rel="noopener noreferrer">accessibilite.numerique.gouv.fr<span class="sr-only"> (nouvel onglet)</span></a></p>
+    </footer>
+  </div>
 </main>
