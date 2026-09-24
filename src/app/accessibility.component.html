@@ -1,78 +1,155 @@
 <main class="accessibility-page">
   <header class="accessibility-header">
     <a routerLink="/" class="back-link">← Retour</a>
-    <h1>♿ Accessibilité RGAA 4.1</h1>
+    <h1>Accessibilité RGAA 4.1</h1>
   </header>
 
   <section class="accessibility-container">
-    <div class="hero">
-      <h2>✓ 100% Conforme</h2>
-      <p>Pomodoro TDAH est 100% conforme au <strong>RGAA 4.1</strong> et au standard international <strong>WCAG 2.1 AA</strong>.</p>
-    </div>
-
-    <section class="a11y-section">
-      <h3>Implémentations (18+)</h3>
-      <ul class="a11y-list">
-        <li><strong>Contrastes:</strong> 4.5:1+ (WCAG AA)</li>
-        <li><strong>Annonces vocales:</strong> aria-live pour tous les changements</li>
-        <li><strong>Modale:</strong> role=dialog, Échap, focus trap</li>
-        <li><strong>Cadran:</strong> role=slider, touches ←/→/PageUp/Down/Home/End</li>
-        <li><strong>Onglets:</strong> Navigation complète au clavier</li>
-        <li><strong>Graphique:</strong> Table sr-only pour données accessibles</li>
-        <li><strong>Mouvement:</strong> prefers-reduced-motion respecté</li>
-        <li><strong>Couleurs:</strong> Traductions en 6 langues (FR, EN, ES, DE, IT, PT, AR)</li>
-        <li><strong>OpenDyslexic:</strong> Police dyslexie-friendly disponible</li>
-      </ul>
-    </section>
-
-    <section class="a11y-section">
-      <h3>Critères RGAA Respectés</h3>
-      <div class="a11y-criteria">
-        <div class="criterion-item">✓ 1. Images</div>
-        <div class="criterion-item">✓ 3. Couleurs</div>
-        <div class="criterion-item">✓ 4. Multimédia</div>
-        <div class="criterion-item">✓ 5. Tableaux</div>
-        <div class="criterion-item">✓ 6. Liens & Boutons</div>
-        <div class="criterion-item">✓ 7. Scripts & Clavier</div>
-        <div class="criterion-item">✓ 8. Éléments Obligatoires</div>
-        <div class="criterion-item">✓ 9. Structuration</div>
-        <div class="criterion-item">✓ 11. Formulaires</div>
-        <div class="criterion-item">✓ 12. Navigation</div>
-        <div class="criterion-item">✓ 13. Consultation</div>
+    <!-- Hero avec action -->
+    <section class="hero">
+      <h2>Testez l'accessibilité</h2>
+      <p>Pomodoro TDAH est conçu pour être accessible à tous. Essayez ces raccourcis :</p>
+      <div class="test-shortcuts">
+        <div class="shortcut">
+          <kbd>Tab</kbd>
+          <span>Naviguer entre éléments</span>
+        </div>
+        <div class="shortcut">
+          <kbd>←</kbd> <kbd>→</kbd>
+          <span>Changer d'onglet</span>
+        </div>
+        <div class="shortcut">
+          <kbd>PageUp</kbd> <kbd>PageDown</kbd>
+          <span>Ajuster le cadran</span>
+        </div>
+        <div class="shortcut">
+          <kbd>Esc</kbd>
+          <span>Fermer les modales</span>
+        </div>
       </div>
     </section>
 
-    <section class="a11y-section">
-      <h3>Profils Supportés</h3>
-      <ul class="a11y-list">
-        <li>🎧 Lecteur d'écran (NVDA, JAWS, VoiceOver)</li>
-        <li>⌨️ Clavier seul</li>
-        <li>🎨 Contraste élevé & Mode sombre</li>
-        <li>🎞️ Mouvement réduit (prefers-reduced-motion)</li>
-        <li>🧠 TDAH & Autisme friendly</li>
-        <li>📝 Dyslexie-friendly (OpenDyslexic)</li>
-      </ul>
+    <!-- Conformité -->
+    <section class="conformite">
+      <h3>✓ 100% Conforme</h3>
+      <p>Pomodoro TDAH respecte les standards <strong>RGAA 4.1</strong> (France) et <strong>WCAG 2.1 AA</strong> (International).</p>
     </section>
 
-    <section class="a11y-section">
-      <h3>Outils de Test</h3>
-      <ul class="a11y-list">
-        <li>Lighthouse (Chrome DevTools)</li>
-        <li>axe DevTools (Extension)</li>
-        <li>WAVE (Extension)</li>
-        <li>NVDA (Lecteur d'écran gratuit)</li>
-        <li>Navigation clavier (Tab, Espace, Esc, Flèches)</li>
-      </ul>
+    <!-- Implémentations groupées -->
+    <section class="implementations">
+      <h2>Implémentations (18+)</h2>
+
+      <div class="impl-group">
+        <h3>Clavier & Navigation</h3>
+        <ul class="impl-list">
+          <li>Navigation complète au clavier</li>
+          <li>Onglets accessibles avec ←/→</li>
+          <li>Cadran avec PageUp/Down/Home/End</li>
+          <li>Focus visible et gestion focus trap</li>
+        </ul>
+      </div>
+
+      <div class="impl-group">
+        <h3>Lecteur d'écran & Audio</h3>
+        <ul class="impl-list">
+          <li>Annonces vocales (aria-live)</li>
+          <li>Descriptions sémantiques (role, aria-label)</li>
+          <li>Table accessible pour graphiques</li>
+          <li>Sons optionnels et non-critiques</li>
+        </ul>
+      </div>
+
+      <div class="impl-group">
+        <h3>Visuels & Contraste</h3>
+        <ul class="impl-list">
+          <li>Contrastes 4.5:1+ (WCAG AA)</li>
+          <li>Mode sombre supporté</li>
+          <li>Pas de dépendance couleur seule</li>
+          <li>OpenDyslexic (police dyslexie-friendly)</li>
+        </ul>
+      </div>
+
+      <div class="impl-group">
+        <h3>Structuration & Présentation</h3>
+        <ul class="impl-list">
+          <li>HTML sémantique (heading, section, main)</li>
+          <li>Arborescence heading correcte (h1-h3)</li>
+          <li>Landmarks explicites</li>
+          <li>Traductions 6 langues (FR, EN, ES, DE, IT, PT, AR)</li>
+        </ul>
+      </div>
+
+      <div class="impl-group">
+        <h3>Motion & Confort</h3>
+        <ul class="impl-list">
+          <li>prefers-reduced-motion respecté</li>
+          <li>Interface sobre (TDAH-friendly)</li>
+          <li>Pas de clignotement ou animation forcée</li>
+          <li>Focus qui reste visible toujours</li>
+        </ul>
+      </div>
     </section>
 
-    <section class="a11y-section a11y-info">
-      <h3>RGAA 4.1 Officiel</h3>
-      <p>Le <strong>RGAA 4.1</strong> (Référentiel Général d'Amélioration de l'Accessibilité) est le standard officiel français obligatoire pour les services publics.</p>
-      <p style="margin-top: 12px;">
-        <a href="/assets/rgaa.html" target="_blank" rel="noopener noreferrer" class="rgaa-link">
-          📄 Consulter la documentation complète RGAA →
-        </a>
+    <!-- Critères RGAA expliqués -->
+    <section class="criteria">
+      <h2>Critères RGAA Respectés</h2>
+      <p class="criteria-note">
+        Les 11 critères ci-dessous s'appliquent à Pomodoro TDAH.
+        Les critères 2, 10, 14, 15+ concernent d'autres types de contenus (documents, vidéos, etc.).
       </p>
+      <div class="criteria-grid">
+        <div class="criterion">✓ 1. Images</div>
+        <div class="criterion">✓ 3. Couleurs</div>
+        <div class="criterion">✓ 4. Multimédia</div>
+        <div class="criterion">✓ 5. Tableaux</div>
+        <div class="criterion">✓ 6. Liens & Boutons</div>
+        <div class="criterion">✓ 7. Scripts & Clavier</div>
+        <div class="criterion">✓ 8. Éléments Obligatoires</div>
+        <div class="criterion">✓ 9. Structuration</div>
+        <div class="criterion">✓ 11. Formulaires</div>
+        <div class="criterion">✓ 12. Navigation</div>
+        <div class="criterion">✓ 13. Consultation</div>
+      </div>
+    </section>
+
+    <!-- Profils supportés -->
+    <section class="profiles">
+      <h2>Profils Supportés</h2>
+      <div class="profile-grid">
+        <div class="profile">
+          <strong>Lecteur d'écran</strong>
+          <p>NVDA, JAWS, VoiceOver, TalkBack</p>
+        </div>
+        <div class="profile">
+          <strong>Clavier seul</strong>
+          <p>Navigation complète sans souris</p>
+        </div>
+        <div class="profile">
+          <strong>Contraste élevé</strong>
+          <p>Mode sombre, Windows High Contrast</p>
+        </div>
+        <div class="profile">
+          <strong>Mouvement réduit</strong>
+          <p>Animations désactivées</p>
+        </div>
+        <div class="profile">
+          <strong>TDAH & Autisme</strong>
+          <p>Interface sobre et prévisible</p>
+        </div>
+        <div class="profile">
+          <strong>Dyslexie</strong>
+          <p>OpenDyslexic intégré</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RGAA officiel -->
+    <section class="rgaa-info">
+      <h3>RGAA 4.1 Officiel</h3>
+      <p>Le <strong>RGAA 4.1</strong> (Référentiel Général d'Amélioration de l'Accessibilité) est le standard français obligatoire pour les services publics.</p>
+      <a href="/assets/rgaa.html" target="_blank" rel="noopener noreferrer" class="cta-link">
+        📄 Documentation complète RGAA 4.1
+      </a>
     </section>
   </section>
 </main>
