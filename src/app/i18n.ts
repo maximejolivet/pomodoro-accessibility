@@ -18,6 +18,7 @@ const fr = {
   'action.settings': 'Réglages',
   'action.close': 'Fermer',
   'action.dialHint': 'glisser sur le cadran pour régler les minutes',
+  'action.accessibilityInfo': 'Voir la documentation d\'accessibilité RGAA 4.1',
 
   'unit.minutes': 'minutes',
 
@@ -114,6 +115,7 @@ const en: Dictionary = {
   'action.settings': 'Settings',
   'action.close': 'Close',
   'action.dialHint': 'drag on the dial to set the minutes',
+  'action.accessibilityInfo': 'View RGAA 4.1 accessibility documentation',
 
   'unit.minutes': 'minutes',
 
@@ -207,6 +209,7 @@ const es: Dictionary = {
   'action.settings': 'Ajustes',
   'action.close': 'Cerrar',
   'action.dialHint': 'desliza sobre el dial para ajustar los minutos',
+  'action.accessibilityInfo': 'Ver documentación de accesibilidad RGAA 4.1',
 
   'unit.minutes': 'minutos',
 
@@ -300,6 +303,7 @@ const de: Dictionary = {
   'action.settings': 'Einstellungen',
   'action.close': 'Schließen',
   'action.dialHint': 'auf dem Zifferblatt ziehen, um die Minuten einzustellen',
+  'action.accessibilityInfo': 'RGAA 4.1-Barrierefreiheitsdokumentation ansehen',
 
   'unit.minutes': 'Minuten',
 
@@ -393,6 +397,7 @@ const it: Dictionary = {
   'action.settings': 'Impostazioni',
   'action.close': 'Chiudi',
   'action.dialHint': 'trascina sul quadrante per regolare i minuti',
+  'action.accessibilityInfo': 'Visualizza documentazione accessibilità RGAA 4.1',
 
   'unit.minutes': 'minuti',
 
@@ -486,6 +491,7 @@ const pt: Dictionary = {
   'action.settings': 'Configurações',
   'action.close': 'Fechar',
   'action.dialHint': 'arraste no mostrador para ajustar os minutos',
+  'action.accessibilityInfo': 'Ver documentação de acessibilidade RGAA 4.1',
 
   'unit.minutes': 'minutos',
 
@@ -579,6 +585,7 @@ const ar: Dictionary = {
   'action.settings': 'الإعدادات',
   'action.close': 'إغلاق',
   'action.dialHint': 'اسحب على القرص لضبط الدقائق',
+  'action.accessibilityInfo': 'عرض وثائق إمكانية الوصول RGAA 4.1',
 
   'unit.minutes': 'دقيقة',
 

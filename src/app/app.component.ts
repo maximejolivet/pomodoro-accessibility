@@ -135,6 +135,7 @@ export class AppComponent implements OnInit, OnDestroy {
   draft: PresetDraft | null = null;
   /** Action destructive en attente de second tap. */
   confirming: 'delete' | 'restore' | 'clear' | null = null;
+  showAccessibility = false;
 
   private session: ActiveSession | null = null;
   private lastFocusPresetId: string | null = null;
@@ -401,7 +402,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   @HostListener('keydown.escape')
   onEscapeKey(): void {
-    if (this.showSheet) {
+    if (this.showAccessibility) {
+      this.showAccessibility = false;
+    } else if (this.showSheet) {
       this.closeSheet();
     }
   }
