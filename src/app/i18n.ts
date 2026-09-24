@@ -47,6 +47,7 @@ const fr = {
   'settings.languageAuto': 'Auto',
   'settings.listen': 'Écouter les sons',
   'settings.listenOne': 'Écouter le son {label}',
+  'settings.rgaaDocumentation': 'Documentation RGAA 4.1',
   'settings.duration': 'Durée',
   'settings.goal': 'Objectif quotidien',
 
@@ -144,6 +145,7 @@ const en: Dictionary = {
   'settings.languageAuto': 'Auto',
   'settings.listen': 'Preview sounds',
   'settings.listenOne': 'Play the {label} sound',
+  'settings.rgaaDocumentation': 'RGAA 4.1 Documentation',
   'settings.duration': 'Duration',
   'settings.goal': 'Daily goal',
 
@@ -238,6 +240,7 @@ const es: Dictionary = {
   'settings.languageAuto': 'Auto',
   'settings.listen': 'Escuchar los sonidos',
   'settings.listenOne': 'Reproducir el sonido {label}',
+  'settings.rgaaDocumentation': 'Documentación RGAA 4.1',
   'settings.duration': 'Duración',
   'settings.goal': 'Objetivo diario',
 
@@ -332,6 +335,7 @@ const de: Dictionary = {
   'settings.languageAuto': 'Auto',
   'settings.listen': 'Töne anhören',
   'settings.listenOne': 'Ton {label} abspielen',
+  'settings.rgaaDocumentation': 'RGAA 4.1-Dokumentation',
   'settings.duration': 'Dauer',
   'settings.goal': 'Tagesziel',
 
@@ -426,6 +430,7 @@ const it: Dictionary = {
   'settings.languageAuto': 'Auto',
   'settings.listen': 'Ascolta i suoni',
   'settings.listenOne': 'Riproduci il suono {label}',
+  'settings.rgaaDocumentation': 'Documentazione RGAA 4.1',
   'settings.duration': 'Durata',
   'settings.goal': 'Obiettivo giornaliero',
 
@@ -520,6 +525,7 @@ const pt: Dictionary = {
   'settings.languageAuto': 'Auto',
   'settings.listen': 'Ouvir os sons',
   'settings.listenOne': 'Tocar o som {label}',
+  'settings.rgaaDocumentation': 'Documentação RGAA 4.1',
   'settings.duration': 'Duração',
   'settings.goal': 'Meta diária',
 
@@ -614,6 +620,7 @@ const ar: Dictionary = {
   'settings.languageAuto': 'تلقائي',
   'settings.listen': 'الاستماع إلى الأصوات',
   'settings.listenOne': 'تشغيل الصوت {label}',
+  'settings.rgaaDocumentation': 'وثائق RGAA 4.1',
   'settings.duration': 'المدة',
   'settings.goal': 'الهدف اليومي',
 
