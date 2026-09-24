@@ -6,7 +6,7 @@
 
 # Pomodoro TDAH
 
-**A visual timer for autism, ADHD and neurodivergent minds.**
+**A visual timer for autism, ADHD, DYS disorders (dyslexia, dyscalculia…) and other neurodivergent minds.**
 You see the time that's left instead of reading it.
 
 ![ADHD](https://img.shields.io/badge/ADHD-friendly-8b6fd6)

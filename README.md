@@ -6,7 +6,7 @@
 
 # Pomodoro TDAH
 
-**Un minuteur visuel pour l'autisme, le TDAH et les profils neurodivergents.**
+**Un minuteur visuel pour l'autisme, le TDAH, les troubles DYS (dyslexie, dyscalculie…) et les autres profils neurodivergents.**
 On voit le temps qui reste au lieu de le lire.
 
 ![TDAH](https://img.shields.io/badge/TDAH-friendly-8b6fd6)
