@@ -7,7 +7,7 @@
 .accessibility-header {
   position: sticky;
   top: 0;
-  background: var(--surface);
+  background: var(--bg);
   border-bottom: 1px solid var(--border);
   padding: 16px 20px;
   z-index: 10;
