@@ -21,6 +21,17 @@ You see the time that's left instead of reading it.
 ![Dark mode](https://img.shields.io/badge/dark_mode-✓-1d282d)
 ![Languages](https://img.shields.io/badge/languages-FR_·_EN_·_ES_·_DE_·_IT_·_PT_·_AR-0055A4)
 
+![Angular](https://img.shields.io/badge/Angular-22-DD0031?logo=angular&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)
+![RxJS](https://img.shields.io/badge/RxJS-7-B7178C?logo=reactivex&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
+![PostCSS](https://img.shields.io/badge/PostCSS-8-DD3A0A?logo=postcss&logoColor=white)
+![Capacitor](https://img.shields.io/badge/Capacitor-8-119EFF?logo=capacitor&logoColor=white)
+![Swift](https://img.shields.io/badge/Swift-widget_iOS-F05138?logo=swift&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&logoColor=white)
+![Karma](https://img.shields.io/badge/Karma-6-56C5A8)
+![Jasmine](https://img.shields.io/badge/Jasmine-7-8A4182?logo=jasmine&logoColor=white)
+
 <img src="docs/screenshot.png" alt="Pomodoro Accessibilité in light mode" width="300">
 &nbsp;&nbsp;
 <img src="docs/screenshot-dark.png" alt="Pomodoro Accessibilité in dark mode" width="300">
