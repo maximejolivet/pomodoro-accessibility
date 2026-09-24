@@ -1,0 +1,1 @@
+import{t as D}from"./main-OW74WFQC.js";var n;(function(r){r.Heavy=`HEAVY`,r.Medium=`MEDIUM`,r.Light=`LIGHT`})(n||(n={}));var E;(function(r){r.Success=`SUCCESS`,r.Warning=`WARNING`,r.Error=`ERROR`})(E||(E={}));var p=D(`Haptics`,{web:()=>import(`./chunk-DCOsNupH.js`).then(e=>new e.HapticsWeb)});export{p as Haptics,n as ImpactStyle,E as t};

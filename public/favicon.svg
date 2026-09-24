@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bumper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c6e2e9"/><stop offset=".45" stop-color="#a6ccd6"/><stop offset="1" stop-color="#7fa9b4"/>
+    </linearGradient>
+    <linearGradient id="bezel" x1="0" y1="0" x2=".4" y2="1">
+      <stop offset="0" stop-color="#d8edf2"/><stop offset=".6" stop-color="#b4d5de"/><stop offset="1" stop-color="#9cc2cc"/>
+    </linearGradient>
+    <radialGradient id="face" cx=".4" cy=".3" r=".8">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#fbfbf8"/><stop offset="1" stop-color="#eceee9"/>
+    </radialGradient>
+    <radialGradient id="knob" cx=".38" cy=".32" r=".75">
+      <stop offset="0" stop-color="#e4f2f6"/><stop offset=".55" stop-color="#b3d4dd"/><stop offset="1" stop-color="#8db5c0"/>
+    </radialGradient>
+  </defs>
+  <!-- Boîtier 3D : épaisseur, bumper, lèvre, cadran -->
+  <rect x="2" y="4" width="60" height="58" rx="14" fill="#628b96"/>
+  <rect x="2" y="2" width="60" height="58" rx="14" fill="url(#bumper)"/>
+  <rect x="4.6" y="4.6" width="54.8" height="52.8" rx="11.6" fill="url(#bezel)"/>
+  <rect x="6.4" y="6.4" width="51.2" height="49.2" rx="9.8" fill="url(#face)"/>
+  <!-- Anneau, disque (7 min), séparateurs -->
+  <path fill="#d63f4f" d="M32.00 9.80A21.20 21.20 0 0 0 21.40 12.64L24.79 18.52A14.42 14.42 0 0 1 32.00 16.58Z"/><path fill="#e5593a" d="M21.40 12.64A21.20 21.20 0 0 0 13.64 20.40L19.52 23.79A14.42 14.42 0 0 1 24.79 18.52Z"/><path fill="#ef7d2d" d="M13.64 20.40A21.20 21.20 0 0 0 10.80 31.00L17.58 31.00A14.42 14.42 0 0 1 19.52 23.79Z"/><path fill="#f3a52b" d="M10.80 31.00A21.20 21.20 0 0 0 13.64 41.60L19.52 38.21A14.42 14.42 0 0 1 17.58 31.00Z"/><path fill="#f0c52f" d="M13.64 41.60A21.20 21.20 0 0 0 21.40 49.36L24.79 43.48A14.42 14.42 0 0 1 19.52 38.21Z"/><path fill="#c3cd36" d="M21.40 49.36A21.20 21.20 0 0 0 32.00 52.20L32.00 45.42A14.42 14.42 0 0 1 24.79 43.48Z"/><path fill="#56b27b" d="M32.00 52.20A21.20 21.20 0 0 0 42.60 49.36L39.21 43.48A14.42 14.42 0 0 1 32.00 45.42Z"/><path fill="#5d9fb6" d="M42.60 49.36A21.20 21.20 0 0 0 50.36 41.60L44.48 38.21A14.42 14.42 0 0 1 39.21 43.48Z"/><path fill="#5d6db3" d="M50.36 41.60A21.20 21.20 0 0 0 53.20 31.00L46.42 31.00A14.42 14.42 0 0 1 44.48 38.21Z"/><path fill="#5a55a3" d="M53.20 31.00A21.20 21.20 0 0 0 50.36 20.40L44.48 23.79A14.42 14.42 0 0 1 46.42 31.00Z"/><path fill="#6c4b9c" d="M50.36 20.40A21.20 21.20 0 0 0 42.60 12.64L39.21 18.52A14.42 14.42 0 0 1 44.48 23.79Z"/><path fill="#b24f97" d="M42.60 12.64A21.20 21.20 0 0 0 32.00 9.80L32.00 16.58A14.42 14.42 0 0 1 39.21 18.52Z"/>
+  <path d="M32.0 31.0L32.0 10.22A20.78 20.78 0 0 0 18.10 15.56Z" fill="#8b6fd6" opacity=".92" style="mix-blend-mode:multiply"/>
+  <path d="M32.0 31.0L32.0 16.58A14.42 14.42 0 0 0 22.35 20.29Z" fill="#8b6fd6"/>
+  <g stroke="#fbfbf8" stroke-width=".7"><line x1="32.00" y1="16.88" x2="32.00" y2="9.60"/><line x1="24.94" y1="18.78" x2="21.30" y2="12.47"/><line x1="19.78" y1="23.94" x2="13.47" y2="20.30"/><line x1="17.88" y1="31.00" x2="10.60" y2="31.00"/><line x1="19.78" y1="38.06" x2="13.47" y2="41.70"/><line x1="24.94" y1="43.22" x2="21.30" y2="49.53"/><line x1="32.00" y1="45.12" x2="32.00" y2="52.40"/><line x1="39.06" y1="43.22" x2="42.70" y2="49.53"/><line x1="44.22" y1="38.06" x2="50.53" y2="41.70"/><line x1="46.12" y1="31.00" x2="53.40" y2="31.00"/><line x1="44.22" y1="23.94" x2="50.53" y2="20.30"/><line x1="39.06" y1="18.78" x2="42.70" y2="12.47"/></g>
+  <line x1="32.0" y1="31.0" x2="18.10" y2="15.56" stroke="#fff" stroke-width=".5"/>
+  <g transform="translate(32.0 31.0) rotate(-42)">
+    <rect x="-.9" y="-6.64" width="1.8" height="3.67" rx=".9" fill="url(#knob)"/>
+  </g>
+  <!-- Bouton central -->
+  <circle cx="32.0" cy="31.0" r="4.38" fill="#1d282d"/>
+  <circle cx="32.0" cy="31.0" r="3.67" fill="url(#knob)"/>
+  <ellipse cx="31.00" cy="29.70" rx="1.5" ry=".9" fill="#fff" opacity=".55"/>
+</svg>
