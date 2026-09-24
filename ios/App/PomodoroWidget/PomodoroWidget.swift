@@ -274,7 +274,7 @@ struct PomodoroWidget: Widget {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             PomodoroWidgetView(entry: entry)
         }
-        .configurationDisplayName("Pomodoro TDAH")
+        .configurationDisplayName("Pomodoro Accessibilité")
         .description("Minuteur en cours et objectif de focus du jour.")
         .supportedFamilies([.systemSmall, .systemMedium])
     }

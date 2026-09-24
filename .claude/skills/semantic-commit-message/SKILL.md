@@ -1,6 +1,6 @@
 ---
 name: semantic-commit-message
-description: Write git commit messages in the semantic (Conventional Commits) format `type(scope): description` instead of free-form prose. Use whenever the user asks to commit, or to write or review a commit message, in this Pomodoro TDAH repo.
+description: Write git commit messages in the semantic (Conventional Commits) format `type(scope): description` instead of free-form prose. Use whenever the user asks to commit, or to write or review a commit message, in this Pomodoro Accessibilité repo.
 ---
 
 Write every commit subject as `type(scope): description`.

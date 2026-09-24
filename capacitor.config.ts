@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.maximejolivet.pomodorotdah',
-  appName: 'Pomodoro TDAH',
+  appName: 'Pomodoro Accessibilité',
   webDir: 'www'
 };
 

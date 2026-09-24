@@ -2,11 +2,11 @@
 
 [🇫🇷 Français](README.md) · 🇬🇧 English
 
-<img src="public/apple-touch-icon.png" alt="Pomodoro TDAH icon" width="96" height="96">
+<img src="public/apple-touch-icon.png" alt="Pomodoro Accessibilité icon" width="96" height="96">
 
-# Pomodoro TDAH
+# Pomodoro Accessibilité
 
-**A visual timer for autism, ADHD, DYS disorders (dyslexia, dyscalculia…) and other neurodivergent minds.**
+**A visual timer for autism, ADHD, DYS disorders and other neurodivergent minds.**
 You see the time that's left instead of reading it.
 
 ![ADHD](https://img.shields.io/badge/ADHD-friendly-8b6fd6)
@@ -21,9 +21,9 @@ You see the time that's left instead of reading it.
 ![Dark mode](https://img.shields.io/badge/dark_mode-✓-1d282d)
 ![Languages](https://img.shields.io/badge/languages-FR_·_EN_·_ES_·_DE_·_IT_·_PT_·_AR-0055A4)
 
-<img src="docs/screenshot.png" alt="Pomodoro TDAH in light mode" width="300">
+<img src="docs/screenshot.png" alt="Pomodoro Accessibilité in light mode" width="300">
 &nbsp;&nbsp;
-<img src="docs/screenshot-dark.png" alt="Pomodoro TDAH in dark mode" width="300">
+<img src="docs/screenshot-dark.png" alt="Pomodoro Accessibilité in dark mode" width="300">
 
 </div>
 
@@ -41,7 +41,7 @@ You see the time that's left instead of reading it.
 ## Why a visual timer?
 
 A clock tells the time and a digital timer shows numbers, but neither really **shows** time.
-Pomodoro TDAH follows the visual timer principle: a colored disc covers the chosen duration
+Pomodoro Accessibilité follows the visual timer principle: a colored disc covers the chosen duration
 and **shrinks as time goes by**. At a glance, you know whether there's a lot or a little time
 left, without reading or calculating anything.
 

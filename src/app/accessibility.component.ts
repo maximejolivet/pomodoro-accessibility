@@ -19,7 +19,7 @@ export class AccessibilityComponent implements AfterViewInit, OnDestroy {
   @ViewChild('pageTitle') private pageTitle?: ElementRef<HTMLElement>;
 
   ngAfterViewInit(): void {
-    this.titleService.setTitle('Accessibilité – Pomodoro TDAH');
+    this.titleService.setTitle('Accessibilité – Pomodoro Accessibilité');
     this.pageTitle?.nativeElement.focus({ preventScroll: true });
   }
 

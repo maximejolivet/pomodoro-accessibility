@@ -4,7 +4,7 @@
 
 ## Versions prises en charge
 
-Pomodoro TDAH n'a pas de versions publiées : seule la dernière version de la branche `main`
+Pomodoro Accessibilité n'a pas de versions publiées : seule la dernière version de la branche `main`
 reçoit des correctifs de sécurité.
 
 ## Signaler une vulnérabilité
@@ -51,7 +51,7 @@ widget) et les scripts de build de ce dépôt.
 
 ## Supported versions
 
-Pomodoro TDAH has no published releases: only the latest version of the `main` branch receives
+Pomodoro Accessibilité has no published releases: only the latest version of the `main` branch receives
 security fixes.
 
 ## Reporting a vulnerability

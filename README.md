@@ -2,11 +2,11 @@
 
 🇫🇷 Français · [🇬🇧 English](README.en.md)
 
-<img src="public/apple-touch-icon.png" alt="Icône Pomodoro TDAH" width="96" height="96">
+<img src="public/apple-touch-icon.png" alt="Icône Pomodoro Accessibilité" width="96" height="96">
 
-# Pomodoro TDAH
+# Pomodoro Accessibilité
 
-**Un minuteur visuel pour l'autisme, le TDAH, les troubles DYS (dyslexie, dyscalculie…) et les autres profils neurodivergents.**
+**Un minuteur visuel pour l'autisme, le TDAH, les troubles DYS et les autres profils neurodivergents.**
 On voit le temps qui reste au lieu de le lire.
 
 ![TDAH](https://img.shields.io/badge/TDAH-friendly-8b6fd6)
@@ -21,9 +21,9 @@ On voit le temps qui reste au lieu de le lire.
 ![Mode sombre](https://img.shields.io/badge/mode_sombre-✓-1d282d)
 ![Langues](https://img.shields.io/badge/langues-FR_·_EN_·_ES_·_DE_·_IT_·_PT_·_AR-0055A4)
 
-<img src="docs/screenshot.png" alt="Pomodoro TDAH en mode clair" width="300">
+<img src="docs/screenshot.png" alt="Pomodoro Accessibilité en mode clair" width="300">
 &nbsp;&nbsp;
-<img src="docs/screenshot-dark.png" alt="Pomodoro TDAH en mode sombre" width="300">
+<img src="docs/screenshot-dark.png" alt="Pomodoro Accessibilité en mode sombre" width="300">
 
 </div>
 
@@ -41,7 +41,7 @@ On voit le temps qui reste au lieu de le lire.
 ## Pourquoi un minuteur visuel ?
 
 Une horloge donne l'heure, un minuteur numérique affiche des chiffres, mais aucun des deux
-ne **montre** vraiment le temps. Pomodoro TDAH reprend le principe du minuteur visuel : un
+ne **montre** vraiment le temps. Pomodoro Accessibilité reprend le principe du minuteur visuel : un
 disque coloré couvre la durée choisie et **rétrécit à mesure que le temps passe**. D'un
 coup d'œil, on sait s'il reste beaucoup ou peu de temps, sans lire ni calculer.
 

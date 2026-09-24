@@ -143,6 +143,6 @@ export class NotificationService {
       });
     }
     // Son coupé dans l'app : notification visible mais silencieuse
-    await LocalNotifications.createChannel({ id: QUIET_CHANNEL, name: 'Pomodoro TDAH', importance: 2 });
+    await LocalNotifications.createChannel({ id: QUIET_CHANNEL, name: 'Pomodoro Accessibilité', importance: 2 });
   }
 }
