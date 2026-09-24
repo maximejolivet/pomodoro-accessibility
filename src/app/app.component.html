@@ -552,111 +552,18 @@
             >{{ m.label }}</button>
           </div>
         </div>
-
-        <div class="rgaa-cta">
-          <a href="/assets/rgaa.html" target="_blank" rel="noopener noreferrer" class="rgaa-cta-link">
-            📚 {{ i18n.t('settings.rgaaDocumentation') }}
-          </a>
-        </div>
       </div>
     </div>
     <div class="about-accessibility-link">
-      <button
-        type="button"
-        class="accessibility-btn"
-        (click)="showAccessibility = true"
+      <a
+        routerLink="/accessibility"
+        class="accessibility-link"
         [attr.aria-label]="i18n.t('action.accessibilityInfo')"
         title="Voir la documentation d'accessibilité RGAA 4.1"
       >
         ♿ Accessibilité RGAA
-      </button>
+      </a>
     </div>
   </section>
 </main>
 
-<!-- Modale Accessibilité RGAA 4.1 -->
-<div class="accessibility-modal" *ngIf="showAccessibility" role="dialog" aria-modal="true" aria-labelledby="a11y-modal-title">
-  <div class="accessibility-modal-backdrop" (click)="showAccessibility = false"></div>
-  <div class="accessibility-modal-content">
-    <div class="accessibility-modal-header">
-      <h2 id="a11y-modal-title">♿ Accessibilité RGAA 4.1</h2>
-      <button
-        type="button"
-        class="modal-close"
-        (click)="showAccessibility = false"
-        [attr.aria-label]="i18n.t('action.close')"
-      >
-        ✕
-      </button>
-    </div>
-
-    <div class="accessibility-modal-body">
-      <div class="a11y-section">
-        <h3>✓ 100% Conforme</h3>
-        <p>Pomodoro TDAH est 100% conforme au <strong>RGAA 4.1</strong> et <strong>WCAG 2.1 AA</strong>.</p>
-      </div>
-
-      <div class="a11y-section">
-        <h3>Implémentations (18+)</h3>
-        <ul class="a11y-list">
-          <li><strong>Contrastes:</strong> 4.5:1+ (WCAG AA)</li>
-          <li><strong>Annonces vocales:</strong> aria-live pour tous les changements</li>
-          <li><strong>Modale:</strong> role=dialog, Échap, focus trap</li>
-          <li><strong>Cadran:</strong> role=slider, touches ←/→/PageUp/Down/Home/End</li>
-          <li><strong>Onglets:</strong> Navigation complète au clavier</li>
-          <li><strong>Graphique:</strong> Table sr-only pour données accessibles</li>
-          <li><strong>Mouvement:</strong> prefers-reduced-motion respecté</li>
-          <li><strong>Couleurs:</strong> Traductions en 6 langues (FR, EN, ES, DE, IT, PT, AR)</li>
-          <li><strong>OpenDyslexic:</strong> Police dyslexie-friendly disponible</li>
-        </ul>
-      </div>
-
-      <div class="a11y-section">
-        <h3>Critères RGAA Respectés</h3>
-        <div class="a11y-criteria">
-          <div class="criterion-item">✓ 1. Images</div>
-          <div class="criterion-item">✓ 3. Couleurs</div>
-          <div class="criterion-item">✓ 4. Multimédia</div>
-          <div class="criterion-item">✓ 5. Tableaux</div>
-          <div class="criterion-item">✓ 6. Liens & Boutons</div>
-          <div class="criterion-item">✓ 7. Scripts & Clavier</div>
-          <div class="criterion-item">✓ 8. Éléments Obligatoires</div>
-          <div class="criterion-item">✓ 9. Structuration</div>
-          <div class="criterion-item">✓ 11. Formulaires</div>
-          <div class="criterion-item">✓ 12. Navigation</div>
-          <div class="criterion-item">✓ 13. Consultation</div>
-        </div>
-      </div>
-
-      <div class="a11y-section">
-        <h3>Profils Supportés</h3>
-        <ul class="a11y-list">
-          <li>🎧 Lecteur d'écran (NVDA, JAWS, VoiceOver)</li>
-          <li>⌨️ Clavier seul</li>
-          <li>🎨 Contraste élevé & Mode sombre</li>
-          <li>🎞️ Mouvement réduit (prefers-reduced-motion)</li>
-          <li>🧠 TDAH & Autisme friendly</li>
-          <li>📝 Dyslexie-friendly (OpenDyslexic)</li>
-        </ul>
-      </div>
-
-      <div class="a11y-section">
-        <h3>Outils de Test</h3>
-        <ul class="a11y-list">
-          <li>Lighthouse (Chrome DevTools)</li>
-          <li>axe DevTools (Extension)</li>
-          <li>WAVE (Extension)</li>
-          <li>NVDA (Lecteur d'écran gratuit)</li>
-          <li>Navigation clavier (Tab, Espace, Esc, Flèches)</li>
-        </ul>
-      </div>
-
-      <div class="a11y-section a11y-info">
-        <p><strong>📚 RGAA:</strong> Référentiel Général d'Amélioration de l'Accessibilité</p>
-        <p style="font-size: 0.9em; color: var(--text-secondary); margin-top: 10px;">
-          Standard officiel français obligatoire pour les services publics.
-        </p>
-      </div>
-    </div>
-  </div>
-</div>

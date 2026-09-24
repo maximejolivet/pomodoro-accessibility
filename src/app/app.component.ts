@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, ElementRef, HostBinding, HostListener, OnDestroy, OnInit, ViewChild, computed, effect, inject, untracked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { App } from '@capacitor/app';
 import type { PluginListenerHandle } from '@capacitor/core';
@@ -70,7 +71,7 @@ interface PresetDraft {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -135,7 +136,6 @@ export class AppComponent implements OnInit, OnDestroy {
   draft: PresetDraft | null = null;
   /** Action destructive en attente de second tap. */
   confirming: 'delete' | 'restore' | 'clear' | null = null;
-  showAccessibility = false;
 
   private session: ActiveSession | null = null;
   private lastFocusPresetId: string | null = null;
@@ -391,7 +391,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   closeSheet(): void {
     this.showSheet = false;
-    this.showAccessibility = false;
     this.draft = null;
     this.confirming = null;
     // Retourner le focus au bouton settings
@@ -403,9 +402,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   @HostListener('keydown.escape')
   onEscapeKey(): void {
-    if (this.showAccessibility) {
-      this.showAccessibility = false;
-    } else if (this.showSheet) {
+    if (this.showSheet) {
       this.closeSheet();
     }
   }
