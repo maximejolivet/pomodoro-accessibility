@@ -1,219 +1,135 @@
-<main class="accessibility-page" lang="fr">
+<main class="accessibility-page">
   <header class="accessibility-header">
-    <a routerLink="/" class="back-link"><span aria-hidden="true">←</span><span class="back-label">Retour au minuteur</span></a>
-    <h1 #pageTitle tabindex="-1">Accessibilité</h1>
+    <a routerLink="/" class="back-link"><span class="back-arrow" aria-hidden="true">←</span><span class="back-label">{{ s().back }}</span></a>
+    <h1 #pageTitle tabindex="-1">{{ s().h1 }}</h1>
   </header>
 
   <div class="accessibility-container">
     <section class="hero" aria-labelledby="hero-title">
-      <h2 id="hero-title">L'accessibilité n'est pas optionnelle</h2>
-      <p>Pomodoro Accessibilité est conçu pour fonctionner avec <strong>vous</strong>, quelle que soit votre façon d'interagir avec l'écran.</p>
+      <h2 id="hero-title">{{ s().heroTitle }}</h2>
+      <p [innerHTML]="s().heroText"></p>
     </section>
 
     <section class="modes" aria-labelledby="modes-title">
-      <h2 id="modes-title" class="modes-title">Comment Pomodoro fonctionne pour vous</h2>
+      <h2 id="modes-title" class="modes-title">{{ s().modesTitle }}</h2>
 
       <article class="mode mode-keyboard" aria-labelledby="mode-keyboard-title">
         <div class="mode-icon" aria-hidden="true">💻</div>
-        <h3 id="mode-keyboard-title">Clavier seul</h3>
-        <p>Naviguez complètement sans souris.</p>
+        <h3 id="mode-keyboard-title">{{ s().kbdTitle }}</h3>
+        <p>{{ s().kbdIntro }}</p>
         <ul class="mode-list">
-          <li><kbd>Tab</kbd> entre les éléments</li>
-          <li><kbd aria-label="Flèche gauche">←</kbd> <kbd aria-label="Flèche droite">→</kbd> changer d'onglet</li>
-          <li><kbd>PageUp</kbd> <kbd>PageDown</kbd> ajuster le cadran</li>
-          <li><kbd>Esc</kbd> fermer les modales</li>
-          <li>Focus toujours visible</li>
+          <li><kbd>Tab</kbd> {{ s().kbdTab }}</li>
+          <li><kbd [attr.aria-label]="s().kbdArrowLeft">←</kbd> <kbd [attr.aria-label]="s().kbdArrowRight">→</kbd> {{ s().kbdArrows }}</li>
+          <li><kbd>PageUp</kbd> <kbd>PageDown</kbd> {{ s().kbdPages }}</li>
+          <li><kbd>Esc</kbd> {{ s().kbdEsc }}</li>
+          <li>{{ s().kbdFocus }}</li>
         </ul>
       </article>
 
       <article class="mode mode-screen-reader" aria-labelledby="mode-sr-title">
         <div class="mode-icon" aria-hidden="true">🔊</div>
-        <h3 id="mode-sr-title">Lecteur d'écran</h3>
-        <p>NVDA, JAWS, VoiceOver, TalkBack : tout fonctionne.</p>
+        <h3 id="mode-sr-title">{{ s().srTitle }}</h3>
+        <p>{{ s().srIntro }}</p>
         <ul class="mode-list">
-          <li>Annonces vocales en temps réel</li>
-          <li>Labels et descriptions complets</li>
-          <li>Arborescence HTML sémantique</li>
-          <li>Régions ARIA pour les mises à jour</li>
-          <li>Métadonnées accessibles</li>
+          <li *ngFor="let item of s().srItems">{{ item }}</li>
         </ul>
       </article>
 
       <article class="mode mode-visual" aria-labelledby="mode-visual-title">
         <div class="mode-icon" aria-hidden="true">👁</div>
-        <h3 id="mode-visual-title">Visuel et contraste</h3>
-        <p>Lisible pour tous, quelle que soit la vue.</p>
+        <h3 id="mode-visual-title">{{ s().visualTitle }}</h3>
+        <p>{{ s().visualIntro }}</p>
         <ul class="mode-list">
-          <li>Contrastes 4.5:1 minimum (WCAG AA)</li>
-          <li>Mode sombre intégré</li>
-          <li>Pas de dépendance à la couleur seule</li>
-          <li>Police OpenDyslexic optionnelle</li>
-          <li>Texte bien espacé et dimensionné</li>
+          <li *ngFor="let item of s().visualItems">{{ item }}</li>
         </ul>
       </article>
 
       <article class="mode mode-structure" aria-labelledby="mode-structure-title">
         <div class="mode-icon" aria-hidden="true">🏗</div>
-        <h3 id="mode-structure-title">Structure claire</h3>
-        <p>Tout est organisé de façon logique.</p>
+        <h3 id="mode-structure-title">{{ s().structureTitle }}</h3>
+        <p>{{ s().structureIntro }}</p>
         <ul class="mode-list">
-          <li>HTML sémantique (titres, sections, main)</li>
-          <li>Hiérarchie de titres h1, h2, h3</li>
-          <li>Landmarks explicites</li>
-          <li>Navigation prévisible</li>
-          <li>7 langues (FR, EN, ES, DE, IT, PT, AR)</li>
+          <li *ngFor="let item of s().structureItems">{{ item }}</li>
         </ul>
       </article>
 
       <article class="mode mode-comfort" aria-labelledby="mode-comfort-title">
         <div class="mode-icon" aria-hidden="true">💚</div>
-        <h3 id="mode-comfort-title">Confort neurodivergent</h3>
-        <p>Calme, prévisible, sans surcharge.</p>
+        <h3 id="mode-comfort-title">{{ s().comfortTitle }}</h3>
+        <p>{{ s().comfortIntro }}</p>
         <ul class="mode-list">
-          <li>prefers-reduced-motion respecté</li>
-          <li>Interface sobre, adaptée au TDAH</li>
-          <li>Pas de clignotement ni d'animation forcée</li>
-          <li>Pauses intégrées (le Pomodoro donne la structure)</li>
-          <li>Retours visuels clairs</li>
+          <li *ngFor="let item of s().comfortItems">{{ item }}</li>
         </ul>
       </article>
     </section>
 
     <section class="profiles" aria-labelledby="profiles-title">
-      <h2 id="profiles-title">Pomodoro fonctionne pour</h2>
+      <h2 id="profiles-title">{{ s().profilesTitle }}</h2>
       <ul class="profiles-timeline">
-        <li class="profile-item">
-          <span class="profile-marker" aria-hidden="true">🔊</span>
+        <li class="profile-item" *ngFor="let p of s().profiles; let i = index">
+          <span class="profile-marker" aria-hidden="true">{{ ['🔊', '💻', '👁', '💤', '🧠', '📖'][i] }}</span>
           <div class="profile-info">
-            <strong>Utilisateurs non-voyants</strong>
-            <p>Lecteur d'écran complet</p>
-          </div>
-        </li>
-        <li class="profile-item">
-          <span class="profile-marker" aria-hidden="true">💻</span>
-          <div class="profile-info">
-            <strong>Utilisateurs avec un handicap moteur</strong>
-            <p>Navigation clavier totale</p>
-          </div>
-        </li>
-        <li class="profile-item">
-          <span class="profile-marker" aria-hidden="true">👁</span>
-          <div class="profile-info">
-            <strong>Malvoyants</strong>
-            <p>Contraste élevé, zoom supporté</p>
-          </div>
-        </li>
-        <li class="profile-item">
-          <span class="profile-marker" aria-hidden="true">💤</span>
-          <div class="profile-info">
-            <strong>Sourds et malentendants</strong>
-            <p>Sons optionnels, retours visuels</p>
-          </div>
-        </li>
-        <li class="profile-item">
-          <span class="profile-marker" aria-hidden="true">🧠</span>
-          <div class="profile-info">
-            <strong>TDAH et autisme</strong>
-            <p>Structure, clarté, pas de surcharge</p>
-          </div>
-        </li>
-        <li class="profile-item">
-          <span class="profile-marker" aria-hidden="true">📖</span>
-          <div class="profile-info">
-            <strong>Dyslexie</strong>
-            <p>OpenDyslexic, espacement, aide à la lecture</p>
+            <strong>{{ p.title }}</strong>
+            <p>{{ p.text }}</p>
           </div>
         </li>
       </ul>
     </section>
 
     <section class="neuro" aria-labelledby="neuro-title">
-      <h2 id="neuro-title">La neurodiversité, de quoi parle-t-on ?</h2>
-      <p class="neuro-intro">Les cerveaux ne fonctionnent pas tous de la même façon, et ces différences sont des variations humaines naturelles. C'est le principe de la <strong>neurodiversité</strong> : une approche sociale, pas seulement médicale, qui demande d'adapter l'environnement plutôt que de « corriger » la personne.</p>
+      <h2 id="neuro-title">{{ s().neuroTitle }}</h2>
+      <p class="neuro-intro" [innerHTML]="s().neuroIntro"></p>
 
       <dl class="neuro-terms">
         <div>
-          <dt>Neurodivergent</dt>
-          <dd>Personne dont le fonctionnement neurologique s'écarte des normes sociales dominantes.</dd>
+          <dt>{{ s().neurodivergent.title }}</dt>
+          <dd>{{ s().neurodivergent.text }}</dd>
         </div>
         <div>
-          <dt>Neurotypique</dt>
-          <dd>Personne dont le fonctionnement correspond à ces normes.</dd>
+          <dt>{{ s().neurotypical.title }}</dt>
+          <dd>{{ s().neurotypical.text }}</dd>
         </div>
       </dl>
 
-      <h3 class="neuro-subtitle">Quelques profils neurodivergents</h3>
+      <h3 class="neuro-subtitle">{{ s().neuroProfilesTitle }}</h3>
       <dl class="neuro-profiles">
-        <div>
-          <dt>TDAH</dt>
-          <dd>Difficultés d'attention, impulsivité, parfois hyperactivité. Organiser son temps et enchaîner des tâches demande plus d'effort.</dd>
-        </div>
-        <div>
-          <dt>Autisme (TSA)</dt>
-          <dd>Façon différente de communiquer et de percevoir les stimulations : bruit, lumière, changements imprévus.</dd>
-        </div>
-        <div>
-          <dt>Troubles DYS</dt>
-          <dd>Dyslexie, dyscalculie, dyspraxie… Des difficultés durables et ciblées sur la lecture, le calcul ou la coordination.</dd>
-        </div>
-        <div>
-          <dt>Trouble du développement intellectuel</dt>
-          <dd>Rythme d'apprentissage différent, qui gagne à des consignes claires et simples.</dd>
-        </div>
-        <div>
-          <dt>Syndrome de Gilles de la Tourette</dt>
-          <dd>Tics moteurs ou vocaux involontaires, qui s'aggravent sous la pression.</dd>
+        <div *ngFor="let p of s().neuroProfiles">
+          <dt>{{ p.title }}</dt>
+          <dd>{{ p.text }}</dd>
         </div>
       </dl>
 
-      <h3 class="neuro-subtitle">Des points forts, pas seulement des difficultés</h3>
-      <p>L'article cite la créativité, la pensée systémique et arborescente, la persévérance et l'honnêteté. Ces différences peuvent nourrir l'innovation et la performance, à condition que l'outil ne soit pas un obstacle de plus.</p>
+      <h3 class="neuro-subtitle">{{ s().strengthsTitle }}</h3>
+      <p>{{ s().strengthsText }}</p>
 
-      <h3 class="neuro-subtitle">Ce que Pomodoro Accessibilité en fait</h3>
+      <h3 class="neuro-subtitle">{{ s().actionsTitle }}</h3>
       <ul class="neuro-actions">
-        <li>Des sessions courtes suivies de pauses, pour tenir l'attention sans s'épuiser.</li>
-        <li>Une interface sobre, sans clignotement ni animation imposée.</li>
-        <li>Des sons optionnels, pour éviter la surcharge sensorielle.</li>
-        <li>La police OpenDyslexic et un texte bien espacé.</li>
-        <li>Des retours clairs à chaque action, pour ne jamais deviner ce qui s'est passé.</li>
+        <li *ngFor="let item of s().actions">{{ item }}</li>
       </ul>
 
-      <h3 class="neuro-subtitle">Aussi dans le monde professionnel</h3>
-      <p>La neurodiversité concerne aussi les équipes. Un minuteur visuel est un aménagement simple et discret, utile à tout le monde sans exposer personne.</p>
+      <h3 class="neuro-subtitle">{{ s().workTitle }}</h3>
+      <p>{{ s().workText }}</p>
       <ul class="neuro-actions">
-        <li>Sessions de concentration en blocs Pomodoro, avec des pauses.</li>
-        <li>Paliers à 45, 30 et 15 minutes pour conclure et changer de sujet sans coupure brutale.</li>
-        <li>Durée visible pendant les réunions et les entretiens.</li>
-        <li>Vibration et notifications discrètes, sons désactivables en open space ou en télétravail.</li>
+        <li *ngFor="let item of s().workItems">{{ item }}</li>
       </ul>
 
-      <p class="neuro-source">Source : <a href="https://rhf-hdf.fr/la-neurodiversite-de-quoi-parle-t-on/" target="_blank" rel="noopener noreferrer">« La neurodiversité, de quoi parle-t-on ? », RHF Hauts-de-France<span class="sr-only"> (nouvel onglet)</span></a></p>
+      <p class="neuro-source">{{ s().sourceLabel }} <a href="https://rhf-hdf.fr/la-neurodiversite-de-quoi-parle-t-on/" target="_blank" rel="noopener noreferrer" lang="fr">« La neurodiversité, de quoi parle-t-on ? », RHF Hauts-de-France<span class="sr-only" [lang]="i18n.lang()">{{ s().newTab }}</span></a></p>
     </section>
 
     <section class="criteria" aria-labelledby="criteria-title">
-      <h2 id="criteria-title">Standards visés</h2>
+      <h2 id="criteria-title">{{ s().criteriaTitle }}</h2>
       <div class="criteria-statement">
-        <p><strong>Pomodoro Accessibilité vise</strong> <mark>RGAA 4.1</mark> (France) et <mark>WCAG 2.1 AA</mark> (International). <strong>Statut : conforme partiellement.</strong></p>
-        <p class="criteria-note">Évaluation faite avec l'outil automatique axe-core et une revue du code, sans audit manuel complet ni test avec lecteur d'écran. 11 thèmes RGAA s'appliquent à cette application.</p>
+        <p [innerHTML]="s().criteriaStatement"></p>
+        <p class="criteria-note">{{ s().criteriaNote }}</p>
       </div>
-      <ul class="criteria-badges" aria-label="Thèmes RGAA pris en compte">
-        <li class="badge"><span aria-hidden="true">✓</span> Images</li>
-        <li class="badge"><span aria-hidden="true">✓</span> Couleurs</li>
-        <li class="badge"><span aria-hidden="true">✓</span> Multimédia</li>
-        <li class="badge"><span aria-hidden="true">✓</span> Tableaux</li>
-        <li class="badge"><span aria-hidden="true">✓</span> Liens et boutons</li>
-        <li class="badge"><span aria-hidden="true">✓</span> Scripts et clavier</li>
-        <li class="badge"><span aria-hidden="true">✓</span> Éléments obligatoires</li>
-        <li class="badge"><span aria-hidden="true">✓</span> Structuration</li>
-        <li class="badge"><span aria-hidden="true">✓</span> Formulaires</li>
-        <li class="badge"><span aria-hidden="true">✓</span> Navigation</li>
-        <li class="badge"><span aria-hidden="true">✓</span> Consultation</li>
+      <ul class="criteria-badges" [attr.aria-label]="s().badgesLabel">
+        <li class="badge" *ngFor="let b of s().badges"><span aria-hidden="true">✓</span> {{ b }}</li>
       </ul>
     </section>
 
     <footer class="info-footer">
-      <p>L'accessibilité est intégrée dans <strong>chaque ligne de code</strong> de Pomodoro Accessibilité.</p>
-      <p class="disclaimer">Référentiel officiel du RGAA 4.1 : <a href="https://accessibilite.numerique.gouv.fr/" target="_blank" rel="noopener noreferrer">accessibilite.numerique.gouv.fr<span class="sr-only"> (nouvel onglet)</span></a></p>
+      <p [innerHTML]="s().footerText"></p>
+      <p class="disclaimer">{{ s().officialRef }} <a href="https://accessibilite.numerique.gouv.fr/" target="_blank" rel="noopener noreferrer">accessibilite.numerique.gouv.fr<span class="sr-only">{{ s().newTab }}</span></a></p>
     </footer>
   </div>
 </main>

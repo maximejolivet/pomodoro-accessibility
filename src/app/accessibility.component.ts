@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, computed, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { I18nService } from './i18n';
+import { A11Y_TEXTS } from './accessibility.i18n';
 
 @Component({
   selector: 'app-accessibility',
@@ -16,10 +17,15 @@ export class AccessibilityComponent implements AfterViewInit, OnDestroy {
   private readonly titleService = inject(Title);
   private readonly previousTitle = this.titleService.getTitle();
 
+  readonly s = computed(() => A11Y_TEXTS[this.i18n.lang()]);
+
   @ViewChild('pageTitle') private pageTitle?: ElementRef<HTMLElement>;
 
+  constructor() {
+    effect(() => this.titleService.setTitle(this.s().pageTitle));
+  }
+
   ngAfterViewInit(): void {
-    this.titleService.setTitle('Accessibilité – Pomodoro Accessibilité');
     this.pageTitle?.nativeElement.focus({ preventScroll: true });
   }
 
