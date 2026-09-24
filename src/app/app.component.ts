@@ -391,6 +391,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   closeSheet(): void {
     this.showSheet = false;
+    this.showAccessibility = false;
     this.draft = null;
     this.confirming = null;
     // Retourner le focus au bouton settings
