@@ -273,6 +273,8 @@
 
 /* RGAA Info */
 .rgaa-info {
+  display: flex;
+  flex-direction: column;
   background: rgba(139, 111, 214, 0.05);
   border-left: 3px solid var(--primary);
   padding: 24px;
@@ -294,6 +296,8 @@
 
 .cta-link {
   display: inline-block;
+  align-self: flex-end;
+  margin-top: auto;
   color: var(--primary);
   text-decoration: none;
   font-weight: 600;
