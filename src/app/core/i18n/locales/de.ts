@@ -16,8 +16,10 @@ export const de: Dictionary = {
   'action.reset': 'Zurücksetzen',
   'action.settings': 'Einstellungen',
   'action.close': 'Schließen',
+  'action.minus': 'Eine Minute abziehen',
+  'action.plus': 'Eine Minute hinzufügen',
   'action.dialName': 'Dauer',
-  'action.dialHint': 'auf dem Zifferblatt ziehen oder die Pfeiltasten benutzen, um die Minuten einzustellen; drücken zum Starten oder Pausieren',
+  'action.dialHint': 'auf dem Zifferblatt ziehen, die Pfeiltasten oder die Tasten − und + benutzen, um die Minuten einzustellen; drücken zum Starten oder Pausieren',
   'action.accessibilityInfo': 'RGAA 4.1-Barrierefreiheitsdokumentation ansehen',
   'action.accessibilityShort': 'Barrierefreiheit RGAA',
 

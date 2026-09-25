@@ -36,7 +36,7 @@ src/
         ├── timer/
         │   ├── timer-page.component.*  # Assemble les blocs ci-dessous
         │   ├── dial/                   # Boîtier 3D, cadran SVG, réglage au doigt et au clavier
-        │   ├── readout/                # Temps, mode, état, cycle
+        │   ├── readout/                # Temps, mode, état, cycle, boutons − / +
         │   ├── controls/               # Remise à zéro, démarrage / pause, réglages
         │   ├── sheet/                  # Panneau coulissant + onglets Modes / Stats / Réglages
         │   ├── dial-geometry.ts        # Chemins SVG du cadran (fonctions pures)

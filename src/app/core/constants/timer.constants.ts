@@ -3,6 +3,9 @@
 /** Durée maximale réglable, et graduation complète du cadran. */
 export const MAX_MINUTES = 60;
 
+/** Durée minimale atteignable par pas (flèches, boutons − / +) : en dessous, il n'y a plus de session. */
+export const MIN_MINUTES = 1;
+
 /** Prolongation proposée à la fin d'une session de travail (« +5 min »). */
 export const EXTRA_SECONDS = 5 * 60;
 

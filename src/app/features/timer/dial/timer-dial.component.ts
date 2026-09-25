@@ -91,8 +91,7 @@ export class TimerDialComponent {
 
   /** Flèches et Page ↑/↓ quand le cadran a le focus. */
   stepMinutes(delta: number): void {
-    const from = delta < 0 ? Math.ceil(this.displayMinutes) : Math.floor(this.displayMinutes);
-    this.session.setMinutes(Math.max(1, Math.min(MAX_MINUTES, from + delta)));
+    this.session.stepMinutes(delta);
   }
 
   setMinutes(minutes: number): void {

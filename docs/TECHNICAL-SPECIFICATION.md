@@ -358,7 +358,7 @@ Configuration Playwright : dossier `tests/`, projet Chromium en **420 × 900** (
 serveur de développement démarré automatiquement sur `http://localhost:4200`, exécution
 parallèle, une reprise en CI, trace à la première reprise, `forbidOnly` en CI.
 
-La suite `tests/a11y.spec.ts` (10 tests) analyse avec les jeux de règles `wcag2a`, `wcag2aa`,
+La suite `tests/a11y.spec.ts` (20 tests) analyse avec les jeux de règles `wcag2a`, `wcag2aa`,
 `wcag21a`, `wcag21aa` et `best-practice`, en **thème clair et en thème sombre**, sur l'accueil et
 sur le panneau de réglages ouvert. Toute violation fait échouer la CI.
 

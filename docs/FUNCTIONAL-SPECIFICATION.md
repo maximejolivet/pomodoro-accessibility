@@ -122,6 +122,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-TIM-8  | Au clavier : ← / → règlent d'une minute, Page↑ / Page↓ de cinq, Début / Fin vont à 0 / 60 min.     | M    |
 | EF-TIM-9  | Le décompte reste juste si l'application passe en arrière-plan ou si l'appareil se verrouille.     | M    |
 | EF-TIM-10 | Un retour haptique accompagne le réglage au doigt et la fin du décompte.                           | S    |
+| EF-TIM-11 | Deux boutons − / + encadrent l'affichage : un appui retire ou ajoute une minute, un appui maintenu enchaîne les minutes. | M    |
 
 ### 4.2 Modes (`EF-MOD`)
 
@@ -241,7 +242,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 ### 6.1 Session simple
 
 1. Ouverture : le mode mémorisé est sélectionné, sa durée s'affiche sur le cadran.
-2. Réglage facultatif au doigt ou au clavier.
+2. Réglage facultatif au doigt, aux boutons − / + ou au clavier.
 3. Appui sur le cadran ou sur ▶ : le décompte démarre, l'écran reste allumé si l'option est active.
 4. Paliers à 45 / 30 / 15 min restantes : un son, et une notification si l'application est en arrière-plan.
 5. À 0 : carillon, vibration ; prolongation de 5 min si l'option est active, sinon fin.
@@ -281,6 +282,7 @@ série de jours, histogramme des 7 derniers jours, 10 dernières sessions.
 | ENF-A11-8  | Aucun contenu clignotant.                                                                                                                                  |
 | ENF-A11-9  | Le cadran expose un rôle de curseur avec valeur, minimum, maximum et texte de valeur lisible.                                                              |
 | ENF-A11-10 | Les tests automatiques axe-core (WCAG 2.0/2.1 A et AA, bonnes pratiques) ne relèvent aucune violation sur les parcours couverts, en thème clair et sombre. |
+| ENF-A11-11 | Tout réglage accessible par glissement l'est aussi par un pointeur simple (WCAG 2.5.7), avec des cibles d'au moins 44 × 44 px (WCAG 2.5.8).            |
 
 **Écarts connus et assumés**, publiés dans la déclaration : le cadran est un curseur dont
 l'activation démarre aussi le minuteur (critères RGAA 7.1 et 7.3) ; le contraste des éléments

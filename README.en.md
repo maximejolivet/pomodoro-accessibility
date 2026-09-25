@@ -113,6 +113,7 @@ visual timer is a simple, discreet and free tool at that level.
 | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | 🕒 **A dial that empties**       | A colored disc shrinks toward 0, with a rainbow ring of 12 five-minute segments, up to 60 min                          |
 | 👆 **Set it with your finger**   | Just drag on the dial to choose the minutes, even while the countdown is running                                       |
+| ➖➕ **− and + buttons**           | One minute per tap, no dragging: for shaky hands, a single finger or a switch device                                   |
 | 🎯 **Custom modes**              | Pomodoro, Break, Long break, ADHD Focus… or your own modes: name, duration (1-60 min), color, work or break            |
 | 🔁 **Automatic chaining**        | Work → break → work, with a long break every 4 cycles (can be turned off)                                              |
 | 📊 **History & statistics**      | Focus time today, completed sessions, day streak, chart of the last 7 days                                             |
@@ -136,6 +137,7 @@ when you come back, everything is up to date.
 | -------------------------- | ----------------------------------------------------------------------------- |
 | **Tap** the dial or ▶      | Start, pause or resume                                                        |
 | **Drag** on the dial       | Set the minutes (0 → 60)                                                      |
+| **−** / **+** under the dial | Remove or add a minute; press and hold to run through them                   |
 | ↺                          | Reset                                                                         |
 | ⚙︎ → **Modes**              | Choose, create, edit or delete a mode                                         |
 | ⚙︎ → **Stats**              | See today's goal, your statistics and session history                         |
@@ -168,14 +170,16 @@ The app is designed to be usable by everyone:
 - 👁️ **Readable for all**: careful contrast, dark mode, colors always paired with a name.
 - 🔤 **Dyslexia-friendly font**: the OpenDyslexic font can be turned on in the settings.
 - 🌀 **Reduced motion**: if your device asks for less motion, the app respects it.
+- 🖐️ **No dragging required**: the − and + buttons set the duration with a single tap, for anyone
+  who cannot hold a drag (WCAG 2.5.7), with targets of at least 44 px.
 
 A dedicated page covers all of this, including the RGAA 4.1 accessibility statement
 (conformance status, non-accessible content, contact and remedies): see the
 **♿ Accessibility** link at the bottom right of the app.
 
-These guarantees are checked on every change: `npm run test:a11y` replays sixteen checks
-(axe-core on every view, in light, dark and Arabic; keyboard control of the dial; the modal
-focus trap; no horizontal scrolling at 320 px), and CI runs them on every push.
+These guarantees are checked on every change: `npm run test:a11y` replays twenty checks
+(axe-core on every view, in light, dark and Arabic; control of the dial by keyboard and by the
+− / + buttons; target sizes; the modal focus trap; no horizontal scrolling at 320 px), and CI runs them on every push.
 
 ## For developers
 

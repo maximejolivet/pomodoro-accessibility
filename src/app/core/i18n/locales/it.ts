@@ -16,8 +16,10 @@ export const it: Dictionary = {
   'action.reset': 'Azzera',
   'action.settings': 'Impostazioni',
   'action.close': 'Chiudi',
+  'action.minus': 'Togliere un minuto',
+  'action.plus': 'Aggiungere un minuto',
   'action.dialName': 'Durata',
-  'action.dialHint': 'trascina sul quadrante o usa le frecce per regolare i minuti; premi per avviare o mettere in pausa',
+  'action.dialHint': 'trascina sul quadrante, usa le frecce o i pulsanti − e + per regolare i minuti; premi per avviare o mettere in pausa',
   'action.accessibilityInfo': 'Visualizza documentazione accessibilità RGAA 4.1',
   'action.accessibilityShort': 'Accessibilità RGAA',
 

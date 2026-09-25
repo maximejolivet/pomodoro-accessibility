@@ -125,6 +125,65 @@ test.describe('clavier', () => {
   });
 });
 
+test.describe('réglage sans glisser (WCAG 2.5.7)', () => {
+  const minus = (page: Page) => page.locator('.step').first();
+  const plus = (page: Page) => page.locator('.step').last();
+
+  test('les boutons − et + règlent la durée en un seul appui', async ({ page }) => {
+    await page.goto('/');
+    await ready(page);
+    const time = page.locator('.readout-time');
+    await expect(time).toHaveText('25:00');
+
+    // Un appui = une minute : ni le `pointerdown` ni le clic qui suit ne doivent doubler le pas
+    await plus(page).click();
+    await expect(time).toHaveText('26:00');
+    await minus(page).click();
+    await expect(time).toHaveText('25:00');
+  });
+
+  test('ils s’activent aussi au clavier et annoncent la nouvelle durée', async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(() => localStorage.setItem('pomodoro-tdah.lang', 'fr'));
+    await page.reload();
+    await ready(page);
+
+    await plus(page).focus();
+    await page.keyboard.press('Enter');
+    await expect(page.locator('.readout-time')).toHaveText('26:00');
+    await expect(page.locator('#a11y-announcements')).toHaveText('26 minutes');
+  });
+
+  test('ils s’arrêtent aux bornes du cadran', async ({ page }) => {
+    await page.goto('/');
+    await ready(page);
+    await page.locator('.face').focus();
+
+    await page.keyboard.press('End');
+    await expect(page.locator('.readout-time')).toHaveText('60:00');
+    // `aria-disabled` plutôt que `disabled` : le bouton garde le focus, mais n'agit plus
+    await expect(plus(page)).toHaveAttribute('aria-disabled', 'true');
+    await plus(page).click({ force: true });
+    await expect(page.locator('.readout-time')).toHaveText('60:00');
+
+    // Le clic a déplacé le focus : le cadran doit le reprendre pour recevoir « Début »
+    await page.locator('.face').focus();
+    await page.keyboard.press('Home');
+    await expect(page.locator('.readout-time')).toHaveText('00:00');
+    await expect(minus(page)).toHaveAttribute('aria-disabled', 'true');
+  });
+
+  test('leurs cibles font au moins 44 px (WCAG 2.5.8)', async ({ page }) => {
+    await page.goto('/');
+    await ready(page);
+    for (const button of [minus(page), plus(page)]) {
+      const box = await button.boundingBox();
+      expect(box!.width).toBeGreaterThanOrEqual(44);
+      expect(box!.height).toBeGreaterThanOrEqual(44);
+    }
+  });
+});
+
 test.describe('sémantique du cadran', () => {
   test("il est nommé, décrit, et n'annonce que sa valeur", async ({ page }) => {
     await page.goto('/');

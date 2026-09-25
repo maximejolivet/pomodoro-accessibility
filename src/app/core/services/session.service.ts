@@ -2,7 +2,7 @@ import { Injectable, computed, effect, inject, signal, untracked } from '@angula
 import { App } from '@capacitor/app';
 import { MIN_RECORDED_SECONDS } from '../constants/history.constants';
 import {
-  EXTRA_SECONDS, LATE_ALERT_SECONDS, LONG_BREAK_EVERY, MAX_MINUTES, MILESTONES
+  EXTRA_SECONDS, LATE_ALERT_SECONDS, LONG_BREAK_EVERY, MAX_MINUTES, MILESTONES, MIN_MINUTES
 } from '../constants/timer.constants';
 import { readPref, writePref } from '../helpers/storage';
 import { formatTime } from '../helpers/time';
@@ -210,6 +210,28 @@ export class SessionService {
     if (clamped !== current) {
       pulse();
     }
+  }
+
+  /**
+   * Ajoute ou retire des minutes à partir de la valeur affichée : flèches du clavier et
+   * boutons − / +, seule façon de régler la durée sans glisser sur le cadran (WCAG 2.5.7).
+   * `speak` annonce la nouvelle valeur — inutile depuis le cadran, qui est un curseur et
+   * dont le lecteur d'écran lit déjà `aria-valuetext`.
+   */
+  stepMinutes(delta: number, speak = false): void {
+    // Un décompte tombe rarement sur une minute ronde : on part de l'entier situé du bon côté
+    const from = delta < 0 ? Math.ceil(this.displayMinutes()) : Math.floor(this.displayMinutes());
+    const minutes = Math.max(MIN_MINUTES, Math.min(MAX_MINUTES, from + delta));
+    this.setMinutes(minutes);
+    if (speak) {
+      this.announce(`${minutes} ${this.i18n.t('unit.minutes')}`);
+    }
+  }
+
+  /** Vrai si un pas dans ce sens changerait encore la durée (boutons − / + désactivés aux bornes). */
+  canStep(delta: number): boolean {
+    const minutes = this.displayMinutes();
+    return delta < 0 ? minutes > MIN_MINUTES : minutes < MAX_MINUTES;
   }
 
   /** Après modification d'un mode : recale la durée si c'est celui qui est réglé et qu'aucune session ne tourne. */
