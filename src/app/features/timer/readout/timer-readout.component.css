@@ -1,4 +1,4 @@
-/* Temps, mode, état et cycle affichés sous le cadran, avec les boutons − / +. */
+/* Temps, mode et cycle affichés sous le cadran, avec les boutons − / +. */
 
 :host {
   display: contents;
@@ -8,6 +8,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  /* Largeur stable : sans elle, la pastille se resserre ou s'élargit à chaque
+     changement de mode, et le temps se déplace sous les yeux. */
+  min-width: min(320px, 100%);
   padding: 8px 10px;
   border-radius: 999px;
   background: linear-gradient(180deg, var(--surface-hi), var(--surface-lo));
@@ -17,8 +20,11 @@
     0 10px 18px rgba(25, 55, 65, 0.15);
 }
 
+/* Centré entre les deux boutons, quelle que soit la longueur du nom du mode. */
 .readout-main {
   display: flex;
+  flex: 1;
+  justify-content: center;
   align-items: baseline;
   gap: 12px;
   padding: 0 6px;
@@ -30,14 +36,6 @@
   font-variant-numeric: tabular-nums;
   color: var(--ink);
   text-shadow: 0 1px 0 var(--surface-hi);
-}
-
-.readout-state {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 .readout-mode {

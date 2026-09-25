@@ -11,7 +11,7 @@ const HOLD_DELAY_MS = 450;
 const HOLD_INTERVAL_MS = 110;
 
 /**
- * Temps restant, mode, état et position dans le cycle travail / pause, encadrés par
+ * Temps restant, mode et position dans le cycle travail / pause, encadrés par
  * les boutons − / + : le seul moyen de régler la durée au doigt sans glisser sur le
  * cadran, exigé par la WCAG 2.2 (critère 2.5.7, mouvements de glissement).
  */
@@ -44,10 +44,6 @@ export class TimerReadoutComponent implements OnDestroy {
 
   get modeName(): string {
     return this.session.modeName();
-  }
-
-  get stateLabel(): string {
-    return this.session.stateLabel();
   }
 
   get cycleLabel(): string | null {

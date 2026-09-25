@@ -1,4 +1,4 @@
-/* Remise à zéro, démarrage / pause, réglages. */
+/* Remise à zéro, démarrage / pause, réglages, et l'état du minuteur en dessous. */
 
 :host {
   display: contents;
@@ -8,6 +8,16 @@
   display: flex;
   align-items: center;
   gap: 22px;
+}
+
+/* Remonté contre les boutons : l'écart de 28 px de la scène l'isolerait du lecteur. */
+.state {
+  margin: -18px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .btn-main {
