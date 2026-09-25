@@ -17,6 +17,7 @@
         [attr.aria-valuemax]="maxMinutes"
         [attr.aria-valuenow]="Math.ceil(displayMinutes)"
         [attr.aria-valuetext]="Math.ceil(displayMinutes) + ' ' + i18n.t('unit.minutes')"
+        [attr.aria-disabled]="locked"
         [class.dragging]="isDragging"
         (click)="onFaceClick()"
         (pointerdown)="onDragStart($event)"
@@ -133,5 +134,25 @@
       </button>
     </div>
   </div>
+
+  <!--
+    Verrou posé au bas du boîtier : hors du cadran qu'il protège, pour qu'on ne le touche
+    pas en le réglant. Icône seule, nommée pour les lecteurs d'écran et les infobulles.
+  -->
+  <button
+    type="button"
+    class="lock"
+    [class.on]="locked"
+    [attr.aria-label]="i18n.t(locked ? 'action.unlock' : 'action.lock')"
+    [attr.title]="i18n.t(locked ? 'action.unlock' : 'action.lock')"
+    [style.--c]="selectedPreset.color"
+    (click)="toggleLock()"
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5" />
+      <path *ngIf="locked" d="M8 10.5V7a4 4 0 0 1 8 0v3.5" />
+      <path *ngIf="!locked" d="M8 10.5V7a4 4 0 0 1 7.6-1.7" />
+    </svg>
+  </button>
 </div>
 <span id="dial-hint" class="sr-only">{{ i18n.t('action.dialHint') }}</span>

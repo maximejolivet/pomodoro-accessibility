@@ -192,6 +192,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-PRE-10 | Annonce vocale du temps restant : aucune, aux paliers, ou à chaque minute (défaut : aucune) ; le choix se fait entendre aussitôt. | S    |
 | EF-PRE-11 | Vibration on/off (défaut : on) ; l'activation fait sentir le motif de fin.        | S    |
 | EF-PRE-12 | Alerte visuelle : aucune, douce ou forte (défaut : douce) ; le choix se montre aussitôt. | S    |
+| EF-PRE-13 | Verrou du cadran on/off (défaut : off), conservé d'une ouverture à l'autre.       | S    |
 
 ### 4.7 Internationalisation (`EF-I18`)
 
@@ -291,6 +292,7 @@ série de jours, histogramme des 7 derniers jours, 10 dernières sessions.
 | ENF-A11-9  | Le cadran expose un rôle de curseur avec valeur, minimum, maximum et texte de valeur lisible.                                                              |
 | ENF-A11-10 | Les tests automatiques axe-core (WCAG 2.0/2.1 A et AA, bonnes pratiques) ne relèvent aucune violation sur les parcours couverts, en thème clair et sombre. |
 | ENF-A11-11 | Tout réglage accessible par glissement l'est aussi par un pointeur simple (WCAG 2.5.7), avec des cibles d'au moins 44 × 44 px (WCAG 2.5.8).            |
+| ENF-A11-14 | Un verrou neutralise le cadran, les boutons − / + et la remise à zéro, pour qui déclenche des actions involontaires (tremblements, spasticité, paume posée). Démarrer / Pause reste actif : seule la remise à zéro fait perdre la session. |
 | ENF-A11-12 | Le temps restant peut être dit à voix haute par la synthèse de l'appareil, sans regarder le cadran : réglage à trois choix, hors ligne, éteint par défaut. |
 | ENF-A11-13 | Chaque palier et la fin ont un motif de vibration distinct, reconnaissable sans la vue ni l'ouïe (seul canal d'alerte pour une personne sourde-aveugle). |
 

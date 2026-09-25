@@ -18,6 +18,8 @@ export const ar: Dictionary = {
   'action.close': 'إغلاق',
   'action.minus': 'إنقاص دقيقة',
   'action.plus': 'إضافة دقيقة',
+  'action.lock': 'قفل القرص',
+  'action.unlock': 'إلغاء قفل القرص',
   'action.dialName': 'المدة',
   'action.dialHint': 'اسحب على القرص أو استخدم الأسهم أو زرَّي − و + لضبط الدقائق؛ اضغط للبدء أو الإيقاف المؤقت',
   'action.accessibilityInfo': 'عرض وثائق إمكانية الوصول RGAA 4.1',

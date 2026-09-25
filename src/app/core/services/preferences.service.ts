@@ -19,6 +19,11 @@ export class PreferencesService {
   /** Enchaîne automatiquement travail → pause → travail. */
   readonly autoChain = signal(readFlag('auto-chain', false));
   readonly keepAwake = signal(readFlag('keep-awake'));
+  /**
+   * Cadran verrouillé : les gestes qui changent la durée ou remettent à zéro sont ignorés.
+   * Conservé d'une ouverture à l'autre — qui en a besoin en a besoin à chaque fois.
+   */
+  readonly locked = signal(readFlag('dial-lock', false));
   /** Signal visuel aux paliers et à la fin : la seule alerte qui reste sans le son. */
   readonly visualAlert = signal<VisualAlert>(readOption('visual-alert', VISUAL_ALERTS, 'soft'));
   /**
@@ -55,6 +60,11 @@ export class PreferencesService {
   setAutoChain(on: boolean): void {
     this.autoChain.set(on);
     writeFlag('auto-chain', on);
+  }
+
+  setLocked(on: boolean): void {
+    this.locked.set(on);
+    writeFlag('dial-lock', on);
   }
 
   setKeepAwake(on: boolean): void {

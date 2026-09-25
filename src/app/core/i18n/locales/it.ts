@@ -18,6 +18,8 @@ export const it: Dictionary = {
   'action.close': 'Chiudi',
   'action.minus': 'Togliere un minuto',
   'action.plus': 'Aggiungere un minuto',
+  'action.lock': 'Blocca il quadrante',
+  'action.unlock': 'Sblocca il quadrante',
   'action.dialName': 'Durata',
   'action.dialHint': 'trascina sul quadrante, usa le frecce o i pulsanti − e + per regolare i minuti; premi per avviare o mettere in pausa',
   'action.accessibilityInfo': 'Visualizza documentazione accessibilità RGAA 4.1',

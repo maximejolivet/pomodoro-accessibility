@@ -135,6 +135,7 @@ la session (RG-14).
 | `auto-extra` | Prolongation +5 min | `'on'` \| `'off'` (défaut : on) |
 | `auto-chain` | Enchaînement automatique | `'on'` \| `'off'` (défaut : off) |
 | `keep-awake` | Écran allumé | `'on'` \| `'off'` (défaut : on) |
+| `dial-lock` | Verrou du cadran | `'on'` \| `'off'` (défaut : off) |
 | `speech` | Annonce vocale | `'off'` \| `'milestones'` \| `'minutes'` (défaut : off) |
 | `lang` | Langue | code de langue ou `'auto'` |
 | `preset` | Mode sélectionné | identifiant |
@@ -300,6 +301,7 @@ garantit l'homogénéité des contrastes (ENF-MNT-2).
 | Temps restant sans la vue | Annonce vocale optionnelle (`SpeechService`) aux paliers ou à chaque minute, dans la langue de l'interface |
 | Alerte sans la vue ni l'ouïe | Motif de vibration propre à chaque palier (`HapticsService`), distingué par le nombre d'impulsions et leur rythme |
 | Alerte sans le son | Pulsation colorée à 0,6 Hz et bandeau de fin persistant ; `aria-hidden`, `pointer-events: none`, figée sous `prefers-reduced-motion` |
+| Gestes involontaires | Verrou du cadran : `SessionService` ignore réglage et remise à zéro, le curseur passe `aria-disabled`, les boutons − / + aussi (`canStep` faux) |
 | Panneau de réglages | Focus piégé tant qu'il est ouvert, fermeture par Échap, focus rendu au déclencheur |
 | Onglets | Rôles `tablist` / `tab` / `tabpanel`, navigation par flèches, flèches nommées pour les lecteurs d'écran |
 | Contraste | Jetons de thème vérifiés à 4,5:1 minimum en clair et en sombre |

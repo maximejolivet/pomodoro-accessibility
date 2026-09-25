@@ -130,7 +130,7 @@ const fr: A11yText = {
   profilesTitle: 'Pomodoro fonctionne pour',
   profiles: [
     { title: 'Utilisateurs non-voyants', text: "Lecteur d'écran complet" },
-    { title: 'Utilisateurs avec un handicap moteur', text: 'Navigation clavier totale, et boutons − / + pour régler la durée sans glisser' },
+    { title: 'Utilisateurs avec un handicap moteur', text: 'Navigation clavier totale, boutons − / + pour régler sans glisser, et verrou contre les gestes involontaires' },
     { title: 'Malvoyants', text: 'Contraste élevé, zoom supporté' },
     { title: 'Sourds et malentendants', text: 'Sons optionnels, retours visuels' },
     { title: 'Sourds-aveugles', text: 'Un motif de vibration différent à chaque palier' },
@@ -251,7 +251,7 @@ const en: A11yText = {
   profilesTitle: 'Pomodoro works for',
   profiles: [
     { title: 'Blind users', text: 'Full screen reader support' },
-    { title: 'Users with a motor disability', text: 'Complete keyboard navigation, plus − / + buttons to set the duration without dragging' },
+    { title: 'Users with a motor disability', text: 'Complete keyboard navigation, − / + buttons to set the time without dragging, and a lock against accidental touches' },
     { title: 'Low-vision users', text: 'High contrast, zoom supported' },
     { title: 'Deaf and hard-of-hearing users', text: 'Optional sounds, visual feedback' },
     { title: 'Deafblind users', text: 'A different vibration pattern at every milestone' },
@@ -372,7 +372,7 @@ const es: A11yText = {
   profilesTitle: 'Pomodoro funciona para',
   profiles: [
     { title: 'Personas ciegas', text: 'Lector de pantalla completo' },
-    { title: 'Personas con discapacidad motora', text: 'Navegación total con teclado y botones − / + para ajustar la duración sin deslizar' },
+    { title: 'Personas con discapacidad motora', text: 'Navegación total con teclado, botones − / + para ajustar sin deslizar y bloqueo contra gestos involuntarios' },
     { title: 'Personas con baja visión', text: 'Contraste alto, zoom compatible' },
     { title: 'Personas sordas o con pérdida auditiva', text: 'Sonidos opcionales, respuestas visuales' },
     { title: 'Personas sordociegas', text: 'Un patrón de vibración distinto en cada aviso' },
@@ -493,7 +493,7 @@ const de: A11yText = {
   profilesTitle: 'Pomodoro funktioniert für',
   profiles: [
     { title: 'Blinde Nutzerinnen und Nutzer', text: 'Vollständige Screenreader-Unterstützung' },
-    { title: 'Nutzende mit motorischer Einschränkung', text: 'Komplette Tastaturnavigation sowie − / +-Tasten, um die Dauer ohne Ziehen einzustellen' },
+    { title: 'Nutzende mit motorischer Einschränkung', text: 'Komplette Tastaturnavigation, − / +-Tasten zum Einstellen ohne Ziehen und eine Sperre gegen versehentliche Gesten' },
     { title: 'Sehbehinderte Menschen', text: 'Hoher Kontrast, Zoom unterstützt' },
     { title: 'Gehörlose und schwerhörige Menschen', text: 'Optionale Töne, visuelle Rückmeldungen' },
     { title: 'Taubblinde Menschen', text: 'Ein eigenes Vibrationsmuster bei jeder Marke' },
@@ -614,7 +614,7 @@ const it: A11yText = {
   profilesTitle: 'Pomodoro funziona per',
   profiles: [
     { title: 'Persone non vedenti', text: 'Supporto completo per il lettore di schermo' },
-    { title: 'Persone con disabilità motoria', text: 'Navigazione completa da tastiera e pulsanti − / + per regolare la durata senza trascinare' },
+    { title: 'Persone con disabilità motoria', text: 'Navigazione completa da tastiera, pulsanti − / + per regolare senza trascinare e blocco contro i gesti involontari' },
     { title: 'Persone ipovedenti', text: 'Contrasto elevato, zoom supportato' },
     { title: 'Persone sorde e con problemi di udito', text: 'Suoni opzionali, riscontri visivi' },
     { title: 'Persone sordocieche', text: 'Uno schema di vibrazione diverso a ogni traguardo' },
@@ -735,7 +735,7 @@ const pt: A11yText = {
   profilesTitle: 'O Pomodoro funciona para',
   profiles: [
     { title: 'Pessoas cegas', text: 'Suporte completo a leitores de ecrã' },
-    { title: 'Pessoas com deficiência motora', text: 'Navegação total por teclado e botões − / + para ajustar a duração sem arrastar' },
+    { title: 'Pessoas com deficiência motora', text: 'Navegação total por teclado, botões − / + para ajustar sem arrastar e bloqueio contra gestos involuntários' },
     { title: 'Pessoas com baixa visão', text: 'Contraste elevado, zoom suportado' },
     { title: 'Pessoas surdas e com deficiência auditiva', text: 'Sons opcionais, respostas visuais' },
     { title: 'Pessoas surdocegas', text: 'Um padrão de vibração diferente em cada marco' },
@@ -856,7 +856,7 @@ const ar: A11yText = {
   profilesTitle: 'يعمل Pomodoro من أجل',
   profiles: [
     { title: 'المستخدمين المكفوفين', text: 'دعم كامل لقارئ الشاشة' },
-    { title: 'المستخدمين ذوي الإعاقة الحركية', text: 'تنقّل كامل بلوحة المفاتيح، وزرَّا − و + لضبط المدة دون سحب' },
+    { title: 'المستخدمين ذوي الإعاقة الحركية', text: 'تنقّل كامل بلوحة المفاتيح، وزرَّا − و + لضبط المدة دون سحب، وقفل ضد اللمسات غير المقصودة' },
     { title: 'ضعاف البصر', text: 'تباين عالٍ ودعم للتكبير' },
     { title: 'الصمّ وضعاف السمع', text: 'أصوات اختيارية وردود بصرية' },
     { title: 'الصمّ المكفوفون', text: 'نمط اهتزاز مختلف عند كل مرحلة' },

@@ -5,9 +5,56 @@
 }
 
 .tilt-zone {
+  position: relative;
   perspective: 1400px;
   padding: 12px 0 36px;
   touch-action: manipulation;
+}
+
+/*
+ * Verrou du cadran : pour les mains qui tremblent et les paumes posées, un contact
+ * involontaire ne peut plus changer la durée ni effacer la session en cours.
+ * Cible de 44 px (WCAG 2.5.8), posée sous le boîtier plutôt que sur le cadran.
+ */
+.lock {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--surface-edge);
+  border-radius: 50%;
+  background: var(--surface-hi);
+  box-shadow: 0 2px 6px var(--band-shadow);
+  color: var(--muted);
+  cursor: pointer;
+  transform: translateX(-50%);
+}
+
+.lock svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Verrouillé, la pastille prend la couleur du mode : l'état se voit d'un coup d'œil. */
+.lock.on {
+  border-color: var(--c);
+  color: var(--c);
+  background: color-mix(in srgb, var(--c) 14%, var(--surface-hi));
+}
+
+.lock:focus-visible {
+  outline: 3px solid var(--c);
+  outline-offset: 3px;
 }
 
 .device {

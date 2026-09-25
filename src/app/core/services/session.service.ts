@@ -67,6 +67,13 @@ export class SessionService {
   /** Alerte visuelle en cours, rendue en pulsation par la page : palier, fin, ou rien. */
   readonly visualCue = signal<VisualCue | null>(null);
 
+  /**
+   * Cadran verrouillé. Il neutralise tout ce qui peut faire *perdre* une session — réglage
+   * au doigt, au clavier, boutons − / +, remise à zéro — et laisse Démarrer / Pause : une
+   * pause involontaire se rattrape, une remise à zéro involontaire ne se rattrape pas.
+   */
+  readonly locked = this.prefs.locked;
+
   readonly isPaused = computed(() => !this.isRunning() && this.timeLeft() > 0);
 
   /** Secondes affichées sur le cadran : temps restant, ou durée réglée au repos. */
@@ -183,7 +190,17 @@ export class SessionService {
     }
   }
 
+  /** Bascule le verrou du cadran. */
+  toggleLock(): void {
+    this.prefs.setLocked(!this.locked());
+  }
+
   reset(): void {
+    if (this.locked()) return;
+    this.resetTimer();
+  }
+
+  private resetTimer(): void {
     this.finished.set(false);
     this.speech.stop();
     this.haptics.stop();
@@ -195,14 +212,16 @@ export class SessionService {
     this.manualChange = false;
   }
 
+  /** Choisir un mode dans le panneau reste possible verrouillé : le geste est délibéré. */
   selectPreset(preset: Preset): void {
     this.setSelectedPreset(preset);
     this.durationSeconds.set(preset.seconds);
-    this.reset();
+    this.resetTimer();
   }
 
   /** Règle le temps affiché (cadran, curseur, clavier) ; arrondi et borné à 0-60 minutes. */
   setMinutes(minutes: number): void {
+    if (this.locked()) return;
     const clamped = Math.max(0, Math.min(MAX_MINUTES, Math.round(minutes)));
     const seconds = clamped * 60;
     const current = Math.ceil(this.displaySeconds() / 60);
@@ -234,6 +253,7 @@ export class SessionService {
    * dont le lecteur d'écran lit déjà `aria-valuetext`.
    */
   stepMinutes(delta: number, speak = false): void {
+    if (this.locked()) return;
     // Un décompte tombe rarement sur une minute ronde : on part de l'entier situé du bon côté
     const from = delta < 0 ? Math.ceil(this.displayMinutes()) : Math.floor(this.displayMinutes());
     const minutes = Math.max(MIN_MINUTES, Math.min(MAX_MINUTES, from + delta));
@@ -245,6 +265,7 @@ export class SessionService {
 
   /** Vrai si un pas dans ce sens changerait encore la durée (boutons − / + désactivés aux bornes). */
   canStep(delta: number): boolean {
+    if (this.locked()) return false;
     const minutes = this.displayMinutes();
     return delta < 0 ? minutes > MIN_MINUTES : minutes < MAX_MINUTES;
   }

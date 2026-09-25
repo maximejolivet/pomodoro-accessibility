@@ -578,3 +578,68 @@ test.describe('alerte visuelle', () => {
     expect(await page.locator('.cue').evaluate(el => getComputedStyle(el).pointerEvents)).toBe('none');
   });
 });
+
+test.describe('verrouillage du cadran', () => {
+  const time = (page: Page) => page.locator('.readout-time');
+  const lock = (page: Page) => page.getByRole('button', { name: /verrouiller le cadran/i });
+  const unlock = (page: Page) => page.getByRole('button', { name: /déverrouiller le cadran/i });
+
+  async function ready_fr(page: Page) {
+    await page.addInitScript(() => localStorage.setItem('pomodoro-tdah.lang', 'fr'));
+    await page.goto('/');
+    await ready(page);
+  }
+
+  test('verrouillé, plus rien ne change la durée ni n’efface la session', async ({ page }) => {
+    await ready_fr(page);
+    await lock(page).click();
+    await expect(unlock(page)).toBeVisible();
+
+    // Le cadran : ni le clavier, ni le clic (une paume posée dessus ne démarre plus rien)
+    await page.locator('.face').focus();
+    await page.keyboard.press('ArrowLeft');
+    await page.keyboard.press('Home');
+    await expect(time(page)).toHaveText('25:00');
+    // `force` : Playwright refuse de cliquer un élément `aria-disabled`, ce qui est
+    // déjà une garantie — mais on veut vérifier que le clic lui-même ne fait rien.
+    await page.locator('.face').click({ force: true });
+    await expect(page.locator('.readout-time')).toHaveText('25:00');
+    await expect(page.getByRole('slider')).toHaveAttribute('aria-disabled', 'true');
+
+    // Les boutons − / + et la remise à zéro
+    await expect(page.locator('.step').first()).toHaveAttribute('aria-disabled', 'true');
+    await expect(page.locator('.step').last()).toHaveAttribute('aria-disabled', 'true');
+    await expect(page.getByRole('button', { name: /remettre à zéro/i })).toHaveAttribute('aria-disabled', 'true');
+  });
+
+  test('Démarrer reste actif : une pause se rattrape, pas une remise à zéro', async ({ page }) => {
+    await ready_fr(page);
+    await lock(page).click();
+    await page.getByRole('button', { name: /démarrer/i }).click();
+    await expect(page.getByRole('button', { name: /pause/i })).toBeVisible();
+
+    // Et la remise à zéro n'emporte pas la session en cours
+    await page.getByRole('button', { name: /remettre à zéro/i }).click({ force: true });
+    await expect(page.getByRole('button', { name: /pause/i })).toBeVisible();
+  });
+
+  test('le verrou se retient d’une ouverture à l’autre', async ({ page }) => {
+    await ready_fr(page);
+    await lock(page).click();
+    await page.reload();
+    await ready(page);
+    await expect(unlock(page)).toBeVisible();
+
+    // Déverrouillé, le cadran répond de nouveau
+    await unlock(page).click();
+    await page.locator('.face').focus();
+    await page.keyboard.press('ArrowLeft');
+    await expect(time(page)).toHaveText('24:00');
+  });
+
+  test('sa cible fait au moins 44 px (WCAG 2.5.8)', async ({ page }) => {
+    await ready_fr(page);
+    const box = await lock(page).boundingBox();
+    expect(box!.height).toBeGreaterThanOrEqual(44);
+  });
+});

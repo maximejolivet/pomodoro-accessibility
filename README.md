@@ -113,6 +113,7 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
 | 🕒 **Un cadran qui se vide**     | Un disque coloré recule vers 0, avec un anneau arc-en-ciel en 12 segments de 5 min, jusqu'à 60 min                     |
 | 👆 **Réglage au doigt**          | Il suffit de glisser sur le cadran pour choisir les minutes, même pendant le décompte                                  |
 | ➖➕ **Boutons − et +**            | Une minute par appui, sans glisser : pour les mains qui tremblent, un seul doigt ou un contacteur                      |
+| 🔒 **Verrou du cadran**          | Un appui et le cadran ne répond plus : une paume posée ne peut plus changer la durée ni effacer la session            |
 | 🎯 **Modes personnalisables**    | Pomodoro, Pause, Pause longue, Focus TDAH… ou tes propres modes : nom, durée (1-60 min), couleur, travail ou pause     |
 | 🔁 **Enchaînement automatique**  | Travail → pause → travail, avec une pause longue tous les 4 cycles (désactivable)                                      |
 | 📊 **Historique & statistiques** | Temps de focus du jour, sessions terminées, série de jours, graphique des 7 derniers jours                             |
@@ -139,6 +140,7 @@ verrouille : au retour, tout est à jour.
 | **Toucher** le cadran ou ▶ | Démarrer, mettre en pause ou reprendre                                       |
 | **Glisser** sur le cadran  | Régler les minutes (0 → 60)                                                  |
 | **−** / **+** sous le cadran | Retirer ou ajouter une minute ; appui maintenu pour défiler                 |
+| 🔒 sous le boîtier         | Verrouiller ou déverrouiller le cadran                                       |
 | ↺                          | Remettre à zéro                                                              |
 | ⚙︎ → **Modes**              | Choisir, créer, modifier ou supprimer un mode                                |
 | ⚙︎ → **Stats**              | Voir son objectif du jour, ses statistiques et l'historique des sessions     |
@@ -186,15 +188,18 @@ L'application est pensée pour être utilisable par tout le monde :
 - 🌀 **Animations réduites** : si ton appareil demande moins de mouvement, l'application le respecte.
 - 🖐️ **Sans glisser** : les boutons − et + règlent la durée en un seul appui, pour qui ne peut pas
   maintenir un glissement (WCAG 2.5.7), avec des cibles d'au moins 44 px.
+- 🔒 **Contre les gestes involontaires** : le verrou neutralise le cadran, les boutons − / + et la
+  remise à zéro. Démarrer / Pause reste actif : une pause involontaire se rattrape, une remise à
+  zéro involontaire fait perdre la session.
 
 Une page dédiée détaille tout cela, avec la déclaration d'accessibilité RGAA 4.1 (état de
 conformité, contenus non accessibles, contact et voies de recours) : lien **♿ Accessibilité**
 en bas à droite de l'application.
 
-Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue trente-deux contrôles
+Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue trente-six contrôles
 (axe-core sur toutes les vues, en clair, en sombre et en arabe ; réglage du cadran au clavier et
 aux boutons − / + ; annonce vocale, motifs de vibration et alerte visuelle vérifiés sur un
-décompte simulé ; taille des cibles ; piège à focus de la modale ; pas de défilement horizontal
+décompte simulé ; verrou du cadran ; taille des cibles ; piège à focus de la modale ; pas de défilement horizontal
 à 320 px), et la CI les relance à
 chaque push.
 
