@@ -197,6 +197,8 @@ Une page dédiée détaille tout cela (référentiel RGAA 4.1) : lien **♿ Acce
 
 ## Pour les développeurs
 
-- [Installation et commandes](docs/installation.md)
-- [Build mobile (iOS / Android), notifications et widget](docs/mobile.md)
-- [Architecture du code](docs/architecture.md)
+- [Installation et commandes](docs/INSTALLATION.md)
+- [Build mobile (iOS / Android), notifications et widget](docs/MOBILE.md)
+- [Architecture du code](docs/ARCHITECTURE.md)
+- [Cahier des charges fonctionnel](docs/FUNCTIONAL-SPECIFICATION.md)
+- [Cahier des charges technique](docs/TECHNICAL-SPECIFICATION.md)

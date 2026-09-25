@@ -1,6 +1,6 @@
 # Architecture
 
-[← Retour au README](../README.md)
+[← Retour au README](../README.md) · [Cahier des charges technique](TECHNICAL-SPECIFICATION.md)
 
 ```
 src/

@@ -200,6 +200,8 @@ the bottom right of the app.
 
 The technical documentation is in French:
 
-- [Installation and commands](docs/installation.md)
-- [Mobile build (iOS / Android), notifications and widget](docs/mobile.md)
-- [Code architecture](docs/architecture.md)
+- [Installation and commands](docs/INSTALLATION.md)
+- [Mobile build (iOS / Android), notifications and widget](docs/MOBILE.md)
+- [Code architecture](docs/ARCHITECTURE.md)
+- [Functional specification (French)](docs/FUNCTIONAL-SPECIFICATION.md)
+- [Technical specification (French)](docs/TECHNICAL-SPECIFICATION.md)
