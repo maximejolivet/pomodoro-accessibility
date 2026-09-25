@@ -15,7 +15,8 @@ export const fr = {
   'action.reset': 'Remettre à zéro',
   'action.settings': 'Réglages',
   'action.close': 'Fermer',
-  'action.dialHint': 'glisser sur le cadran pour régler les minutes',
+  'action.dialName': 'Durée',
+  'action.dialHint': 'glisser sur le cadran ou utiliser les flèches pour régler les minutes ; appuyer pour démarrer ou mettre en pause',
   'action.accessibilityInfo': 'Voir la documentation d\'accessibilité RGAA 4.1',
   'action.accessibilityShort': 'Accessibilité RGAA',
 

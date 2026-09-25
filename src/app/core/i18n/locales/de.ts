@@ -16,7 +16,8 @@ export const de: Dictionary = {
   'action.reset': 'Zurücksetzen',
   'action.settings': 'Einstellungen',
   'action.close': 'Schließen',
-  'action.dialHint': 'auf dem Zifferblatt ziehen, um die Minuten einzustellen',
+  'action.dialName': 'Dauer',
+  'action.dialHint': 'auf dem Zifferblatt ziehen oder die Pfeiltasten benutzen, um die Minuten einzustellen; drücken zum Starten oder Pausieren',
   'action.accessibilityInfo': 'RGAA 4.1-Barrierefreiheitsdokumentation ansehen',
   'action.accessibilityShort': 'Barrierefreiheit RGAA',
 

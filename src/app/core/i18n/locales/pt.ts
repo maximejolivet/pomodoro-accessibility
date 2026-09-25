@@ -16,7 +16,8 @@ export const pt: Dictionary = {
   'action.reset': 'Reiniciar',
   'action.settings': 'Configurações',
   'action.close': 'Fechar',
-  'action.dialHint': 'arraste no mostrador para ajustar os minutos',
+  'action.dialName': 'Duração',
+  'action.dialHint': 'arraste no mostrador ou use as setas para ajustar os minutos; prima para iniciar ou pausar',
   'action.accessibilityInfo': 'Ver documentação de acessibilidade RGAA 4.1',
   'action.accessibilityShort': 'Acessibilidade RGAA',
 

@@ -44,6 +44,10 @@ src/
         └── accessibility/
             ├── accessibility-page.component.*  # Page d'accessibilité (route /accessibility)
             └── accessibility.i18n.ts           # Ses textes, par langue
+tests/
+└── a11y.spec.ts                # Non-régression d'accessibilité (npm run test:a11y)
+playwright.config.ts            # Démarre l'app et joue les tests sur Chromium
+.github/workflows/a11y.yml      # Build de production + tests d'accessibilité à chaque push
 scripts/
 └── generate-sounds.ts          # WAV des notifications (node scripts/generate-sounds.ts)
 resources/sounds/               # WAV générés
@@ -77,6 +81,12 @@ docs/
   continue, se termine et s'enregistre pendant la lecture de la page d'accessibilité.
 - **Thèmes** : toutes les couleurs sont des variables CSS dans `src/theme/`, posées sur
   `<app-root>` et redéfinies sous `app-root.dark`, donc héritées par les pages.
+- **Accessibilité testée en continu** : `npm run test:a11y` lance l'app et vérifie quinze
+  points — axe-core sur l'accueil, le panneau (trois onglets), l'éditeur de mode et la page
+  d'accessibilité, en thème clair et sombre et en arabe ; le réglage du cadran au clavier ;
+  le piège à focus de la modale ; Échap et le retour du focus ; l'absence de défilement
+  horizontal à 320 px ; l'espacement du texte de WCAG 1.4.12 ; et le contraste des
+  interrupteurs mesuré sur les pixels rendus (WCAG 1.4.11). La CI les rejoue à chaque push.
 - **Pas de `shared/`, `guards/`, `interceptors/`, `pipes/` ni `environments/`** : rien à y
   mettre aujourd'hui. Ces dossiers se créeront le jour où un deuxième usage apparaîtra.
 - **Préférences, modes et historique** : enregistrés dans `localStorage` (500 dernières sessions).

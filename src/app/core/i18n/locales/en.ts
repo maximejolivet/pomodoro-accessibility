@@ -16,7 +16,8 @@ export const en: Dictionary = {
   'action.reset': 'Reset',
   'action.settings': 'Settings',
   'action.close': 'Close',
-  'action.dialHint': 'drag on the dial to set the minutes',
+  'action.dialName': 'Duration',
+  'action.dialHint': 'drag on the dial or use the arrow keys to set the minutes; press to start or pause',
   'action.accessibilityInfo': 'View RGAA 4.1 accessibility documentation',
   'action.accessibilityShort': 'RGAA accessibility',
 

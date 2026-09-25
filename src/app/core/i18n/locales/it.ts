@@ -16,7 +16,8 @@ export const it: Dictionary = {
   'action.reset': 'Azzera',
   'action.settings': 'Impostazioni',
   'action.close': 'Chiudi',
-  'action.dialHint': 'trascina sul quadrante per regolare i minuti',
+  'action.dialName': 'Durata',
+  'action.dialHint': 'trascina sul quadrante o usa le frecce per regolare i minuti; premi per avviare o mettere in pausa',
   'action.accessibilityInfo': 'Visualizza documentazione accessibilità RGAA 4.1',
   'action.accessibilityShort': 'Accessibilità RGAA',
 

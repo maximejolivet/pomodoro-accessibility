@@ -16,7 +16,7 @@
         [attr.aria-valuemin]="1"
         [attr.aria-valuemax]="maxMinutes"
         [attr.aria-valuenow]="Math.ceil(displayMinutes)"
-        [attr.aria-valuetext]="Math.ceil(displayMinutes) + ' ' + i18n.t('unit.minutes') + ', ' + mainActionLabel"
+        [attr.aria-valuetext]="Math.ceil(displayMinutes) + ' ' + i18n.t('unit.minutes')"
         [class.dragging]="isDragging"
         (click)="onFaceClick()"
         (pointerdown)="onDragStart($event)"
@@ -29,7 +29,8 @@
         (keydown.pageDown)="stepMinutes(5)"
         (keydown.home)="setMinutes(0)"
         (keydown.end)="setMinutes(maxMinutes)"
-        [attr.aria-label]="i18n.t('action.dialHint')"
+        [attr.aria-label]="i18n.t('action.dialName')"
+        aria-describedby="dial-hint"
       >
         <svg #dial viewBox="0 0 420 420" class="dial" aria-hidden="true">
           <defs>
@@ -133,3 +134,4 @@
     </div>
   </div>
 </div>
+<span id="dial-hint" class="sr-only">{{ i18n.t('action.dialHint') }}</span>

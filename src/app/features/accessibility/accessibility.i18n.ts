@@ -57,6 +57,18 @@ export interface A11yText {
   stackLabel: string;
   /** Noms propres : la même liste dans toutes les langues. */
   stack: string[];
+  declarationTitle: string;
+  declarationIntro: string;
+  declLabels: { env: string; tools: string; pages: string; date: string };
+  declEnv: string;
+  declTools: string;
+  nonAccessibleTitle: string;
+  nonAccessibleItems: string[];
+  contactTitle: string;
+  contactText: string;
+  contactLink: string;
+  remedyTitle: string;
+  remedyText: string;
   footerText: string;
   officialRef: string;
 }
@@ -160,6 +172,21 @@ const fr: A11yText = {
   badges: ['Images', 'Couleurs', 'Multimédia', 'Tableaux', 'Liens et boutons', 'Scripts et clavier', 'Éléments obligatoires', 'Structuration', 'Formulaires', 'Navigation', 'Consultation'],
   stackLabel: 'Construit avec',
   stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
+  declarationTitle: "Déclaration d'accessibilité",
+  declarationIntro: "Cette déclaration s'applique à Pomodoro Accessibilité, dans ses versions web, iOS et Android.",
+  declLabels: { env: 'Environnement de test', tools: "Outils d'évaluation", pages: 'Pages évaluées', date: 'Établie le' },
+  declEnv: "Chromium sur macOS, sans test avec un lecteur d'écran.",
+  declTools: 'axe-core 4.13 et mesure des contrastes sur le rendu, rejoués automatiquement à chaque modification, et revue du code.',
+  nonAccessibleTitle: 'Contenus non accessibles',
+  nonAccessibleItems: [
+    "Le cadran est un curseur dont l'activation démarre aussi le minuteur, ce qui s'écarte du comportement attendu pour ce type de composant. Son nom et sa description l'annoncent (critères 7.1 et 7.3).",
+    "L'agrandissement du texte à 200 % et le parcours au lecteur d'écran n'ont pas été vérifiés manuellement (critères 10.4 et 7.1).",
+  ],
+  contactTitle: 'Contact',
+  contactText: "Si vous ne parvenez pas à accéder à un contenu, signalez-le pour être orienté vers une solution accessible :",
+  contactLink: 'ouvrir un ticket sur GitHub',
+  remedyTitle: 'Voies de recours',
+  remedyText: "Si un signalement reste sans réponse, vous pouvez saisir le Défenseur des droits, contacter son délégué dans votre région, ou écrire sans affranchir à : Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.",
   footerText: "L'accessibilité est intégrée dans <strong>chaque ligne de code</strong> de Pomodoro Accessibilité.",
   officialRef: 'Référentiel officiel du RGAA 4.1 :',
 };
@@ -263,6 +290,21 @@ const en: A11yText = {
   badges: ['Images', 'Colors', 'Multimedia', 'Tables', 'Links and buttons', 'Scripts and keyboard', 'Mandatory elements', 'Structure', 'Forms', 'Navigation', 'Consultation'],
   stackLabel: 'Built with',
   stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
+  declarationTitle: 'Accessibility statement',
+  declarationIntro: 'This statement applies to Pomodoro Accessibilité, in its web, iOS and Android versions.',
+  declLabels: { env: 'Test environment', tools: 'Evaluation tools', pages: 'Pages assessed', date: 'Published on' },
+  declEnv: 'Chromium on macOS, without screen reader testing.',
+  declTools: 'axe-core 4.13 and contrast measured on the rendered page, both replayed automatically on every change, plus a code review.',
+  nonAccessibleTitle: 'Non-accessible content',
+  nonAccessibleItems: [
+    'The dial is a slider whose activation also starts the timer, which departs from the expected behaviour for this kind of component. Its name and description say so (criteria 7.1 and 7.3).',
+    'Text enlarged to 200% and a full screen reader walkthrough have not been checked manually (criteria 10.4 and 7.1).',
+  ],
+  contactTitle: 'Contact',
+  contactText: 'If you cannot reach some content, report it so you can be pointed to an accessible alternative:',
+  contactLink: 'open an issue on GitHub',
+  remedyTitle: 'Remedies',
+  remedyText: 'If a report goes unanswered, French users may refer the matter to the Défenseur des droits, contact its regional delegate, or write postage-free to: Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.',
   footerText: 'Accessibility is built into <strong>every line of code</strong> of Pomodoro Accessibilité.',
   officialRef: 'Official RGAA 4.1 reference (in French):',
 };
@@ -366,6 +408,21 @@ const es: A11yText = {
   badges: ['Imágenes', 'Colores', 'Multimedia', 'Tablas', 'Enlaces y botones', 'Scripts y teclado', 'Elementos obligatorios', 'Estructuración', 'Formularios', 'Navegación', 'Consulta'],
   stackLabel: 'Construido con',
   stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
+  declarationTitle: 'Declaración de accesibilidad',
+  declarationIntro: 'Esta declaración se aplica a Pomodoro Accessibilité, en sus versiones web, iOS y Android.',
+  declLabels: { env: 'Entorno de prueba', tools: 'Herramientas de evaluación', pages: 'Páginas evaluadas', date: 'Publicada el' },
+  declEnv: 'Chromium en macOS, sin pruebas con lector de pantalla.',
+  declTools: 'axe-core 4.13 y medición de los contrastes sobre la página renderizada, ejecutados automáticamente en cada cambio, y una revisión del código.',
+  nonAccessibleTitle: 'Contenidos no accesibles',
+  nonAccessibleItems: [
+    'La esfera es un control deslizante cuya activación también inicia el temporizador, lo que se aparta del comportamiento esperado para este tipo de componente. Su nombre y su descripción lo indican (criterios 7.1 y 7.3).',
+    'La ampliación del texto al 200 % y el recorrido con lector de pantalla no se han comprobado manualmente (criterios 10.4 y 7.1).',
+  ],
+  contactTitle: 'Contacto',
+  contactText: 'Si no consigue acceder a algún contenido, comuníquelo para que se le indique una alternativa accesible:',
+  contactLink: 'abrir una incidencia en GitHub',
+  remedyTitle: 'Vías de recurso',
+  remedyText: 'Si una comunicación queda sin respuesta, en Francia se puede recurrir al Défenseur des droits, contactar con su delegado regional o escribir sin franqueo a: Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.',
   footerText: 'La accesibilidad está integrada en <strong>cada línea de código</strong> de Pomodoro Accessibilité.',
   officialRef: 'Referencial oficial del RGAA 4.1 (en francés):',
 };
@@ -469,6 +526,21 @@ const de: A11yText = {
   badges: ['Bilder', 'Farben', 'Multimedia', 'Tabellen', 'Links und Schaltflächen', 'Skripte und Tastatur', 'Pflichtelemente', 'Strukturierung', 'Formulare', 'Navigation', 'Bedienung'],
   stackLabel: 'Gebaut mit',
   stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
+  declarationTitle: 'Erklärung zur Barrierefreiheit',
+  declarationIntro: 'Diese Erklärung gilt für Pomodoro Accessibilité in den Versionen Web, iOS und Android.',
+  declLabels: { env: 'Testumgebung', tools: 'Bewertungswerkzeuge', pages: 'Geprüfte Seiten', date: 'Erstellt am' },
+  declEnv: 'Chromium unter macOS, ohne Test mit einem Screenreader.',
+  declTools: 'axe-core 4.13 und Kontrastmessung am gerenderten Ergebnis, bei jeder Änderung automatisch ausgeführt, sowie eine Code-Durchsicht.',
+  nonAccessibleTitle: 'Nicht barrierefreie Inhalte',
+  nonAccessibleItems: [
+    'Das Zifferblatt ist ein Schieberegler, dessen Aktivierung zugleich den Timer startet — das weicht vom erwarteten Verhalten dieser Komponente ab. Name und Beschreibung weisen darauf hin (Kriterien 7.1 und 7.3).',
+    'Auf 200 % vergrößerter Text und ein vollständiger Screenreader-Durchlauf wurden nicht manuell geprüft (Kriterien 10.4 und 7.1).',
+  ],
+  contactTitle: 'Kontakt',
+  contactText: 'Wenn Sie einen Inhalt nicht erreichen können, melden Sie es, damit Ihnen eine barrierefreie Alternative genannt werden kann:',
+  contactLink: 'ein Ticket auf GitHub eröffnen',
+  remedyTitle: 'Rechtsbehelfe',
+  remedyText: 'Bleibt eine Meldung unbeantwortet, kann in Frankreich der Défenseur des droits angerufen werden — über seine regionale Vertretung oder portofrei schriftlich an: Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.',
   footerText: 'Barrierefreiheit steckt in <strong>jeder Codezeile</strong> von Pomodoro Accessibilité.',
   officialRef: 'Offizielle RGAA-4.1-Referenz (auf Französisch):',
 };
@@ -572,6 +644,21 @@ const it: A11yText = {
   badges: ['Immagini', 'Colori', 'Multimedia', 'Tabelle', 'Link e pulsanti', 'Script e tastiera', 'Elementi obbligatori', 'Strutturazione', 'Moduli', 'Navigazione', 'Consultazione'],
   stackLabel: 'Realizzato con',
   stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
+  declarationTitle: 'Dichiarazione di accessibilità',
+  declarationIntro: 'Questa dichiarazione riguarda Pomodoro Accessibilité, nelle versioni web, iOS e Android.',
+  declLabels: { env: 'Ambiente di prova', tools: 'Strumenti di valutazione', pages: 'Pagine valutate', date: 'Redatta il' },
+  declEnv: 'Chromium su macOS, senza test con uno screen reader.',
+  declTools: 'axe-core 4.13 e misura dei contrasti sul risultato renderizzato, rieseguiti automaticamente a ogni modifica, e una revisione del codice.',
+  nonAccessibleTitle: 'Contenuti non accessibili',
+  nonAccessibleItems: [
+    "Il quadrante è un cursore la cui attivazione avvia anche il timer, discostandosi dal comportamento atteso per questo tipo di componente. Il nome e la descrizione lo dichiarano (criteri 7.1 e 7.3).",
+    "L'ingrandimento del testo al 200 % e un percorso completo con screen reader non sono stati verificati manualmente (criteri 10.4 e 7.1).",
+  ],
+  contactTitle: 'Contatti',
+  contactText: 'Se non riesci a raggiungere un contenuto, segnalalo per essere indirizzato a un\'alternativa accessibile:',
+  contactLink: 'aprire una segnalazione su GitHub',
+  remedyTitle: 'Mezzi di ricorso',
+  remedyText: 'Se una segnalazione resta senza risposta, in Francia ci si può rivolgere al Défenseur des droits, contattare il suo delegato regionale o scrivere senza affrancatura a: Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.',
   footerText: 'L’accessibilità è integrata in <strong>ogni riga di codice</strong> di Pomodoro Accessibilité.',
   officialRef: 'Riferimento ufficiale RGAA 4.1 (in francese):',
 };
@@ -675,6 +762,21 @@ const pt: A11yText = {
   badges: ['Imagens', 'Cores', 'Multimédia', 'Tabelas', 'Ligações e botões', 'Scripts e teclado', 'Elementos obrigatórios', 'Estruturação', 'Formulários', 'Navegação', 'Consulta'],
   stackLabel: 'Construído com',
   stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
+  declarationTitle: 'Declaração de acessibilidade',
+  declarationIntro: 'Esta declaração aplica-se ao Pomodoro Accessibilité, nas versões web, iOS e Android.',
+  declLabels: { env: 'Ambiente de teste', tools: 'Ferramentas de avaliação', pages: 'Páginas avaliadas', date: 'Elaborada a' },
+  declEnv: 'Chromium em macOS, sem testes com leitor de ecrã.',
+  declTools: 'axe-core 4.13 e medição dos contrastes no resultado apresentado, executados automaticamente a cada alteração, e uma revisão do código.',
+  nonAccessibleTitle: 'Conteúdos não acessíveis',
+  nonAccessibleItems: [
+    'O mostrador é um cursor cuja ativação também inicia o temporizador, afastando-se do comportamento esperado para este tipo de componente. O nome e a descrição indicam-no (critérios 7.1 e 7.3).',
+    'A ampliação do texto a 200 % e um percurso completo com leitor de ecrã não foram verificados manualmente (critérios 10.4 e 7.1).',
+  ],
+  contactTitle: 'Contacto',
+  contactText: 'Se não conseguir aceder a algum conteúdo, comunique-o para ser encaminhado para uma alternativa acessível:',
+  contactLink: 'abrir um pedido no GitHub',
+  remedyTitle: 'Vias de recurso',
+  remedyText: 'Se uma comunicação ficar sem resposta, em França é possível recorrer ao Défenseur des droits, contactar o seu delegado regional ou escrever sem franquia para: Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.',
   footerText: 'A acessibilidade está integrada em <strong>cada linha de código</strong> do Pomodoro Accessibilité.',
   officialRef: 'Referencial oficial do RGAA 4.1 (em francês):',
 };
@@ -778,8 +880,26 @@ const ar: A11yText = {
   badges: ['الصور', 'الألوان', 'الوسائط المتعددة', 'الجداول', 'الروابط والأزرار', 'السكربتات ولوحة المفاتيح', 'العناصر الإلزامية', 'التنظيم', 'النماذج', 'التنقّل', 'الاطّلاع'],
   stackLabel: 'مبني باستخدام',
   stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
+  declarationTitle: 'بيان إمكانية الوصول',
+  declarationIntro: 'ينطبق هذا البيان على Pomodoro Accessibilité في نسخه للويب و iOS و Android.',
+  declLabels: { env: 'بيئة الاختبار', tools: 'أدوات التقييم', pages: 'الصفحات المُقيَّمة', date: 'حُرِّر في' },
+  declEnv: 'Chromium على macOS، دون اختبار بقارئ الشاشة.',
+  declTools: 'axe-core 4.13 وقياس التباين على الصفحة المعروضة، يُعادان تلقائيًّا عند كل تعديل، ومراجعة للشيفرة.',
+  nonAccessibleTitle: 'محتويات غير متاحة',
+  nonAccessibleItems: [
+    'القرص عنصر انزلاقي يؤدي تفعيله أيضًا إلى بدء المؤقّت، وهو ما يخالف السلوك المتوقَّع لهذا النوع من المكوّنات. ويُصرِّح بذلك اسمه ووصفه (المعياران 7.1 و7.3).',
+    'لم يُتحقَّق يدويًّا من تكبير النص إلى 200 % ولا من التصفّح الكامل بقارئ الشاشة (المعياران 10.4 و7.1).',
+  ],
+  contactTitle: 'التواصل',
+  contactText: 'إذا تعذّر عليك الوصول إلى محتوى ما، فأبلغ عنه ليُرشَد إلى بديل متاح:',
+  contactLink: 'فتح تذكرة على GitHub',
+  remedyTitle: 'سبل التظلّم',
+  remedyText: 'إذا بقي البلاغ دون ردّ، يمكن في فرنسا اللجوء إلى Défenseur des droits، أو التواصل مع مندوبه في المنطقة، أو المراسلة دون طابع بريدي إلى: Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.',
   footerText: 'إمكانية الوصول مدمجة في <strong>كل سطر من شيفرة</strong> Pomodoro Accessibilité.',
   officialRef: 'المرجع الرسمي لـ RGAA 4.1 (بالفرنسية):',
 };
+
+/** Date d'établissement de la déclaration d'accessibilité (ISO, formatée à l'affichage). */
+export const DECLARATION_DATE = '2026-09-25';
 
 export const A11Y_TEXTS: Record<Lang, A11yText> = { fr, en, es, de, it, pt, ar };

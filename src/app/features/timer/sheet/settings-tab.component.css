@@ -54,6 +54,8 @@
   appearance: none;
   -webkit-appearance: none;
   background: var(--range-bg);
+  /* Éteint, le fond seul ne dépassait pas 2,8:1 : le bord rend l'interrupteur identifiable */
+  border: 1px solid var(--switch-edge);
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   transition: background 0.2s ease;

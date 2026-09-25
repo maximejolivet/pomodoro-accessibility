@@ -22,12 +22,17 @@ Lancer `make` seul affiche l'aide.
 | `make build`                          | Build de production                                             |
 | `make watch`                          | Build de dev en continu                                         |
 | `make test`                           | Tests unitaires (Karma / Jasmine)                               |
+| `make test-a11y`                      | Tests d'accessibilité (axe-core + clavier, via Playwright)      |
 | `make sync`                           | Build, copie dans `www/`, `npx cap sync`, puis `make sounds`    |
 | `make sounds`                         | Génère les sons de notification (WAV) et les copie dans Android |
 | `make icon`                           | Génère l'icône iOS depuis `resources/app-icon.svg`              |
 | `make ios` / `make android`           | Ajoute la plateforme native (une seule fois)                    |
 | `make open-ios` / `make open-android` | Sync puis ouvre Xcode / Android Studio                          |
 | `make clean`                          | Supprime `dist/`, `www/` et le cache Angular                    |
+
+La première exécution de `make test-a11y` demande le navigateur de test :
+`npx playwright install chromium`. Les mêmes tests tournent en CI à chaque push
+(`.github/workflows/a11y.yml`).
 
 ## Technologies
 
