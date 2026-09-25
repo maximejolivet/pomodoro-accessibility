@@ -125,6 +125,13 @@
       </ul>
     </section>
 
+    <section class="stack" aria-labelledby="stack-title">
+      <h2 id="stack-title" class="stack-title">{{ s().stackLabel }}</h2>
+      <ul class="criteria-badges">
+        <li class="badge badge-tech" *ngFor="let tech of s().stack">{{ tech }}</li>
+      </ul>
+    </section>
+
     <footer class="info-footer">
       <p [innerHTML]="s().footerText"></p>
       <p class="disclaimer">{{ s().officialRef }} <a href="https://accessibilite.numerique.gouv.fr/" target="_blank" rel="noopener noreferrer">accessibilite.numerique.gouv.fr<span class="sr-only">{{ s().newTab }}</span></a></p>

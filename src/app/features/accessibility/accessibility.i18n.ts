@@ -54,6 +54,9 @@ export interface A11yText {
   criteriaNote: string;
   badgesLabel: string;
   badges: string[];
+  stackLabel: string;
+  /** Noms propres : la même liste dans toutes les langues. */
+  stack: string[];
   footerText: string;
   officialRef: string;
 }
@@ -155,6 +158,8 @@ const fr: A11yText = {
   criteriaNote: "Évaluation faite avec l'outil automatique axe-core et une revue du code, sans audit manuel complet ni test avec lecteur d'écran. 11 thèmes RGAA s'appliquent à cette application.",
   badgesLabel: 'Thèmes RGAA pris en compte',
   badges: ['Images', 'Couleurs', 'Multimédia', 'Tableaux', 'Liens et boutons', 'Scripts et clavier', 'Éléments obligatoires', 'Structuration', 'Formulaires', 'Navigation', 'Consultation'],
+  stackLabel: 'Construit avec',
+  stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
   footerText: "L'accessibilité est intégrée dans <strong>chaque ligne de code</strong> de Pomodoro Accessibilité.",
   officialRef: 'Référentiel officiel du RGAA 4.1 :',
 };
@@ -256,6 +261,8 @@ const en: A11yText = {
   criteriaNote: 'Assessed with the automated axe-core tool and a code review, without a full manual audit or screen reader testing. 11 RGAA themes apply to this application.',
   badgesLabel: 'RGAA themes taken into account',
   badges: ['Images', 'Colors', 'Multimedia', 'Tables', 'Links and buttons', 'Scripts and keyboard', 'Mandatory elements', 'Structure', 'Forms', 'Navigation', 'Consultation'],
+  stackLabel: 'Built with',
+  stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
   footerText: 'Accessibility is built into <strong>every line of code</strong> of Pomodoro Accessibilité.',
   officialRef: 'Official RGAA 4.1 reference (in French):',
 };
@@ -357,6 +364,8 @@ const es: A11yText = {
   criteriaNote: 'Evaluación realizada con la herramienta automática axe-core y una revisión del código, sin auditoría manual completa ni pruebas con lector de pantalla. 11 temas del RGAA se aplican a esta aplicación.',
   badgesLabel: 'Temas del RGAA tenidos en cuenta',
   badges: ['Imágenes', 'Colores', 'Multimedia', 'Tablas', 'Enlaces y botones', 'Scripts y teclado', 'Elementos obligatorios', 'Estructuración', 'Formularios', 'Navegación', 'Consulta'],
+  stackLabel: 'Construido con',
+  stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
   footerText: 'La accesibilidad está integrada en <strong>cada línea de código</strong> de Pomodoro Accessibilité.',
   officialRef: 'Referencial oficial del RGAA 4.1 (en francés):',
 };
@@ -458,6 +467,8 @@ const de: A11yText = {
   criteriaNote: 'Bewertet mit dem automatischen Werkzeug axe-core und einer Code-Durchsicht, ohne vollständiges manuelles Audit und ohne Tests mit Screenreader. 11 RGAA-Themen betreffen diese Anwendung.',
   badgesLabel: 'Berücksichtigte RGAA-Themen',
   badges: ['Bilder', 'Farben', 'Multimedia', 'Tabellen', 'Links und Schaltflächen', 'Skripte und Tastatur', 'Pflichtelemente', 'Strukturierung', 'Formulare', 'Navigation', 'Bedienung'],
+  stackLabel: 'Gebaut mit',
+  stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
   footerText: 'Barrierefreiheit steckt in <strong>jeder Codezeile</strong> von Pomodoro Accessibilité.',
   officialRef: 'Offizielle RGAA-4.1-Referenz (auf Französisch):',
 };
@@ -559,6 +570,8 @@ const it: A11yText = {
   criteriaNote: 'Valutazione svolta con lo strumento automatico axe-core e una revisione del codice, senza un audit manuale completo né test con lettore di schermo. 11 temi RGAA si applicano a questa applicazione.',
   badgesLabel: 'Temi RGAA presi in considerazione',
   badges: ['Immagini', 'Colori', 'Multimedia', 'Tabelle', 'Link e pulsanti', 'Script e tastiera', 'Elementi obbligatori', 'Strutturazione', 'Moduli', 'Navigazione', 'Consultazione'],
+  stackLabel: 'Realizzato con',
+  stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
   footerText: 'L’accessibilità è integrata in <strong>ogni riga di codice</strong> di Pomodoro Accessibilité.',
   officialRef: 'Riferimento ufficiale RGAA 4.1 (in francese):',
 };
@@ -660,6 +673,8 @@ const pt: A11yText = {
   criteriaNote: 'Avaliação feita com a ferramenta automática axe-core e uma revisão do código, sem auditoria manual completa nem testes com leitor de ecrã. 11 temas do RGAA aplicam-se a esta aplicação.',
   badgesLabel: 'Temas do RGAA tidos em conta',
   badges: ['Imagens', 'Cores', 'Multimédia', 'Tabelas', 'Ligações e botões', 'Scripts e teclado', 'Elementos obrigatórios', 'Estruturação', 'Formulários', 'Navegação', 'Consulta'],
+  stackLabel: 'Construído com',
+  stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
   footerText: 'A acessibilidade está integrada em <strong>cada linha de código</strong> do Pomodoro Accessibilité.',
   officialRef: 'Referencial oficial do RGAA 4.1 (em francês):',
 };
@@ -761,6 +776,8 @@ const ar: A11yText = {
   criteriaNote: 'أُجري التقييم بأداة axe-core الآلية ومراجعة للشيفرة، دون تدقيق يدوي كامل ودون اختبار بقارئ الشاشة. ينطبق 11 محورًا من RGAA على هذا التطبيق.',
   badgesLabel: 'محاور RGAA المأخوذة في الحسبان',
   badges: ['الصور', 'الألوان', 'الوسائط المتعددة', 'الجداول', 'الروابط والأزرار', 'السكربتات ولوحة المفاتيح', 'العناصر الإلزامية', 'التنظيم', 'النماذج', 'التنقّل', 'الاطّلاع'],
+  stackLabel: 'مبني باستخدام',
+  stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
   footerText: 'إمكانية الوصول مدمجة في <strong>كل سطر من شيفرة</strong> Pomodoro Accessibilité.',
   officialRef: 'المرجع الرسمي لـ RGAA 4.1 (بالفرنسية):',
 };

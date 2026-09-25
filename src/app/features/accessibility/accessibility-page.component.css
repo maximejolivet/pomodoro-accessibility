@@ -604,3 +604,22 @@
   display: inline-block;
   transform: scaleX(-1);
 }
+
+/* STACK TECHNIQUE (fin de page) */
+.stack {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.stack-title {
+  font-size: 1em;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 12px;
+}
+
+.badge-tech {
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+  font-size: 0.85em;
+  color: var(--text-secondary);
+}
