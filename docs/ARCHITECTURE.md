@@ -9,14 +9,14 @@ src/
 ├── theme/
 │   ├── tokens.css              # Jetons de couleur (thème clair), posés sur <app-root>
 │   ├── dark.css                # Redéfinition des jetons en thème sombre
-│   └── controls.css            # Primitives partagées (bouton relief, curseur, segmenté)
+│   └── controls.css            # Primitives partagées (bouton relief, curseur, segmenté, interrupteur)
 └── app/
     ├── app.component.*         # Coquille : applique le thème + <router-outlet>
     ├── app.config.ts           # Providers (routeur)
     ├── app.routes.ts           # Routes, chargées à la demande (loadComponent)
     ├── core/                   # Ce qui ne dépend d'aucune page
-    │   ├── constants/          # timer · history · preset (règles et réglages du domaine)
-    │   ├── models/             # preset · session · alert · widget-state
+    │   ├── constants/          # timer · history · preset · routine (règles et réglages du domaine)
+    │   ├── models/             # preset · routine · session · alert · widget-state
     │   ├── helpers/            # storage.ts · time.ts · sound-patterns.ts (motifs + WAV) · haptic-patterns.ts
     │   ├── i18n/
     │   │   ├── i18n.service.ts # Langue courante, sens d'écriture, traduction
@@ -27,6 +27,7 @@ src/
     │       ├── session.service.ts      # Session en cours, enchaînement, sons, notifications, widget
     │       ├── preferences.service.ts  # Préférences persistées, en signaux
     │       ├── preset.service.ts       # Modes personnalisables
+│       ├── routine.service.ts      # Routines : suites d'étapes enchaînées
     │       ├── history.service.ts      # Historique des sessions et statistiques
     │       ├── sound.service.ts        # Lecture des sons (Web Audio)
     │       ├── speech.service.ts       # Temps restant dit à voix haute (Web Speech)
@@ -39,10 +40,12 @@ src/
         │   ├── timer-page.component.*  # Assemble les blocs ci-dessous
         │   ├── dial/                   # Boîtier 3D, cadran SVG, réglage au doigt et au clavier
         │   ├── readout/                # Temps, mode, état, cycle, boutons − / +
+        │   ├── routine/                # Bande des étapes de la routine en cours
         │   ├── controls/               # Remise à zéro, démarrage / pause, réglages
         │   ├── sheet/                  # Panneau coulissant + onglets Modes / Stats / Réglages
+        │   │                           #   (l'onglet Modes contient la section Routines et son éditeur)
         │   ├── dial-geometry.ts        # Chemins SVG du cadran (fonctions pures)
-        │   └── timer.model.ts          # Onglets du panneau, mode en cours d'édition
+        │   └── timer.model.ts          # Onglets du panneau, mode et routine en cours d'édition
         └── accessibility/
             ├── accessibility-page.component.*  # Page d'accessibilité (route /accessibility)
             └── accessibility.i18n.ts           # Ses textes, par langue
@@ -83,15 +86,20 @@ docs/
   continue, se termine et s'enregistre pendant la lecture de la page d'accessibilité.
 - **Thèmes** : toutes les couleurs sont des variables CSS dans `src/theme/`, posées sur
   `<app-root>` et redéfinies sous `app-root.dark`, donc héritées par les pages.
-- **Accessibilité testée en continu** : `npm run test:a11y` lance l'app et vérifie seize
-  points — axe-core sur l'accueil, le panneau (trois onglets), l'éditeur de mode et la page
-  d'accessibilité, en thème clair et sombre et en arabe ; le réglage du cadran au clavier ;
+- **Accessibilité testée en continu** : `npm run test:a11y` lance l'app et vérifie une quarantaine de
+  points — axe-core sur l'accueil, le panneau (trois onglets), l'éditeur de mode, l'éditeur de
+  routine et la page d'accessibilité, en thème clair et sombre et en arabe ; le réglage du
+  cadran au clavier ; l'enchaînement des étapes d'une routine et sa bande ;
   le piège à focus de la modale ; Échap et le retour du focus ; l'absence de défilement
   horizontal à 320 px ; l'espacement du texte de WCAG 1.4.12 ; et le contraste des
   interrupteurs mesuré sur les pixels rendus (WCAG 1.4.11). La CI les rejoue à chaque push.
 - **Pas de `shared/`, `guards/`, `interceptors/`, `pipes/` ni `environments/`** : rien à y
   mettre aujourd'hui. Ces dossiers se créeront le jour où un deuxième usage apparaîtra.
-- **Préférences, modes et historique** : enregistrés dans `localStorage` (500 dernières sessions).
+- **Une routine est une suite de modes** : chaque étape a la forme d'un `Preset` (nom, durée,
+  couleur, nature) plus un pictogramme. `SessionService.selectedPreset` renvoie l'étape en cours
+  quand une routine est chargée, si bien que le cadran, l'historique, les notifications et le
+  widget n'ont aucune notion de routine à gérer. Seuls l'enchaînement et la bande en ont une.
+- **Préférences, modes, routines et historique** : enregistrés dans `localStorage` (500 dernières sessions).
 - **Traductions** : un dictionnaire par langue dans `core/i18n/locales/`, typé à partir du français ;
   une clé manquante dans une autre langue est une erreur de compilation. Ajouter une langue =
   ajouter un fichier dans `locales/`, puis une entrée dans `Lang`, `DICTIONARIES` et `LANGUAGES`

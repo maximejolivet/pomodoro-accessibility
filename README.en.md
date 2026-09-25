@@ -75,7 +75,7 @@ disc replaces a calculation with an image.
 | Profile               | Common difficulty                                                       | What the app offers                                                                |
 | --------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
 | **ADHD**              | Estimating duration, starting, stopping on time                         | A visual cue, short sessions followed by breaks, a *Focus TDAH* mode               |
-| **Autism**            | Switching activities, coping with the unexpected and with noise         | Milestones announced in advance, soft sounds that can be turned off, a stable interface |
+| **Autism**            | Switching activities, coping with the unexpected and with noise         | Milestones announced in advance, routines in pictures, soft sounds that can be turned off |
 | **DYS disorders**     | Reading numbers or a clock time, tiring quickly on text                 | Time you can read without numbers, the OpenDyslexic font, well-spaced text         |
 | **Other profiles**    | Need for clear instructions, an adapted pace, less pressure             | Free durations from 1 to 60 min, custom modes, no grades or penalties              |
 
@@ -116,6 +116,7 @@ visual timer is a simple, discreet and free tool at that level.
 | ➖➕ **− and + buttons**           | One minute per tap, no dragging: for shaky hands, a single finger or a switch device                                   |
 | 🔒 **Dial lock**                 | One tap and the dial stops responding: a resting palm can no longer change the time or wipe the session               |
 | 🎯 **Custom modes**              | Pomodoro, Break, Long break, ADHD Focus… or your own modes: name, duration (1-60 min), color, work or break            |
+| 🧩 **Picture routines**          | A sequence of steps that follow on their own — get dressed, breakfast, teeth, school bag — each with its picture and its length |
 | 🔁 **Automatic chaining**        | Work → break → work, with a long break every 4 cycles (can be turned off)                                              |
 | 📊 **History & statistics**      | Focus time today, completed sessions, day streak, chart of the last 7 days                                             |
 | 🏁 **Daily goal**                | A number of focus minutes to aim for each day (10-300 min), with a progress bar                                        |
@@ -143,10 +144,14 @@ when you come back, everything is up to date.
 | **−** / **+** under the dial | Remove or add a minute; press and hold to run through them                   |
 | ↺                          | Reset                                                                         |
 | ⚙︎ → **Modes**              | Choose, create, edit or delete a mode                                         |
+| ⚙︎ → **Modes** → *Routines* | Start a routine, create one, reorder its steps                                |
+| **Tap** a step             | Jump straight to that step of the routine; ✕ leaves the routine               |
 | ⚙︎ → **Stats**              | See today's goal, your statistics and session history                         |
 | ⚙︎ → **Settings**           | Dark mode, sounds, vibration, visual alert, spoken time, +5 min, chaining, screen on, goal, language |
 
 <p align="center">
+  <img src="docs/screenshot-routine.png" alt="The morning routine loaded, with the strip of its four steps" width="260">
+  &nbsp;&nbsp;
   <img src="docs/screenshot-modes.png" alt="Mode editor" width="260">
   &nbsp;&nbsp;
   <img src="docs/screenshot-stats.png" alt="Statistics" width="260">
@@ -184,6 +189,8 @@ The app is designed to be usable by everyone:
 - 📳 **Without seeing or hearing**: every milestone has its own vibration pattern, recognizable in
   your hand (⚙︎ → *Vibration*).
 - 👁️ **Readable for all**: careful contrast, dark mode, colors always paired with a name.
+- 🖼️ **Without reading**: every step of a routine carries a picture before its name, and the strip
+  shows what is done, what is playing and what comes next.
 - 🔤 **Dyslexia-friendly font**: the OpenDyslexic font can be turned on in the settings.
 - 🌀 **Reduced motion**: if your device asks for less motion, the app respects it.
 - 🖐️ **No dragging required**: the − and + buttons set the duration with a single tap, for anyone
@@ -195,10 +202,11 @@ A dedicated page covers all of this, including the RGAA 4.1 accessibility statem
 (conformance status, non-accessible content, contact and remedies): see the
 **♿ Accessibility** link at the bottom right of the app.
 
-These guarantees are checked on every change: `npm run test:a11y` replays thirty-six checks
+These guarantees are checked on every change: `npm run test:a11y` replays forty-four checks
 (axe-core on every view, in light, dark and Arabic; control of the dial by keyboard and by the
 − / + buttons; spoken time, vibration patterns and the visual alert checked against a simulated
-countdown; the dial lock; target sizes; the modal focus trap; no horizontal scrolling at 320 px), and CI runs them on every push.
+countdown; the dial lock; the chaining of a routine's steps, its strip and its editor; target
+sizes; the modal focus trap; no horizontal scrolling at 320 px), and CI runs them on every push.
 
 ## For developers
 

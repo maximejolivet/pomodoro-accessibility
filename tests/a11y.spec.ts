@@ -643,3 +643,171 @@ test.describe('verrouillage du cadran', () => {
     expect(box!.height).toBeGreaterThanOrEqual(44);
   });
 });
+
+test.describe('routines', () => {
+  /**
+   * Une routine de trois étapes d'une minute, déjà chargée : les tests jouent la suite
+   * à l'horloge simulée sans attendre trente minutes. La première étape est du travail
+   * pour vérifier que la prolongation « +5 min » ne s'invite pas dans une routine.
+   */
+  const ROUTINE = {
+    id: 'test-routine',
+    name: 'Matin',
+    icon: '🌅',
+    steps: [
+      { id: 's1', name: 'Habillage', icon: '👕', seconds: 60, color: '#8b6fd6', kind: 'focus' },
+      { id: 's2', name: 'Repas', icon: '🥣', seconds: 60, color: '#56b27b', kind: 'break' },
+      { id: 's3', name: 'Dents', icon: '🪥', seconds: 60, color: '#5aa9c4', kind: 'break' }
+    ]
+  };
+
+  async function seed(page: Page, spoken = false) {
+    await page.addInitScript(
+      ([routine, capture]) => {
+        localStorage.setItem('pomodoro-tdah.lang', 'fr');
+        localStorage.setItem('pomodoro-tdah.routines', routine as string);
+        localStorage.setItem('pomodoro-tdah.routine', 'test-routine');
+        if (capture) {
+          (window as any).__spoken = [];
+          localStorage.setItem('pomodoro-tdah.speech', 'milestones');
+          SpeechSynthesis.prototype.speak = function (u: SpeechSynthesisUtterance) {
+            (window as any).__spoken.push(u.text);
+          };
+        }
+      },
+      [JSON.stringify([ROUTINE]), spoken] as const
+    );
+  }
+
+  const chips = (page: Page) => page.locator('.step-chip');
+  const said = (page: Page) => page.evaluate(() => (window as any).__spoken as string[]);
+
+  test('la bande situe chaque étape, et axe-core n’y trouve rien', async ({ page }) => {
+    await seed(page);
+    await page.goto('/');
+    await ready(page);
+
+    await expect(page.locator('.routine-title')).toContainText('Matin');
+    await expect(chips(page)).toHaveCount(3);
+    // L'état est dit, pas seulement montré par la couleur et la coche (WCAG 1.4.1)
+    await expect(chips(page).first()).toHaveAccessibleName('Étape 1 sur 3 : Habillage, 1 minutes, en cours');
+    await expect(chips(page).first()).toHaveAttribute('aria-current', 'step');
+    await expect(chips(page).nth(1)).toHaveAccessibleName('Étape 2 sur 3 : Repas, 1 minutes');
+    expect(await violations(page)).toEqual([]);
+  });
+
+  test('une étape est un bouton : on y va directement, dans les deux sens', async ({ page }) => {
+    await seed(page);
+    await page.goto('/');
+    await ready(page);
+
+    await chips(page).nth(2).click();
+    await expect(page.locator('.readout-mode')).toHaveText('Dents');
+    await expect(chips(page).nth(2)).toHaveAttribute('aria-current', 'step');
+    // Les deux premières sont alors marquées faites, la coche doublant le gris
+    await expect(page.locator('.step-chip.done')).toHaveCount(2);
+    await expect(page.locator('.step-check')).toHaveCount(2);
+
+    // Et l'on peut revenir en arrière pour refaire une étape
+    await chips(page).first().click();
+    await expect(page.locator('.readout-mode')).toHaveText('Habillage');
+    await expect(page.locator('.step-chip.done')).toHaveCount(0);
+  });
+
+  test('une étape finie enchaîne sur la suivante, qui est annoncée', async ({ page }) => {
+    await seed(page, true);
+    await page.clock.install();
+    await page.goto('/');
+    await ready(page);
+    await page.getByRole('button', { name: /démarrer/i }).click();
+
+    // Étape de travail, prolongation active par défaut : dans une routine elle ne
+    // s'applique pas, sinon toutes les étapes suivantes décaleraient de cinq minutes
+    await page.clock.runFor(61_000);
+    await expect(page.locator('.readout-mode')).toHaveText('Repas');
+    await expect(chips(page).nth(1)).toHaveAttribute('aria-current', 'step');
+    expect(await said(page)).toEqual(['Temps écoulé. Place à : Repas']);
+
+    await page.clock.runFor(61_000);
+    await expect(page.locator('.readout-mode')).toHaveText('Dents');
+  });
+
+  test('la dernière étape terminée coche toute la routine et le dit', async ({ page }) => {
+    await seed(page, true);
+    await page.clock.install();
+    await page.goto('/');
+    await ready(page);
+
+    await chips(page).nth(2).click();
+    await page.getByRole('button', { name: /démarrer/i }).click();
+    await page.clock.runFor(61_000);
+
+    await expect(page.locator('.step-chip.done')).toHaveCount(3);
+    await expect(page.locator('.step-chip[aria-current="step"]')).toHaveCount(0);
+    expect(await said(page)).toEqual(['Temps écoulé. Routine terminée : Matin']);
+    await expect(page.locator('#a11y-announcements')).toHaveText('Routine terminée : Matin');
+  });
+
+  test('verrouillé, la bande ne change plus d’étape et ne quitte plus la routine', async ({ page }) => {
+    await seed(page);
+    await page.goto('/');
+    await ready(page);
+    await page.getByRole('button', { name: /verrouiller le cadran/i }).click();
+
+    await expect(chips(page).first()).toHaveAttribute('aria-disabled', 'true');
+    await chips(page).nth(2).click({ force: true });
+    await expect(page.locator('.readout-mode')).toHaveText('Habillage');
+
+    await page.getByRole('button', { name: /quitter la routine/i }).click({ force: true });
+    await expect(page.locator('.routine-title')).toBeVisible();
+
+    // Choisir une routine dans le panneau reste possible : le geste y est délibéré
+    await chips(page).nth(1).click({ force: true });
+    await openSheet(page);
+    await page.getByRole('button', { name: 'Lancer Matin' }).click();
+    await expect(chips(page).first()).toHaveAttribute('aria-current', 'step');
+  });
+
+  test('quitter la routine rend le cadran au mode choisi', async ({ page }) => {
+    await seed(page);
+    await page.goto('/');
+    await ready(page);
+
+    await page.getByRole('button', { name: /quitter la routine/i }).click();
+    await expect(page.locator('.routine-title')).toHaveCount(0);
+    await expect(page.locator('.readout-time')).toHaveText('25:00');
+  });
+
+  test('ses cibles font au moins 44 px (WCAG 2.5.8)', async ({ page }) => {
+    await seed(page);
+    await page.goto('/');
+    await ready(page);
+    for (const target of [chips(page).first(), page.getByRole('button', { name: /quitter la routine/i })]) {
+      const box = await target.boundingBox();
+      expect(box!.height).toBeGreaterThanOrEqual(44);
+    }
+  });
+
+  test('l’éditeur de routine se tient, étape dépliée comprise', async ({ page }) => {
+    await seed(page);
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+
+    await page.getByRole('button', { name: 'Modifier la routine Matin' }).click();
+    await expect(page.getByRole('button', { name: 'Ajouter une étape' })).toBeVisible();
+    // L'éditeur prend tout l'onglet : la liste des modes s'efface le temps de l'édition
+    await expect(page.locator('.preset')).toHaveCount(0);
+    expect(await violations(page), 'éditeur replié').toEqual([]);
+
+    const step = page.getByRole('button', { name: 'Modifier Habillage' });
+    await step.click();
+    await expect(step).toHaveAttribute('aria-expanded', 'true');
+    expect(await violations(page), 'étape dépliée').toEqual([]);
+
+    // Réordonner, puis enregistrer : la bande suit aussitôt
+    await page.getByRole('button', { name: 'Descendre Habillage' }).click();
+    await page.getByRole('button', { name: 'Enregistrer' }).click();
+    await expect(chips(page).first()).toHaveAccessibleName(/Repas/);
+  });
+});

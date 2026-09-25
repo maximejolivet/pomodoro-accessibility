@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, inject, signal } from '@angular/core';
+import { Component, EventEmitter, Output, inject, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PRESET_COLORS } from '../../../core/constants/preset.constants';
@@ -9,12 +9,13 @@ import type { Preset, PresetKind } from '../../../core/models/preset.model';
 import { PresetService } from '../../../core/services/preset.service';
 import { SessionService } from '../../../core/services/session.service';
 import type { PresetDraft } from '../timer.model';
+import { RoutinesPanelComponent } from './routines-panel.component';
 
 /** Onglet « Modes » : durée du prochain décompte, liste des modes et leur éditeur. */
 @Component({
   selector: 'app-modes-tab',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RoutinesPanelComponent],
   templateUrl: './modes-tab.component.html',
   styleUrl: './modes-tab.component.css'
 })
@@ -30,8 +31,12 @@ export class ModesTabComponent {
   readonly presetKinds: PresetKind[] = ['focus', 'break', 'longBreak'];
 
   readonly draft = signal<PresetDraft | null>(null);
+  /** Éditeur de routine ouvert : il prend tout l'onglet, les modes s'effacent. */
+  readonly routineEditing = signal(false);
   /** Action destructive en attente de second tap. */
   readonly confirming = signal<'delete' | 'restore' | null>(null);
+
+  private readonly routines = viewChild(RoutinesPanelComponent);
 
   get durationSeconds(): number {
     return this.session.durationSeconds();
@@ -78,6 +83,8 @@ export class ModesTabComponent {
   reset(): void {
     this.draft.set(null);
     this.confirming.set(null);
+    this.routines()?.reset();
+    this.routineEditing.set(false);
   }
 
   editPreset(preset: Preset): void {

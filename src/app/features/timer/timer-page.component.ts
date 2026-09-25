@@ -7,6 +7,7 @@ import { SessionService } from '../../core/services/session.service';
 import { TimerControlsComponent } from './controls/timer-controls.component';
 import { TimerDialComponent } from './dial/timer-dial.component';
 import { TimerReadoutComponent } from './readout/timer-readout.component';
+import { RoutineStripComponent } from './routine/routine-strip.component';
 import { SettingsSheetComponent } from './sheet/settings-sheet.component';
 
 /**
@@ -22,6 +23,7 @@ import { SettingsSheetComponent } from './sheet/settings-sheet.component';
     RouterModule,
     TimerDialComponent,
     TimerReadoutComponent,
+    RoutineStripComponent,
     TimerControlsComponent,
     SettingsSheetComponent
   ],

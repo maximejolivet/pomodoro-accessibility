@@ -12,6 +12,7 @@ import type { Alert } from '../models/alert.model';
 import type { SpeechMode, VisualAlert } from '../models/preferences.model';
 import type { VisualCue } from '../models/session.model';
 import type { Preset, PresetKind } from '../models/preset.model';
+import type { Routine, RoutineStep } from '../models/routine.model';
 import type { ActiveSession } from '../models/session.model';
 import { HapticsService } from './haptics.service';
 import { HistoryService } from './history.service';
@@ -19,6 +20,7 @@ import { KeepAwakeService } from './keep-awake.service';
 import { NotificationService } from './notification.service';
 import { PreferencesService } from './preferences.service';
 import { PresetService } from './preset.service';
+import { RoutineService } from './routine.service';
 import { SoundService } from './sound.service';
 import { SpeechService } from './speech.service';
 import { TimerService } from './timer.service';
@@ -36,6 +38,7 @@ export class SessionService {
   private readonly timer = inject(TimerService);
   private readonly history = inject(HistoryService);
   private readonly presetService = inject(PresetService);
+  private readonly routineService = inject(RoutineService);
   private readonly prefs = inject(PreferencesService);
   private readonly sound = inject(SoundService);
   private readonly haptics = inject(HapticsService);
@@ -46,8 +49,24 @@ export class SessionService {
   private readonly i18n = inject(I18nService);
 
   private readonly selectedPresetId = signal(readPref('preset'));
+
+  /**
+   * Routine en cours de déroulé, et le rang de l'étape où elle en est. Tant qu'une
+   * routine est chargée, c'est son étape courante qui tient lieu de mode : le cadran,
+   * l'historique et le widget n'ont rien à savoir des routines.
+   */
+  readonly activeRoutine = signal<Routine | null>(this.routineService.byId(readPref('routine')) ?? null);
+  readonly routineIndex = signal(0);
+  /** Dernière étape terminée : la bande reste affichée, toutes les étapes cochées. */
+  readonly routineDone = signal(false);
+  readonly currentStep = computed<RoutineStep | null>(() => {
+    const routine = this.activeRoutine();
+    return routine?.steps[this.routineIndex()] ?? null;
+  });
+
   readonly selectedPreset = computed<Preset>(
-    () => this.presetService.byId(this.selectedPresetId()) ?? this.presetService.presets()[0]
+    () =>
+      this.currentStep() ?? this.presetService.byId(this.selectedPresetId()) ?? this.presetService.presets()[0]
   );
 
   /** Durée réglée (secondes), utilisée au démarrage. */
@@ -101,7 +120,8 @@ export class SessionService {
   /** « Cycle n/4 » pendant une session de travail, si l'enchaînement est actif. */
   readonly cycleLabel = computed<string | null>(() => {
     const kind = this.session()?.kind ?? this.selectedPreset().kind;
-    if (!this.prefs.autoChain() || kind !== 'focus') return null;
+    // Une routine a sa propre suite d'étapes : le cycle pomodoro ne la décrit pas
+    if (this.activeRoutine() || !this.prefs.autoChain() || kind !== 'focus') return null;
     return this.i18n.t('cycle', { n: (this.focusRounds() % LONG_BREAK_EVERY) + 1, total: LONG_BREAK_EVERY });
   });
 
@@ -163,6 +183,10 @@ export class SessionService {
     return preset.name || (preset.nameKey ? this.i18n.t(preset.nameKey) : '');
   }
 
+  routineName(routine: Routine): string {
+    return routine.name || (routine.nameKey ? this.i18n.t(routine.nameKey) : '');
+  }
+
   // ---------- Commandes ----------
 
   /** Démarre, met en pause ou reprend le décompte. */
@@ -182,6 +206,7 @@ export class SessionService {
       this.announce(this.i18n.t('state.running'));
     } else if (this.durationSeconds() > 0) {
       this.inExtra.set(false);
+      this.routineDone.set(false);
       this.startSession(this.selectedPreset(), this.durationSeconds());
       this.announce(this.i18n.t('state.running') + ', ' + formatTime(this.durationSeconds()));
     }
@@ -214,9 +239,74 @@ export class SessionService {
 
   /** Choisir un mode dans le panneau reste possible verrouillé : le geste est délibéré. */
   selectPreset(preset: Preset): void {
+    this.leaveRoutine();
     this.setSelectedPreset(preset);
     this.durationSeconds.set(preset.seconds);
     this.resetTimer();
+  }
+
+  // ---------- Routines ----------
+
+  /**
+   * Charge une routine et arme sa première étape, sans la démarrer : c'est le même
+   * geste que choisir un mode, et rien ne part sans un appui sur ▶.
+   */
+  startRoutine(routine: Routine): void {
+    this.activeRoutine.set(routine);
+    writePref('routine', routine.id);
+    // Comme choisir un mode, le geste vient du panneau : le verrou ne s'y oppose pas
+    this.armStep(0);
+  }
+
+  /**
+   * Va directement à une étape — la suivante quand elle est déjà faite, la précédente
+   * quand on veut la refaire. C'est la seule façon de sortir d'une étape sans attendre
+   * la fin, et elle passe par la bande, où chaque étape est un bouton. Le verrou la
+   * neutralise : elle abandonne l'étape en cours, comme la remise à zéro.
+   */
+  goToStep(index: number): void {
+    if (this.locked()) return;
+    this.armStep(index);
+  }
+
+  /** Quitte la routine et revient au mode choisi avant elle. */
+  exitRoutine(): void {
+    if (!this.activeRoutine() || this.locked()) return;
+    this.leaveRoutine();
+    this.durationSeconds.set(this.selectedPreset().seconds);
+    this.resetTimer();
+    this.announce(this.i18n.t('state.ready'));
+  }
+
+  /** « Étape 2 sur 4 : Petit-déjeuner, 15 minutes », pour la bande et les annonces. */
+  stepLabel(index: number): string {
+    const routine = this.activeRoutine();
+    const step = routine?.steps[index];
+    if (!routine || !step) return '';
+    return this.i18n.t('routine.step', {
+      n: index + 1,
+      total: routine.steps.length,
+      name: this.presetName(step),
+      m: Math.round(step.seconds / 60)
+    });
+  }
+
+  /** Charge une étape sur le cadran, à l'arrêt, et la dit. */
+  private armStep(index: number): void {
+    const routine = this.activeRoutine();
+    if (!routine) return;
+    this.routineDone.set(false);
+    this.routineIndex.set(Math.max(0, Math.min(routine.steps.length - 1, index)));
+    this.durationSeconds.set(this.currentStep()?.seconds ?? 0);
+    this.resetTimer();
+    this.announce(this.stepLabel(this.routineIndex()));
+  }
+
+  private leaveRoutine(): void {
+    this.activeRoutine.set(null);
+    this.routineIndex.set(0);
+    this.routineDone.set(false);
+    writePref('routine', '');
   }
 
   /** Règle le temps affiché (cadran, curseur, clavier) ; arrondi et borné à 0-60 minutes. */
@@ -268,6 +358,28 @@ export class SessionService {
     if (this.locked()) return false;
     const minutes = this.displayMinutes();
     return delta < 0 ? minutes > MIN_MINUTES : minutes < MAX_MINUTES;
+  }
+
+  /**
+   * Après modification d'une routine : la routine en cours pointe sur l'objet d'avant
+   * l'enregistrement. On la remplace, en gardant l'étape si elle existe encore, pour que
+   * la bande et le décompte reflètent ce qui vient d'être édité.
+   */
+  syncRoutine(routine: Routine | null, id: string): void {
+    if (this.activeRoutine()?.id !== id) return;
+    // Routine supprimée : on en sort sans passer par le verrou, le geste vient du panneau
+    if (!routine) {
+      this.leaveRoutine();
+      this.durationSeconds.set(this.selectedPreset().seconds);
+      this.resetTimer();
+      return;
+    }
+    this.activeRoutine.set(routine);
+    const index = Math.min(this.routineIndex(), routine.steps.length - 1);
+    this.routineIndex.set(index);
+    if (!this.session()) {
+      this.durationSeconds.set(routine.steps[index].seconds);
+    }
   }
 
   /** Après modification d'un mode : recale la durée si c'est celui qui est réglé et qu'aucune session ne tourne. */
@@ -414,8 +526,11 @@ export class SessionService {
       this.showCue('end');
     }
     const kind = this.session()?.kind ?? this.selectedPreset().kind;
+    const routine = this.activeRoutine();
 
-    if (this.prefs.autoExtra() && !this.inExtra() && kind === 'focus') {
+    // Pas de prolongation dans une routine : ce qui a été annoncé doit arriver à l'heure
+    // dite, et cinq minutes de plus décaleraient toutes les étapes suivantes.
+    if (this.prefs.autoExtra() && !this.inExtra() && kind === 'focus' && !routine) {
       // La prolongation part de l'heure de fin réelle, même si l'app était en arrière-plan
       const extraLeft = EXTRA_SECONDS - lateBy;
       if (extraLeft > 0) {
@@ -433,9 +548,18 @@ export class SessionService {
     this.inExtra.set(false);
     this.endSession(true, lateBy);
 
-    const next = this.prefs.autoChain() ? this.nextInChain(kind, this.focusRounds()) : undefined;
+    // Une routine s'enchaîne d'elle-même : c'est sa définition, pas l'option « enchaîner »
+    const next = routine
+      ? routine.steps[this.routineIndex() + 1]
+      : this.prefs.autoChain()
+        ? this.nextInChain(kind, this.focusRounds())
+        : undefined;
     if (next && next.seconds - lateBy > 0) {
-      this.setSelectedPreset(next);
+      if (routine) {
+        this.routineIndex.update(i => i + 1);
+      } else {
+        this.setSelectedPreset(next);
+      }
       this.durationSeconds.set(next.seconds);
       this.startSession(next, next.seconds - lateBy, lateBy);
       this.announce(this.i18n.t('state.running') + ', ' + this.presetName(next));
@@ -445,6 +569,14 @@ export class SessionService {
       return;
     }
     this.finished.set(true);
+    if (routine) {
+      // Toutes les étapes cochées : la bande le montre, l'annonce le dit
+      this.routineDone.set(true);
+      const done = this.i18n.t('routine.finished', { name: this.routineName(routine) });
+      this.announce(done);
+      if (fresh) this.sayEnd(done);
+      return;
+    }
     this.announce(this.i18n.t('state.finished'));
     if (fresh) this.sayEnd();
   }
@@ -469,9 +601,14 @@ export class SessionService {
       }
     }
 
-    const willExtend = this.prefs.autoExtra() && !this.inExtra() && kind === 'focus';
+    const routine = this.activeRoutine();
+    const willExtend = this.prefs.autoExtra() && !this.inExtra() && kind === 'focus' && !routine;
     const roundsAfter = kind === 'focus' ? this.focusRounds() + 1 : this.focusRounds();
-    const next = this.prefs.autoChain() ? this.nextInChain(kind, roundsAfter) : undefined;
+    const next = routine
+      ? routine.steps[this.routineIndex() + 1]
+      : this.prefs.autoChain()
+        ? this.nextInChain(kind, roundsAfter)
+        : undefined;
     const afterBody = next ? t('notif.nextBody', { name: this.presetName(next) }) : t('notif.endBody');
 
     alerts.push({

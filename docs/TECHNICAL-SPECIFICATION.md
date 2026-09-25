@@ -2,7 +2,7 @@
 
 [← Retour au README](../README.md) · [Cahier des charges fonctionnel](FUNCTIONAL-SPECIFICATION.md)
 
-Version 1.0 — 25 septembre 2026 · Application **Pomodoro Accessibilité**
+Version 1.1 — 26 septembre 2026 · Application **Pomodoro Accessibilité**
 
 Ce document décrit *comment* les exigences du [cahier des charges
 fonctionnel](FUNCTIONAL-SPECIFICATION.md) sont réalisées. Pour la carte des dossiers, voir
@@ -66,7 +66,7 @@ app.component        Coquille : applique le thème et le sens d'écriture, porte
 app.config.ts        Providers (routeur)
 app.routes.ts        '' → timer, 'accessibility' → page d'accessibilité (loadComponent)
 core/                Indépendant de toute page : constants, models, helpers, i18n, services
-features/timer/      Page du minuteur = assemblage de dial / readout / controls / sheet
+features/timer/      Page du minuteur = assemblage de dial / readout / routine / controls / sheet
 features/accessibility/  Page de déclaration d'accessibilité et ses textes
 ```
 
@@ -97,6 +97,8 @@ features/accessibility/  Page de déclaration d'accessibilité et ses textes
 | Type | Champs | Notes |
 | ---- | ------ | ----- |
 | `Preset` | `id`, `name`, `nameKey?`, `seconds`, `color`, `kind` | `kind` ∈ `focus` \| `break` \| `longBreak` ; `name` vide pour un mode par défaut, dont le libellé vient de `nameKey` (traduit) |
+| `RoutineStep` | `id`, `name`, `nameKey?`, `icon`, `seconds`, `color`, `kind` | Un `Preset` plus un pictogramme : une étape se démarre et s'enregistre exactement comme un mode (`kind` ∈ `focus` \| `break`) |
+| `Routine` | `id`, `name`, `nameKey?`, `icon`, `steps` | Suite ordonnée de 1 à 10 étapes (RG-16) |
 | `Session` | `name`, `color`, `kind`, `plannedSeconds`, `activeSeconds`, `startedAt`, `endedAt`, `completed` | Nom et couleur figés à l'enregistrement (RG-9) |
 | `ActiveSession` | `name`, `color`, `kind`, `plannedSeconds`, `startedAt`, `activeMs`, `runningSince` | `runningSince` à `null` en pause ; `activeMs` cumule le temps décompté avant la reprise courante |
 | `DayStat` | `date`, `focusMinutes` | Une barre de l'histogramme hebdomadaire |
@@ -117,6 +119,9 @@ features/accessibility/  Page de déclaration d'accessibilité et ses textes
 | `GOAL_MIN / MAX / STEP / DEFAULT_MINUTES` | 10 / 300 / 5 / 100 | RG-12 |
 | `PRESET_COLORS` | 10 teintes de l'anneau | EF-MOD-3 |
 | `DEFAULT_PRESETS` | Pomodoro 25, Pause 5, Pause longue 15, Focus 15 | EF-MOD-1 |
+| `STEP_ICONS` | 32 pictogrammes (quotidien, école, travail) | EF-ROU-2 |
+| `MAX_STEPS` | 10 | RG-16 |
+| `DEFAULT_ROUTINES` | Routine du matin (4 étapes), Devoirs (4 étapes) | EF-ROU-3 |
 
 ### 3.3 Persistance
 
@@ -140,13 +145,17 @@ la session (RG-14).
 | `lang` | Langue | code de langue ou `'auto'` |
 | `preset` | Mode sélectionné | identifiant |
 | `presets` | Modes | JSON `Preset[]` |
+| `routine` | Routine chargée | identifiant, vide si aucune (EF-ROU-10) |
+| `routines` | Routines | JSON `Routine[]`, liste vide possible |
 | `history` | Historique | JSON `Session[]`, 500 entrées max |
 | `daily-goal` | Objectif quotidien | minutes |
 
 **Migrations.** Il n'y a pas de numéro de schéma : les lectures sont défensives. Les modes
 relus sont filtrés (identifiant chaîne, durée positive, couleur chaîne) et, si rien de valide ne
 subsiste, les modes par défaut sont restaurés. Un JSON illisible retombe sur la valeur par défaut.
-L'objectif relu est borné et arrondi.
+L'objectif relu est borné et arrondi. Les routines relues sont filtrées de la même façon, étape
+par étape ; une liste vide est une liste vide (l'utilisateur a supprimé ses routines), alors
+qu'une clé absente rend les routines par défaut.
 
 ---
 
@@ -178,6 +187,13 @@ notifications, widget, annonces pour lecteurs d'écran. Il vit en racine précis
 à la navigation (EF-A11-4, ENF-PER-4). Il expose des signaux dérivés prêts à afficher :
 `displaySeconds`, `displayMinutes`, `modeName`, `stateLabel`, `isPaused`, `announcement`.
 
+Il porte aussi le déroulé des routines (`activeRoutine`, `routineIndex`, `routineDone`,
+`currentStep`). Le point de couture tient en une ligne : `selectedPreset` renvoie l'étape en
+cours dès qu'une routine est chargée. Tout ce qui lit le mode — cadran, affichage, historique,
+notifications, widget — suit sans rien savoir des routines. Seuls trois endroits les connaissent :
+l'enchaînement de fin (l'étape suivante remplace le cycle pomodoro, sans prolongation — RG-17,
+RG-18), la programmation des notifications, et la bande d'étapes.
+
 Il réagit aussi au cycle de vie de l'application (`@capacitor/app`) : à la mise en arrière-plan
 il programme les notifications restantes ; au retour il les annule, rattrape l'état et
 redemande le maintien d'écran.
@@ -188,6 +204,7 @@ redemande le maintien d'écran.
 | ------- | -------------- | --------------- |
 | `PreferencesService` | Préférences en signaux | Thème initial : valeur enregistrée, sinon `prefers-color-scheme` |
 | `PresetService` | Modes | Chargement filtré, refus de supprimer le dernier mode, restauration des modes par défaut |
+| `RoutineService` | Routines | Mêmes règles que les modes, mais la liste peut être vide ; une routine sans étape est écartée au chargement |
 | `HistoryService` | Historique, statistiques, objectif | `today`, `week`, `streak`, `goalProgress` en `computed` ; replanification au passage de minuit |
 | `SoundService` | Lecture Web Audio | Synthèse des motifs partagés |
 | `SpeechService` | Annonce vocale (Web Speech) | Coupe l'annonce précédente, choisit une voix de la langue courante si le navigateur en propose une, masqué si la synthèse manque |
@@ -239,7 +256,9 @@ de l'application et ceux des notifications sont ainsi identiques par constructio
 | Android | `make sounds` copie les WAV dans `android/app/src/main/res/raw` ; l'application crée un canal de notification par son |
 
 Les alertes (paliers, fin, fin de prolongation, fin de la session enchaînée) sont programmées au
-passage en arrière-plan et annulées au retour. Sur Android 12+, les alarmes exactes peuvent
+passage en arrière-plan et annulées au retour. Pendant une routine, c'est l'étape suivante qui
+nomme la notification de fin (« Place à : Petit-déjeuner »), et aucune prolongation n'est
+programmée (RG-17). Sur Android 12+, les alarmes exactes peuvent
 requérir `SCHEDULE_EXACT_ALARM` dans `AndroidManifest.xml`. Aucun effet dans le navigateur.
 
 ### 7.2 Widget iOS
@@ -284,7 +303,7 @@ L'icône iOS est générée depuis `resources/app-icon.svg` par `make icon`.
 | `src/styles.css` | Imports du thème, Tailwind, utilitaires globaux |
 | `src/theme/tokens.css` | Jetons de couleur du thème clair, posés sur `<app-root>` |
 | `src/theme/dark.css` | Redéfinition des jetons sous `app-root.dark` |
-| `src/theme/controls.css` | Primitives partagées : bouton en relief, curseur, contrôle segmenté |
+| `src/theme/controls.css` | Primitives partagées : bouton en relief, curseur, contrôle segmenté, interrupteur |
 
 Les couleurs ne sont **jamais** écrites en dur dans un composant : toutes passent par des
 variables CSS héritées depuis `<app-root>`, ce qui rend le basculement de thème instantané et
@@ -301,13 +320,14 @@ garantit l'homogénéité des contrastes (ENF-MNT-2).
 | Temps restant sans la vue | Annonce vocale optionnelle (`SpeechService`) aux paliers ou à chaque minute, dans la langue de l'interface |
 | Alerte sans la vue ni l'ouïe | Motif de vibration propre à chaque palier (`HapticsService`), distingué par le nombre d'impulsions et leur rythme |
 | Alerte sans le son | Pulsation colorée à 0,6 Hz et bandeau de fin persistant ; `aria-hidden`, `pointer-events: none`, figée sous `prefers-reduced-motion` |
-| Gestes involontaires | Verrou du cadran : `SessionService` ignore réglage et remise à zéro, le curseur passe `aria-disabled`, les boutons − / + aussi (`canStep` faux) |
+| Gestes involontaires | Verrou du cadran : `SessionService` ignore réglage, remise à zéro, changement d'étape et sortie de routine ; le curseur passe `aria-disabled`, les boutons − / + et les vignettes d'étape aussi |
 | Panneau de réglages | Focus piégé tant qu'il est ouvert, fermeture par Échap, focus rendu au déclencheur |
 | Onglets | Rôles `tablist` / `tab` / `tabpanel`, navigation par flèches, flèches nommées pour les lecteurs d'écran |
 | Contraste | Jetons de thème vérifiés à 4,5:1 minimum en clair et en sombre |
 | Couleur seule | Chaque couleur de mode est accompagnée de son nom |
 | Animations | `prefers-reduced-motion` respecté |
 | Dyslexie | Police OpenDyslexic activable, interlettrage et interlignage élargis |
+| Suite d'actions sans savoir lire | Chaque étape de routine porte un pictogramme avant son nom ; la bande est une `<ol>` de boutons, l'étape en cours marquée `aria-current="step"`, l'état (faite, en cours) redit dans le nom accessible et doublé d'une coche |
 | Structure | HTML sémantique, `main`, titres hiérarchisés, métadonnées de page |
 
 Les écarts connus sont publiés dans la déclaration d'accessibilité de l'application (voir §7.1 du
@@ -368,9 +388,11 @@ Configuration Playwright : dossier `tests/`, projet Chromium en **420 × 900** (
 serveur de développement démarré automatiquement sur `http://localhost:4200`, exécution
 parallèle, une reprise en CI, trace à la première reprise, `forbidOnly` en CI.
 
-La suite `tests/a11y.spec.ts` (20 tests) analyse avec les jeux de règles `wcag2a`, `wcag2aa`,
-`wcag21a`, `wcag21aa` et `best-practice`, en **thème clair et en thème sombre**, sur l'accueil et
-sur le panneau de réglages ouvert. Toute violation fait échouer la CI.
+La suite `tests/a11y.spec.ts` (44 tests) analyse avec les jeux de règles `wcag2a`, `wcag2aa`,
+`wcag21a`, `wcag21aa` et `best-practice`, en **thème clair et en thème sombre**, sur l'accueil,
+sur le panneau de réglages ouvert et sur les éditeurs de mode et de routine. Les comportements
+qui dépendent du temps (annonce vocale, vibration, alerte visuelle, enchaînement des étapes
+d'une routine) sont joués à l'horloge simulée de Playwright. Toute violation fait échouer la CI.
 
 **Critères d'acceptation d'une contribution** : le build de production passe, la suite
 d'accessibilité ne relève aucune violation, aucune couleur n'est écrite en dur, aucune clé de
@@ -418,4 +440,6 @@ sémantique.
 
 Export et import des données · widget Android · audit manuel complet avec lecteur d'écran et
 agrandissement à 200 % · mesure du contraste des éléments non textuels sur le rendu · extension
-des tests d'accessibilité à d'autres moteurs et à d'autres langues, dont l'arabe en RTL.
+des tests d'accessibilité à d'autres moteurs et à d'autres langues, dont l'arabe en RTL ·
+banque de pictogrammes ARASAAC en complément des emoji, pour les usages de CAA (communication
+alternative et améliorée) où les symboles sont déjà ceux de la personne.

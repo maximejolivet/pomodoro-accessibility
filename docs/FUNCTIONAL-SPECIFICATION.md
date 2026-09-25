@@ -2,7 +2,7 @@
 
 [← Retour au README](../README.md) · [Cahier des charges technique](TECHNICAL-SPECIFICATION.md)
 
-Version 1.0 — 25 septembre 2026 · Application **Pomodoro Accessibilité** (web, iOS, Android)
+Version 1.1 — 26 septembre 2026 · Application **Pomodoro Accessibilité** (web, iOS, Android)
 
 ## Sommaire
 
@@ -42,6 +42,7 @@ introduire de pression ni de jugement.
 | OBJ-3 | Fonctionner sans compte ni réseau                 | Aucune requête sortante, aucune donnée quittant l'appareil                   |
 | OBJ-4 | Rester juste en arrière-plan                      | Écart de décompte nul après retour au premier plan                           |
 | OBJ-5 | Servir hors du domaine scolaire                   | Usage en contexte professionnel documenté et supporté (open space, réunions) |
+| OBJ-6 | Suivre une suite d'actions sans savoir lire       | Chaque étape d'une routine est portée par un pictogramme avant son nom       |
 
 ### 1.4 Principes directeurs
 
@@ -67,7 +68,7 @@ introduire de pression ni de jugement.
 
 | Écran         | Route            | Contenu                                                                              |
 | ------------- | ---------------- | ------------------------------------------------------------------------------------ |
-| Minuteur      | `/`              | Cadran, affichage du temps, commandes, panneau coulissant (Modes / Stats / Réglages) |
+| Minuteur      | `/`              | Cadran, affichage du temps, bande de routine, commandes, panneau (Modes / Stats / Réglages) |
 | Accessibilité | `/accessibility` | Déclaration d'accessibilité RGAA, repères sur la neurodiversité, standards visés     |
 
 ### 2.3 Contraintes structurantes
@@ -85,9 +86,10 @@ introduire de pression ni de jugement.
 | Profil                                             | Difficulté fréquente                                 | Réponse de l'application                                                  |
 | -------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------- |
 | **TDAH**                                           | Estimer une durée, démarrer, s'arrêter à temps       | Repère visuel continu, sessions courtes, mode *Focus TDAH*                |
-| **Autisme**                                        | Transitions, imprévu, bruit                          | Paliers annoncés à l'avance, sons doux et désactivables, interface stable |
+| **Autisme**                                        | Transitions, imprévu, bruit                          | Paliers annoncés à l'avance, routines en pictogrammes, sons désactivables |
 | **Troubles DYS**                                   | Lire des chiffres ou une heure, fatigue à la lecture | Temps lisible sans chiffres, police OpenDyslexic, texte espacé            |
 | **Autres profils**                                 | Besoin de consignes claires, de moins de pression    | Durées libres 1–60 min, modes personnalisés, aucune note                  |
+| **Personnes qui ne lisent pas** (jeunes enfants, déficience intellectuelle) | Suivre une suite d'actions sans texte | Routines en pictogrammes, une étape après l'autre, sans rien à lire |
 | **Accompagnants** (parents, enseignants, managers) | Rappeler le temps sans intervenir                    | Durée visible par tous, autonomie de la personne                          |
 
 ### 3.2 Contextes d'usage
@@ -136,7 +138,23 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-MOD-6 | Le mode sélectionné est mémorisé d'une ouverture à l'autre.                                                                               | M    |
 | EF-MOD-7 | Chaque couleur est toujours accompagnée de son nom (jamais d'information portée par la couleur seule).                                    | M    |
 
-### 4.3 Enchaînement et prolongation (`EF-CHA`)
+### 4.3 Routines (`EF-ROU`)
+
+| Réf.      | Exigence                                                                                                                               | Prio |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---- |
+| EF-ROU-1  | Une routine est une suite ordonnée d'étapes qui s'enchaînent d'elles-mêmes, sans action de l'utilisateur.                              | M    |
+| EF-ROU-2  | Une étape porte : un pictogramme, un nom, une durée de 1 à 60 min, une couleur, et le fait d'être comptée ou non dans le focus du jour. | M    |
+| EF-ROU-3  | L'application est livrée avec deux routines d'exemple : « Routine du matin » et « Devoirs », restaurables depuis le panneau.            | S    |
+| EF-ROU-4  | L'utilisateur peut créer, renommer, réordonner et supprimer ses routines et leurs étapes (1 à 10 étapes par routine).                  | M    |
+| EF-ROU-5  | Choisir une routine arme sa première étape sur le cadran sans rien démarrer ; le décompte part du même geste qu'un mode.               | M    |
+| EF-ROU-6  | Une bande affiche les étapes dans l'ordre : ce qui est fait, ce qui se joue, ce qui vient après, chacune avec son pictogramme.          | M    |
+| EF-ROU-7  | Chaque étape de la bande est un bouton : elle mène directement à cette étape, en avant comme en arrière.                               | S    |
+| EF-ROU-8  | À la fin d'une étape, la suivante démarre et son nom est annoncé (son, voix, notification, région live).                               | M    |
+| EF-ROU-9  | À la fin de la dernière étape, la routine est déclarée terminée et toutes ses étapes sont cochées.                                     | M    |
+| EF-ROU-10 | La routine chargée est mémorisée d'une ouverture à l'autre, et se quitte d'un bouton.                                                  | S    |
+| EF-ROU-11 | Le verrou du cadran neutralise le changement d'étape et la sortie de routine, comme il neutralise la remise à zéro.                    | M    |
+
+### 4.4 Enchaînement et prolongation (`EF-CHA`)
 
 | Réf.     | Exigence                                                                                     | Prio |
 | -------- | -------------------------------------------------------------------------------------------- | ---- |
@@ -146,7 +164,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-CHA-4 | Une pause longue est proposée toutes les 4 sessions de travail terminées.                    | S    |
 | EF-CHA-5 | Les deux options sont désactivables indépendamment.                                          | M    |
 
-### 4.4 Alertes sonores, tactiles et notifications (`EF-ALE`)
+### 4.5 Alertes sonores, tactiles et notifications (`EF-ALE`)
 
 | Réf.     | Exigence                                                                                                                                            | Prio |
 | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
@@ -164,7 +182,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-ALE-13 | À la fin, un bandeau « Temps écoulé » reste affiché jusqu'à la prochaine action : une alerte qui passe se rate.                                    | S    |
 | EF-ALE-10 | Le motif se reconnaît d'abord au nombre d'impulsions et à leur rythme : la durée demandée est respectée sur Android et sur iPhone à Taptic Engine, mais un appareil iOS plus ancien retombe sur une vibration système de longueur fixe. | S    |
 
-### 4.5 Historique, statistiques et objectif (`EF-HIS`)
+### 4.6 Historique, statistiques et objectif (`EF-HIS`)
 
 | Réf.     | Exigence                                                                                                                         | Prio |
 | -------- | -------------------------------------------------------------------------------------------------------------------------------- | ---- |
@@ -176,7 +194,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-HIS-6 | Les statistiques du jour se recalculent au passage de minuit sans redémarrage.                                                   | S    |
 | EF-HIS-7 | Les statistiques sont indicatives : aucun score négatif, aucune notion d'échec.                                                  | M    |
 
-### 4.6 Préférences (`EF-PRE`)
+### 4.7 Préférences (`EF-PRE`)
 
 | Réf.     | Exigence                                                                         | Prio |
 | -------- | -------------------------------------------------------------------------------- | ---- |
@@ -194,7 +212,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-PRE-12 | Alerte visuelle : aucune, douce ou forte (défaut : douce) ; le choix se montre aussitôt. | S    |
 | EF-PRE-13 | Verrou du cadran on/off (défaut : off), conservé d'une ouverture à l'autre.       | S    |
 
-### 4.7 Internationalisation (`EF-I18`)
+### 4.8 Internationalisation (`EF-I18`)
 
 | Réf.     | Exigence                                                                                   | Prio |
 | -------- | ------------------------------------------------------------------------------------------ | ---- |
@@ -204,7 +222,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-I18-4 | Le changement de langue est immédiat, sans rechargement.                                   | M    |
 | EF-I18-5 | Les libellés transmis au widget et aux notifications suivent la langue de l'application.   | S    |
 
-### 4.8 Écran allumé et widget (`EF-NAT`)
+### 4.9 Écran allumé et widget (`EF-NAT`)
 
 | Réf.     | Exigence                                                                                                     | Prio |
 | -------- | ------------------------------------------------------------------------------------------------------------ | ---- |
@@ -213,7 +231,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-NAT-3 | Le widget continue de décompter seul entre deux mises à jour de l'application.                               | C    |
 | EF-NAT-4 | Le widget est mis à jour aux changements : démarrage, pause, fin, passage en arrière-plan, objectif, langue. | C    |
 
-### 4.9 Page d'accessibilité (`EF-A11`)
+### 4.10 Page d'accessibilité (`EF-A11`)
 
 | Réf.     | Exigence                                                                                                                                               | Prio |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- |
@@ -243,6 +261,10 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | RG-13 | Au moins un mode existe en permanence : la suppression du dernier mode est refusée.                                                                                     |
 | RG-14 | Si le stockage local est indisponible (navigation privée, stockage bloqué), l'application reste utilisable, les réglages ne valant que pour la session.                 |
 | RG-15 | Un palier dépassé de plus de 90 secondes lors d'un retour au premier plan n'est pas rejoué.                                                                             |
+| RG-16 | Une routine compte de 1 à 10 étapes ; la dernière étape d'une routine ne peut pas être supprimée.                                                                       |
+| RG-17 | Pendant une routine, la prolongation « +5 min » ne s'applique pas : ce qui a été annoncé arrive à l'heure dite.                                                         |
+| RG-18 | Pendant une routine, l'enchaînement suit les étapes de la routine, que l'option « enchaîner travail → pause » soit active ou non.                                       |
+| RG-19 | Une étape non comptée dans le focus du jour est enregistrée comme une pause : se laver les dents n'est pas du temps de travail (RG-10).                                 |
 
 ---
 
@@ -263,12 +285,20 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 session de travail reprend. Toutes les 4 sessions de travail terminées, la pause longue remplace
 la pause courte. L'utilisateur peut interrompre la chaîne à tout moment.
 
-### 6.3 Création d'un mode
+### 6.3 Déroulé d'une routine
+
+⚙︎ → Modes → *Routines* → « Routine du matin » : le panneau se ferme, la première étape
+(« S'habiller », 10 min) est armée sur le cadran, et la bande montre les quatre étapes. Appui
+sur ▶ : le décompte part. À 0, le carillon sonne, « Place à : Petit-déjeuner » est annoncé et
+l'étape suivante démarre seule. Une étape déjà faite se retrouve d'un appui sur sa vignette.
+À la fin de la dernière, toutes les vignettes sont cochées et « Routine terminée » est dit.
+
+### 6.4 Création d'un mode
 
 ⚙︎ → Modes → « nouveau » : saisir un nom, régler la durée, choisir une couleur (nom affiché),
 choisir la nature. Enregistrer. Le mode rejoint la liste et devient sélectionnable.
 
-### 6.4 Consultation des statistiques
+### 6.5 Consultation des statistiques
 
 ⚙︎ → Stats : objectif du jour et barre de progression, temps de focus, sessions terminées,
 série de jours, histogramme des 7 derniers jours, 10 dernières sessions.
@@ -295,6 +325,7 @@ série de jours, histogramme des 7 derniers jours, 10 dernières sessions.
 | ENF-A11-14 | Un verrou neutralise le cadran, les boutons − / + et la remise à zéro, pour qui déclenche des actions involontaires (tremblements, spasticité, paume posée). Démarrer / Pause reste actif : seule la remise à zéro fait perdre la session. |
 | ENF-A11-12 | Le temps restant peut être dit à voix haute par la synthèse de l'appareil, sans regarder le cadran : réglage à trois choix, hors ligne, éteint par défaut. |
 | ENF-A11-13 | Chaque palier et la fin ont un motif de vibration distinct, reconnaissable sans la vue ni l'ouïe (seul canal d'alerte pour une personne sourde-aveugle). |
+| ENF-A11-15 | Une étape de routine est identifiable sans savoir lire : un pictogramme précède son nom, et son état (faite, en cours, à venir) est porté par une coche et par le nom accessible, jamais par la couleur seule. |
 
 **Écarts connus et assumés**, publiés dans la déclaration : le cadran est un curseur dont
 l'activation démarre aussi le minuteur (critères RGAA 7.1 et 7.3) ; le contraste des éléments
