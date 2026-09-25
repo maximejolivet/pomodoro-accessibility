@@ -21,30 +21,6 @@ You see the time that's left instead of reading it.
 ![Dark mode](https://img.shields.io/badge/dark_mode-✓-1d282d)
 ![Languages](https://img.shields.io/badge/languages-FR_·_EN_·_ES_·_DE_·_IT_·_PT_·_AR-0055A4)
 
-![Angular](https://img.shields.io/badge/Angular-22-DD0031?logo=angular&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)
-![RxJS](https://img.shields.io/badge/RxJS-7-B7178C?logo=reactivex&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
-![PostCSS](https://img.shields.io/badge/PostCSS-8-DD3A0A?logo=postcss&logoColor=white)
-![Capacitor](https://img.shields.io/badge/Capacitor-8-119EFF?logo=capacitor&logoColor=white)
-![Swift](https://img.shields.io/badge/Swift-widget_iOS-F05138?logo=swift&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&logoColor=white)
-![Karma](https://img.shields.io/badge/Karma-6-56C5A8)
-![Jasmine](https://img.shields.io/badge/Jasmine-7-8A4182?logo=jasmine&logoColor=white)
-
-![SwiftUI](https://img.shields.io/badge/SwiftUI-widget-0D96F6?logo=swift&logoColor=white)
-![WidgetKit](https://img.shields.io/badge/WidgetKit-iOS-000000?logo=apple&logoColor=white)
-![Xcode](https://img.shields.io/badge/Xcode-iOS-147EFB?logo=xcode&logoColor=white)
-![Java](https://img.shields.io/badge/Java-Android-ED8B00?logo=openjdk&logoColor=white)
-![Gradle](https://img.shields.io/badge/Gradle-Android-02303A?logo=gradle&logoColor=white)
-![Make](https://img.shields.io/badge/Make-scripts-6D6D6D)
-
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6)
-![Web Audio API](https://img.shields.io/badge/Web_Audio_API-sounds-f3a52b)
-![Capacitor plugins](https://img.shields.io/badge/Capacitor_plugins-Haptics_·_Notifications_·_Keep_Awake_·_Filesystem-119EFF?logo=capacitor&logoColor=white)
-![OpenDyslexic](https://img.shields.io/badge/font-OpenDyslexic-8b6fd6)
-
 ![RGAA](https://img.shields.io/badge/RGAA-4.1_partially_compliant-1d282d)
 ![WCAG](https://img.shields.io/badge/WCAG-2.1_AA_partially_compliant-1d282d)
 
@@ -198,8 +174,38 @@ the bottom right of the app.
 
 ## For developers
 
+<div align="center">
+
+![Angular](https://img.shields.io/badge/Angular-22-DD0031?logo=angular&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)
+![RxJS](https://img.shields.io/badge/RxJS-7-B7178C?logo=reactivex&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
+![PostCSS](https://img.shields.io/badge/PostCSS-8-DD3A0A?logo=postcss&logoColor=white)
+![Capacitor](https://img.shields.io/badge/Capacitor-8-119EFF?logo=capacitor&logoColor=white)
+![Swift](https://img.shields.io/badge/Swift-widget_iOS-F05138?logo=swift&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&logoColor=white)
+![Karma](https://img.shields.io/badge/Karma-6-56C5A8)
+![Jasmine](https://img.shields.io/badge/Jasmine-7-8A4182?logo=jasmine&logoColor=white)
+
+![SwiftUI](https://img.shields.io/badge/SwiftUI-widget-0D96F6?logo=swift&logoColor=white)
+![WidgetKit](https://img.shields.io/badge/WidgetKit-iOS-000000?logo=apple&logoColor=white)
+![Xcode](https://img.shields.io/badge/Xcode-iOS-147EFB?logo=xcode&logoColor=white)
+![Java](https://img.shields.io/badge/Java-Android-ED8B00?logo=openjdk&logoColor=white)
+![Gradle](https://img.shields.io/badge/Gradle-Android-02303A?logo=gradle&logoColor=white)
+![Make](https://img.shields.io/badge/Make-scripts-6D6D6D)
+
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6)
+![Web Audio API](https://img.shields.io/badge/Web_Audio_API-sounds-f3a52b)
+![Capacitor plugins](https://img.shields.io/badge/Capacitor_plugins-Haptics_·_Notifications_·_Keep_Awake_·_Filesystem-119EFF?logo=capacitor&logoColor=white)
+![OpenDyslexic](https://img.shields.io/badge/font-OpenDyslexic-8b6fd6)
+
+</div>
+
 The technical documentation is in French:
 
-- [Installation and commands](docs/installation.md)
-- [Mobile build (iOS / Android), notifications and widget](docs/mobile.md)
-- [Code architecture](docs/architecture.md)
+- [Installation and commands](docs/INSTALLATION.md)
+- [Mobile build (iOS / Android), notifications and widget](docs/MOBILE.md)
+- [Code architecture](docs/ARCHITECTURE.md)
+- [Functional specification (French)](docs/FUNCTIONAL-SPECIFICATION.md)
+- [Technical specification (French)](docs/TECHNICAL-SPECIFICATION.md)
