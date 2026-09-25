@@ -151,7 +151,7 @@ const fr: A11yText = {
   ],
   newTab: ' (nouvel onglet)',
   criteriaTitle: 'Standards visés',
-  criteriaStatement: '<strong>Pomodoro Accessibilité vise</strong> <mark>RGAA 4.1</mark> (France) et <mark>WCAG 2.1 AA</mark> (International). <strong>Statut : conforme partiellement.</strong>',
+  criteriaStatement: '<strong>Pomodoro Accessibilité vise</strong> <mark>RGAA 4.1</mark> (France) et <mark>WCAG 2.1 AA</mark> (International). <strong>Statut : partiellement conforme.</strong>',
   criteriaNote: "Évaluation faite avec l'outil automatique axe-core et une revue du code, sans audit manuel complet ni test avec lecteur d'écran. 11 thèmes RGAA s'appliquent à cette application.",
   badgesLabel: 'Thèmes RGAA pris en compte',
   badges: ['Images', 'Couleurs', 'Multimédia', 'Tableaux', 'Liens et boutons', 'Scripts et clavier', 'Éléments obligatoires', 'Structuration', 'Formulaires', 'Navigation', 'Consultation'],
