@@ -19,7 +19,11 @@
         <p>{{ s().kbdIntro }}</p>
         <ul class="mode-list">
           <li><kbd>Tab</kbd> {{ s().kbdTab }}</li>
-          <li><kbd [attr.aria-label]="s().kbdArrowLeft">←</kbd> <kbd [attr.aria-label]="s().kbdArrowRight">→</kbd> {{ s().kbdArrows }}</li>
+          <li>
+            <kbd><span class="sr-only">{{ s().kbdArrowLeft }}</span><span aria-hidden="true">←</span></kbd>
+            <kbd><span class="sr-only">{{ s().kbdArrowRight }}</span><span aria-hidden="true">→</span></kbd>
+            {{ s().kbdArrows }}
+          </li>
           <li><kbd>PageUp</kbd> <kbd>PageDown</kbd> {{ s().kbdPages }}</li>
           <li><kbd>Esc</kbd> {{ s().kbdEsc }}</li>
           <li>{{ s().kbdFocus }}</li>
