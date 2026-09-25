@@ -3,18 +3,22 @@
   <!-- Zone d'annonces vocales pour lecteurs d'écran -->
   <div aria-live="polite" aria-atomic="true" class="sr-only" id="a11y-announcements">{{ session.announcement() }}</div>
 
-  <app-timer-dial />
-  <app-timer-readout />
-  <app-timer-controls (openSettings)="openSheet()" />
+<!-- Derrière la modale, tout devient inerte : sinon la tabulation en sort,
+       alors que le panneau se déclare aria-modal -->
+  <div class="stage-content" [attr.inert]="showSheet ? '' : null">
+    <app-timer-dial />
+    <app-timer-readout />
+    <app-timer-controls (openSettings)="openSheet()" />
+
+    <a
+      routerLink="/accessibility"
+      class="accessibility-link"
+      [attr.title]="i18n.t('action.accessibilityInfo')"
+    >
+      <span class="accessibility-icon" aria-hidden="true">♿</span>
+      <span class="accessibility-label">{{ i18n.t('action.accessibilityShort') }}</span>
+    </a>
+  </div>
 
   <app-settings-sheet [open]="showSheet" (closed)="onSheetClosed()" />
-
-  <a
-    routerLink="/accessibility"
-    class="accessibility-link"
-    [attr.title]="i18n.t('action.accessibilityInfo')"
-  >
-    <span class="accessibility-icon" aria-hidden="true">♿</span>
-    <span class="accessibility-label">{{ i18n.t('action.accessibilityShort') }}</span>
-  </a>
 </main>

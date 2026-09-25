@@ -40,6 +40,7 @@ export class TimerPageComponent {
   /** Le panneau rend la main : on remet le focus sur le bouton qui l'a ouvert. */
   onSheetClosed(): void {
     this.showSheet = false;
-    this.controls?.focusSettingsButton();
+    // La page ne sort de `inert` qu'au rendu : un focus immédiat serait ignoré
+    setTimeout(() => this.controls?.focusSettingsButton());
   }
 }

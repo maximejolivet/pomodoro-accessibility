@@ -4,6 +4,12 @@
   display: block;
 }
 
+/* Conteneur purement logique (rendu inerte quand le panneau est ouvert) :
+   il ne doit pas s'intercaler dans la mise en page de .stage. */
+.stage-content {
+  display: contents;
+}
+
 :host {
   display: block;
 }
