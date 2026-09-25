@@ -16,7 +16,8 @@ export const ar: Dictionary = {
   'action.reset': 'إعادة الضبط',
   'action.settings': 'الإعدادات',
   'action.close': 'إغلاق',
-  'action.dialHint': 'اسحب على القرص لضبط الدقائق',
+  'action.dialName': 'المدة',
+  'action.dialHint': 'اسحب على القرص أو استخدم الأسهم لضبط الدقائق؛ اضغط للبدء أو الإيقاف المؤقت',
   'action.accessibilityInfo': 'عرض وثائق إمكانية الوصول RGAA 4.1',
   'action.accessibilityShort': 'إمكانية الوصول RGAA',
 
