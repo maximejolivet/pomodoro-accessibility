@@ -1,36 +1,12 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { PresetKind } from './preset.service';
-import { readJson, readPref, writeJson, writePref } from './storage';
-
-export interface Session {
-  /** Nom affiché au moment de la session (figé, même si le mode est renommé ensuite). */
-  name: string;
-  color: string;
-  kind: PresetKind;
-  /** Durée prévue (s). */
-  plannedSeconds: number;
-  /** Temps réellement décompté (s), pauses exclues, prolongation incluse. */
-  activeSeconds: number;
-  startedAt: number;
-  endedAt: number;
-  completed: boolean;
-}
-
-export interface DayStat {
-  date: Date;
-  focusMinutes: number;
-}
+import {
+  DEFAULT_GOAL_MINUTES, GOAL_MAX_MINUTES, GOAL_MIN_MINUTES, GOAL_STEP_MINUTES, MAX_SESSIONS
+} from '../constants/history.constants';
+import { readJson, readPref, writeJson, writePref } from '../helpers/storage';
+import type { DayStat, Session } from '../models/session.model';
 
 const STORAGE_KEY = 'history';
-const MAX_SESSIONS = 500;
-/** En dessous, une session interrompue n'est pas enregistrée (faux départ). */
-export const MIN_RECORDED_SECONDS = 60;
-
 const GOAL_KEY = 'daily-goal';
-export const GOAL_MIN_MINUTES = 10;
-export const GOAL_MAX_MINUTES = 300;
-export const GOAL_STEP_MINUTES = 5;
-const DEFAULT_GOAL_MINUTES = 100;
 
 function clampGoal(minutes: number): number {
   const stepped = Math.round(minutes / GOAL_STEP_MINUTES) * GOAL_STEP_MINUTES;

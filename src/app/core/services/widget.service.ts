@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Capacitor, registerPlugin } from '@capacitor/core';
+import type { WidgetState } from '../models/widget-state.model';
 
 /** Plugin natif propre à l'app (ios/App/App/WidgetBridgePlugin.swift). */
 interface WidgetBridgePlugin {
@@ -7,32 +8,6 @@ interface WidgetBridgePlugin {
 }
 
 const WidgetBridge = registerPlugin<WidgetBridgePlugin>('WidgetBridge');
-
-/** État lu par le widget iOS (voir WidgetState dans PomodoroWidget.swift). */
-export interface WidgetState {
-  /** Début (ms) du jour auquel se rapporte `focusMinutes`. */
-  dayStart: number;
-  focusMinutes: number;
-  goalMinutes: number;
-  timer: {
-    state: 'running' | 'paused' | 'idle';
-    name: string;
-    color: string;
-    /** Heure de fin (ms) si le décompte tourne. */
-    endAt?: number;
-    /** Temps restant (s) en pause. */
-    remainingSeconds?: number;
-  };
-  /** Libellés déjà traduits dans la langue de l'app. */
-  labels: {
-    today: string;
-    goalReached: string;
-    paused: string;
-    ready: string;
-    finished: string;
-  };
-  rtl: boolean;
-}
 
 /** Widget d'écran d'accueil (iOS) : l'app lui transmet son état, le widget décompte seul ensuite. */
 @Injectable({ providedIn: 'root' })

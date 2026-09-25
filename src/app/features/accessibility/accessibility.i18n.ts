@@ -1,4 +1,4 @@
-import type { Lang } from './i18n';
+import type { Lang } from '../../core/i18n/i18n.model';
 
 export interface Entry {
   title: string;
@@ -48,7 +48,6 @@ export interface A11yText {
   workTitle: string;
   workText: string;
   workItems: string[];
-  sourceLabel: string;
   newTab: string;
   criteriaTitle: string;
   criteriaStatement: string;
@@ -150,7 +149,6 @@ const fr: A11yText = {
     'Durée visible pendant les réunions et les entretiens.',
     'Vibration et notifications discrètes, sons désactivables en open space ou en télétravail.',
   ],
-  sourceLabel: 'Source :',
   newTab: ' (nouvel onglet)',
   criteriaTitle: 'Standards visés',
   criteriaStatement: '<strong>Pomodoro Accessibilité vise</strong> <mark>RGAA 4.1</mark> (France) et <mark>WCAG 2.1 AA</mark> (International). <strong>Statut : conforme partiellement.</strong>',
@@ -252,7 +250,6 @@ const en: A11yText = {
     'A duration visible to all during meetings and interviews.',
     'Discreet vibration and notifications, sounds that can be turned off in an open space or when working remotely.',
   ],
-  sourceLabel: 'Source:',
   newTab: ' (new tab)',
   criteriaTitle: 'Standards we aim for',
   criteriaStatement: '<strong>Pomodoro Accessibilité aims for</strong> <mark>RGAA 4.1</mark> (France) and <mark>WCAG 2.1 AA</mark> (international). <strong>Status: partially compliant.</strong>',
@@ -354,7 +351,6 @@ const es: A11yText = {
     'Una duración visible para todos durante reuniones y entrevistas.',
     'Vibración y notificaciones discretas, sonidos que se pueden desactivar en una oficina abierta o en teletrabajo.',
   ],
-  sourceLabel: 'Fuente:',
   newTab: ' (nueva pestaña)',
   criteriaTitle: 'Estándares a los que aspiramos',
   criteriaStatement: '<strong>Pomodoro Accessibilité aspira a cumplir</strong> <mark>RGAA 4.1</mark> (Francia) y <mark>WCAG 2.1 AA</mark> (internacional). <strong>Estado: parcialmente conforme.</strong>',
@@ -456,7 +452,6 @@ const de: A11yText = {
     'Eine für alle sichtbare Dauer in Besprechungen und Gesprächen.',
     'Dezente Vibration und Benachrichtigungen, Töne lassen sich im Großraumbüro oder im Homeoffice abschalten.',
   ],
-  sourceLabel: 'Quelle:',
   newTab: ' (neuer Tab)',
   criteriaTitle: 'Angestrebte Standards',
   criteriaStatement: '<strong>Pomodoro Accessibilité strebt</strong> <mark>RGAA 4.1</mark> (Frankreich) und <mark>WCAG 2.1 AA</mark> (international) <strong>an. Status: teilweise konform.</strong>',
@@ -558,7 +553,6 @@ const it: A11yText = {
     'Una durata visibile a tutti durante riunioni e colloqui.',
     'Vibrazione e notifiche discrete, suoni disattivabili in open space o in smart working.',
   ],
-  sourceLabel: 'Fonte:',
   newTab: ' (nuova scheda)',
   criteriaTitle: 'Standard a cui puntiamo',
   criteriaStatement: '<strong>Pomodoro Accessibilité punta a</strong> <mark>RGAA 4.1</mark> (Francia) e <mark>WCAG 2.1 AA</mark> (internazionale). <strong>Stato: parzialmente conforme.</strong>',
@@ -660,7 +654,6 @@ const pt: A11yText = {
     'Uma duração visível para todos durante reuniões e entrevistas.',
     'Vibração e notificações discretas, sons que se podem desativar em open space ou em teletrabalho.',
   ],
-  sourceLabel: 'Fonte:',
   newTab: ' (novo separador)',
   criteriaTitle: 'Normas a que aspiramos',
   criteriaStatement: '<strong>O Pomodoro Accessibilité procura cumprir</strong> <mark>RGAA 4.1</mark> (França) e <mark>WCAG 2.1 AA</mark> (internacional). <strong>Estado: parcialmente conforme.</strong>',
@@ -762,7 +755,6 @@ const ar: A11yText = {
     'مدة مرئية للجميع أثناء الاجتماعات والمقابلات.',
     'اهتزاز وإشعارات هادئة، وأصوات يمكن إيقافها في المكاتب المفتوحة أو العمل عن بُعد.',
   ],
-  sourceLabel: 'المصدر:',
   newTab: ' (علامة تبويب جديدة)',
   criteriaTitle: 'المعايير التي نسعى إليها',
   criteriaStatement: '<strong>يسعى Pomodoro Accessibilité إلى استيفاء</strong> <mark>RGAA 4.1</mark> (فرنسا) و<mark>WCAG 2.1 AA</mark> (دوليًّا). <strong>الحالة: مطابق جزئيًّا.</strong>',

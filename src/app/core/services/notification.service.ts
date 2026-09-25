@@ -1,18 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { LocalNotifications, LocalNotificationSchema } from '@capacitor/local-notifications';
-import { SOUND_FILES, SOUND_PATTERNS, SoundId, renderWav } from './sound-patterns';
-
-export interface Alert {
-  id: number;
-  at: number;
-  title: string;
-  body: string;
-  sound: SoundId;
-}
-
-/** Noms des canaux Android, fournis par l'appelant (traduits). */
-export type ChannelNames = Record<SoundId, string>;
+import { SOUND_FILES, SOUND_PATTERNS, SoundId, renderWav } from '../helpers/sound-patterns';
+import type { Alert, ChannelNames } from '../models/alert.model';
 
 const QUIET_CHANNEL = 'quiet';
 const SILENT_FILE = 'silence.wav';

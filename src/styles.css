@@ -1,5 +1,7 @@
+@import url('https://cdn.jsdelivr.net/npm/opendyslexic@1/fonts.css');
+@import './theme/tokens.css';
+@import './theme/dark.css';
 @import "tailwindcss";
-
 html, body {
   margin: 0;
   padding: 0;
@@ -8,4 +10,26 @@ html, body {
 
 * {
   box-sizing: border-box;
+}
+
+/*
+ * Police OpenDyslexic : réglage global (l'étoile ne traverse pas l'encapsulation
+ * des composants, et il faut aussi couvrir la police par défaut des champs et boutons).
+ */
+app-root.opendyslexic-mode,
+app-root.opendyslexic-mode * {
+  font-family: 'OpenDyslexic', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Masqué visuellement, mais lu par les lecteurs d'écran (utilisé par les deux pages). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

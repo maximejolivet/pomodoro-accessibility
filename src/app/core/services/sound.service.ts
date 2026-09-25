@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ENVELOPE, MASTER_GAIN, SOUND_PATTERNS, SoundId, voices } from './sound-patterns';
+import { ENVELOPE, MASTER_GAIN, SOUND_PATTERNS, SoundId, voices } from '../helpers/sound-patterns';
 
 /**
  * Sons synthétisés avec Web Audio (aucun fichier audio).

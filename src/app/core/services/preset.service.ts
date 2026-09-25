@@ -1,31 +1,7 @@
 import { Injectable, signal } from '@angular/core';
-import { I18nKey } from './i18n';
-import { readJson, writeJson } from './storage';
-
-export type PresetKind = 'focus' | 'break' | 'longBreak';
-
-export interface Preset {
-  id: string;
-  /** Nom saisi par l'utilisateur ; vide pour un mode par défaut (nom traduit via `nameKey`). */
-  name: string;
-  nameKey?: I18nKey;
-  seconds: number;
-  color: string;
-  kind: PresetKind;
-}
-
-/** Couleurs proposées dans l'éditeur (celles de l'anneau du cadran). */
-export const PRESET_COLORS = [
-  '#8b6fd6', '#d63f4f', '#ef7d2d', '#f3a52b', '#c3cd36',
-  '#56b27b', '#5aa9c4', '#5d6db3', '#b24f97', '#56636a'
-];
-
-const DEFAULT_PRESETS: Preset[] = [
-  { id: 'pomodoro', name: '', nameKey: 'preset.pomodoro', seconds: 25 * 60, color: '#8b6fd6', kind: 'focus' },
-  { id: 'break', name: '', nameKey: 'preset.break', seconds: 5 * 60, color: '#56b27b', kind: 'break' },
-  { id: 'long-break', name: '', nameKey: 'preset.longBreak', seconds: 15 * 60, color: '#5aa9c4', kind: 'longBreak' },
-  { id: 'focus', name: '', nameKey: 'preset.focus', seconds: 15 * 60, color: '#ef7d2d', kind: 'focus' }
-];
+import { DEFAULT_PRESETS, PRESET_COLORS } from '../constants/preset.constants';
+import { readJson, writeJson } from '../helpers/storage';
+import type { Preset, PresetKind } from '../models/preset.model';
 
 const STORAGE_KEY = 'presets';
 

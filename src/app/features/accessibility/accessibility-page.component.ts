@@ -2,17 +2,17 @@ import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, computed, e
 import { CommonModule } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { I18nService } from './i18n';
+import { I18nService } from '../../core/i18n/i18n.service';
 import { A11Y_TEXTS } from './accessibility.i18n';
 
 @Component({
-  selector: 'app-accessibility',
+  selector: 'app-accessibility-page',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './accessibility.component.html',
-  styleUrls: ['./accessibility.component.css']
+  templateUrl: './accessibility-page.component.html',
+  styleUrls: ['./accessibility-page.component.css']
 })
-export class AccessibilityComponent implements AfterViewInit, OnDestroy {
+export class AccessibilityPageComponent implements AfterViewInit, OnDestroy {
   readonly i18n = inject(I18nService);
   private readonly titleService = inject(Title);
   private readonly previousTitle = this.titleService.getTitle();

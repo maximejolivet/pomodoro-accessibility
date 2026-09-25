@@ -6,7 +6,7 @@
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { SOUND_FILES, SOUND_PATTERNS, type SoundId, renderWav } from '../src/app/sound-patterns.ts';
+import { SOUND_FILES, SOUND_PATTERNS, type SoundId, renderWav } from '../src/app/core/helpers/sound-patterns.ts';
 
 const outDir = process.argv[2] ?? 'resources/sounds';
 mkdirSync(outDir, { recursive: true });

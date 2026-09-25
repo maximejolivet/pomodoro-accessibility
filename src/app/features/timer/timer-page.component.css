@@ -1,41 +1,7 @@
-@import url('https://cdn.jsdelivr.net/npm/opendyslexic@1/fonts.css');
+/* Le thème (variables CSS) vit dans src/theme/ : tokens.css et dark.css */
 
 :host {
-  --bumper-light: #c6e2e9;
-  --bumper: #a6ccd6;
-  --bumper-dark: #7fa9b4;
-  --bumper-edge: #6f98a3;
-  --face: #fbfbf8;
-  --ink: #2f3336;
-  --bg-top: #f1f3f2;
-  --bg-bottom: #d9e0e2;
-  --bg-glow: #ffffff;
-  --bumper-deep: #628b96;
-  --bezel-a: #d8edf2;
-  --bezel-b: #b4d5de;
-  --bezel-c: #9cc2cc;
-  --face-hi: #ffffff;
-  --face-lo: #eceee9;
-  --sheen: 0.55;
-  --band-in: #f1f3f1;
-  --band-out: #f7f8f6;
-  --band-shadow: rgba(40, 60, 70, 0.22);
-  --bg-line: #c2cacd;
-  --bg-highlight: #ffffff;
-  --tab: #1d282d;
-  --surface-hi: #ffffff;
-  --surface-lo: #eef1f1;
-  --surface-edge: #cfd6d8;
-  --muted: #5f6a6f;
-  --muted-strong: #3d4449;
-  --neutral: #e6eaeb;
-  --neutral-edge: #b9c3c6;
-  --range-bg: #dfe5e7;
-  --backdrop: rgba(20, 35, 40, 0.35);
-  --bar: #8b6fd6;
-  color-scheme: light;
   display: block;
-  font-family: 'Avenir Next', Avenir, 'Nunito Sans', 'Segoe UI', system-ui, sans-serif;
 }
 
 .stage {
@@ -52,44 +18,6 @@
     linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
   overflow-x: hidden;
 }
-
-/* ---------- Mode sombre ---------- */
-
-:host(.dark) {
-  --bumper-light: #56747f;
-  --bumper: #3b5661;
-  --bumper-dark: #2a3f47;
-  --bumper-edge: #1f3037;
-  --bumper-deep: #16242a;
-  --bezel-a: #4a6671;
-  --bezel-b: #334c56;
-  --bezel-c: #273c44;
-  --face-hi: #2a3036;
-  --face: #22272c;
-  --face-lo: #181b1f;
-  --sheen: 0.1;
-  --ink: #e8ecee;
-  --bg-top: #1b1f23;
-  --bg-bottom: #0e1113;
-  --bg-glow: #2a3238;
-  --band-in: #262b31;
-  --band-out: #2b3137;
-  --band-shadow: rgba(0, 0, 0, 0.55);
-  --bg-line: #3d464d;
-  --bg-highlight: rgba(255, 255, 255, 0.08);
-  --tab: #e8ecee;
-  --surface-hi: #2e343a;
-  --surface-lo: #23282d;
-  --surface-edge: #121518;
-  --muted: #a0abb1;
-  --muted-strong: #b8c2c7;
-  --neutral: #3a4248;
-  --neutral-edge: #1a1e22;
-  --range-bg: #15181b;
-  --backdrop: rgba(0, 0, 0, 0.55);
-  color-scheme: dark;
-}
-
 /* ---------- Boîtier 3D ---------- */
 
 .tilt-zone {
@@ -1240,19 +1168,6 @@
   unicode-bidi: isolate;
 }
 
-/* Masqué visuellement mais accessible aux lecteurs d'écran */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
 /* Modale (panneau de réglages) */
 .sheet[role="dialog"] {
   position: fixed;
@@ -1287,7 +1202,12 @@
 /* Lien accessibilité RGAA, fixé en bas à droite */
 .accessibility-link {
   position: fixed;
-  right: max(12px, env(safe-area-inset-right));
+  /*
+   * `inset-inline-end` bascule à gauche en arabe (dir="rtl") alors que les
+   * `env(safe-area-inset-*)` restent physiques : on prend le plus grand des
+   * deux côtés pour que l'encoche soit évitée dans les deux sens de lecture.
+   */
+  inset-inline-end: max(12px, env(safe-area-inset-right), env(safe-area-inset-left));
   bottom: max(12px, env(safe-area-inset-bottom));
   z-index: 100;
   display: inline-flex;
@@ -1314,8 +1234,51 @@
   outline-offset: 2px;
 }
 
-/* OpenDyslexic Font Mode */
-:host.opendyslexic-mode,
-:host.opendyslexic-mode * {
-  font-family: 'OpenDyslexic', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+/*
+ * Sur mobile, la pastille texte (jusqu'à ~190 px en allemand) recouvrait le
+ * bouton Réglages. On la réduit à une cible ronde de 48 px (libellé conservé
+ * pour les lecteurs d'écran) et on réserve une bande en bas de la scène.
+ */
+@media (max-width: 640px) {
+  .stage {
+    /* Bande réservée : 48 px de cible + 12 px de retrait (ou l'encoche) + 8 px d'air. */
+    --pill-band: max(68px, calc(env(safe-area-inset-bottom) + 56px));
+    padding-bottom: var(--pill-band);
+  }
+
+  .device {
+    /*
+     * Le cadran rend exactement ce que la bande prend à la scène (40 px de
+     * padding bas au départ), quelle que soit l'encoche : la page ne grandit pas.
+     * Passé le `min-width: 280px` du cadran, la soustraction ne peut plus suivre
+     * et seule la bande reste — inévitable sur les écrans très courts.
+     */
+    width: min(calc(100vw - 32px), 560px, calc(100dvh - 330px - var(--pill-band) + 40px));
+  }
+
+  .accessibility-link {
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    min-height: 48px;
+    padding: 0;
+    gap: 0;
+    border-radius: 50%;
+  }
+
+  .accessibility-link .accessibility-icon {
+    font-size: 22px;
+    line-height: 1;
+  }
+
+  /* Même technique que l'utilitaire .sr-only, en version courte : le libellé
+     reste lu par les lecteurs d'écran mais ne peint plus rien. */
+  .accessibility-link .accessibility-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 }

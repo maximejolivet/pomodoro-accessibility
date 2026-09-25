@@ -1,0 +1,41 @@
+/*
+ * Jetons du thème clair. Ils sont posés sur <app-root> et hérités par toutes les
+ * pages ; le thème sombre les redéfinit dans dark.css.
+ */
+app-root {
+  --bumper-light: #c6e2e9;
+  --bumper: #a6ccd6;
+  --bumper-dark: #7fa9b4;
+  --bumper-edge: #6f98a3;
+  --face: #fbfbf8;
+  --ink: #2f3336;
+  --bg-top: #f1f3f2;
+  --bg-bottom: #d9e0e2;
+  --bg-glow: #ffffff;
+  --bumper-deep: #628b96;
+  --bezel-a: #d8edf2;
+  --bezel-b: #b4d5de;
+  --bezel-c: #9cc2cc;
+  --face-hi: #ffffff;
+  --face-lo: #eceee9;
+  --sheen: 0.55;
+  --band-in: #f1f3f1;
+  --band-out: #f7f8f6;
+  --band-shadow: rgba(40, 60, 70, 0.22);
+  --bg-line: #c2cacd;
+  --bg-highlight: #ffffff;
+  --tab: #1d282d;
+  --surface-hi: #ffffff;
+  --surface-lo: #eef1f1;
+  --surface-edge: #cfd6d8;
+  --muted: #5f6a6f;
+  --muted-strong: #3d4449;
+  --neutral: #e6eaeb;
+  --neutral-edge: #b9c3c6;
+  --range-bg: #dfe5e7;
+  --backdrop: rgba(20, 35, 40, 0.35);
+  --bar: #8b6fd6;
+  color-scheme: light;
+  display: block;
+  font-family: 'Avenir Next', Avenir, 'Nunito Sans', 'Segoe UI', system-ui, sans-serif;
+}

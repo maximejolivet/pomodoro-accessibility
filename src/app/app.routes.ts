@@ -1,8 +1,15 @@
 import { Routes } from '@angular/router';
-import { AppComponent } from './app.component';
-import { AccessibilityComponent } from './accessibility.component';
 
 export const appRoutes: Routes = [
-  { path: '', component: AppComponent },
-  { path: 'accessibility', component: AccessibilityComponent }
+  {
+    path: '',
+    loadComponent: () =>
+      import('./features/timer/timer-page.component').then(m => m.TimerPageComponent)
+  },
+  {
+    path: 'accessibility',
+    loadComponent: () =>
+      import('./features/accessibility/accessibility-page.component').then(m => m.AccessibilityPageComponent)
+  },
+  { path: '**', redirectTo: '' }
 ];

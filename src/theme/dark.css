@@ -1,0 +1,35 @@
+/* Thème sombre : la classe est posée sur <app-root> par la coquille (PreferencesService). */
+app-root.dark {
+  --bumper-light: #56747f;
+  --bumper: #3b5661;
+  --bumper-dark: #2a3f47;
+  --bumper-edge: #1f3037;
+  --bumper-deep: #16242a;
+  --bezel-a: #4a6671;
+  --bezel-b: #334c56;
+  --bezel-c: #273c44;
+  --face-hi: #2a3036;
+  --face: #22272c;
+  --face-lo: #181b1f;
+  --sheen: 0.1;
+  --ink: #e8ecee;
+  --bg-top: #1b1f23;
+  --bg-bottom: #0e1113;
+  --bg-glow: #2a3238;
+  --band-in: #262b31;
+  --band-out: #2b3137;
+  --band-shadow: rgba(0, 0, 0, 0.55);
+  --bg-line: #3d464d;
+  --bg-highlight: rgba(255, 255, 255, 0.08);
+  --tab: #e8ecee;
+  --surface-hi: #2e343a;
+  --surface-lo: #23282d;
+  --surface-edge: #121518;
+  --muted: #a0abb1;
+  --muted-strong: #b8c2c7;
+  --neutral: #3a4248;
+  --neutral-edge: #1a1e22;
+  --range-bg: #15181b;
+  --backdrop: rgba(0, 0, 0, 0.55);
+  color-scheme: dark;
+}

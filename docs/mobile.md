@@ -18,7 +18,7 @@ arrière-plan et annulées au retour, là où les sons de l'app prennent le rela
 
 ### Sons des notifications
 
-Ils sont générés à partir des mêmes motifs que l'app (`src/app/sound-patterns.ts`) :
+Ils sont générés à partir des mêmes motifs que l'app (`src/app/core/helpers/sound-patterns.ts`) :
 
 - **iOS** : l'app écrit elle-même les WAV dans `Library/Sounds` au lancement, rien à faire ;
 - **Android** : `make sounds` (appelé par `make sync`) copie les WAV dans
