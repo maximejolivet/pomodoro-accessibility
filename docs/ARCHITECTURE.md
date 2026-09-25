@@ -29,6 +29,7 @@ src/
     │       ├── preset.service.ts       # Modes personnalisables
     │       ├── history.service.ts      # Historique des sessions et statistiques
     │       ├── sound.service.ts        # Lecture des sons (Web Audio)
+    │       ├── speech.service.ts       # Temps restant dit à voix haute (Web Speech)
     │       ├── notification.service.ts # Notifications locales Capacitor + sons natifs
     │       ├── keep-awake.service.ts   # Écran toujours allumé
     │       └── widget.service.ts       # État transmis au widget iOS

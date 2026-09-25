@@ -51,6 +51,11 @@ export const de: Dictionary = {
   'settings.visualOff': 'Keins',
   'settings.visualSoft': 'Sanft',
   'settings.visualStrong': 'Stark',
+  'settings.speech': 'Sprachansage',
+  'settings.speechHint': 'Die restliche Zeit laut vorgelesen',
+  'settings.speechOff': 'Keine',
+  'settings.speechMilestones': 'Marken',
+  'settings.speechMinutes': 'Jede Minute',
   'settings.language': 'Sprache',
   'settings.languageAuto': 'Auto',
   'settings.listen': 'Töne anhören',
@@ -92,6 +97,7 @@ export const de: Dictionary = {
   'stats.goal': 'Heutiges Ziel',
   'stats.goalReached': 'Ziel erreicht!',
 
+  'speech.oneMinute': 'Noch eine Minute',
 
   'notif.milestoneTitle': 'Noch {m} Minuten',
   'notif.milestoneBody': 'Die Zeit läuft, bleib dran.',

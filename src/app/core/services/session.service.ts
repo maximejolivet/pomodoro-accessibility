@@ -9,7 +9,7 @@ import { formatTime } from '../helpers/time';
 import { I18nService } from '../i18n/i18n.service';
 import type { I18nKey } from '../i18n/i18n.model';
 import type { Alert } from '../models/alert.model';
-import type { VisualAlert } from '../models/preferences.model';
+import type { SpeechMode, VisualAlert } from '../models/preferences.model';
 import type { VisualCue } from '../models/session.model';
 import type { Preset, PresetKind } from '../models/preset.model';
 import type { ActiveSession } from '../models/session.model';
@@ -19,6 +19,7 @@ import { NotificationService } from './notification.service';
 import { PreferencesService } from './preferences.service';
 import { PresetService } from './preset.service';
 import { SoundService } from './sound.service';
+import { SpeechService } from './speech.service';
 import { TimerService } from './timer.service';
 import { WidgetService } from './widget.service';
 
@@ -36,6 +37,7 @@ export class SessionService {
   private readonly presetService = inject(PresetService);
   private readonly prefs = inject(PreferencesService);
   private readonly sound = inject(SoundService);
+  private readonly speech = inject(SpeechService);
   private readonly notifications = inject(NotificationService);
   private readonly keepAwake = inject(KeepAwakeService);
   private readonly widget = inject(WidgetService);
@@ -116,6 +118,7 @@ export class SessionService {
 
     this.timer.timeLeft$.subscribe(t => {
       this.checkMilestones(this.timeLeft(), t);
+      this.speakRemaining(this.timeLeft(), t);
       this.timeLeft.set(t);
     });
     this.timer.finished$.subscribe(lateBy => this.onFinished(lateBy));
@@ -158,6 +161,7 @@ export class SessionService {
     this.finished.set(false);
     if (this.isRunning()) {
       this.timer.pause();
+      this.speech.stop();
       this.pauseSession();
       this.announce(this.i18n.t('state.paused'));
     } else if (this.isPaused()) {
@@ -177,6 +181,7 @@ export class SessionService {
 
   reset(): void {
     this.finished.set(false);
+    this.speech.stop();
     // Pendant la prolongation, la durée prévue est déjà atteinte : la session compte comme terminée
     this.endSession(this.inExtra());
     this.inExtra.set(false);
@@ -264,6 +269,19 @@ export class SessionService {
       return;
     }
     this.showCue('end');
+  }
+
+  /**
+   * Aperçu de la voix, au moment où le réglage change : c'est aussi le geste utilisateur
+   * dont iOS a besoin pour autoriser la synthèse, comme le son a besoin d'un tap.
+   */
+  previewSpeech(mode: SpeechMode): void {
+    this.prefs.setSpeech(mode);
+    if (mode === 'off') {
+      this.speech.stop();
+      return;
+    }
+    this.say(this.i18n.t('notif.milestoneTitle', { m: MILESTONES[0] }));
   }
 
   setKeepAwake(on: boolean): void {
@@ -369,6 +387,9 @@ export class SessionService {
         this.inExtra.set(true);
         this.timer.start(extraLeft);
         this.announce(this.i18n.t('mode.extra'));
+        if (fresh) {
+          this.sayEnd(this.i18n.t('notif.endBodyExtra', { m: EXTRA_SECONDS / 60 }));
+        }
         return;
       }
       lateBy -= EXTRA_SECONDS;
@@ -383,10 +404,14 @@ export class SessionService {
       this.durationSeconds.set(next.seconds);
       this.startSession(next, next.seconds - lateBy, lateBy);
       this.announce(this.i18n.t('state.running') + ', ' + this.presetName(next));
+      if (fresh) {
+        this.sayEnd(this.i18n.t('notif.nextBody', { name: this.presetName(next) }));
+      }
       return;
     }
     this.finished.set(true);
     this.announce(this.i18n.t('state.finished'));
+    if (fresh) this.sayEnd();
   }
 
   /** Alertes à programmer avant la mise en arrière-plan : paliers, fin, prolongation, session suivante. */
@@ -478,6 +503,44 @@ export class SessionService {
     this.visualCue.set(null);
     setTimeout(() => this.visualCue.set(cue));
     this.cueTimer = setTimeout(() => this.visualCue.set(null), CUE_MS[cue]);
+  }
+
+  /**
+   * Dit le temps restant à voix haute quand le décompte franchit une minute ronde : aux
+   * trois paliers, ou à chacune, selon le réglage. La voix est le seul canal qui donne la
+   * valeur elle-même — le cadran demande de voir, les sons de palier demandent de savoir
+   * lequel vient de sonner.
+   */
+  private speakRemaining(previous: number, current: number): void {
+    const mode = this.prefs.speech();
+    if (mode === 'off') return;
+    // Uniquement un décompte normal : pas un réglage au doigt, au curseur ni un reset
+    if (!this.isRunning() || this.dragging() || this.manualChange) return;
+
+    // Minute ronde que le décompte vient de passer. Au retour d'un long arrière-plan,
+    // plusieurs minutes ont été franchies d'un coup : seule la dernière est dite, et elle
+    // reste juste puisqu'elle se déduit du temps restant à cet instant.
+    const at = Math.ceil(current / 60) * 60;
+    const minutes = at / 60;
+    if (minutes < 1 || previous <= at) return;
+    if (mode === 'milestones' && !(MILESTONES as readonly number[]).includes(minutes)) return;
+
+    this.say(
+      minutes === 1
+        ? this.i18n.t('speech.oneMinute')
+        : this.i18n.t('notif.milestoneTitle', { m: minutes })
+    );
+  }
+
+  /** « Temps écoulé », suivi le cas échéant de ce qui prend la suite. */
+  private sayEnd(next?: string): void {
+    if (this.prefs.speech() === 'off') return;
+    const end = this.i18n.t('notif.endTitle');
+    this.say(next ? `${end}. ${next}` : end);
+  }
+
+  private say(text: string): void {
+    this.speech.speak(text, this.i18n.lang());
   }
 
   private announce(message: string): void {

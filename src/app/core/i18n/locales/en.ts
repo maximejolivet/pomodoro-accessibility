@@ -51,6 +51,11 @@ export const en: Dictionary = {
   'settings.visualOff': 'None',
   'settings.visualSoft': 'Soft',
   'settings.visualStrong': 'Strong',
+  'settings.speech': 'Spoken time',
+  'settings.speechHint': 'The time left, read out loud',
+  'settings.speechOff': 'None',
+  'settings.speechMilestones': 'Milestones',
+  'settings.speechMinutes': 'Every minute',
   'settings.language': 'Language',
   'settings.languageAuto': 'Auto',
   'settings.listen': 'Preview sounds',
@@ -92,6 +97,7 @@ export const en: Dictionary = {
   'stats.goal': "Today's goal",
   'stats.goalReached': 'Goal reached!',
 
+  'speech.oneMinute': 'One minute left',
 
   'notif.milestoneTitle': '{m} minutes left',
   'notif.milestoneBody': 'Time is moving, keep going.',

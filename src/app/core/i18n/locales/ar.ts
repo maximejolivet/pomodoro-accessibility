@@ -51,6 +51,11 @@ export const ar: Dictionary = {
   'settings.visualOff': 'بدون',
   'settings.visualSoft': 'خفيف',
   'settings.visualStrong': 'قوي',
+  'settings.speech': 'الإعلان الصوتي',
+  'settings.speechHint': 'الوقت المتبقّي مقروءًا بصوت عالٍ',
+  'settings.speechOff': 'بدون',
+  'settings.speechMilestones': 'المراحل',
+  'settings.speechMinutes': 'كل دقيقة',
   'settings.language': 'اللغة',
   'settings.languageAuto': 'تلقائي',
   'settings.listen': 'الاستماع إلى الأصوات',
@@ -92,6 +97,7 @@ export const ar: Dictionary = {
   'stats.goal': 'هدف اليوم',
   'stats.goalReached': 'تم بلوغ الهدف!',
 
+  'speech.oneMinute': 'تبقّت دقيقة واحدة',
 
   'notif.milestoneTitle': 'تبقّى {m} دقيقة',
   'notif.milestoneBody': 'الوقت يمضي، واصل التقدم.',

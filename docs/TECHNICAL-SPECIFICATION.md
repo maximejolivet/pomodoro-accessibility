@@ -134,6 +134,7 @@ la session (RG-14).
 | `auto-extra` | Prolongation +5 min | `'on'` \| `'off'` (défaut : on) |
 | `auto-chain` | Enchaînement automatique | `'on'` \| `'off'` (défaut : off) |
 | `keep-awake` | Écran allumé | `'on'` \| `'off'` (défaut : on) |
+| `speech` | Annonce vocale | `'off'` \| `'milestones'` \| `'minutes'` (défaut : off) |
 | `lang` | Langue | code de langue ou `'auto'` |
 | `preset` | Mode sélectionné | identifiant |
 | `presets` | Modes | JSON `Preset[]` |
@@ -187,6 +188,7 @@ redemande le maintien d'écran.
 | `PresetService` | Modes | Chargement filtré, refus de supprimer le dernier mode, restauration des modes par défaut |
 | `HistoryService` | Historique, statistiques, objectif | `today`, `week`, `streak`, `goalProgress` en `computed` ; replanification au passage de minuit |
 | `SoundService` | Lecture Web Audio | Synthèse des motifs partagés |
+| `SpeechService` | Annonce vocale (Web Speech) | Coupe l'annonce précédente, choisit une voix de la langue courante si le navigateur en propose une, masqué si la synthèse manque |
 | `NotificationService` | Notifications locales | Écrit les WAV iOS au lancement, crée un canal Android par son, canal silencieux pour les alertes muettes |
 | `KeepAwakeService` | Maintien de l'écran | Vérifie le support, ignore les échecs, redemande le verrou au retour au premier plan |
 | `WidgetService` | Widget iOS | Actif uniquement sur iOS ; n'envoie que si l'état JSON a changé ; réessaie au changement suivant en cas d'échec |
@@ -293,6 +295,7 @@ garantit l'homogénéité des contrastes (ENF-MNT-2).
 | -------- | ------------- |
 | Cadran utilisable au clavier et annoncé | Conteneur focalisable portant `role="slider"`, `aria-valuemin=1`, `aria-valuemax=60`, `aria-valuenow`, `aria-valuetext` (« *n* minutes, *action* »), `aria-label` ; le SVG est `aria-hidden` |
 | Annonces temps réel | Région live alimentée par le signal `announcement` de `SessionService` |
+| Temps restant sans la vue | Annonce vocale optionnelle (`SpeechService`) aux paliers ou à chaque minute, dans la langue de l'interface |
 | Alerte sans le son | Pulsation colorée à 0,6 Hz et bandeau de fin persistant ; `aria-hidden`, `pointer-events: none`, figée sous `prefers-reduced-motion` |
 | Panneau de réglages | Focus piégé tant qu'il est ouvert, fermeture par Échap, focus rendu au déclencheur |
 | Onglets | Rôles `tablist` / `tab` / `tabpanel`, navigation par flèches, flèches nommées pour les lecteurs d'écran |

@@ -50,6 +50,11 @@ export const fr = {
   'settings.visualOff': 'Aucune',
   'settings.visualSoft': 'Douce',
   'settings.visualStrong': 'Forte',
+  'settings.speech': 'Annonce vocale',
+  'settings.speechHint': 'Le temps restant dit à voix haute',
+  'settings.speechOff': 'Aucune',
+  'settings.speechMilestones': 'Paliers',
+  'settings.speechMinutes': 'Chaque minute',
   'settings.language': 'Langue',
   'settings.languageAuto': 'Auto',
   'settings.listen': 'Écouter les sons',
@@ -91,6 +96,7 @@ export const fr = {
   'stats.goal': 'Objectif du jour',
   'stats.goalReached': 'Objectif atteint !',
 
+  'speech.oneMinute': "Plus qu'une minute",
 
   'notif.milestoneTitle': 'Plus que {m} minutes',
   'notif.milestoneBody': 'Le temps avance, garde le cap.',

@@ -323,6 +323,114 @@ test.describe('contraste des composants (WCAG 1.4.11)', () => {
   }
 });
 
+test.describe('annonce vocale', () => {
+  /** Enregistre ce que l'app demande à la synthèse : rien n'est prononcé pendant le test. */
+  async function captureSpeech(page: Page, mode?: 'milestones' | 'minutes') {
+    await page.addInitScript(m => {
+      (window as any).__spoken = [];
+      SpeechSynthesis.prototype.speak = function (u: SpeechSynthesisUtterance) {
+        (window as any).__spoken.push({ text: u.text, lang: u.lang });
+      };
+      localStorage.setItem('pomodoro-tdah.lang', 'fr');
+      if (m) localStorage.setItem('pomodoro-tdah.speech', m);
+    }, mode);
+  }
+
+  /** Lance un décompte de deux minutes, horloge simulée : le test ne dure pas deux minutes. */
+  async function startTwoMinutes(page: Page) {
+    await page.clock.install();
+    await page.goto('/');
+    await ready(page);
+    await page.locator('.face').focus();
+    await page.keyboard.press('Home');
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('ArrowRight');
+    await expect(page.locator('.readout-time')).toHaveText('02:00');
+    await page.getByRole('button', { name: /démarrer/i }).click();
+  }
+
+  const spoken = (page: Page) =>
+    page.evaluate(() => (window as any).__spoken as { text: string; lang: string }[]);
+
+  test('le choix se fait au clavier, se fait entendre et se retient', async ({ page }) => {
+    await captureSpeech(page);
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+    await page.locator('.tabs button:nth-child(3)').click();
+
+    const group = page.getByRole('group', { name: 'Annonce vocale' });
+    await expect(group).toBeVisible();
+    const milestones = group.getByRole('button', { name: 'Paliers' });
+    await expect(milestones).toHaveAttribute('aria-pressed', 'false');
+
+    // Au clavier seul : le réglage ne dépend pas de la souris
+    await milestones.focus();
+    await page.keyboard.press('Enter');
+    await expect(milestones).toHaveAttribute('aria-pressed', 'true');
+
+    // La voix se fait entendre tout de suite, dans la langue de l'interface :
+    // sans cet essai, on choisit un réglage sans savoir ce qu'il fait
+    expect(await spoken(page)).toEqual([{ text: 'Plus que 45 minutes', lang: 'fr' }]);
+    expect(await page.evaluate(() => localStorage.getItem('pomodoro-tdah.speech'))).toBe('milestones');
+  });
+
+  test('« Aucune » ne dit rien, et reste le réglage par défaut', async ({ page }) => {
+    await captureSpeech(page);
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+    await page.locator('.tabs button:nth-child(3)').click();
+
+    const group = page.getByRole('group', { name: 'Annonce vocale' });
+    await expect(group.getByRole('button', { name: 'Aucune' })).toHaveAttribute('aria-pressed', 'true');
+    await group.getByRole('button', { name: 'Chaque minute' }).click();
+    await group.getByRole('button', { name: 'Aucune' }).click();
+    expect(await spoken(page)).toHaveLength(1);
+  });
+
+  test('ses cibles font au moins 44 px (WCAG 2.5.5)', async ({ page }) => {
+    await captureSpeech(page);
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+    await page.locator('.tabs button:nth-child(3)').click();
+    const buttons = page.getByRole('group', { name: 'Annonce vocale' }).getByRole('button');
+    for (const button of await buttons.all()) {
+      const box = await button.boundingBox();
+      expect(box!.height, await button.textContent() ?? '').toBeGreaterThanOrEqual(44);
+    }
+  });
+
+  test('le décompte dit chaque minute, puis la fin et ce qui suit', async ({ page }) => {
+    await captureSpeech(page, 'minutes');
+    await startTwoMinutes(page);
+    // Rien au démarrage : la durée réglée vient d'être lue, la répéter n'apporte rien
+    expect(await spoken(page)).toEqual([]);
+
+    await page.clock.runFor(61_000);
+    expect(await spoken(page)).toEqual([{ text: "Plus qu'une minute", lang: 'fr' }]);
+
+    // À la fin, une seule phrase dit aussi la suite : deux voix se couperaient l'une l'autre
+    await page.clock.runFor(61_000);
+    expect(await spoken(page)).toEqual([
+      { text: "Plus qu'une minute", lang: 'fr' },
+      { text: 'Temps écoulé. +5 min pour terminer.', lang: 'fr' }
+    ]);
+  });
+
+  test('en mode Paliers, les minutes ordinaires restent silencieuses', async ({ page }) => {
+    await captureSpeech(page, 'milestones');
+    await startTwoMinutes(page);
+    await page.clock.runFor(61_000);
+    expect(await spoken(page), 'la minute 1 n\'est pas un palier').toEqual([]);
+
+    // La fin, elle, se dit dans tous les modes
+    await page.clock.runFor(61_000);
+    expect(await spoken(page)).toEqual([{ text: 'Temps écoulé. +5 min pour terminer.', lang: 'fr' }]);
+  });
+});
+
 test.describe('alerte visuelle', () => {
   async function openSettings(page: Page) {
     await page.goto('/');

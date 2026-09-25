@@ -187,6 +187,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-PRE-7 | Objectif quotidien réglable.                                                     | S    |
 | EF-PRE-8 | Langue : automatique (langue de l'appareil) ou choisie.                          | M    |
 | EF-PRE-9 | Toute préférence est conservée d'une ouverture à l'autre.                        | M    |
+| EF-PRE-10 | Annonce vocale du temps restant : aucune, aux paliers, ou à chaque minute (défaut : aucune) ; le choix se fait entendre aussitôt. | S    |
 | EF-PRE-12 | Alerte visuelle : aucune, douce ou forte (défaut : douce) ; le choix se montre aussitôt. | S    |
 
 ### 4.7 Internationalisation (`EF-I18`)
@@ -287,6 +288,7 @@ série de jours, histogramme des 7 derniers jours, 10 dernières sessions.
 | ENF-A11-9  | Le cadran expose un rôle de curseur avec valeur, minimum, maximum et texte de valeur lisible.                                                              |
 | ENF-A11-10 | Les tests automatiques axe-core (WCAG 2.0/2.1 A et AA, bonnes pratiques) ne relèvent aucune violation sur les parcours couverts, en thème clair et sombre. |
 | ENF-A11-11 | Tout réglage accessible par glissement l'est aussi par un pointeur simple (WCAG 2.5.7), avec des cibles d'au moins 44 × 44 px (WCAG 2.5.8).            |
+| ENF-A11-12 | Le temps restant peut être dit à voix haute par la synthèse de l'appareil, sans regarder le cadran : réglage à trois choix, hors ligne, éteint par défaut. |
 
 **Écarts connus et assumés**, publiés dans la déclaration : le cadran est un curseur dont
 l'activation démarre aussi le minuteur (critères RGAA 7.1 et 7.3) ; le contraste des éléments

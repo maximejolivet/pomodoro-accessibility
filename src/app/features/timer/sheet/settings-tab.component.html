@@ -74,6 +74,28 @@
   </div>
 </div>
 
+<!-- Annonce vocale : masquée si le navigateur n'a pas la synthèse, plutôt qu'offerte en vain. -->
+<div class="field" *ngIf="speechAvailable">
+  <span class="field-head">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 3v18M8 7v10M4 10v4M16 7v10M20 10v4" />
+    </svg>
+    <span class="setting-text">
+      {{ i18n.t('settings.speech') }}
+      <small>{{ i18n.t('settings.speechHint') }}</small>
+    </span>
+  </span>
+  <div class="segmented choice" role="group" [attr.aria-label]="i18n.t('settings.speech')">
+    <button
+      *ngFor="let m of speechModes"
+      type="button"
+      [class.active]="prefs.speech() === m.value"
+      [attr.aria-pressed]="prefs.speech() === m.value"
+      (click)="setSpeech(m.value)"
+    >{{ i18n.t(m.key) }}</button>
+  </div>
+</div>
+
 <label class="duration">
   <span class="duration-head">
     <span>{{ i18n.t('settings.goal') }}</span>
