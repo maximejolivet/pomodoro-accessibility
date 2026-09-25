@@ -1,0 +1,135 @@
+<div
+  class="tilt-zone"
+  (pointermove)="onTilt($event)"
+  (pointerleave)="resetTilt()"
+>
+  <div
+    class="device"
+    [style.--rx]="tiltX + 'deg'"
+    [style.--ry]="tiltY + 'deg'"
+  >
+    <div class="bezel">
+      <button
+        type="button"
+        class="face"
+        role="slider"
+        [attr.aria-valuemin]="1"
+        [attr.aria-valuemax]="maxMinutes"
+        [attr.aria-valuenow]="Math.ceil(displayMinutes)"
+        [attr.aria-valuetext]="Math.ceil(displayMinutes) + ' ' + i18n.t('unit.minutes') + ', ' + mainActionLabel"
+        [class.dragging]="isDragging"
+        (click)="onFaceClick()"
+        (pointerdown)="onDragStart($event)"
+        (pointermove)="onDragMove($event)"
+        (pointerup)="onDragEnd($event)"
+        (pointercancel)="onDragEnd($event)"
+        (keydown.arrowLeft)="stepMinutes(-1)"
+        (keydown.arrowRight)="stepMinutes(1)"
+        (keydown.pageUp)="stepMinutes(-5)"
+        (keydown.pageDown)="stepMinutes(5)"
+        (keydown.home)="setMinutes(0)"
+        (keydown.end)="setMinutes(maxMinutes)"
+        [attr.aria-label]="i18n.t('action.dialHint')"
+      >
+        <svg #dial viewBox="0 0 420 420" class="dial" aria-hidden="true">
+          <defs>
+            <radialGradient id="diskGrad" cx="50%" cy="40%" r="65%">
+              <stop offset="0%" [attr.stop-color]="selectedPreset.color" stop-opacity="0.85" />
+              <stop offset="100%" [attr.stop-color]="selectedPreset.color" />
+            </radialGradient>
+            <radialGradient id="knobGrad" cx="38%" cy="32%" r="75%">
+              <stop offset="0%" stop-color="#e4f2f6" />
+              <stop offset="55%" stop-color="#b3d4dd" />
+              <stop offset="100%" stop-color="#8db5c0" />
+            </radialGradient>
+            <filter id="plateShadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#1c1030" flood-opacity="0.3" />
+            </filter>
+            <!-- Fondu de l'effet d'arrière-plan, du 0 vers le 20 -->
+            <linearGradient
+              id="bgFadeGrad"
+              gradientUnits="userSpaceOnUse"
+              [attr.x1]="bgFade.start.x" [attr.y1]="bgFade.start.y"
+              [attr.x2]="bgFade.end.x" [attr.y2]="bgFade.end.y"
+            >
+              <stop offset="0%" stop-color="#fff" />
+              <stop offset="60%" stop-color="#fff" stop-opacity="0.7" />
+              <stop offset="100%" stop-color="#fff" stop-opacity="0" />
+            </linearGradient>
+            <mask id="bgFadeMask" maskUnits="userSpaceOnUse" x="-100" y="-100" width="620" height="620">
+              <rect x="-100" y="-100" width="620" height="620" fill="url(#bgFadeGrad)" />
+            </mask>
+            <!-- Relief de la zone : ombre douce sous le bord, comme un rebord en plastique -->
+            <filter id="bandRelief" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0.5" dy="2" stdDeviation="2.2" class="band-shadow" />
+            </filter>
+            <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="0.8" />
+            </filter>
+            <radialGradient id="bandGrad" gradientUnits="userSpaceOnUse" [attr.cx]="cx" [attr.cy]="cy" r="212">
+              <stop offset="70%" class="band-stop-in" />
+              <stop offset="100%" class="band-stop-out" />
+            </radialGradient>
+            <filter id="knobShadow" x="-60%" y="-60%" width="220%" height="220%">
+              <feDropShadow dx="1" dy="5" stdDeviation="4" flood-color="#0d2530" flood-opacity="0.45" />
+            </filter>
+          </defs>
+
+          <g [attr.transform]="dialTransform">
+          <!-- Effet d'arrière-plan de 0 à 20 -->
+          <g mask="url(#bgFadeMask)">
+            <g filter="url(#bandRelief)">
+              <path [attr.d]="bgFillPath" fill="url(#bandGrad)" />
+              <path [attr.d]="bgArcPath" class="bg-line" />
+            </g>
+            <path [attr.d]="bgHighlightPath" class="bg-highlight" filter="url(#softGlow)" />
+          </g>
+
+          <!-- Anneau de couleurs -->
+          <path *ngFor="let s of segments" [attr.d]="s.d" [attr.fill]="s.color" />
+
+          <!-- Disque : voile sur l'anneau puis plateau plein au centre -->
+          <path [attr.d]="diskOuterPath" [attr.fill]="selectedPreset.color" class="disk-veil" />
+          <g filter="url(#plateShadow)">
+            <path [attr.d]="diskInnerPath" fill="url(#diskGrad)" />
+          </g>
+
+          <!-- Séparateurs blancs -->
+          <line
+            *ngFor="let l of separators"
+            [attr.x1]="l.x1" [attr.y1]="l.y1" [attr.x2]="l.x2" [attr.y2]="l.y2"
+            class="separator"
+          />
+
+          <!-- Bord du disque -->
+          <line
+            *ngIf="displayMinutes > 0 && displayMinutes < 60"
+            [attr.x1]="cx" [attr.y1]="cy" [attr.x2]="edgeLine.x" [attr.y2]="edgeLine.y"
+            class="edge"
+          />
+          <g [attr.transform]="'translate(' + cx + ' ' + cy + ') rotate(' + edgeAngle + ')'">
+            <rect x="-14" y="-160.5" width="28" height="7" rx="3.5" class="disk-tab" />
+          </g>
+
+          <!-- Chiffres -->
+          <text
+            *ngFor="let t of labels"
+            [attr.x]="t.x" [attr.y]="t.y"
+            class="label"
+          >{{ t.text }}</text>
+
+          <!-- Bouton central -->
+          <g filter="url(#knobShadow)">
+            <circle [attr.cx]="cx" [attr.cy]="cy" r="31" class="gasket" />
+            <g [attr.transform]="'translate(' + cx + ' ' + cy + ') rotate(' + edgeAngle + ')'">
+              <rect x="-6" y="-47" width="12" height="26" rx="6" fill="url(#knobGrad)" />
+            </g>
+            <circle [attr.cx]="cx" [attr.cy]="cy" r="26" fill="url(#knobGrad)" />
+            <ellipse [attr.cx]="cx - 7" [attr.cy]="cy - 9" rx="10" ry="6" class="knob-shine" />
+          </g>
+          </g>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>

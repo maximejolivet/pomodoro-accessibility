@@ -1,0 +1,48 @@
+/* Remise à zéro, démarrage / pause, réglages. */
+
+:host {
+  display: contents;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.btn-main {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.btn-main svg {
+  width: 34px;
+  height: 34px;
+  fill: #fff;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+}
+
+.btn-round {
+  --c: var(--neutral);
+  --c-dark: var(--neutral-edge);
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.btn-round svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: var(--muted-strong);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

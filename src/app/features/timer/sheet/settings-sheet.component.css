@@ -1,0 +1,158 @@
+/* Panneau coulissant et ses onglets. */
+
+:host {
+  display: contents;
+}
+
+.sheet-close svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: var(--muted-strong);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--backdrop);
+  z-index: 10;
+  animation: fade-in 0.2s ease;
+}
+
+.sheet {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  z-index: 11;
+  width: min(100%, 480px);
+  padding: 10px 16px calc(24px + env(safe-area-inset-bottom));
+  border-radius: 28px 28px 0 0;
+  background: linear-gradient(180deg, var(--surface-hi), var(--surface-lo));
+  box-shadow:
+    inset 0 2px 0 var(--surface-hi),
+    0 -4px 0 var(--surface-edge),
+    0 -18px 40px rgba(25, 55, 65, 0.25);
+  display: flex;
+  flex-direction: column;
+  max-height: min(88dvh, 760px);
+  transform: translate(-50%, 110%);
+  visibility: hidden;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0s 0.3s;
+}
+
+.sheet.open {
+  transform: translate(-50%, 0);
+  visibility: visible;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.sheet-handle {
+  width: 44px;
+  height: 5px;
+  margin: 0 auto 10px;
+  border-radius: 999px;
+  background: var(--surface-edge);
+}
+
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.sheet-body {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin: 0 -16px;
+  padding: 4px 16px 8px;
+}
+
+.sheet-close {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--neutral);
+  cursor: pointer;
+}
+
+.presets {
+  width: 100%;
+  padding-bottom: 6px;
+}
+
+.tabs {
+  display: flex;
+  flex: 1;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 14px;
+  background: var(--range-bg);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.tab {
+  flex: 1;
+  padding: 8px 6px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted-strong);
+  cursor: pointer;
+}
+
+.tab.active {
+  background: linear-gradient(180deg, var(--surface-hi), var(--surface-lo));
+  color: var(--ink);
+  box-shadow: 0 2px 0 var(--surface-edge), 0 3px 6px rgba(0, 0, 0, 0.12);
+}
+
+.sheet[role="dialog"] {
+  position: fixed;
+  bottom: 0;
+  inset-inline: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+  border-radius: 24px 24px 0 0;
+  background: var(--surface-hi);
+  box-shadow: 0 -12px 32px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(100%);
+  z-index: 1000;
+}
+
+.sheet[role="dialog"].open {
+  transform: translateY(0);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet,
+  .sheet.open {
+    transition: none;
+  }
+
+  /* En mode réduit-motion, pas de glissement */
+  .sheet[role="dialog"] {
+    transition: none;
+    transform: translateY(100%);
+  }
+
+  .sheet[role="dialog"].open {
+    transform: translateY(0);
+  }
+}

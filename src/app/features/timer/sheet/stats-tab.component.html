@@ -1,0 +1,99 @@
+<div class="tiles">
+  <div class="tile">
+    <span class="tile-value">{{ history.today().focusMinutes }}<small> min</small></span>
+    <span class="tile-label">{{ i18n.t('stats.focus') }}</span>
+  </div>
+  <div class="tile">
+    <span class="tile-value">{{ history.today().sessions }}</span>
+    <span class="tile-label">{{ i18n.t('stats.sessions') }}</span>
+  </div>
+  <div class="tile">
+    <span class="tile-value">{{ i18n.t('stats.streakValue', { n: history.streak() }) }}</span>
+    <span class="tile-label">{{ i18n.t('stats.streak') }}</span>
+  </div>
+</div>
+
+<div class="goal" [class.reached]="history.goalProgress() >= 1">
+  <div class="goal-head">
+    <span>{{ i18n.t('stats.goal') }}</span>
+    <strong>{{ history.today().focusMinutes }} / {{ history.dailyGoal() }} min</strong>
+  </div>
+  <div
+    class="goal-track"
+    role="progressbar"
+    aria-valuemin="0"
+    [attr.aria-valuemax]="history.dailyGoal()"
+    [attr.aria-valuenow]="history.today().focusMinutes"
+    [attr.aria-valuetext]="history.today().focusMinutes + ' / ' + history.dailyGoal() + ' ' + i18n.t('unit.minutes')"
+    [attr.aria-label]="i18n.t('stats.goal')"
+  >
+    <span class="goal-bar" [style.width.%]="history.goalProgress() * 100"></span>
+  </div>
+  <p class="goal-reached" *ngIf="history.goalProgress() >= 1">✓ {{ i18n.t('stats.goalReached') }}</p>
+</div>
+
+<figure class="week">
+  <figcaption>{{ i18n.t('stats.week') }}</figcaption>
+
+  <!-- Visuel (graphique en barres) -->
+  <div class="week-chart" aria-hidden="true">
+    <div
+      *ngFor="let bar of weekBars()"
+      class="week-col"
+      [class.today]="bar.isToday"
+    >
+      <span class="week-value" [class.shown]="bar.isToday || bar.isMax">{{ bar.minutes }}</span>
+      <span class="week-track">
+        <span class="week-bar" [style.height.%]="bar.pct" [class.is-empty]="!bar.minutes"></span>
+      </span>
+      <span class="week-day">{{ bar.label }}</span>
+    </div>
+  </div>
+
+  <!-- Tableau accessible (caché visuellement) -->
+  <table class="sr-only">
+    <caption>{{ i18n.t('stats.week') }}</caption>
+    <thead>
+      <tr>
+        <th scope="col">{{ i18n.t('stats.weekDay') }}</th>
+        <th scope="col">{{ i18n.t('stats.weekMinutes') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let bar of weekBars()">
+        <td>{{ bar.label }}</td>
+        <td>{{ bar.minutes }} min</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<h2 class="section-title">{{ i18n.t('stats.recent') }}</h2>
+<ul class="sessions" *ngIf="history.recent().length; else noSessions">
+  <li *ngFor="let s of history.recent()" class="session" [style.--c]="s.color">
+    <span class="preset-dot"></span>
+    <span class="session-main">
+      <strong>{{ s.name }}</strong>
+      <small>{{ sessionTime(s) }}</small>
+    </span>
+    <span class="session-side">
+      <strong>{{ formatTime(s.activeSeconds) }}</strong>
+      <small [class.muted]="!s.completed">
+        {{ s.completed ? '✓ ' + i18n.t('stats.completed') : '✕ ' + i18n.t('stats.interrupted') }}
+      </small>
+    </span>
+  </li>
+</ul>
+<ng-template #noSessions><p class="sessions-empty">{{ i18n.t('stats.empty') }}</p></ng-template>
+
+<button
+  *ngIf="history.sessions().length"
+  type="button"
+  class="link-btn"
+  [class.danger]="confirming() === 'clear'"
+  (click)="clearHistory()"
+>
+  <span aria-live="polite" aria-atomic="true">
+    {{ confirming() === 'clear' ? i18n.t('preset.confirm') : i18n.t('stats.clear') }}
+  </span>
+</button>

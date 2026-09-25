@@ -1,6 +1,7 @@
 @import url('https://cdn.jsdelivr.net/npm/opendyslexic@1/fonts.css');
 @import './theme/tokens.css';
 @import './theme/dark.css';
+@import './theme/controls.css';
 @import "tailwindcss";
 html, body {
   margin: 0;

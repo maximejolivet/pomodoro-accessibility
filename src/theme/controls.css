@@ -1,0 +1,198 @@
+/*
+ * Primitives d'interface partagées par plusieurs composants (bouton en relief,
+ * lien-bouton, curseur de durée, sélecteur segmenté, champ). Globales parce que
+ * l'encapsulation de vue les empêcherait de traverser les frontières de composant.
+ */
+
+.btn3d {
+  --c: #a6ccd6;
+  --c-dark: color-mix(in srgb, var(--c) 68%, #000);
+  position: relative;
+  border: 0;
+  border-radius: 18px;
+  font: inherit;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--c) 80%, #fff), var(--c));
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    0 6px 0 var(--c-dark),
+    0 12px 20px rgba(25, 55, 65, 0.22);
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn3d:active {
+  transform: translateY(5px);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    0 1px 0 var(--c-dark),
+    0 4px 8px rgba(25, 55, 65, 0.2);
+}
+
+.btn3d:focus-visible {
+  outline: 3px solid var(--c-dark);
+  outline-offset: 4px;
+}
+
+.duration {
+  display: block;
+  margin-bottom: 20px;
+}
+
+.duration-head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--muted-strong);
+}
+
+.duration-head strong {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.duration input {
+  --c: #8b6fd6;
+  width: 100%;
+  height: 14px;
+  margin: 0;
+  border-radius: 999px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: linear-gradient(90deg, var(--c) var(--pct), var(--range-bg) var(--pct));
+  box-shadow: inset 0 2px 3px rgba(20, 40, 50, 0.25);
+  cursor: pointer;
+}
+
+[dir='rtl'] .duration input {
+  background: linear-gradient(270deg, var(--c) var(--pct), var(--range-bg) var(--pct));
+}
+
+.duration input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #e4f2f6, #b3d4dd 55%, #8db5c0);
+  box-shadow: 0 3px 0 #6f98a3, 0 6px 10px rgba(20, 50, 60, 0.3);
+}
+
+.duration input::-moz-range-thumb {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #e4f2f6, #b3d4dd 55%, #8db5c0);
+  box-shadow: 0 3px 0 #6f98a3, 0 6px 10px rgba(20, 50, 60, 0.3);
+}
+
+.link-btn {
+  display: block;
+  margin: 18px auto 4px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.link-btn.danger {
+  color: #d63f4f;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--muted-strong);
+}
+
+.field input[type='text'] {
+  width: 100%;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--range-bg);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.18);
+  font: inherit;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+.field input[type='text']:focus {
+  outline: 3px solid var(--c);
+  outline-offset: 1px;
+}
+
+.segmented {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 14px;
+  background: var(--range-bg);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.segmented.wrap {
+  flex-wrap: wrap;
+}
+
+.segmented.wrap button {
+  flex: 1 0 calc(25% - 3px);
+}
+
+.segmented button {
+  flex: 1;
+  padding: 9px 6px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted-strong);
+  cursor: pointer;
+}
+
+.segmented button.active {
+  background: color-mix(in srgb, var(--c, #8b6fd6) 78%, #000);
+  color: #fff;
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--c, #8b6fd6) 55%, #000), 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Anneau de focus commun aux éléments interactifs du minuteur. */
+.tab:focus-visible,
+.segmented button:focus-visible,
+.link-btn:focus-visible,
+.preset-edit:focus-visible,
+.preset-add:focus-visible,
+.week-col:focus-visible {
+  outline: 3px solid var(--c, #8b6fd6);
+  outline-offset: 2px;
+}
+
+/* Valeurs « 100 min » : ordre gauche → droite, même dans une langue écrite de droite à gauche */
+.duration-head strong,
+.goal-head strong,
+.tile-value {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn3d {
+    transition: none;
+  }
+}

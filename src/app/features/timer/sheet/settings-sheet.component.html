@@ -1,0 +1,50 @@
+<div class="sheet-backdrop" *ngIf="open()" (click)="close()"></div>
+<section
+  #dialog
+  class="sheet"
+  tabindex="-1"
+  [class.open]="open()"
+  [attr.inert]="open() ? null : ''"
+  [attr.aria-hidden]="!open()"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-labelledby]="open() ? 'sheet-title' : null"
+  [style.--c]="selectedPreset.color"
+>
+  <div class="sheet-handle"></div>
+  <header class="sheet-header" id="sheet-title">
+    <div class="tabs" role="tablist">
+      <button
+        #tabButton
+        *ngFor="let t of tabs"
+        type="button"
+        role="tab"
+        class="tab"
+        [id]="'tab-' + t"
+        [class.active]="tab === t"
+        [attr.aria-selected]="tab === t"
+        [attr.tabindex]="tab === t ? 0 : -1"
+        [attr.aria-controls]="'panel-' + t"
+        (click)="setTab(t)"
+        (keydown.arrowLeft)="selectPrevTab()"
+        (keydown.arrowRight)="selectNextTab()"
+      >{{ i18n.t($any('tab.' + t)) }}</button>
+    </div>
+    <button type="button" class="sheet-close" (click)="close()" [attr.aria-label]="i18n.t('action.close')">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+    </button>
+  </header>
+  <div class="sheet-body">
+    <div id="panel-modes" role="tabpanel" aria-labelledby="tab-modes" *ngIf="tab === 'modes'">
+      <app-modes-tab (closeSheet)="close()" />
+    </div>
+
+    <div id="panel-stats" role="tabpanel" aria-labelledby="tab-stats" *ngIf="tab === 'stats'">
+      <app-stats-tab />
+    </div>
+
+    <div id="panel-settings" role="tabpanel" aria-labelledby="tab-settings" *ngIf="tab === 'settings'">
+      <app-settings-tab />
+    </div>
+  </div>
+</section>

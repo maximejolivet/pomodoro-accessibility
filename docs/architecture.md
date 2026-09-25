@@ -8,7 +8,8 @@ src/
 ├── styles.css                  # Imports du thème, Tailwind, utilitaires globaux
 ├── theme/
 │   ├── tokens.css              # Jetons de couleur (thème clair), posés sur <app-root>
-│   └── dark.css                # Redéfinition des jetons en thème sombre
+│   ├── dark.css                # Redéfinition des jetons en thème sombre
+│   └── controls.css            # Primitives partagées (bouton relief, curseur, segmenté)
 └── app/
     ├── app.component.*         # Coquille : applique le thème + <router-outlet>
     ├── app.config.ts           # Providers (routeur)
@@ -33,7 +34,11 @@ src/
     │       └── widget.service.ts       # État transmis au widget iOS
     └── features/               # Une page par dossier
         ├── timer/
-        │   ├── timer-page.component.*  # Boîtier 3D, cadran, contrôles, panneau Modes / Stats / Réglages
+        │   ├── timer-page.component.*  # Assemble les blocs ci-dessous
+        │   ├── dial/                   # Boîtier 3D, cadran SVG, réglage au doigt et au clavier
+        │   ├── readout/                # Temps, mode, état, cycle
+        │   ├── controls/               # Remise à zéro, démarrage / pause, réglages
+        │   ├── sheet/                  # Panneau coulissant + onglets Modes / Stats / Réglages
         │   ├── dial-geometry.ts        # Chemins SVG du cadran (fonctions pures)
         │   └── timer.model.ts          # Onglets du panneau, mode en cours d'édition
         └── accessibility/
@@ -62,6 +67,10 @@ docs/
 - **Structure** : la coquille (`app.component.*`) ne porte que le thème et le routeur ;
   chaque page vit dans `features/`, tout ce qu'elles partagent dans `core/`. Les deux pages
   sont chargées à la demande, donc la page d'accessibilité ne pèse pas sur le démarrage.
+- **Composants** : la page du minuteur n'assemble que des blocs (`dial`, `readout`,
+  `controls`, `sheet`), chacun avec son gabarit et son style. Ils lisent l'état dans les
+  services plutôt que par une cascade d'entrées ; seul ce qui est local (panneau ouvert,
+  brouillon de mode, geste en cours) circule en entrées / sorties.
 - **État de session dans un service, pas dans la page** : les pages sont détruites à chaque
   navigation. `SessionService` (racine) porte donc la session en cours, l'enchaînement, les
   sons, les notifications et le widget ; la page du minuteur n'en est qu'une vue. Une session

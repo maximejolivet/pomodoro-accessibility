@@ -1,0 +1,126 @@
+<ng-container *ngIf="!draft(); else editor">
+  <label class="duration">
+    <span class="duration-head">
+      <span>{{ i18n.t('settings.duration') }}</span>
+      <strong>{{ durationSeconds / 60 | number: '1.0-0' }} min</strong>
+    </span>
+    <input
+      type="range"
+      min="1"
+      [max]="maxMinutes"
+      step="1"
+      [value]="durationSeconds / 60"
+      [attr.aria-valuetext]="(durationSeconds / 60 | number: '1.0-0') + ' ' + i18n.t('unit.minutes')"
+      [style.--pct]="(durationSeconds / 60 - 1) / (maxMinutes - 1) * 100 + '%'"
+      (input)="setDurationMinutes($any($event.target).valueAsNumber)"
+    />
+  </label>
+
+  <div class="presets">
+    <div
+      *ngFor="let preset of presetService.presets()"
+      class="preset-cell"
+      [style.--c]="preset.color"
+    >
+      <button
+        type="button"
+        class="btn3d preset"
+        [class.active]="selectedPreset.id === preset.id"
+        (click)="selectPreset(preset); closeSheet.emit()"
+      >
+        <span class="preset-dot"></span>
+        <span class="preset-name">{{ presetName(preset) }}</span>
+        <span class="preset-time">{{ preset.seconds / 60 }} min · {{ kindLabel(preset.kind) }}</span>
+      </button>
+      <button
+        type="button"
+        class="preset-edit"
+        (click)="editPreset(preset)"
+        [attr.aria-label]="i18n.t('preset.edit', { name: presetName(preset) })"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4ZM13.5 6.5l4 4" /></svg>
+      </button>
+    </div>
+    <button type="button" class="preset-add" (click)="newPreset()">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+      {{ i18n.t('preset.new') }}
+    </button>
+  </div>
+
+  <button type="button" class="link-btn" [class.danger]="confirming() === 'restore'" (click)="restorePresets()">
+    <span aria-live="polite" aria-atomic="true">
+      {{ confirming() === 'restore' ? i18n.t('preset.confirm') : i18n.t('preset.restore') }}
+    </span>
+  </button>
+</ng-container>
+
+<ng-template #editor>
+  <form class="editor" *ngIf="draft() as d" (ngSubmit)="saveDraft()" [style.--c]="d.color">
+    <label class="field">
+      <span>{{ i18n.t('preset.name') }}</span>
+      <input type="text" name="name" maxlength="24" [(ngModel)]="d.name" [placeholder]="i18n.t('preset.new')" />
+    </label>
+
+    <label class="duration">
+      <span class="duration-head">
+        <span>{{ i18n.t('settings.duration') }}</span>
+        <strong>{{ d.minutes }} min</strong>
+      </span>
+      <input
+        type="range"
+        name="minutes"
+        min="1"
+        [max]="maxMinutes"
+        step="1"
+        [(ngModel)]="d.minutes"
+        [attr.aria-valuetext]="d.minutes + ' ' + i18n.t('unit.minutes')"
+        [style.--pct]="(d.minutes - 1) / (maxMinutes - 1) * 100 + '%'"
+      />
+    </label>
+
+    <div class="field">
+      <span>{{ i18n.t('preset.kind') }}</span>
+      <div class="segmented">
+        <button
+          *ngFor="let k of presetKinds"
+          type="button"
+          [class.active]="d.kind === k"
+          [attr.aria-pressed]="d.kind === k"
+          (click)="d.kind = k"
+        >{{ kindLabel(k) }}</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <span>{{ i18n.t('preset.color') }}</span>
+      <div class="swatches">
+        <button
+          *ngFor="let c of presetColors"
+          type="button"
+          class="swatch"
+          [class.active]="d.color === c"
+          [style.--c]="c"
+          [attr.aria-label]="colorLabel(c)"
+          [attr.aria-pressed]="d.color === c"
+          (click)="d.color = c"
+        ></button>
+      </div>
+    </div>
+
+    <div class="editor-actions">
+      <button
+        *ngIf="!d.isNew && presetService.presets().length > 1"
+        type="button"
+        class="link-btn danger"
+        (click)="deleteDraft()"
+      >
+        <span aria-live="polite" aria-atomic="true">
+          {{ confirming() === 'delete' ? i18n.t('preset.confirm') : i18n.t('preset.delete') }}
+        </span>
+      </button>
+      <span class="spacer"></span>
+      <button type="button" class="btn3d btn-text btn-neutral" (click)="draft.set(null)">{{ i18n.t('preset.cancel') }}</button>
+      <button type="submit" class="btn3d btn-text">{{ i18n.t('preset.save') }}</button>
+    </div>
+  </form>
+</ng-template>

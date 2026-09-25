@@ -1,0 +1,105 @@
+<div class="settings">
+  <label class="setting">
+    <span class="setting-label">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" /></svg>
+      {{ i18n.t('settings.dark') }}
+    </span>
+    <input type="checkbox" role="switch" class="switch" [checked]="prefs.darkMode()" (change)="prefs.setDarkMode($any($event.target).checked)" />
+  </label>
+  <label class="setting">
+    <span class="setting-label">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M11 5 6 9H2v6h4l5 4V5Z" />
+        <path *ngIf="prefs.sound()" d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14" />
+        <path *ngIf="!prefs.sound()" d="m16 9 6 6M22 9l-6 6" />
+      </svg>
+      {{ i18n.t('settings.sound') }}
+    </span>
+    <input type="checkbox" role="switch" class="switch" [checked]="prefs.sound()" (change)="session.setSoundEnabled($any($event.target).checked)" />
+  </label>
+  <label class="setting">
+    <span class="setting-label">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8" /><path d="M12 9v4l2.5 2M9 2h6" /></svg>
+      {{ i18n.t('settings.autoExtra') }}
+    </span>
+    <input type="checkbox" role="switch" class="switch" [checked]="prefs.autoExtra()" (change)="prefs.setAutoExtra($any($event.target).checked)" />
+  </label>
+  <label class="setting">
+    <span class="setting-label">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 2l4 4-4 4" /><path d="M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4" /><path d="M21 13v2a3 3 0 0 1-3 3H3" /></svg>
+      <span class="setting-text">
+        {{ i18n.t('settings.autoChain') }}
+        <small>{{ i18n.t('settings.autoChainHint', { n: longBreakEvery }) }}</small>
+      </span>
+    </span>
+    <input type="checkbox" role="switch" class="switch" [checked]="prefs.autoChain()" (change)="prefs.setAutoChain($any($event.target).checked)" />
+  </label>
+  <label class="setting">
+    <span class="setting-label">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5" /><path d="M12 6.5v3M9.5 8h5" /></svg>
+      {{ i18n.t('settings.keepAwake') }}
+    </span>
+    <input type="checkbox" role="switch" class="switch" [checked]="prefs.keepAwake()" (change)="session.setKeepAwake($any($event.target).checked)" />
+  </label>
+  <label class="setting">
+    <span class="setting-label">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><text x="3" y="18" font-size="16" font-weight="bold">a</text></svg>
+      OpenDyslexic
+      <small style="display: block; font-size: 0.85em; color: var(--text-secondary);">Dyslexie-friendly</small>
+    </span>
+    <input type="checkbox" role="switch" class="switch" [checked]="prefs.opendyslexic()" (change)="prefs.setOpendyslexic($any($event.target).checked)" />
+  </label>
+</div>
+
+<label class="duration">
+  <span class="duration-head">
+    <span>{{ i18n.t('settings.goal') }}</span>
+    <strong>{{ history.dailyGoal() }} min</strong>
+  </span>
+  <input
+    type="range"
+    name="goal"
+    [min]="goalMin"
+    [max]="goalMax"
+    [step]="goalStep"
+    [value]="history.dailyGoal()"
+    [attr.aria-valuetext]="history.dailyGoal() + ' ' + i18n.t('unit.minutes')"
+    (input)="history.setDailyGoal(+$any($event.target).value)"
+    [style.--pct]="(history.dailyGoal() - goalMin) / (goalMax - goalMin) * 100 + '%'"
+  />
+</label>
+
+<div class="field">
+  <span>{{ i18n.t('settings.language') }}</span>
+  <div class="segmented wrap">
+    <button
+      type="button"
+      [class.active]="i18n.choice() === 'auto'"
+      [attr.aria-pressed]="i18n.choice() === 'auto'"
+      (click)="setLanguage('auto')"
+    >{{ i18n.t('settings.languageAuto') }}</button>
+    <button
+      *ngFor="let l of languages"
+      type="button"
+      [class.active]="i18n.choice() === l.code"
+      [attr.aria-pressed]="i18n.choice() === l.code"
+      [attr.lang]="l.code"
+      (click)="setLanguage(l.code)"
+    >{{ l.label }}</button>
+  </div>
+</div>
+
+<div class="sound-test">
+  <span class="sound-test-head">{{ i18n.t('settings.listen') }}</span>
+  <div class="sound-test-buttons">
+    <button
+      *ngFor="let m of soundPreviews"
+      type="button"
+      class="btn3d sound-chip"
+      [style.--c]="m.color"
+      [disabled]="!prefs.sound()"
+      [attr.aria-label]="i18n.t('settings.listenOne', { label: m.label })"
+      (click)="previewSound(m.value)"
+    >{{ m.label }}</button>
+  </div>
+</div>

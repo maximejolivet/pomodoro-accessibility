@@ -1,0 +1,182 @@
+/* Boîtier 3D et cadran SVG. */
+
+:host {
+  display: contents;
+}
+
+.tilt-zone {
+  perspective: 1400px;
+  padding: 12px 0 36px;
+  touch-action: manipulation;
+}
+
+.device {
+  --rx: 0deg;
+  --ry: 0deg;
+  width: min(calc(100vw - 32px), 560px, calc(100dvh - 330px));
+  min-width: 280px;
+  aspect-ratio: 1;
+  border-radius: 22%;
+  padding: 4.2%;
+  background:
+    linear-gradient(145deg, var(--bumper-light) 0%, var(--bumper) 45%, var(--bumper-dark) 100%);
+  box-shadow:
+    inset 0 3px 2px rgba(255, 255, 255, 0.75),
+    inset 3px 0 3px rgba(255, 255, 255, 0.35),
+    inset 0 -5px 8px rgba(30, 70, 85, 0.3),
+    0 1px 0 var(--bumper-dark),
+    0 3px 0 var(--bumper-dark),
+    0 5px 0 var(--bumper-edge),
+    0 8px 0 var(--bumper-edge),
+    0 11px 0 var(--bumper-deep),
+    0 22px 28px rgba(25, 55, 65, 0.28),
+    0 44px 60px rgba(25, 55, 65, 0.22);
+  transform: rotateX(calc(8deg + var(--rx))) rotateY(var(--ry));
+  transform-style: preserve-3d;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.bezel {
+  width: 100%;
+  height: 100%;
+  border-radius: 19%;
+  padding: 2.4%;
+  background: linear-gradient(160deg, var(--bezel-a), var(--bezel-b) 60%, var(--bezel-c));
+  box-shadow:
+    inset 0 -2px 3px rgba(255, 255, 255, 0.6),
+    inset 0 4px 8px rgba(30, 70, 85, 0.35),
+    0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+.face {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 16%;
+  background: radial-gradient(circle at 40% 30%, var(--face-hi) 0%, var(--face) 50%, var(--face-lo) 100%);
+  box-shadow:
+    inset 0 3px 7px rgba(20, 40, 50, 0.22),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(125deg, rgba(255, 255, 255, var(--sheen)) 0%, rgba(255, 255, 255, 0) 32%),
+    linear-gradient(305deg, rgba(255, 255, 255, calc(var(--sheen) / 2)) 0%, rgba(255, 255, 255, 0) 20%);
+  pointer-events: none;
+}
+
+.face.dragging {
+  cursor: grabbing;
+}
+
+.face:focus-visible {
+  outline: 3px solid #5d6db3;
+  outline-offset: 4px;
+}
+
+.dial {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.bg-line,
+.bg-highlight {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.bg-line {
+  stroke: var(--bg-line);
+  stroke-width: 0.8;
+}
+
+.bg-highlight {
+  stroke: var(--bg-highlight);
+  stroke-width: 2;
+}
+
+.band-shadow {
+  flood-color: var(--band-shadow);
+  flood-opacity: 1;
+}
+
+.band-stop-in {
+  stop-color: var(--band-in);
+}
+
+.band-stop-out {
+  stop-color: var(--band-out);
+}
+
+.disk-veil {
+  opacity: 0.92;
+  mix-blend-mode: multiply;
+}
+
+.separator {
+  stroke: var(--face);
+  stroke-width: 4;
+}
+
+.edge {
+  stroke: #ffffff;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  opacity: 0.9;
+}
+
+.disk-tab {
+  fill: var(--tab);
+  filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.35));
+}
+
+.label {
+  font-size: 27px;
+  font-weight: 500;
+  fill: var(--ink);
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.gasket {
+  fill: #1d282d;
+}
+
+.knob-shine {
+  fill: #ffffff;
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .device {
+    transition: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .device {
+    /*
+     * Le cadran rend exactement ce que la bande de la pastille d'accessibilité
+     * prend à la scène (40 px de padding bas au départ), quelle que soit
+     * l'encoche : la page ne grandit pas. Passé le `min-width: 280px` du cadran,
+     * la soustraction ne peut plus suivre et seule la bande reste — inévitable
+     * sur les écrans très courts.
+     */
+    width: min(calc(100vw - 32px), 560px, calc(100dvh - 330px - var(--pill-band) + 40px));
+  }
+}
