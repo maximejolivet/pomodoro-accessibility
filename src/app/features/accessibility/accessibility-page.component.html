@@ -129,6 +129,44 @@
       </ul>
     </section>
 
+    <section class="declaration" aria-labelledby="declaration-title">
+      <h2 id="declaration-title">{{ s().declarationTitle }}</h2>
+      <p>{{ s().declarationIntro }}</p>
+
+      <dl class="decl-rows">
+        <div class="decl-row">
+          <dt>{{ s().declLabels.env }}</dt>
+          <dd>{{ s().declEnv }}</dd>
+        </div>
+        <div class="decl-row">
+          <dt>{{ s().declLabels.tools }}</dt>
+          <dd>{{ s().declTools }}</dd>
+        </div>
+        <div class="decl-row">
+          <dt>{{ s().declLabels.pages }}</dt>
+          <dd><code>/</code> · <code>/accessibility</code></dd>
+        </div>
+        <div class="decl-row">
+          <dt>{{ s().declLabels.date }}</dt>
+          <dd>{{ declarationDate() }}</dd>
+        </div>
+      </dl>
+
+      <h3>{{ s().nonAccessibleTitle }}</h3>
+      <ul class="decl-list">
+        <li *ngFor="let item of s().nonAccessibleItems">{{ item }}</li>
+      </ul>
+
+      <h3>{{ s().contactTitle }}</h3>
+      <p>
+        {{ s().contactText }}
+        <a href="https://github.com/maximejolivet/pomodoro-accessibility/issues" target="_blank" rel="noopener noreferrer">{{ s().contactLink }}<span class="sr-only">{{ s().newTab }}</span></a>
+      </p>
+
+      <h3>{{ s().remedyTitle }}</h3>
+      <p>{{ s().remedyText }}</p>
+    </section>
+
     <section class="stack" aria-labelledby="stack-title">
       <h2 id="stack-title" class="stack-title">{{ s().stackLabel }}</h2>
       <ul class="criteria-badges">

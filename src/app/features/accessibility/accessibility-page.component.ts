@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { I18nService } from '../../core/i18n/i18n.service';
-import { A11Y_TEXTS } from './accessibility.i18n';
+import { A11Y_TEXTS, DECLARATION_DATE } from './accessibility.i18n';
 
 @Component({
   selector: 'app-accessibility-page',
@@ -18,6 +18,10 @@ export class AccessibilityPageComponent implements AfterViewInit, OnDestroy {
   private readonly previousTitle = this.titleService.getTitle();
 
   readonly s = computed(() => A11Y_TEXTS[this.i18n.lang()]);
+
+  /** Date d'établissement de la déclaration, écrite dans la langue affichée. */
+  readonly declarationDate = computed(() =>
+    new Intl.DateTimeFormat(this.i18n.lang(), { dateStyle: 'long' }).format(new Date(DECLARATION_DATE)));
 
   @ViewChild('pageTitle') private pageTitle?: ElementRef<HTMLElement>;
 

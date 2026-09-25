@@ -623,3 +623,93 @@
   font-size: 0.85em;
   color: var(--text-secondary);
 }
+
+/* DÉCLARATION D'ACCESSIBILITÉ */
+.declaration {
+  margin-bottom: 70px;
+}
+
+.declaration h2 {
+  font-size: 1.4em;
+  color: var(--text-primary);
+  margin: 0 0 16px 0;
+  font-weight: 600;
+  text-align: center;
+}
+
+.declaration h3 {
+  font-size: 1.1em;
+  color: var(--text-primary);
+  font-weight: 600;
+  margin: 32px 0 10px;
+}
+
+.declaration a {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.declaration a:hover {
+  text-decoration-thickness: 2px;
+}
+
+.decl-rows {
+  margin: 20px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.decl-row {
+  display: grid;
+  grid-template-columns: minmax(140px, 32%) 1fr;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--surface);
+}
+
+.decl-row dt {
+  font-weight: 600;
+}
+
+.decl-row dd {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.decl-row code {
+  font-size: 0.92em;
+}
+
+.decl-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Même puce que les autres listes de la page */
+.decl-list li {
+  position: relative;
+  padding-inline-start: 22px;
+  margin-bottom: 10px;
+}
+
+.decl-list li::before {
+  content: "→";
+  position: absolute;
+  inset-inline-start: 0;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .decl-row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
