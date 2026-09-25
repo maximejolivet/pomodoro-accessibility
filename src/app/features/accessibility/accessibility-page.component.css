@@ -366,6 +366,8 @@
 .disclaimer a {
   color: var(--link);
   text-decoration: underline;
+  /* L'URL est insécable : sans ça elle déborde dès que le texte est agrandi */
+  overflow-wrap: anywhere;
 }
 
 .disclaimer a:hover {

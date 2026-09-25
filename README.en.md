@@ -75,7 +75,7 @@ disc replaces a calculation with an image.
 | Profile               | Common difficulty                                                       | What the app offers                                                                |
 | --------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
 | **ADHD**              | Estimating duration, starting, stopping on time                         | A visual cue, short sessions followed by breaks, a *Focus TDAH* mode               |
-| **Autism**            | Switching activities, coping with the unexpected and with noise         | Milestones announced in advance, soft sounds that can be turned off, a stable interface |
+| **Autism**            | Switching activities, coping with the unexpected and with noise         | Milestones announced in advance, routines in pictures, soft sounds that can be turned off |
 | **DYS disorders**     | Reading numbers or a clock time, tiring quickly on text                 | Time you can read without numbers, the OpenDyslexic font, well-spaced text         |
 | **Other profiles**    | Need for clear instructions, an adapted pace, less pressure             | Free durations from 1 to 60 min, custom modes, no grades or penalties              |
 
@@ -113,13 +113,18 @@ visual timer is a simple, discreet and free tool at that level.
 | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | 🕒 **A dial that empties**       | A colored disc shrinks toward 0, with a rainbow ring of 12 five-minute segments, up to 60 min                          |
 | 👆 **Set it with your finger**   | Just drag on the dial to choose the minutes, even while the countdown is running                                       |
+| ➖➕ **− and + buttons**           | One minute per tap, no dragging: for shaky hands, a single finger or a switch device                                   |
+| 🔒 **Dial lock**                 | One tap and the dial stops responding: a resting palm can no longer change the time or wipe the session               |
 | 🎯 **Custom modes**              | Pomodoro, Break, Long break, ADHD Focus… or your own modes: name, duration (1-60 min), color, work or break            |
+| 🧩 **Picture routines**          | A sequence of steps that follow on their own — get dressed, breakfast, teeth, school bag — each with its picture and its length |
 | 🔁 **Automatic chaining**        | Work → break → work, with a long break every 4 cycles (can be turned off)                                              |
 | 📊 **History & statistics**      | Focus time today, completed sessions, day streak, chart of the last 7 days                                             |
 | 🏁 **Daily goal**                | A number of focus minutes to aim for each day (10-300 min), with a progress bar                                        |
 | 🔔 **Milestone sounds**          | A different sound at 45, 30 and 15 min left, then a chime at the end                                                   |
+| 💡 **Visual alert**              | A colored flash at the milestones and at the end, soft or strong, for anyone who can't hear or muted the sound        |
+| 🗣️ **Spoken time**               | The time left read out loud, at the milestones or every minute, to listen instead of looking (off by default)          |
 | ⏱️ **Automatic +5 min**          | At 0, five more minutes to finish what you're doing (can be turned off)                                                |
-| 📳 **Vibration**                 | A light tap at the end and while adjusting                                                                             |
+| 📳 **Coded vibration**           | A different pattern per milestone — 1 pulse at 45, 2 at 30, 3 short at 15, 3 long at the end (can be turned off)       |
 | 📲 **Notifications**             | Alerts even with a locked phone or the app in the background, with the same sounds as the app                          |
 | 🔆 **Screen always on**          | The screen doesn't turn off during the countdown (can be turned off)                                                   |
 | 🧩 **iPhone widget**             | The running countdown or today's goal, right on your home screen                                                       |
@@ -136,12 +141,17 @@ when you come back, everything is up to date.
 | -------------------------- | ----------------------------------------------------------------------------- |
 | **Tap** the dial or ▶      | Start, pause or resume                                                        |
 | **Drag** on the dial       | Set the minutes (0 → 60)                                                      |
+| **−** / **+** under the dial | Remove or add a minute; press and hold to run through them                   |
 | ↺                          | Reset                                                                         |
 | ⚙︎ → **Modes**              | Choose, create, edit or delete a mode                                         |
+| ⚙︎ → **Modes** → *Routines* | Start a routine, create one, reorder its steps                                |
+| **Tap** a step             | Jump straight to that step of the routine; ✕ leaves the routine               |
 | ⚙︎ → **Stats**              | See today's goal, your statistics and session history                         |
-| ⚙︎ → **Settings**           | Dark mode, sounds, +5 min, chaining, screen on, goal, language                |
+| ⚙︎ → **Settings**           | Dark mode, sounds, vibration, visual alert, spoken time, +5 min, chaining, screen on, goal, language |
 
 <p align="center">
+  <img src="docs/screenshot-routine.png" alt="The morning routine loaded, with the strip of its four steps" width="260">
+  &nbsp;&nbsp;
   <img src="docs/screenshot-modes.png" alt="Mode editor" width="260">
   &nbsp;&nbsp;
   <img src="docs/screenshot-stats.png" alt="Statistics" width="260">
@@ -152,12 +162,17 @@ when you come back, everything is up to date.
 They go from the gentlest to the most insistent as the end approaches, and you can listen to
 them in ⚙︎ → *Listen to sounds*.
 
-| Moment               | Sound                                               |
-| -------------------- | --------------------------------------------------- |
-| **45 min** left      | 1 soft, round note                                  |
-| **30 min**           | 2 rising notes, a bit brighter                      |
-| **15 min**           | 3 quick notes, "beep" style                         |
-| **0**                | A chime played 3 times, with vibration              |
+| Moment               | Sound                                               | Vibration                        |
+| -------------------- | --------------------------------------------------- | -------------------------------- |
+| **45 min** left      | 1 soft, round note                                  | 1 long pulse                     |
+| **30 min**           | 2 rising notes, a bit brighter                      | 2 pulses                         |
+| **15 min**           | 3 quick notes, "beep" style                         | 3 short pulses                   |
+| **0**                | A chime played 3 times                              | 3 long pulses                    |
+
+The vibration follows the same rhythm as the sound: it warns you without showing or playing
+anything — in a meeting, in class, in an open space — and it is the only alert channel left for
+a deafblind person. It needs a phone or a tablet (iOS and Android; on the web, only Android
+vibrates).
 
 ## Accessibility
 
@@ -165,17 +180,33 @@ The app is designed to be usable by everyone:
 
 - 💻 **Keyboard only**: everything works without a mouse, with a visible marker on the active element.
 - 🔊 **With a screen reader**: the remaining time and changes are announced aloud.
+- 💡 **Without sound**: a colored flash marks the milestones and the end, and a "Time's up" banner
+  stays until the next action. The pulse is slow — one 1.6 s beat, that is 0.6 Hz, five times below
+  the three-flashes-per-second threshold that can trigger a photosensitive seizure (WCAG 2.3.1) —
+  and it holds still if your device asks for less motion.
+- 🗣️ **Without looking at the dial**: spoken time reads the minutes left at the milestones or every
+  minute, with the device voice, offline (⚙︎ → *Spoken time*).
+- 📳 **Without seeing or hearing**: every milestone has its own vibration pattern, recognizable in
+  your hand (⚙︎ → *Vibration*).
 - 👁️ **Readable for all**: careful contrast, dark mode, colors always paired with a name.
+- 🖼️ **Without reading**: every step of a routine carries a picture before its name, and the strip
+  shows what is done, what is playing and what comes next.
 - 🔤 **Dyslexia-friendly font**: the OpenDyslexic font can be turned on in the settings.
 - 🌀 **Reduced motion**: if your device asks for less motion, the app respects it.
+- 🖐️ **No dragging required**: the − and + buttons set the duration with a single tap, for anyone
+  who cannot hold a drag (WCAG 2.5.7), with targets of at least 44 px.
+- 🔒 **Against accidental touches**: the lock neutralizes the dial, the − / + buttons and the reset.
+  Start / Pause stays live: an accidental pause costs nothing, an accidental reset loses the session.
 
 A dedicated page covers all of this, including the RGAA 4.1 accessibility statement
 (conformance status, non-accessible content, contact and remedies): see the
 **♿ Accessibility** link at the bottom right of the app.
 
-These guarantees are checked on every change: `npm run test:a11y` replays fifteen checks
-(axe-core on every view, in light, dark and Arabic; keyboard control of the dial; the modal
-focus trap; no horizontal scrolling at 320 px), and CI runs them on every push.
+These guarantees are checked on every change: `npm run test:a11y` replays forty-four checks
+(axe-core on every view, in light, dark and Arabic; control of the dial by keyboard and by the
+− / + buttons; spoken time, vibration patterns and the visual alert checked against a simulated
+countdown; the dial lock; the chaining of a routine's steps, its strip and its editor; target
+sizes; the modal focus trap; no horizontal scrolling at 320 px), and CI runs them on every push.
 
 ## For developers
 

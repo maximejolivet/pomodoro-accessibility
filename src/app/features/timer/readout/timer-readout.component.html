@@ -1,7 +1,36 @@
 <div class="readout" [style.--c]="selectedPreset.color">
-  <span class="readout-time">{{ formatTime(displaySeconds) }}</span>
-  <span class="readout-mode">{{ modeName }}</span>
-  <span class="readout-state">{{ stateLabel }}</span>
+  <button
+    type="button"
+    class="step"
+    [attr.aria-label]="i18n.t('action.minus')"
+    [attr.aria-disabled]="!canStep(-1)"
+    (pointerdown)="press(-1, $event)"
+    (pointerup)="release()"
+    (pointercancel)="release()"
+    (pointerleave)="release()"
+    (click)="tap(-1)"
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12" /></svg>
+  </button>
+
+  <span class="readout-main">
+    <span class="readout-time">{{ formatTime(displaySeconds) }}</span>
+    <span class="readout-mode">{{ modeName }}</span>
+  </span>
+
+  <button
+    type="button"
+    class="step"
+    [attr.aria-label]="i18n.t('action.plus')"
+    [attr.aria-disabled]="!canStep(1)"
+    (pointerdown)="press(1, $event)"
+    (pointerup)="release()"
+    (pointercancel)="release()"
+    (pointerleave)="release()"
+    (click)="tap(1)"
+  >
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12" /></svg>
+  </button>
 </div>
 <div class="cycle" *ngIf="cycleLabel as cycle">
   <span class="cycle-dots" aria-hidden="true">

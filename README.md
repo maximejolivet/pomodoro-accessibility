@@ -75,7 +75,7 @@ percevoir la durée. Un disque qui rétrécit remplace un calcul par une image.
 | Profil                | Difficulté fréquente                                                    | Ce que l'application apporte                                                       |
 | --------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
 | **TDAH**              | Estimer la durée, démarrer, s'arrêter à temps                           | Un repère visuel, des sessions courtes suivies de pauses, un mode *Focus TDAH*     |
-| **Autisme**           | Passer d'une activité à une autre, supporter l'imprévu et le bruit      | Des paliers annoncés à l'avance, des sons doux et désactivables, une interface stable |
+| **Autisme**           | Passer d'une activité à une autre, supporter l'imprévu et le bruit      | Des paliers annoncés à l'avance, des routines en images, des sons doux et désactivables |
 | **Troubles DYS**      | Lire des chiffres ou une heure, se fatiguer sur le texte                | Un temps lisible sans chiffres, la police OpenDyslexic, un texte bien espacé       |
 | **Autres profils**    | Besoin de consignes claires, d'un rythme adapté, de moins de pression   | Des durées libres de 1 à 60 min, des modes personnalisés, aucune note ni sanction  |
 
@@ -112,13 +112,18 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
 | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | 🕒 **Un cadran qui se vide**     | Un disque coloré recule vers 0, avec un anneau arc-en-ciel en 12 segments de 5 min, jusqu'à 60 min                     |
 | 👆 **Réglage au doigt**          | Il suffit de glisser sur le cadran pour choisir les minutes, même pendant le décompte                                  |
+| ➖➕ **Boutons − et +**            | Une minute par appui, sans glisser : pour les mains qui tremblent, un seul doigt ou un contacteur                      |
+| 🔒 **Verrou du cadran**          | Un appui et le cadran ne répond plus : une paume posée ne peut plus changer la durée ni effacer la session            |
 | 🎯 **Modes personnalisables**    | Pomodoro, Pause, Pause longue, Focus TDAH… ou tes propres modes : nom, durée (1-60 min), couleur, travail ou pause     |
+| 🧩 **Routines en pictogrammes**  | Une suite d'étapes qui s'enchaînent — s'habiller, petit-déjeuner, dents, cartable — chacune avec son image et sa durée |
 | 🔁 **Enchaînement automatique**  | Travail → pause → travail, avec une pause longue tous les 4 cycles (désactivable)                                      |
 | 📊 **Historique & statistiques** | Temps de focus du jour, sessions terminées, série de jours, graphique des 7 derniers jours                             |
 | 🏁 **Objectif quotidien**        | Un nombre de minutes de focus à viser chaque jour (10-300 min), avec une barre de progression                          |
 | 🔔 **Sons de palier**            | Un son différent à 45, 30 et 15 min restantes, puis un carillon à la fin                                               |
+| 💡 **Alerte visuelle**           | Un éclat coloré aux paliers et à la fin, doux ou franc, pour qui n'entend pas ou a coupé le son                        |
+| 🗣️ **Annonce vocale**            | Le temps restant dit à voix haute, aux paliers ou à chaque minute, pour écouter sans regarder (désactivé par défaut)   |
 | ⏱️ **+5 min automatique**        | À 0, cinq minutes de plus pour terminer ce qui est en cours (désactivable)                                             |
-| 📳 **Vibration**                 | Petit retour tactile à la fin et pendant le réglage                                                                    |
+| 📳 **Vibration codée**           | Un motif différent par palier — 1 impulsion à 45, 2 à 30, 3 brèves à 15, 3 longues à la fin (désactivable)             |
 | 📲 **Notifications**             | Alertes même téléphone verrouillé ou app en arrière-plan, avec les mêmes sons que l'app                                |
 | 🔆 **Écran toujours allumé**     | L'écran ne s'éteint pas pendant le décompte (désactivable)                                                             |
 | 🧩 **Widget iPhone**             | Le décompte en cours ou l'objectif du jour, directement sur l'écran d'accueil                                          |
@@ -135,12 +140,18 @@ verrouille : au retour, tout est à jour.
 | -------------------------- | ---------------------------------------------------------------------------- |
 | **Toucher** le cadran ou ▶ | Démarrer, mettre en pause ou reprendre                                       |
 | **Glisser** sur le cadran  | Régler les minutes (0 → 60)                                                  |
+| **−** / **+** sous le cadran | Retirer ou ajouter une minute ; appui maintenu pour défiler                 |
+| 🔒 sous le boîtier         | Verrouiller ou déverrouiller le cadran                                       |
 | ↺                          | Remettre à zéro                                                              |
 | ⚙︎ → **Modes**              | Choisir, créer, modifier ou supprimer un mode                                |
+| ⚙︎ → **Modes** → *Routines* | Lancer une routine, en créer une, réordonner ses étapes                      |
+| **Toucher** une étape      | Aller directement à cette étape de la routine ; ✕ pour quitter la routine    |
 | ⚙︎ → **Stats**              | Voir son objectif du jour, ses statistiques et l'historique des sessions     |
-| ⚙︎ → **Réglages**           | Mode sombre, sons, +5 min, enchaînement, écran allumé, objectif, langue      |
+| ⚙︎ → **Réglages**           | Mode sombre, sons, vibration, alerte visuelle, annonce vocale, +5 min, enchaînement, écran allumé, objectif, langue |
 
 <p align="center">
+  <img src="docs/screenshot-routine.png" alt="Routine du matin en cours, avec la bande de ses quatre étapes" width="260">
+  &nbsp;&nbsp;
   <img src="docs/screenshot-modes.png" alt="Éditeur de mode" width="260">
   &nbsp;&nbsp;
   <img src="docs/screenshot-stats.png" alt="Statistiques" width="260">
@@ -151,12 +162,17 @@ verrouille : au retour, tout est à jour.
 Ils vont du plus discret au plus insistant à mesure que la fin approche, et on peut les
 écouter dans ⚙︎ → *Écouter les sons*.
 
-| Moment               | Son                                                 |
-| -------------------- | --------------------------------------------------- |
-| **45 min** restantes | 1 note douce et ronde                               |
-| **30 min**           | 2 notes montantes, un peu plus claires              |
-| **15 min**           | 3 notes rapides, façon « bip »                      |
-| **0**                | Un carillon joué 3 fois, avec vibration             |
+| Moment               | Son                                                 | Vibration                        |
+| -------------------- | --------------------------------------------------- | -------------------------------- |
+| **45 min** restantes | 1 note douce et ronde                               | 1 impulsion longue               |
+| **30 min**           | 2 notes montantes, un peu plus claires              | 2 impulsions                     |
+| **15 min**           | 3 notes rapides, façon « bip »                      | 3 impulsions brèves              |
+| **0**                | Un carillon joué 3 fois                             | 3 impulsions longues             |
+
+La vibration suit le même rythme que le son : elle prévient sans rien montrer ni faire
+entendre — en réunion, en cours, en open space — et reste le seul canal d'alerte pour une
+personne sourde-aveugle. Elle demande un téléphone ou une tablette (iOS et Android ; sur le
+web, seul Android vibre).
 
 ## Accessibilité
 
@@ -164,18 +180,35 @@ L'application est pensée pour être utilisable par tout le monde :
 
 - 💻 **Au clavier seul** : tout se fait sans souris, avec un repère visible sur l'élément actif.
 - 🔊 **Avec un lecteur d'écran** : le temps qui reste et les changements sont annoncés à voix haute.
+- 💡 **Sans le son** : un éclat coloré marque les paliers et la fin, et un bandeau « Temps écoulé »
+  reste affiché jusqu'à la prochaine action. La pulsation est lente — un battement de 1,6 s, soit
+  0,6 Hz, cinq fois sous le seuil des trois éclats par seconde qui peuvent déclencher une crise
+  d'épilepsie photosensible (WCAG 2.3.1) — et elle se fige si l'appareil demande moins de mouvement.
+- 🗣️ **Sans regarder le cadran** : l'annonce vocale dit le temps restant aux paliers ou à chaque minute,
+  avec la voix de l'appareil, hors ligne (⚙︎ → *Annonce vocale*).
+- 📳 **Sans voir ni entendre** : chaque palier a son motif de vibration, reconnaissable dans la main
+  (⚙︎ → *Vibration*).
 - 👁️ **Lisible pour tous** : contrastes soignés, mode sombre, couleurs toujours accompagnées d'un nom.
+- 🖼️ **Sans savoir lire** : chaque étape d'une routine porte un pictogramme avant son nom, et la
+  bande montre ce qui est fait, ce qui se joue et ce qui vient après.
 - 🔤 **Police pour la dyslexie** : la police OpenDyslexic peut être activée dans les réglages.
 - 🌀 **Animations réduites** : si ton appareil demande moins de mouvement, l'application le respecte.
+- 🖐️ **Sans glisser** : les boutons − et + règlent la durée en un seul appui, pour qui ne peut pas
+  maintenir un glissement (WCAG 2.5.7), avec des cibles d'au moins 44 px.
+- 🔒 **Contre les gestes involontaires** : le verrou neutralise le cadran, les boutons − / + et la
+  remise à zéro. Démarrer / Pause reste actif : une pause involontaire se rattrape, une remise à
+  zéro involontaire fait perdre la session.
 
 Une page dédiée détaille tout cela, avec la déclaration d'accessibilité RGAA 4.1 (état de
 conformité, contenus non accessibles, contact et voies de recours) : lien **♿ Accessibilité**
 en bas à droite de l'application.
 
-Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue quinze contrôles
-(axe-core sur toutes les vues, en clair, en sombre et en arabe ; réglage du cadran au clavier ;
-piège à focus de la modale ; pas de défilement horizontal à 320 px), et la CI les relance à
-chaque push.
+Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue quarante-quatre
+contrôles (axe-core sur toutes les vues, en clair, en sombre et en arabe ; réglage du cadran au
+clavier et aux boutons − / + ; annonce vocale, motifs de vibration et alerte visuelle vérifiés sur
+un décompte simulé ; verrou du cadran ; enchaînement des étapes d'une routine, sa bande et son
+éditeur ; taille des cibles ; piège à focus de la modale ; pas de défilement horizontal à 320 px),
+et la CI les relance à chaque push.
 
 ## Pour les développeurs
 

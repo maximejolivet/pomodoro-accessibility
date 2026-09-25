@@ -1,0 +1,43 @@
+<section class="routine" *ngIf="routine() as r" [attr.aria-label]="i18n.t('routine.section')">
+  <header class="routine-head">
+    <h2 class="routine-title">
+      <span class="routine-icon" aria-hidden="true">{{ r.icon }}</span>
+      {{ routineLabel() }}
+    </h2>
+    <button
+      type="button"
+      class="routine-quit"
+      [attr.aria-disabled]="locked()"
+      [attr.aria-label]="i18n.t('routine.quit')"
+      (click)="quit()"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+    </button>
+  </header>
+
+  <ol class="steps">
+    <li *ngFor="let step of steps(r); let i = index; trackBy: trackById">
+      <button
+        type="button"
+        class="step-chip"
+        [class.done]="isDone(i)"
+        [class.current]="isCurrent(i)"
+        [style.--c]="step.color"
+        [attr.aria-current]="isCurrent(i) ? 'step' : null"
+        [attr.aria-disabled]="locked()"
+        [attr.aria-label]="label(i)"
+        (click)="goTo(i)"
+      >
+        <span class="step-icon" aria-hidden="true">{{ step.icon }}</span>
+        <span class="step-text" aria-hidden="true">
+          <span class="step-name">{{ stepName(step) }}</span>
+          <span class="step-time">{{ minutes(step) }} min</span>
+        </span>
+        <!-- La coche double la couleur : l'étape faite ne se reconnaît pas qu'au gris (WCAG 1.4.1) -->
+        <svg *ngIf="isDone(i)" class="step-check" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 13l4 4L19 7" />
+        </svg>
+      </button>
+    </li>
+  </ol>
+</section>

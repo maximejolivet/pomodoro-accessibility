@@ -172,6 +172,58 @@
   box-shadow: 0 2px 0 color-mix(in srgb, var(--c, #8b6fd6) 55%, #000), 0 3px 6px rgba(0, 0, 0, 0.15);
 }
 
+/*
+ * Interrupteur : les réglages et l'éditeur d'étape s'en servent tous les deux.
+ * Son bord est ce qui le rend identifiable éteint (WCAG 1.4.11), et il est mesuré
+ * sur les pixels rendus par `npm run test:a11y`.
+ */
+.switch {
+  position: relative;
+  flex: none;
+  width: 54px;
+  height: 32px;
+  margin: 0;
+  border-radius: 999px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--range-bg);
+  /* Éteint, le fond seul ne dépassait pas 2,8:1 : le bord rend l'interrupteur identifiable */
+  border: 1px solid var(--switch-edge);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.switch::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  inset-inline-start: 3px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #ffffff, #dfe7ea 60%, #b9c6cb);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.18), 0 3px 6px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.switch:checked {
+  background: var(--c, #8b6fd6);
+}
+
+.switch:checked::after {
+  transform: translateX(22px);
+}
+
+[dir='rtl'] .switch:checked::after {
+  transform: translateX(-22px);
+}
+
+.switch:focus-visible {
+  outline: 3px solid var(--c, #8b6fd6);
+  outline-offset: 3px;
+}
+
 /* Anneau de focus commun aux éléments interactifs du minuteur. */
 .tab:focus-visible,
 .segmented button:focus-visible,
@@ -192,7 +244,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn3d {
+  .btn3d,
+  .switch,
+  .switch::after {
     transition: none;
   }
 }

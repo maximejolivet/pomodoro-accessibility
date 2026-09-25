@@ -1,0 +1,222 @@
+<ng-container *ngIf="!draft(); else editor">
+  <section class="routines">
+    <h2 class="section-head">
+      <span>{{ i18n.t('routine.section') }}</span>
+      <small>{{ i18n.t('routine.sectionHint') }}</small>
+    </h2>
+
+    <p class="routines-empty" *ngIf="!routineService.routines().length">{{ i18n.t('routine.empty') }}</p>
+
+    <div class="routine-cell" *ngFor="let r of routineService.routines()" [style.--c]="r.steps[0].color">
+      <button
+        type="button"
+        class="btn3d routine"
+        [class.active]="activeRoutineId() === r.id"
+        [attr.aria-label]="i18n.t('routine.start', { name: routineName(r) })"
+        (click)="start(r)"
+      >
+        <span class="routine-badge" aria-hidden="true">{{ r.icon }}</span>
+        <span class="routine-text">
+          <span class="routine-name">{{ routineName(r) }}</span>
+          <span class="routine-summary">{{ summary(r) }}</span>
+        </span>
+        <!-- Les pictogrammes de la suite : on voit la routine entière sans la lire -->
+        <span class="routine-preview" aria-hidden="true">
+          <span *ngFor="let s of r.steps">{{ s.icon }}</span>
+        </span>
+      </button>
+      <button
+        type="button"
+        class="routine-edit"
+        [attr.aria-label]="i18n.t('routine.edit', { name: routineName(r) })"
+        (click)="edit(r)"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4ZM13.5 6.5l4 4" /></svg>
+      </button>
+    </div>
+
+    <button type="button" class="routine-add" (click)="create()">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+      {{ i18n.t('routine.new') }}
+    </button>
+
+    <button type="button" class="link-btn" [class.danger]="confirming() === 'restore'" (click)="restoreDefaults()">
+      <span aria-live="polite" aria-atomic="true">
+        {{ confirming() === 'restore' ? i18n.t('preset.confirm') : i18n.t('routine.restore') }}
+      </span>
+    </button>
+  </section>
+</ng-container>
+
+<ng-template #editor>
+  <form class="routine-editor" *ngIf="draft() as d" (ngSubmit)="save()" [style.--c]="d.steps[0].color">
+    <label class="field">
+      <span>{{ i18n.t('preset.name') }}</span>
+      <input type="text" name="routine-name" maxlength="24" [(ngModel)]="d.name" [placeholder]="i18n.t('routine.new')" />
+    </label>
+
+    <div class="field">
+      <span>{{ i18n.t('routine.icon') }}</span>
+      <div class="icons" role="group" [attr.aria-label]="i18n.t('routine.icon')">
+        <button
+          *ngFor="let ic of stepIcons"
+          type="button"
+          class="icon"
+          [class.active]="d.icon === ic"
+          [attr.aria-pressed]="d.icon === ic"
+          (click)="d.icon = ic"
+        >{{ ic }}</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <span>{{ i18n.t('routine.steps') }}</span>
+      <ol class="step-list">
+        <li *ngFor="let s of d.steps; let i = index" class="step-row" [style.--c]="s.color">
+          <div class="step-head">
+            <button
+              type="button"
+              class="step-open"
+              [attr.aria-expanded]="openStep() === s.id"
+              [attr.aria-controls]="'step-panel-' + s.id"
+              [attr.aria-label]="i18n.t('routine.stepEdit', { name: stepName(s) })"
+              (click)="toggleStep(s.id)"
+            >
+              <span class="step-rank" aria-hidden="true">{{ i + 1 }}</span>
+              <span class="step-emoji" aria-hidden="true">{{ s.icon }}</span>
+              <span class="step-text" aria-hidden="true">
+                <span class="step-name">{{ stepName(s) }}</span>
+                <span class="step-min">{{ s.minutes }} min</span>
+              </span>
+              <svg class="step-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <button
+              type="button"
+              class="step-move"
+              [attr.aria-disabled]="i === 0"
+              [attr.aria-label]="i18n.t('routine.stepUp', { name: stepName(s) })"
+              (click)="moveStep(i, -1)"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" /></svg>
+            </button>
+            <button
+              type="button"
+              class="step-move"
+              [attr.aria-disabled]="i === d.steps.length - 1"
+              [attr.aria-label]="i18n.t('routine.stepDown', { name: stepName(s) })"
+              (click)="moveStep(i, 1)"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" /></svg>
+            </button>
+            <button
+              type="button"
+              class="step-move danger"
+              [attr.aria-disabled]="d.steps.length <= 1"
+              [attr.aria-label]="i18n.t('routine.stepRemove', { name: stepName(s) })"
+              (click)="removeStep(i)"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M10 7V5h4v2M7 7l1 13h8l1-13" /></svg>
+            </button>
+          </div>
+
+          <div class="step-panel" [id]="'step-panel-' + s.id" *ngIf="openStep() === s.id">
+            <label class="field">
+              <span>{{ i18n.t('preset.name') }}</span>
+              <input
+                type="text"
+                [name]="'step-name-' + s.id"
+                maxlength="24"
+                [(ngModel)]="s.name"
+                [placeholder]="i18n.t('routine.stepUntitled')"
+              />
+            </label>
+
+            <label class="duration">
+              <span class="duration-head">
+                <span>{{ i18n.t('settings.duration') }}</span>
+                <strong>{{ s.minutes }} min</strong>
+              </span>
+              <input
+                type="range"
+                [name]="'step-minutes-' + s.id"
+                [min]="minMinutes"
+                [max]="maxMinutes"
+                step="1"
+                [(ngModel)]="s.minutes"
+                [attr.aria-valuetext]="s.minutes + ' ' + i18n.t('unit.minutes')"
+                [style.--pct]="(s.minutes - minMinutes) / (maxMinutes - minMinutes) * 100 + '%'"
+              />
+            </label>
+
+            <div class="field">
+              <span>{{ i18n.t('routine.icon') }}</span>
+              <div class="icons" role="group" [attr.aria-label]="i18n.t('routine.icon')">
+                <button
+                  *ngFor="let ic of stepIcons"
+                  type="button"
+                  class="icon"
+                  [class.active]="s.icon === ic"
+                  [attr.aria-pressed]="s.icon === ic"
+                  (click)="s.icon = ic"
+                >{{ ic }}</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <span>{{ i18n.t('preset.color') }}</span>
+              <div class="swatches">
+                <button
+                  *ngFor="let c of presetColors"
+                  type="button"
+                  class="swatch"
+                  [class.active]="s.color === c"
+                  [style.--c]="c"
+                  [attr.aria-label]="colorLabel(c)"
+                  [attr.aria-pressed]="s.color === c"
+                  (click)="s.color = c"
+                ></button>
+              </div>
+            </div>
+
+            <!-- Ce que l'étape fait aux statistiques, dit en clair : se laver les dents
+                 n'est pas du temps de focus, réviser en est. -->
+            <label class="step-counted">
+              <span class="step-counted-text">
+                {{ i18n.t('routine.counted') }}
+                <small>{{ i18n.t('routine.countedHint') }}</small>
+              </span>
+              <input
+                type="checkbox"
+                role="switch"
+                class="switch"
+                [checked]="s.kind === 'focus'"
+                (change)="setCounted(s, $any($event.target).checked)"
+              />
+            </label>
+          </div>
+        </li>
+      </ol>
+
+      <button
+        type="button"
+        class="routine-add"
+        [attr.aria-disabled]="d.steps.length >= maxSteps"
+        (click)="addStep()"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+        {{ i18n.t('routine.stepAdd') }}
+      </button>
+    </div>
+
+    <div class="editor-actions">
+      <button *ngIf="!d.isNew" type="button" class="link-btn danger" (click)="remove()">
+        <span aria-live="polite" aria-atomic="true">
+          {{ confirming() === 'delete' ? i18n.t('preset.confirm') : i18n.t('routine.delete') }}
+        </span>
+      </button>
+      <span class="spacer"></span>
+      <button type="button" class="btn3d btn-text btn-neutral" (click)="cancel()">{{ i18n.t('preset.cancel') }}</button>
+      <button type="submit" class="btn3d btn-text">{{ i18n.t('preset.save') }}</button>
+    </div>
+  </form>
+</ng-template>

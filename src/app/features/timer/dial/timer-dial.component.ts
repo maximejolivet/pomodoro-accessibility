@@ -60,6 +60,10 @@ export class TimerDialComponent {
     return this.session.dragging();
   }
 
+  get locked(): boolean {
+    return this.session.locked();
+  }
+
   get mainActionLabel(): string {
     return this.session.mainActionLabel();
   }
@@ -81,7 +85,13 @@ export class TimerDialComponent {
     return point(DISK_R, this.displayMinutes);
   }
 
+  toggleLock(): void {
+    this.session.toggleLock();
+  }
+
   onFaceClick(): void {
+    // Verrouillé, le cadran ne démarre plus : une paume posée dessus ne fait plus rien
+    if (this.locked) return;
     if (this.suppressClick) {
       this.suppressClick = false;
       return;
@@ -91,8 +101,7 @@ export class TimerDialComponent {
 
   /** Flèches et Page ↑/↓ quand le cadran a le focus. */
   stepMinutes(delta: number): void {
-    const from = delta < 0 ? Math.ceil(this.displayMinutes) : Math.floor(this.displayMinutes);
-    this.session.setMinutes(Math.max(1, Math.min(MAX_MINUTES, from + delta)));
+    this.session.stepMinutes(delta);
   }
 
   setMinutes(minutes: number): void {
@@ -100,7 +109,7 @@ export class TimerDialComponent {
   }
 
   onDragStart(event: PointerEvent): void {
-    if (event.button !== 0) return;
+    if (event.button !== 0 || this.locked) return;
     this.dragStart = { x: event.clientX, y: event.clientY, id: event.pointerId };
     this.dragMinutes = this.displayMinutes;
     this.suppressClick = false;

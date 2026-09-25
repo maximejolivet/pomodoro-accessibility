@@ -89,10 +89,8 @@ export class TimerService {
     this.stopTimer$.next();
     this.timeLeft.next(0);
     this.isRunning.next(false);
+    // La vibration de fin est jouée par `SessionService` : lui seul connaît le réglage
     this.finished.next(-left);
-    import('@capacitor/haptics').then(({ Haptics }) => {
-      Haptics.vibrate({ duration: 500 });
-    }).catch(() => {});
   }
 
   private remaining(): number {

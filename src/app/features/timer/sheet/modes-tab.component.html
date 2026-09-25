@@ -1,4 +1,5 @@
 <ng-container *ngIf="!draft(); else editor">
+  <ng-container *ngIf="!routineEditing()">
   <label class="duration">
     <span class="duration-head">
       <span>{{ i18n.t('settings.duration') }}</span>
@@ -52,6 +53,13 @@
       {{ confirming() === 'restore' ? i18n.t('preset.confirm') : i18n.t('preset.restore') }}
     </span>
   </button>
+  </ng-container>
+
+  <!-- Les routines : une suite d'étapes, là où un mode n'est qu'une durée. -->
+  <app-routines-panel
+    (editing)="routineEditing.set($event)"
+    (closeSheet)="closeSheet.emit()"
+  />
 </ng-container>
 
 <ng-template #editor>

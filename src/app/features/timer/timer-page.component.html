@@ -3,11 +3,32 @@
   <!-- Zone d'annonces vocales pour lecteurs d'écran -->
   <div aria-live="polite" aria-atomic="true" class="sr-only" id="a11y-announcements">{{ session.announcement() }}</div>
 
+  <!-- Signal visuel des paliers et de la fin : décoratif pour les lecteurs d'écran,
+       qui reçoivent déjà le message par la zone d'annonces ci-dessus. -->
+  <div
+    *ngIf="session.visualCue() as cue"
+    class="cue"
+    [class.cue-end]="cue === 'end'"
+    [class.cue-strong]="prefs.visualAlert() === 'strong'"
+    [style.--c]="session.selectedPreset().color"
+    aria-hidden="true"
+  ></div>
+
 <!-- Derrière la modale, tout devient inerte : sinon la tabulation en sort,
        alors que le panneau se déclare aria-modal -->
   <div class="stage-content" [attr.inert]="showSheet ? '' : null">
+    <!-- Reste affiché jusqu'à la prochaine action : une alerte qui passe se rate. -->
+    <p class="end-banner" *ngIf="showEndBanner()" [style.--c]="session.selectedPreset().color">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M18 8a6 6 0 1 0-12 0c0 6-2 7-2 7h16s-2-1-2-7" />
+        <path d="M13.7 20a2 2 0 0 1-3.4 0" />
+      </svg>
+      {{ i18n.t('notif.endTitle') }}
+    </p>
+
     <app-timer-dial />
     <app-timer-readout />
+    <app-routine-strip />
     <app-timer-controls (openSettings)="openSheet()" />
 
     <a

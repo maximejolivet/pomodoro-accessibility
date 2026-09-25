@@ -1,0 +1,167 @@
+/* Bande des étapes de la routine, sous l'affichage du temps. */
+
+:host {
+  display: contents;
+}
+
+.routine {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(100%, 420px);
+  /* Rattrape l'écart de la scène : la bande suit le boîtier de près. */
+  margin-top: -14px;
+}
+
+.routine-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-inline: 4px;
+}
+
+.routine-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted-strong);
+}
+
+.routine-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.routine-quit {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: -10px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.routine-quit svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+.routine-quit[aria-disabled='true'] {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.routine-quit:focus-visible,
+.step-chip:focus-visible {
+  outline: 3px solid var(--bar);
+  outline-offset: 2px;
+}
+
+/*
+ * Défilement horizontal contenu dans la bande : la page, elle, ne défile jamais de
+ * côté (WCAG 1.4.10), y compris à 320 px et avec dix étapes.
+ */
+.steps {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 2px 4px 6px;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+}
+
+.steps li {
+  scroll-snap-align: start;
+}
+
+.step-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 12px 6px 10px;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  background: linear-gradient(180deg, var(--surface-hi), var(--surface-lo));
+  box-shadow: 0 2px 0 var(--surface-edge);
+  font: inherit;
+  color: var(--ink);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.step-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.step-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+}
+
+.step-name {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.step-time {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  /* « 10 min » : ordre gauche → droite, même en arabe */
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* L'étape en cours : la couleur de l'étape, celle qui teinte déjà le cadran. */
+.step-chip.current {
+  border-color: var(--c);
+  background: color-mix(in srgb, var(--c) 16%, var(--surface-hi));
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--c) 45%, #000);
+}
+
+.step-chip.done {
+  opacity: 0.75;
+}
+
+.step-chip.done .step-name {
+  text-decoration: line-through;
+}
+
+.step-check {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: var(--c);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.step-chip[aria-disabled='true'] {
+  cursor: default;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .steps {
+    scroll-behavior: auto;
+  }
+}

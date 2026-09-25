@@ -19,6 +19,19 @@
   </label>
   <label class="setting">
     <span class="setting-label">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="7" y="2.5" width="10" height="19" rx="2.5" />
+        <path d="M3 9v6M21 9v6" />
+      </svg>
+      <span class="setting-text">
+        {{ i18n.t('settings.haptics') }}
+        <small>{{ i18n.t('settings.hapticsHint') }}</small>
+      </span>
+    </span>
+    <input type="checkbox" role="switch" class="switch" [checked]="prefs.haptics()" (change)="session.setHapticsEnabled($any($event.target).checked)" />
+  </label>
+  <label class="setting">
+    <span class="setting-label">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8" /><path d="M12 9v4l2.5 2M9 2h6" /></svg>
       {{ i18n.t('settings.autoExtra') }}
     </span>
@@ -49,6 +62,51 @@
     </span>
     <input type="checkbox" role="switch" class="switch" [checked]="prefs.opendyslexic()" (change)="prefs.setOpendyslexic($any($event.target).checked)" />
   </label>
+</div>
+
+<!-- Alerte visuelle : le relais du son pour qui n'entend pas, ou l'a coupé. -->
+<div class="field">
+  <span class="field-head">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="3.5" />
+      <path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M18.4 5.6l-1.8 1.8M7.4 16.6l-1.8 1.8" />
+    </svg>
+    <span class="setting-text">
+      {{ i18n.t('settings.visualAlert') }}
+      <small>{{ i18n.t('settings.visualAlertHint') }}</small>
+    </span>
+  </span>
+  <div class="segmented choice" role="group" [attr.aria-label]="i18n.t('settings.visualAlert')">
+    <button
+      *ngFor="let a of visualAlerts"
+      type="button"
+      [class.active]="prefs.visualAlert() === a.value"
+      [attr.aria-pressed]="prefs.visualAlert() === a.value"
+      (click)="setVisualAlert(a.value)"
+    >{{ i18n.t(a.key) }}</button>
+  </div>
+</div>
+
+<!-- Annonce vocale : masquée si le navigateur n'a pas la synthèse, plutôt qu'offerte en vain. -->
+<div class="field" *ngIf="speechAvailable">
+  <span class="field-head">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 3v18M8 7v10M4 10v4M16 7v10M20 10v4" />
+    </svg>
+    <span class="setting-text">
+      {{ i18n.t('settings.speech') }}
+      <small>{{ i18n.t('settings.speechHint') }}</small>
+    </span>
+  </span>
+  <div class="segmented choice" role="group" [attr.aria-label]="i18n.t('settings.speech')">
+    <button
+      *ngFor="let m of speechModes"
+      type="button"
+      [class.active]="prefs.speech() === m.value"
+      [attr.aria-pressed]="prefs.speech() === m.value"
+      (click)="setSpeech(m.value)"
+    >{{ i18n.t(m.key) }}</button>
+  </div>
 </div>
 
 <label class="duration">

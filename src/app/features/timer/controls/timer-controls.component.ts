@@ -4,7 +4,7 @@ import { I18nService } from '../../../core/i18n/i18n.service';
 import type { Preset } from '../../../core/models/preset.model';
 import { SessionService } from '../../../core/services/session.service';
 
-/** Remise à zéro, démarrage / pause, ouverture des réglages. */
+/** Remise à zéro, démarrage / pause, ouverture des réglages, et l'état affiché dessous. */
 @Component({
   selector: 'app-timer-controls',
   standalone: true,
@@ -30,6 +30,15 @@ export class TimerControlsComponent {
 
   get mainActionLabel(): string {
     return this.session.mainActionLabel();
+  }
+
+  get stateLabel(): string {
+    return this.session.stateLabel();
+  }
+
+  /** Cadran verrouillé : la remise à zéro se neutralise avec lui. */
+  get locked(): boolean {
+    return this.session.locked();
   }
 
   toggle(): void {
