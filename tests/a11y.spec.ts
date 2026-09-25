@@ -431,6 +431,86 @@ test.describe('annonce vocale', () => {
   });
 });
 
+test.describe('vibration', () => {
+  /** Enregistre ce que l'app demande au vibreur : le navigateur de test ne vibre pas. */
+  async function captureVibration(page: Page) {
+    await page.addInitScript(() => {
+      (window as any).__vibrations = [];
+      Object.defineProperty(navigator, 'vibrate', {
+        // Capacitor passe un tableau d'une valeur au vibreur du navigateur
+        value: (pattern: number | number[]) => {
+          (window as any).__vibrations.push(Array.isArray(pattern) ? pattern[0] : pattern);
+          return true;
+        }
+      });
+      localStorage.setItem('pomodoro-tdah.lang', 'fr');
+    });
+  }
+
+  const vibrations = (page: Page) =>
+    page.evaluate(() => (window as any).__vibrations as number[]);
+
+  test('la fin joue trois longues impulsions, et le réglage les fait sentir', async ({ page }) => {
+    await captureVibration(page);
+    await page.clock.install();
+    await page.goto('/');
+    await ready(page);
+
+    await page.locator('.face').focus();
+    await page.keyboard.press('Home');
+    await page.keyboard.press('ArrowRight');
+    await expect(page.locator('.readout-time')).toHaveText('01:00');
+    // Le pas de réglage se confirme par une impulsion légère, distincte des motifs.
+    // Le module natif est chargé à la demande : on attend qu'il réponde plutôt que de le supposer.
+    await expect.poll(() => vibrations(page)).toHaveLength(2);
+
+    await page.getByRole('button', { name: /démarrer/i }).click();
+    await page.clock.runFor(63_000);
+    // Trois impulsions de 500 ms : le motif du carillon, dans la main
+    expect((await vibrations(page)).slice(2)).toEqual([500, 500, 500]);
+  });
+
+  test('chaque palier a son propre motif, reconnaissable sans voir ni entendre', async ({ page }) => {
+    await captureVibration(page);
+    await page.clock.install();
+    await page.goto('/');
+    await ready(page);
+
+    // 16 min : le décompte ne franchira que le palier des 15 minutes
+    await page.locator('.face').focus();
+    await page.keyboard.press('Home');
+    for (let i = 0; i < 3; i++) await page.keyboard.press('PageDown');
+    await page.keyboard.press('ArrowRight');
+    await expect(page.locator('.readout-time')).toHaveText('16:00');
+
+    await page.getByRole('button', { name: /démarrer/i }).click();
+    await page.evaluate(() => ((window as any).__vibrations.length = 0));
+    await page.clock.runFor(63_000);
+    // Trois impulsions brèves, là où la fin en donne trois longues : le rythme fait la différence
+    expect(await vibrations(page)).toEqual([120, 120, 180]);
+  });
+
+  test("l'interrupteur coupe toute vibration, et son état est annoncé", async ({ page }) => {
+    await captureVibration(page);
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+    await page.locator('.tabs button:nth-child(3)').click();
+
+    const toggle = page.getByRole('switch', { name: /Vibration/ });
+    await expect(toggle).toBeChecked();
+    await toggle.click();
+    await expect(toggle).not.toBeChecked();
+
+    // Éteint, plus rien ne part : ni motif, ni impulsion de réglage
+    await page.evaluate(() => ((window as any).__vibrations.length = 0));
+    await page.keyboard.press('Escape');
+    await page.locator('.face').focus();
+    await page.keyboard.press('ArrowRight');
+    expect(await vibrations(page)).toEqual([]);
+  });
+});
+
 test.describe('alerte visuelle', () => {
   async function openSettings(page: Page) {
     await page.goto('/');

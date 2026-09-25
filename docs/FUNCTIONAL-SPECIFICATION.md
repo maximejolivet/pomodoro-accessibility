@@ -146,7 +146,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-CHA-4 | Une pause longue est proposée toutes les 4 sessions de travail terminées.                    | S    |
 | EF-CHA-5 | Les deux options sont désactivables indépendamment.                                          | M    |
 
-### 4.4 Alertes sonores et notifications (`EF-ALE`)
+### 4.4 Alertes sonores, tactiles et notifications (`EF-ALE`)
 
 | Réf.     | Exigence                                                                                                                                            | Prio |
 | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
@@ -158,9 +158,11 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-ALE-6 | Les notifications sont annulées au retour au premier plan, où les sons de l'application prennent le relais.                                         | M    |
 | EF-ALE-7 | Un palier dépassé de plus de 90 s pendant un passage en arrière-plan n'est pas rejoué : la notification a déjà prévenu.                             | S    |
 | EF-ALE-8 | L'autorisation de notification est demandée au premier démarrage du minuteur, pas à l'ouverture.                                                    | M    |
+| EF-ALE-9 | Chaque palier et la fin déclenchent un motif de vibration distinct, calqué sur le rythme du son correspondant (1, 2, 3 brèves, 3 longues).          | S    |
 | EF-ALE-11 | Chaque palier et la fin déclenchent un signal visuel (aucun / doux / fort) : un battement au palier, trois à la fin.                               | S    |
 | EF-ALE-12 | Le signal visuel bat à 0,6 Hz au plus, se fige sous `prefers-reduced-motion`, n'intercepte aucun clic et n'est pas exposé aux lecteurs d'écran.    | M    |
 | EF-ALE-13 | À la fin, un bandeau « Temps écoulé » reste affiché jusqu'à la prochaine action : une alerte qui passe se rate.                                    | S    |
+| EF-ALE-10 | Le motif se reconnaît d'abord au nombre d'impulsions et à leur rythme : la durée demandée est respectée sur Android et sur iPhone à Taptic Engine, mais un appareil iOS plus ancien retombe sur une vibration système de longueur fixe. | S    |
 
 ### 4.5 Historique, statistiques et objectif (`EF-HIS`)
 
@@ -188,6 +190,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-PRE-8 | Langue : automatique (langue de l'appareil) ou choisie.                          | M    |
 | EF-PRE-9 | Toute préférence est conservée d'une ouverture à l'autre.                        | M    |
 | EF-PRE-10 | Annonce vocale du temps restant : aucune, aux paliers, ou à chaque minute (défaut : aucune) ; le choix se fait entendre aussitôt. | S    |
+| EF-PRE-11 | Vibration on/off (défaut : on) ; l'activation fait sentir le motif de fin.        | S    |
 | EF-PRE-12 | Alerte visuelle : aucune, douce ou forte (défaut : douce) ; le choix se montre aussitôt. | S    |
 
 ### 4.7 Internationalisation (`EF-I18`)
@@ -250,7 +253,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 2. Réglage facultatif au doigt, aux boutons − / + ou au clavier.
 3. Appui sur le cadran ou sur ▶ : le décompte démarre, l'écran reste allumé si l'option est active.
 4. Paliers à 45 / 30 / 15 min restantes : un son, et une notification si l'application est en arrière-plan.
-5. À 0 : carillon, vibration ; prolongation de 5 min si l'option est active, sinon fin.
+5. À 0 : carillon, motif de vibration de fin ; prolongation de 5 min si l'option est active, sinon fin.
 6. La session est enregistrée si elle a duré au moins 60 s ; les statistiques du jour se mettent à jour.
 
 ### 6.2 Enchaînement automatique
@@ -289,6 +292,7 @@ série de jours, histogramme des 7 derniers jours, 10 dernières sessions.
 | ENF-A11-10 | Les tests automatiques axe-core (WCAG 2.0/2.1 A et AA, bonnes pratiques) ne relèvent aucune violation sur les parcours couverts, en thème clair et sombre. |
 | ENF-A11-11 | Tout réglage accessible par glissement l'est aussi par un pointeur simple (WCAG 2.5.7), avec des cibles d'au moins 44 × 44 px (WCAG 2.5.8).            |
 | ENF-A11-12 | Le temps restant peut être dit à voix haute par la synthèse de l'appareil, sans regarder le cadran : réglage à trois choix, hors ligne, éteint par défaut. |
+| ENF-A11-13 | Chaque palier et la fin ont un motif de vibration distinct, reconnaissable sans la vue ni l'ouïe (seul canal d'alerte pour une personne sourde-aveugle). |
 
 **Écarts connus et assumés**, publiés dans la déclaration : le cadran est un curseur dont
 l'activation démarre aussi le minuteur (critères RGAA 7.1 et 7.3) ; le contraste des éléments

@@ -122,7 +122,7 @@ visual timer is a simple, discreet and free tool at that level.
 | 💡 **Visual alert**              | A colored flash at the milestones and at the end, soft or strong, for anyone who can't hear or muted the sound        |
 | 🗣️ **Spoken time**               | The time left read out loud, at the milestones or every minute, to listen instead of looking (off by default)          |
 | ⏱️ **Automatic +5 min**          | At 0, five more minutes to finish what you're doing (can be turned off)                                                |
-| 📳 **Vibration**                 | A light tap at the end and while adjusting                                                                             |
+| 📳 **Coded vibration**           | A different pattern per milestone — 1 pulse at 45, 2 at 30, 3 short at 15, 3 long at the end (can be turned off)       |
 | 📲 **Notifications**             | Alerts even with a locked phone or the app in the background, with the same sounds as the app                          |
 | 🔆 **Screen always on**          | The screen doesn't turn off during the countdown (can be turned off)                                                   |
 | 🧩 **iPhone widget**             | The running countdown or today's goal, right on your home screen                                                       |
@@ -143,7 +143,7 @@ when you come back, everything is up to date.
 | ↺                          | Reset                                                                         |
 | ⚙︎ → **Modes**              | Choose, create, edit or delete a mode                                         |
 | ⚙︎ → **Stats**              | See today's goal, your statistics and session history                         |
-| ⚙︎ → **Settings**           | Dark mode, sounds, visual alert, spoken time, +5 min, chaining, screen on, goal, language |
+| ⚙︎ → **Settings**           | Dark mode, sounds, vibration, visual alert, spoken time, +5 min, chaining, screen on, goal, language |
 
 <p align="center">
   <img src="docs/screenshot-modes.png" alt="Mode editor" width="260">
@@ -156,12 +156,17 @@ when you come back, everything is up to date.
 They go from the gentlest to the most insistent as the end approaches, and you can listen to
 them in ⚙︎ → *Listen to sounds*.
 
-| Moment               | Sound                                               |
-| -------------------- | --------------------------------------------------- |
-| **45 min** left      | 1 soft, round note                                  |
-| **30 min**           | 2 rising notes, a bit brighter                      |
-| **15 min**           | 3 quick notes, "beep" style                         |
-| **0**                | A chime played 3 times, with vibration              |
+| Moment               | Sound                                               | Vibration                        |
+| -------------------- | --------------------------------------------------- | -------------------------------- |
+| **45 min** left      | 1 soft, round note                                  | 1 long pulse                     |
+| **30 min**           | 2 rising notes, a bit brighter                      | 2 pulses                         |
+| **15 min**           | 3 quick notes, "beep" style                         | 3 short pulses                   |
+| **0**                | A chime played 3 times                              | 3 long pulses                    |
+
+The vibration follows the same rhythm as the sound: it warns you without showing or playing
+anything — in a meeting, in class, in an open space — and it is the only alert channel left for
+a deafblind person. It needs a phone or a tablet (iOS and Android; on the web, only Android
+vibrates).
 
 ## Accessibility
 
@@ -175,6 +180,8 @@ The app is designed to be usable by everyone:
   and it holds still if your device asks for less motion.
 - 🗣️ **Without looking at the dial**: spoken time reads the minutes left at the milestones or every
   minute, with the device voice, offline (⚙︎ → *Spoken time*).
+- 📳 **Without seeing or hearing**: every milestone has its own vibration pattern, recognizable in
+  your hand (⚙︎ → *Vibration*).
 - 👁️ **Readable for all**: careful contrast, dark mode, colors always paired with a name.
 - 🔤 **Dyslexia-friendly font**: the OpenDyslexic font can be turned on in the settings.
 - 🌀 **Reduced motion**: if your device asks for less motion, the app respects it.
@@ -185,10 +192,10 @@ A dedicated page covers all of this, including the RGAA 4.1 accessibility statem
 (conformance status, non-accessible content, contact and remedies): see the
 **♿ Accessibility** link at the bottom right of the app.
 
-These guarantees are checked on every change: `npm run test:a11y` replays twenty-nine checks
+These guarantees are checked on every change: `npm run test:a11y` replays thirty-two checks
 (axe-core on every view, in light, dark and Arabic; control of the dial by keyboard and by the
-− / + buttons; spoken time and the visual alert checked against a simulated countdown;
-target sizes; the modal focus trap; no horizontal scrolling at 320 px), and CI runs them on every push.
+− / + buttons; spoken time, vibration patterns and the visual alert checked against a simulated
+countdown; target sizes; the modal focus trap; no horizontal scrolling at 320 px), and CI runs them on every push.
 
 ## For developers
 

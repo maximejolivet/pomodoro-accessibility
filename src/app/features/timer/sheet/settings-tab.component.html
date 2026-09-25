@@ -19,6 +19,19 @@
   </label>
   <label class="setting">
     <span class="setting-label">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="7" y="2.5" width="10" height="19" rx="2.5" />
+        <path d="M3 9v6M21 9v6" />
+      </svg>
+      <span class="setting-text">
+        {{ i18n.t('settings.haptics') }}
+        <small>{{ i18n.t('settings.hapticsHint') }}</small>
+      </span>
+    </span>
+    <input type="checkbox" role="switch" class="switch" [checked]="prefs.haptics()" (change)="session.setHapticsEnabled($any($event.target).checked)" />
+  </label>
+  <label class="setting">
+    <span class="setting-label">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8" /><path d="M12 9v4l2.5 2M9 2h6" /></svg>
       {{ i18n.t('settings.autoExtra') }}
     </span>

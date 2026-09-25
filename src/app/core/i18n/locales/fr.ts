@@ -41,6 +41,8 @@ export const fr = {
 
   'settings.dark': 'Mode sombre',
   'settings.sound': 'Son',
+  'settings.haptics': 'Vibration',
+  'settings.hapticsHint': 'Un motif différent à chaque palier',
   'settings.autoExtra': '+5 min auto à la fin',
   'settings.autoChain': 'Enchaîner travail → pause',
   'settings.autoChainHint': 'Pause longue tous les {n} cycles',

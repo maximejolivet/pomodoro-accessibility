@@ -42,6 +42,8 @@ export const ar: Dictionary = {
 
   'settings.dark': 'الوضع الداكن',
   'settings.sound': 'الصوت',
+  'settings.haptics': 'الاهتزاز',
+  'settings.hapticsHint': 'نمط مختلف عند كل مرحلة',
   'settings.autoExtra': '+5 دقائق تلقائيًا في النهاية',
   'settings.autoChain': 'تسلسل عمل ← استراحة',
   'settings.autoChainHint': 'استراحة طويلة كل {n} دورات',

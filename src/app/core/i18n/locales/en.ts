@@ -42,6 +42,8 @@ export const en: Dictionary = {
 
   'settings.dark': 'Dark mode',
   'settings.sound': 'Sound',
+  'settings.haptics': 'Vibration',
+  'settings.hapticsHint': 'A different pattern at each milestone',
   'settings.autoExtra': 'Auto +5 min at the end',
   'settings.autoChain': 'Chain work → break',
   'settings.autoChainHint': 'Long break every {n} rounds',

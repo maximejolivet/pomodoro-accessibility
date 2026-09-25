@@ -42,6 +42,8 @@ export const de: Dictionary = {
 
   'settings.dark': 'Dunkelmodus',
   'settings.sound': 'Ton',
+  'settings.haptics': 'Vibration',
+  'settings.hapticsHint': 'Ein eigenes Muster bei jeder Marke',
   'settings.autoExtra': 'Automatisch +5 min am Ende',
   'settings.autoChain': 'Arbeit → Pause verketten',
   'settings.autoChainHint': 'Lange Pause alle {n} Runden',

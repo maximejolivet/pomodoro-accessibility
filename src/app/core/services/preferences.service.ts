@@ -12,6 +12,8 @@ export class PreferencesService {
   readonly darkMode = signal(PreferencesService.initialDarkMode());
   readonly opendyslexic = signal(readFlag('opendyslexic', false));
   readonly sound = signal(readFlag('sound'));
+  /** Vibration : motif par palier, et confirmation au réglage. Seul canal d'alerte tactile. */
+  readonly haptics = signal(readFlag('haptics'));
   /** À 0, relance automatiquement 5 minutes pour terminer ce qui est en cours (sessions de travail). */
   readonly autoExtra = signal(readFlag('auto-extra'));
   /** Enchaîne automatiquement travail → pause → travail. */
@@ -38,6 +40,11 @@ export class PreferencesService {
   setSound(on: boolean): void {
     this.sound.set(on);
     writeFlag('sound', on);
+  }
+
+  setHaptics(on: boolean): void {
+    this.haptics.set(on);
+    writeFlag('haptics', on);
   }
 
   setAutoExtra(on: boolean): void {

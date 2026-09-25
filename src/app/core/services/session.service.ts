@@ -13,6 +13,7 @@ import type { SpeechMode, VisualAlert } from '../models/preferences.model';
 import type { VisualCue } from '../models/session.model';
 import type { Preset, PresetKind } from '../models/preset.model';
 import type { ActiveSession } from '../models/session.model';
+import { HapticsService } from './haptics.service';
 import { HistoryService } from './history.service';
 import { KeepAwakeService } from './keep-awake.service';
 import { NotificationService } from './notification.service';
@@ -37,6 +38,7 @@ export class SessionService {
   private readonly presetService = inject(PresetService);
   private readonly prefs = inject(PreferencesService);
   private readonly sound = inject(SoundService);
+  private readonly haptics = inject(HapticsService);
   private readonly speech = inject(SpeechService);
   private readonly notifications = inject(NotificationService);
   private readonly keepAwake = inject(KeepAwakeService);
@@ -109,6 +111,7 @@ export class SessionService {
   constructor() {
     this.durationSeconds.set(this.selectedPreset().seconds);
     this.sound.enabled = this.prefs.sound();
+    this.haptics.enabled = this.prefs.haptics();
     this.notifications.setup({
       milestone45: this.i18n.t('notif.channel.milestone', { m: 45 }),
       milestone30: this.i18n.t('notif.channel.milestone', { m: 30 }),
@@ -162,6 +165,7 @@ export class SessionService {
     if (this.isRunning()) {
       this.timer.pause();
       this.speech.stop();
+      this.haptics.stop();
       this.pauseSession();
       this.announce(this.i18n.t('state.paused'));
     } else if (this.isPaused()) {
@@ -182,6 +186,7 @@ export class SessionService {
   reset(): void {
     this.finished.set(false);
     this.speech.stop();
+    this.haptics.stop();
     // Pendant la prolongation, la durée prévue est déjà atteinte : la session compte comme terminée
     this.endSession(this.inExtra());
     this.inExtra.set(false);
@@ -218,7 +223,7 @@ export class SessionService {
     }
 
     if (clamped !== current) {
-      pulse();
+      this.haptics.impact();
     }
   }
 
@@ -249,6 +254,13 @@ export class SessionService {
     if (preset.id === this.selectedPreset().id && !this.session()) {
       this.durationSeconds.set(preset.seconds);
     }
+  }
+
+  /** Le motif de fin se fait sentir aussitôt : c'est l'essai du réglage, comme pour le son. */
+  setHapticsEnabled(on: boolean): void {
+    this.prefs.setHaptics(on);
+    this.haptics.enabled = on;
+    if (on) this.haptics.play('end');
   }
 
   setSoundEnabled(on: boolean): void {
@@ -362,6 +374,7 @@ export class SessionService {
         // Palier franchi depuis longtemps (retour d'arrière-plan) : déjà notifié
         if (at - current <= LATE_ALERT_SECONDS) {
           this.sound.milestone(m);
+          this.haptics.play(`milestone${m}`);
           this.showCue('milestone');
           this.announce(this.i18n.t('notif.milestoneTitle', { m }));
         }
@@ -376,6 +389,7 @@ export class SessionService {
     const fresh = lateBy <= LATE_ALERT_SECONDS;
     if (fresh) {
       this.sound.end();
+      this.haptics.play('end');
       this.showCue('end');
     }
     const kind = this.session()?.kind ?? this.selectedPreset().kind;
@@ -546,11 +560,4 @@ export class SessionService {
   private announce(message: string): void {
     this.announcement.set(message);
   }
-}
-
-/** Petite vibration de confirmation (appareil mobile). */
-function pulse(): void {
-  import('@capacitor/haptics')
-    .then(({ Haptics, ImpactStyle }) => Haptics.impact({ style: ImpactStyle.Light }))
-    .catch(() => {});
 }

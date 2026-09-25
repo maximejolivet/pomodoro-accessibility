@@ -42,6 +42,8 @@ export const es: Dictionary = {
 
   'settings.dark': 'Modo oscuro',
   'settings.sound': 'Sonido',
+  'settings.haptics': 'Vibración',
+  'settings.hapticsHint': 'Un patrón distinto en cada aviso',
   'settings.autoExtra': '+5 min automático al final',
   'settings.autoChain': 'Encadenar trabajo → pausa',
   'settings.autoChainHint': 'Pausa larga cada {n} ciclos',

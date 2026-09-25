@@ -130,6 +130,7 @@ la session (RG-14).
 | `theme` | Thème | `'dark'` \| `'light'` (absent ⇒ préférence système) |
 | `opendyslexic` | Police OpenDyslexic | `'on'` \| `'off'` (défaut : off) |
 | `sound` | Sons | `'on'` \| `'off'` (défaut : on) |
+| `haptics` | Vibration | `'on'` \| `'off'` (défaut : on) |
 | `visual-alert` | Alerte visuelle | `'off'` \| `'soft'` \| `'strong'` (défaut : soft) |
 | `auto-extra` | Prolongation +5 min | `'on'` \| `'off'` (défaut : on) |
 | `auto-chain` | Enchaînement automatique | `'on'` \| `'off'` (défaut : off) |
@@ -189,6 +190,7 @@ redemande le maintien d'écran.
 | `HistoryService` | Historique, statistiques, objectif | `today`, `week`, `streak`, `goalProgress` en `computed` ; replanification au passage de minuit |
 | `SoundService` | Lecture Web Audio | Synthèse des motifs partagés |
 | `SpeechService` | Annonce vocale (Web Speech) | Coupe l'annonce précédente, choisit une voix de la langue courante si le navigateur en propose une, masqué si la synthèse manque |
+| `HapticsService` | Motifs de vibration | Impulsions enchaînées par `setTimeout`, module Capacitor chargé à la demande, échec ignoré là où la vibration n'existe pas (iOS sur le web, ordinateur) |
 | `NotificationService` | Notifications locales | Écrit les WAV iOS au lancement, crée un canal Android par son, canal silencieux pour les alertes muettes |
 | `KeepAwakeService` | Maintien de l'écran | Vérifie le support, ignore les échecs, redemande le verrou au retour au premier plan |
 | `WidgetService` | Widget iOS | Actif uniquement sur iOS ; n'envoie que si l'état JSON a changé ; réessaie au changement suivant en cas d'échec |
@@ -296,6 +298,7 @@ garantit l'homogénéité des contrastes (ENF-MNT-2).
 | Cadran utilisable au clavier et annoncé | Conteneur focalisable portant `role="slider"`, `aria-valuemin=1`, `aria-valuemax=60`, `aria-valuenow`, `aria-valuetext` (« *n* minutes, *action* »), `aria-label` ; le SVG est `aria-hidden` |
 | Annonces temps réel | Région live alimentée par le signal `announcement` de `SessionService` |
 | Temps restant sans la vue | Annonce vocale optionnelle (`SpeechService`) aux paliers ou à chaque minute, dans la langue de l'interface |
+| Alerte sans la vue ni l'ouïe | Motif de vibration propre à chaque palier (`HapticsService`), distingué par le nombre d'impulsions et leur rythme |
 | Alerte sans le son | Pulsation colorée à 0,6 Hz et bandeau de fin persistant ; `aria-hidden`, `pointer-events: none`, figée sous `prefers-reduced-motion` |
 | Panneau de réglages | Focus piégé tant qu'il est ouvert, fermeture par Échap, focus rendu au déclencheur |
 | Onglets | Rôles `tablist` / `tab` / `tabpanel`, navigation par flèches, flèches nommées pour les lecteurs d'écran |
