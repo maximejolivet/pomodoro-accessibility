@@ -37,6 +37,8 @@ app-root {
   --bar: #8b6fd6;
   /* Rouge des actions destructives : 4,9:1 sur --surface-hi. */
   --danger: #cf3644;
+  /* Bord des interrupteurs : 3,6:1 sur --surface-hi (WCAG 1.4.11). */
+  --switch-edge: #7e888d;
   color-scheme: light;
   display: block;
   font-family: 'Avenir Next', Avenir, 'Nunito Sans', 'Segoe UI', system-ui, sans-serif;
