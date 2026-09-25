@@ -107,7 +107,7 @@
 }
 
 .link-btn.danger {
-  color: #d63f4f;
+  color: var(--danger);
 }
 
 .field {

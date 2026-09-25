@@ -243,5 +243,6 @@
   background: var(--range-bg);
   font-size: 14px;
   text-align: center;
-  color: var(--muted);
+  /* --muted ne donne que 4,37:1 sur ce fond */
+  color: var(--muted-strong);
 }

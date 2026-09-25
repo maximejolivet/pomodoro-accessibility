@@ -31,5 +31,7 @@ app-root.dark {
   --neutral-edge: #1a1e22;
   --range-bg: #15181b;
   --backdrop: rgba(0, 0, 0, 0.55);
+  /* Le rouge du thème clair ne donne que 2,6:1 sur une surface sombre. */
+  --danger: #ff8a92;
   color-scheme: dark;
 }

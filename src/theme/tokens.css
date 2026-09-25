@@ -35,6 +35,8 @@ app-root {
   --range-bg: #dfe5e7;
   --backdrop: rgba(20, 35, 40, 0.35);
   --bar: #8b6fd6;
+  /* Rouge des actions destructives : 4,9:1 sur --surface-hi. */
+  --danger: #cf3644;
   color-scheme: light;
   display: block;
   font-family: 'Avenir Next', Avenir, 'Nunito Sans', 'Segoe UI', system-ui, sans-serif;
