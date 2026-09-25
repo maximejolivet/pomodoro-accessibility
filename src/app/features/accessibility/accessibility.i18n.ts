@@ -180,7 +180,7 @@ const fr: A11yText = {
   nonAccessibleTitle: 'Contenus non accessibles',
   nonAccessibleItems: [
     "Le cadran est un curseur dont l'activation démarre aussi le minuteur, ce qui s'écarte du comportement attendu pour ce type de composant. Son nom et sa description l'annoncent (critères 7.1 et 7.3).",
-    "L'agrandissement du texte à 200 % et le parcours au lecteur d'écran n'ont pas été vérifiés manuellement (critères 10.4 et 7.1).",
+    "Le parcours complet au lecteur d'écran n'a pas été vérifié manuellement (critère 7.1).",
   ],
   contactTitle: 'Contact',
   contactText: "Si vous ne parvenez pas à accéder à un contenu, signalez-le pour être orienté vers une solution accessible :",
@@ -298,7 +298,7 @@ const en: A11yText = {
   nonAccessibleTitle: 'Non-accessible content',
   nonAccessibleItems: [
     'The dial is a slider whose activation also starts the timer, which departs from the expected behaviour for this kind of component. Its name and description say so (criteria 7.1 and 7.3).',
-    'Text enlarged to 200% and a full screen reader walkthrough have not been checked manually (criteria 10.4 and 7.1).',
+    'A full screen reader walkthrough has not been checked manually (criterion 7.1).',
   ],
   contactTitle: 'Contact',
   contactText: 'If you cannot reach some content, report it so you can be pointed to an accessible alternative:',
@@ -416,7 +416,7 @@ const es: A11yText = {
   nonAccessibleTitle: 'Contenidos no accesibles',
   nonAccessibleItems: [
     'La esfera es un control deslizante cuya activación también inicia el temporizador, lo que se aparta del comportamiento esperado para este tipo de componente. Su nombre y su descripción lo indican (criterios 7.1 y 7.3).',
-    'La ampliación del texto al 200 % y el recorrido con lector de pantalla no se han comprobado manualmente (criterios 10.4 y 7.1).',
+    'El recorrido completo con lector de pantalla no se ha comprobado manualmente (criterio 7.1).',
   ],
   contactTitle: 'Contacto',
   contactText: 'Si no consigue acceder a algún contenido, comuníquelo para que se le indique una alternativa accesible:',
@@ -534,7 +534,7 @@ const de: A11yText = {
   nonAccessibleTitle: 'Nicht barrierefreie Inhalte',
   nonAccessibleItems: [
     'Das Zifferblatt ist ein Schieberegler, dessen Aktivierung zugleich den Timer startet — das weicht vom erwarteten Verhalten dieser Komponente ab. Name und Beschreibung weisen darauf hin (Kriterien 7.1 und 7.3).',
-    'Auf 200 % vergrößerter Text und ein vollständiger Screenreader-Durchlauf wurden nicht manuell geprüft (Kriterien 10.4 und 7.1).',
+    'Ein vollständiger Screenreader-Durchlauf wurde nicht manuell geprüft (Kriterium 7.1).',
   ],
   contactTitle: 'Kontakt',
   contactText: 'Wenn Sie einen Inhalt nicht erreichen können, melden Sie es, damit Ihnen eine barrierefreie Alternative genannt werden kann:',
@@ -652,7 +652,7 @@ const it: A11yText = {
   nonAccessibleTitle: 'Contenuti non accessibili',
   nonAccessibleItems: [
     "Il quadrante è un cursore la cui attivazione avvia anche il timer, discostandosi dal comportamento atteso per questo tipo di componente. Il nome e la descrizione lo dichiarano (criteri 7.1 e 7.3).",
-    "L'ingrandimento del testo al 200 % e un percorso completo con screen reader non sono stati verificati manualmente (criteri 10.4 e 7.1).",
+    "Un percorso completo con screen reader non è stato verificato manualmente (criterio 7.1).",
   ],
   contactTitle: 'Contatti',
   contactText: 'Se non riesci a raggiungere un contenuto, segnalalo per essere indirizzato a un\'alternativa accessibile:',
@@ -770,7 +770,7 @@ const pt: A11yText = {
   nonAccessibleTitle: 'Conteúdos não acessíveis',
   nonAccessibleItems: [
     'O mostrador é um cursor cuja ativação também inicia o temporizador, afastando-se do comportamento esperado para este tipo de componente. O nome e a descrição indicam-no (critérios 7.1 e 7.3).',
-    'A ampliação do texto a 200 % e um percurso completo com leitor de ecrã não foram verificados manualmente (critérios 10.4 e 7.1).',
+    'Um percurso completo com leitor de ecrã não foi verificado manualmente (critério 7.1).',
   ],
   contactTitle: 'Contacto',
   contactText: 'Se não conseguir aceder a algum conteúdo, comunique-o para ser encaminhado para uma alternativa acessível:',
@@ -888,7 +888,7 @@ const ar: A11yText = {
   nonAccessibleTitle: 'محتويات غير متاحة',
   nonAccessibleItems: [
     'القرص عنصر انزلاقي يؤدي تفعيله أيضًا إلى بدء المؤقّت، وهو ما يخالف السلوك المتوقَّع لهذا النوع من المكوّنات. ويُصرِّح بذلك اسمه ووصفه (المعياران 7.1 و7.3).',
-    'لم يُتحقَّق يدويًّا من تكبير النص إلى 200 % ولا من التصفّح الكامل بقارئ الشاشة (المعياران 10.4 و7.1).',
+    'لم يُتحقَّق يدويًّا من التصفّح الكامل بقارئ الشاشة (المعيار 7.1).',
   ],
   contactTitle: 'التواصل',
   contactText: 'إذا تعذّر عليك الوصول إلى محتوى ما، فأبلغ عنه ليُرشَد إلى بديل متاح:',

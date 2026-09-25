@@ -172,7 +172,7 @@ Une page dédiée détaille tout cela, avec la déclaration d'accessibilité RGA
 conformité, contenus non accessibles, contact et voies de recours) : lien **♿ Accessibilité**
 en bas à droite de l'application.
 
-Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue quinze contrôles
+Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue seize contrôles
 (axe-core sur toutes les vues, en clair, en sombre et en arabe ; réglage du cadran au clavier ;
 piège à focus de la modale ; pas de défilement horizontal à 320 px), et la CI les relance à
 chaque push.

@@ -173,7 +173,7 @@ A dedicated page covers all of this, including the RGAA 4.1 accessibility statem
 (conformance status, non-accessible content, contact and remedies): see the
 **♿ Accessibility** link at the bottom right of the app.
 
-These guarantees are checked on every change: `npm run test:a11y` replays fifteen checks
+These guarantees are checked on every change: `npm run test:a11y` replays sixteen checks
 (axe-core on every view, in light, dark and Arabic; keyboard control of the dial; the modal
 focus trap; no horizontal scrolling at 320 px), and CI runs them on every push.
 

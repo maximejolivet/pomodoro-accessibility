@@ -81,7 +81,7 @@ docs/
   continue, se termine et s'enregistre pendant la lecture de la page d'accessibilité.
 - **Thèmes** : toutes les couleurs sont des variables CSS dans `src/theme/`, posées sur
   `<app-root>` et redéfinies sous `app-root.dark`, donc héritées par les pages.
-- **Accessibilité testée en continu** : `npm run test:a11y` lance l'app et vérifie quinze
+- **Accessibilité testée en continu** : `npm run test:a11y` lance l'app et vérifie seize
   points — axe-core sur l'accueil, le panneau (trois onglets), l'éditeur de mode et la page
   d'accessibilité, en thème clair et sombre et en arabe ; le réglage du cadran au clavier ;
   le piège à focus de la modale ; Échap et le retour du focus ; l'absence de défilement
