@@ -6,13 +6,14 @@ import {
 } from '../../../core/constants/history.constants';
 import { LONG_BREAK_EVERY } from '../../../core/constants/timer.constants';
 import { I18nService } from '../../../core/i18n/i18n.service';
-import { LANGUAGES, LangChoice } from '../../../core/i18n/i18n.model';
+import { LANGUAGES, LangChoice, type I18nKey } from '../../../core/i18n/i18n.model';
+import type { VisualAlert } from '../../../core/models/preferences.model';
 import { HistoryService } from '../../../core/services/history.service';
 import { PreferencesService } from '../../../core/services/preferences.service';
 import { SessionService } from '../../../core/services/session.service';
 import { SoundService } from '../../../core/services/sound.service';
 
-/** Onglet « Réglages » : thème, sons, enchaînement, objectif quotidien, langue. */
+/** Onglet « Réglages » : thème, sons, alerte visuelle, enchaînement, objectif quotidien, langue. */
 @Component({
   selector: 'app-settings-tab',
   standalone: true,
@@ -33,12 +34,23 @@ export class SettingsTabComponent {
   readonly goalMax = GOAL_MAX_MINUTES;
   readonly goalStep = GOAL_STEP_MINUTES;
 
+  readonly visualAlerts: { value: VisualAlert; key: I18nKey }[] = [
+    { value: 'off', key: 'settings.visualOff' },
+    { value: 'soft', key: 'settings.visualSoft' },
+    { value: 'strong', key: 'settings.visualStrong' }
+  ];
+
   readonly soundPreviews = [
     { value: 45, label: '45', color: '#5a55a3' },
     { value: 30, label: '30', color: '#c3cd36' },
     { value: 15, label: '15', color: '#f3a52b' },
     { value: 0, label: '0', color: '#d63f4f' }
   ] as const;
+
+  /** Le réglage est enregistré, et l'éclat se montre aussitôt : on choisit une intensité en la voyant. */
+  setVisualAlert(level: VisualAlert): void {
+    this.session.previewVisualAlert(level);
+  }
 
   setLanguage(choice: LangChoice): void {
     this.i18n.setChoice(choice);

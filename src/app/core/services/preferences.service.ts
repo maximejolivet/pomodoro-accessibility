@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
-import { readFlag, readPref, writeFlag, writePref } from '../helpers/storage';
+import { readFlag, readOption, readPref, writeFlag, writePref } from '../helpers/storage';
+import { VISUAL_ALERTS, type VisualAlert } from '../models/preferences.model';
 
 /**
  * Préférences de l'utilisateur, en signaux : la coquille de l'app y lit le thème,
@@ -16,6 +17,8 @@ export class PreferencesService {
   /** Enchaîne automatiquement travail → pause → travail. */
   readonly autoChain = signal(readFlag('auto-chain', false));
   readonly keepAwake = signal(readFlag('keep-awake'));
+  /** Signal visuel aux paliers et à la fin : la seule alerte qui reste sans le son. */
+  readonly visualAlert = signal<VisualAlert>(readOption('visual-alert', VISUAL_ALERTS, 'soft'));
 
   setDarkMode(on: boolean): void {
     this.darkMode.set(on);
@@ -45,6 +48,11 @@ export class PreferencesService {
   setKeepAwake(on: boolean): void {
     this.keepAwake.set(on);
     writeFlag('keep-awake', on);
+  }
+
+  setVisualAlert(level: VisualAlert): void {
+    this.visualAlert.set(level);
+    writePref('visual-alert', level);
   }
 
   private static initialDarkMode(): boolean {

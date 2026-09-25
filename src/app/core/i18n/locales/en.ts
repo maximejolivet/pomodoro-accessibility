@@ -46,6 +46,11 @@ export const en: Dictionary = {
   'settings.autoChain': 'Chain work → break',
   'settings.autoChainHint': 'Long break every {n} rounds',
   'settings.keepAwake': 'Keep screen on',
+  'settings.visualAlert': 'Visual alert',
+  'settings.visualAlertHint': 'A colored flash at the milestones and at the end',
+  'settings.visualOff': 'None',
+  'settings.visualSoft': 'Soft',
+  'settings.visualStrong': 'Strong',
   'settings.language': 'Language',
   'settings.languageAuto': 'Auto',
   'settings.listen': 'Preview sounds',
@@ -86,6 +91,7 @@ export const en: Dictionary = {
   'stats.clear': 'Clear history',
   'stats.goal': "Today's goal",
   'stats.goalReached': 'Goal reached!',
+
 
   'notif.milestoneTitle': '{m} minutes left',
   'notif.milestoneBody': 'Time is moving, keep going.',

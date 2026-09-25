@@ -322,3 +322,71 @@ test.describe('contraste des composants (WCAG 1.4.11)', () => {
     });
   }
 });
+
+test.describe('alerte visuelle', () => {
+  async function openSettings(page: Page) {
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+    await page.locator('.tabs button:nth-child(3)').click();
+  }
+
+  test('le choix se fait au clavier, se montre aussitôt et se retient', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('pomodoro-tdah.lang', 'fr'));
+    await openSettings(page);
+
+    const group = page.getByRole('group', { name: 'Alerte visuelle' });
+    const strong = group.getByRole('button', { name: 'Forte' });
+    await strong.focus();
+    await page.keyboard.press('Enter');
+    await expect(strong).toHaveAttribute('aria-pressed', 'true');
+
+    // L'éclat se montre pendant qu'on choisit : on juge une intensité en la voyant
+    await expect(page.locator('.cue')).toBeVisible();
+    expect(await page.evaluate(() => localStorage.getItem('pomodoro-tdah.visual-alert'))).toBe('strong');
+  });
+
+  test("« Aucune » n'allume rien du tout", async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('pomodoro-tdah.lang', 'fr'));
+    await openSettings(page);
+    await page.getByRole('group', { name: 'Alerte visuelle' }).getByRole('button', { name: 'Aucune' }).click();
+    await expect(page.locator('.cue')).toHaveCount(0);
+  });
+
+  test('la fin allume l’éclat puis laisse un bandeau qui ne disparaît pas', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('pomodoro-tdah.lang', 'fr');
+      localStorage.setItem('pomodoro-tdah.visual-alert', 'soft');
+      // Sans prolongation, la fin est une vraie fin : c'est l'état que le bandeau annonce
+      localStorage.setItem('pomodoro-tdah.auto-extra', 'off');
+    });
+    await page.clock.install();
+    await page.goto('/');
+    await ready(page);
+
+    await page.locator('.face').focus();
+    await page.keyboard.press('Home');
+    await page.keyboard.press('ArrowRight');
+    await page.getByRole('button', { name: /démarrer/i }).click();
+    await expect(page.locator('.cue')).toHaveCount(0);
+
+    await page.clock.runFor(61_000);
+    await expect(page.locator('.cue')).toBeVisible();
+    const banner = page.getByText('Temps écoulé');
+    await expect(banner).toBeVisible();
+
+    // L'éclat s'éteint au bout de 4,8 s (trois battements), le bandeau reste
+    await page.clock.runFor(6_000);
+    await expect(page.locator('.cue')).toHaveCount(0);
+    await expect(banner).toBeVisible();
+  });
+
+  test("l'éclat n'est pas lu par les lecteurs d'écran, qui reçoivent déjà l'annonce", async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('pomodoro-tdah.lang', 'fr'));
+    await openSettings(page);
+    await page.getByRole('group', { name: 'Alerte visuelle' }).getByRole('button', { name: 'Douce' }).click();
+    await expect(page.locator('.cue')).toHaveAttribute('aria-hidden', 'true');
+    // Et il ne doit jamais intercepter un clic destiné au minuteur
+    expect(await page.locator('.cue').evaluate(el => getComputedStyle(el).pointerEvents)).toBe('none');
+  });
+});

@@ -33,3 +33,6 @@ export interface ActiveSession {
   /** Début du segment en cours de décompte (ms), null en pause. */
   runningSince: number | null;
 }
+
+/** Alerte visuelle : un palier franchi, ou la fin du décompte. */
+export type VisualCue = 'milestone' | 'end';

@@ -130,6 +130,7 @@ la session (RG-14).
 | `theme` | Thème | `'dark'` \| `'light'` (absent ⇒ préférence système) |
 | `opendyslexic` | Police OpenDyslexic | `'on'` \| `'off'` (défaut : off) |
 | `sound` | Sons | `'on'` \| `'off'` (défaut : on) |
+| `visual-alert` | Alerte visuelle | `'off'` \| `'soft'` \| `'strong'` (défaut : soft) |
 | `auto-extra` | Prolongation +5 min | `'on'` \| `'off'` (défaut : on) |
 | `auto-chain` | Enchaînement automatique | `'on'` \| `'off'` (défaut : off) |
 | `keep-awake` | Écran allumé | `'on'` \| `'off'` (défaut : on) |
@@ -292,6 +293,7 @@ garantit l'homogénéité des contrastes (ENF-MNT-2).
 | -------- | ------------- |
 | Cadran utilisable au clavier et annoncé | Conteneur focalisable portant `role="slider"`, `aria-valuemin=1`, `aria-valuemax=60`, `aria-valuenow`, `aria-valuetext` (« *n* minutes, *action* »), `aria-label` ; le SVG est `aria-hidden` |
 | Annonces temps réel | Région live alimentée par le signal `announcement` de `SessionService` |
+| Alerte sans le son | Pulsation colorée à 0,6 Hz et bandeau de fin persistant ; `aria-hidden`, `pointer-events: none`, figée sous `prefers-reduced-motion` |
 | Panneau de réglages | Focus piégé tant qu'il est ouvert, fermeture par Échap, focus rendu au déclencheur |
 | Onglets | Rôles `tablist` / `tab` / `tabpanel`, navigation par flèches, flèches nommées pour les lecteurs d'écran |
 | Contraste | Jetons de thème vérifiés à 4,5:1 minimum en clair et en sombre |

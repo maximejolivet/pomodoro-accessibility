@@ -1,4 +1,4 @@
-/* Onglet « Réglages » : interrupteurs, sons, objectif, langue. */
+/* Onglet « Réglages » : interrupteurs, sons, annonce vocale, objectif, langue. */
 
 :host {
   display: contents;
@@ -119,6 +119,29 @@
   opacity: 0.4;
   cursor: default;
   transform: none;
+}
+
+/* En-tête d'un réglage à plusieurs choix : même icône et même hiérarchie que les interrupteurs. */
+.field-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+}
+
+.field-head svg {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: var(--muted-strong);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* Cibles de 44 px (WCAG 2.5.5) : trois choix seulement, la place ne manque pas. */
+.segmented.choice button {
+  min-height: 44px;
 }
 
 .setting-text {

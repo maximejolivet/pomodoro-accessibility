@@ -158,6 +158,9 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-ALE-6 | Les notifications sont annulées au retour au premier plan, où les sons de l'application prennent le relais.                                         | M    |
 | EF-ALE-7 | Un palier dépassé de plus de 90 s pendant un passage en arrière-plan n'est pas rejoué : la notification a déjà prévenu.                             | S    |
 | EF-ALE-8 | L'autorisation de notification est demandée au premier démarrage du minuteur, pas à l'ouverture.                                                    | M    |
+| EF-ALE-11 | Chaque palier et la fin déclenchent un signal visuel (aucun / doux / fort) : un battement au palier, trois à la fin.                               | S    |
+| EF-ALE-12 | Le signal visuel bat à 0,6 Hz au plus, se fige sous `prefers-reduced-motion`, n'intercepte aucun clic et n'est pas exposé aux lecteurs d'écran.    | M    |
+| EF-ALE-13 | À la fin, un bandeau « Temps écoulé » reste affiché jusqu'à la prochaine action : une alerte qui passe se rate.                                    | S    |
 
 ### 4.5 Historique, statistiques et objectif (`EF-HIS`)
 
@@ -184,6 +187,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-PRE-7 | Objectif quotidien réglable.                                                     | S    |
 | EF-PRE-8 | Langue : automatique (langue de l'appareil) ou choisie.                          | M    |
 | EF-PRE-9 | Toute préférence est conservée d'une ouverture à l'autre.                        | M    |
+| EF-PRE-12 | Alerte visuelle : aucune, douce ou forte (défaut : douce) ; le choix se montre aussitôt. | S    |
 
 ### 4.7 Internationalisation (`EF-I18`)
 
@@ -279,7 +283,7 @@ série de jours, histogramme des 7 derniers jours, 10 dernières sessions.
 | ENF-A11-5  | Contraste des textes d'au moins 4,5:1 en thème clair comme en thème sombre.                                                                                |
 | ENF-A11-6  | Aucune information n'est portée par la couleur seule.                                                                                                      |
 | ENF-A11-7  | La préférence système « animations réduites » est respectée.                                                                                               |
-| ENF-A11-8  | Aucun contenu clignotant.                                                                                                                                  |
+| ENF-A11-8  | Aucun clignotement rapide : la seule alerte lumineuse bat à 0,6 Hz (un battement de 1,6 s), cinq fois sous le seuil des trois éclats par seconde (WCAG 2.3.1) ; elle se règle, se coupe et se fige sous `prefers-reduced-motion`. |
 | ENF-A11-9  | Le cadran expose un rôle de curseur avec valeur, minimum, maximum et texte de valeur lisible.                                                              |
 | ENF-A11-10 | Les tests automatiques axe-core (WCAG 2.0/2.1 A et AA, bonnes pratiques) ne relèvent aucune violation sur les parcours couverts, en thème clair et sombre. |
 | ENF-A11-11 | Tout réglage accessible par glissement l'est aussi par un pointeur simple (WCAG 2.5.7), avec des cibles d'au moins 44 × 44 px (WCAG 2.5.8).            |

@@ -46,6 +46,11 @@ export const de: Dictionary = {
   'settings.autoChain': 'Arbeit → Pause verketten',
   'settings.autoChainHint': 'Lange Pause alle {n} Runden',
   'settings.keepAwake': 'Bildschirm anlassen',
+  'settings.visualAlert': 'Visuelles Signal',
+  'settings.visualAlertHint': 'Ein farbiges Aufleuchten bei den Marken und am Ende',
+  'settings.visualOff': 'Keins',
+  'settings.visualSoft': 'Sanft',
+  'settings.visualStrong': 'Stark',
   'settings.language': 'Sprache',
   'settings.languageAuto': 'Auto',
   'settings.listen': 'Töne anhören',
@@ -86,6 +91,7 @@ export const de: Dictionary = {
   'stats.clear': 'Verlauf löschen',
   'stats.goal': 'Heutiges Ziel',
   'stats.goalReached': 'Ziel erreicht!',
+
 
   'notif.milestoneTitle': 'Noch {m} Minuten',
   'notif.milestoneBody': 'Die Zeit läuft, bleib dran.',

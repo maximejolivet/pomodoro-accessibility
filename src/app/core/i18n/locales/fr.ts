@@ -45,6 +45,11 @@ export const fr = {
   'settings.autoChain': 'Enchaîner travail → pause',
   'settings.autoChainHint': 'Pause longue tous les {n} cycles',
   'settings.keepAwake': 'Écran toujours allumé',
+  'settings.visualAlert': 'Alerte visuelle',
+  'settings.visualAlertHint': 'Un éclat coloré aux paliers et à la fin',
+  'settings.visualOff': 'Aucune',
+  'settings.visualSoft': 'Douce',
+  'settings.visualStrong': 'Forte',
   'settings.language': 'Langue',
   'settings.languageAuto': 'Auto',
   'settings.listen': 'Écouter les sons',
@@ -85,6 +90,7 @@ export const fr = {
   'stats.clear': "Effacer l'historique",
   'stats.goal': 'Objectif du jour',
   'stats.goalReached': 'Objectif atteint !',
+
 
   'notif.milestoneTitle': 'Plus que {m} minutes',
   'notif.milestoneBody': 'Le temps avance, garde le cap.',

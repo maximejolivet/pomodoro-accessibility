@@ -2,13 +2,15 @@ import { Injectable, computed, effect, inject, signal, untracked } from '@angula
 import { App } from '@capacitor/app';
 import { MIN_RECORDED_SECONDS } from '../constants/history.constants';
 import {
-  EXTRA_SECONDS, LATE_ALERT_SECONDS, LONG_BREAK_EVERY, MAX_MINUTES, MILESTONES, MIN_MINUTES
+  CUE_MS, EXTRA_SECONDS, LATE_ALERT_SECONDS, LONG_BREAK_EVERY, MAX_MINUTES, MILESTONES, MIN_MINUTES
 } from '../constants/timer.constants';
 import { readPref, writePref } from '../helpers/storage';
 import { formatTime } from '../helpers/time';
 import { I18nService } from '../i18n/i18n.service';
 import type { I18nKey } from '../i18n/i18n.model';
 import type { Alert } from '../models/alert.model';
+import type { VisualAlert } from '../models/preferences.model';
+import type { VisualCue } from '../models/session.model';
 import type { Preset, PresetKind } from '../models/preset.model';
 import type { ActiveSession } from '../models/session.model';
 import { HistoryService } from './history.service';
@@ -58,6 +60,8 @@ export class SessionService {
   readonly dragging = signal(false);
   /** Dernier message destiné aux lecteurs d'écran. */
   readonly announcement = signal('');
+  /** Alerte visuelle en cours, rendue en pulsation par la page : palier, fin, ou rien. */
+  readonly visualCue = signal<VisualCue | null>(null);
 
   readonly isPaused = computed(() => !this.isRunning() && this.timeLeft() > 0);
 
@@ -95,6 +99,7 @@ export class SessionService {
   );
 
   private readonly session = signal<ActiveSession | null>(null);
+  private cueTimer: ReturnType<typeof setTimeout> | null = null;
   private lastFocusPresetId: string | null = null;
   /** Vrai pendant un changement de temps manuel (doigt, curseur, reset) : pas de son de palier. */
   private manualChange = false;
@@ -251,6 +256,16 @@ export class SessionService {
     }
   }
 
+  /** Aperçu du signal visuel depuis les réglages, comme les sons s'écoutent. */
+  previewVisualAlert(level: VisualAlert): void {
+    this.prefs.setVisualAlert(level);
+    if (level === 'off') {
+      this.visualCue.set(null);
+      return;
+    }
+    this.showCue('end');
+  }
+
   setKeepAwake(on: boolean): void {
     this.prefs.setKeepAwake(on);
     this.keepAwake.set(on && this.isRunning());
@@ -329,6 +344,7 @@ export class SessionService {
         // Palier franchi depuis longtemps (retour d'arrière-plan) : déjà notifié
         if (at - current <= LATE_ALERT_SECONDS) {
           this.sound.milestone(m);
+          this.showCue('milestone');
           this.announce(this.i18n.t('notif.milestoneTitle', { m }));
         }
         return;
@@ -338,8 +354,11 @@ export class SessionService {
 
   /** Fin du décompte, `lateBy` secondes après l'heure prévue (0 si l'app était au premier plan). */
   private onFinished(lateBy: number): void {
-    if (lateBy <= LATE_ALERT_SECONDS) {
+    // Fin rattrapée longtemps après (app en arrière-plan) : la notification a déjà prévenu
+    const fresh = lateBy <= LATE_ALERT_SECONDS;
+    if (fresh) {
       this.sound.end();
+      this.showCue('end');
     }
     const kind = this.session()?.kind ?? this.selectedPreset().kind;
 
@@ -446,6 +465,19 @@ export class SessionService {
       },
       rtl: this.i18n.dir() === 'rtl'
     });
+  }
+
+  /**
+   * Allume le signal visuel pour la durée prévue. Il ne dépend pas du son : c'est
+   * justement l'alerte de qui n'entend pas, ou a coupé le son en espace partagé.
+   */
+  private showCue(cue: VisualCue): void {
+    if (this.prefs.visualAlert() === 'off') return;
+    if (this.cueTimer !== null) clearTimeout(this.cueTimer);
+    // Repasser par `null` redémarre l'animation si deux alertes se suivent de près
+    this.visualCue.set(null);
+    setTimeout(() => this.visualCue.set(cue));
+    this.cueTimer = setTimeout(() => this.visualCue.set(null), CUE_MS[cue]);
   }
 
   private announce(message: string): void {

@@ -118,6 +118,7 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
 | 📊 **Historique & statistiques** | Temps de focus du jour, sessions terminées, série de jours, graphique des 7 derniers jours                             |
 | 🏁 **Objectif quotidien**        | Un nombre de minutes de focus à viser chaque jour (10-300 min), avec une barre de progression                          |
 | 🔔 **Sons de palier**            | Un son différent à 45, 30 et 15 min restantes, puis un carillon à la fin                                               |
+| 💡 **Alerte visuelle**           | Un éclat coloré aux paliers et à la fin, doux ou franc, pour qui n'entend pas ou a coupé le son                        |
 | ⏱️ **+5 min automatique**        | À 0, cinq minutes de plus pour terminer ce qui est en cours (désactivable)                                             |
 | 📳 **Vibration**                 | Petit retour tactile à la fin et pendant le réglage                                                                    |
 | 📲 **Notifications**             | Alertes même téléphone verrouillé ou app en arrière-plan, avec les mêmes sons que l'app                                |
@@ -140,7 +141,7 @@ verrouille : au retour, tout est à jour.
 | ↺                          | Remettre à zéro                                                              |
 | ⚙︎ → **Modes**              | Choisir, créer, modifier ou supprimer un mode                                |
 | ⚙︎ → **Stats**              | Voir son objectif du jour, ses statistiques et l'historique des sessions     |
-| ⚙︎ → **Réglages**           | Mode sombre, sons, +5 min, enchaînement, écran allumé, objectif, langue      |
+| ⚙︎ → **Réglages**           | Mode sombre, sons, alerte visuelle, +5 min, enchaînement, écran allumé, objectif, langue |
 
 <p align="center">
   <img src="docs/screenshot-modes.png" alt="Éditeur de mode" width="260">
@@ -166,6 +167,10 @@ L'application est pensée pour être utilisable par tout le monde :
 
 - 💻 **Au clavier seul** : tout se fait sans souris, avec un repère visible sur l'élément actif.
 - 🔊 **Avec un lecteur d'écran** : le temps qui reste et les changements sont annoncés à voix haute.
+- 💡 **Sans le son** : un éclat coloré marque les paliers et la fin, et un bandeau « Temps écoulé »
+  reste affiché jusqu'à la prochaine action. La pulsation est lente — un battement de 1,6 s, soit
+  0,6 Hz, cinq fois sous le seuil des trois éclats par seconde qui peuvent déclencher une crise
+  d'épilepsie photosensible (WCAG 2.3.1) — et elle se fige si l'appareil demande moins de mouvement.
 - 👁️ **Lisible pour tous** : contrastes soignés, mode sombre, couleurs toujours accompagnées d'un nom.
 - 🔤 **Police pour la dyslexie** : la police OpenDyslexic peut être activée dans les réglages.
 - 🌀 **Animations réduites** : si ton appareil demande moins de mouvement, l'application le respecte.
@@ -176,9 +181,9 @@ Une page dédiée détaille tout cela, avec la déclaration d'accessibilité RGA
 conformité, contenus non accessibles, contact et voies de recours) : lien **♿ Accessibilité**
 en bas à droite de l'application.
 
-Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue vingt contrôles
+Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue vingt-quatre contrôles
 (axe-core sur toutes les vues, en clair, en sombre et en arabe ; réglage du cadran au clavier et
-aux boutons − / + ; taille des cibles ; piège à focus de la modale ; pas de défilement horizontal
+aux boutons − / + ; alerte visuelle vérifiée sur un décompte simulé ; taille des cibles ; piège à focus de la modale ; pas de défilement horizontal
 à 320 px), et la CI les relance à
 chaque push.
 

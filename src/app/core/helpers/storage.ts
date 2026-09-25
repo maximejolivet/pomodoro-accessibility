@@ -41,3 +41,9 @@ export function readFlag(key: string, fallback = true): boolean {
 export function writeFlag(key: string, on: boolean): void {
   writePref(key, on ? 'on' : 'off');
 }
+
+/** Préférence à choix multiple : une valeur inconnue (version précédente, stockage bricolé) est ignorée. */
+export function readOption<T extends string>(key: string, allowed: readonly T[], fallback: T): T {
+  const raw = readPref(key);
+  return allowed.includes(raw as T) ? (raw as T) : fallback;
+}

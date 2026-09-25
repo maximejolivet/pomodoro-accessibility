@@ -46,6 +46,11 @@ export const ar: Dictionary = {
   'settings.autoChain': 'تسلسل عمل ← استراحة',
   'settings.autoChainHint': 'استراحة طويلة كل {n} دورات',
   'settings.keepAwake': 'إبقاء الشاشة مضاءة',
+  'settings.visualAlert': 'تنبيه بصري',
+  'settings.visualAlertHint': 'وميض ملوّن عند المراحل وفي النهاية',
+  'settings.visualOff': 'بدون',
+  'settings.visualSoft': 'خفيف',
+  'settings.visualStrong': 'قوي',
   'settings.language': 'اللغة',
   'settings.languageAuto': 'تلقائي',
   'settings.listen': 'الاستماع إلى الأصوات',
@@ -86,6 +91,7 @@ export const ar: Dictionary = {
   'stats.clear': 'مسح السجل',
   'stats.goal': 'هدف اليوم',
   'stats.goalReached': 'تم بلوغ الهدف!',
+
 
   'notif.milestoneTitle': 'تبقّى {m} دقيقة',
   'notif.milestoneBody': 'الوقت يمضي، واصل التقدم.',

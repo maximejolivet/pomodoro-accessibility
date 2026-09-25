@@ -51,6 +51,29 @@
   </label>
 </div>
 
+<!-- Alerte visuelle : le relais du son pour qui n'entend pas, ou l'a coupé. -->
+<div class="field">
+  <span class="field-head">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="3.5" />
+      <path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M18.4 5.6l-1.8 1.8M7.4 16.6l-1.8 1.8" />
+    </svg>
+    <span class="setting-text">
+      {{ i18n.t('settings.visualAlert') }}
+      <small>{{ i18n.t('settings.visualAlertHint') }}</small>
+    </span>
+  </span>
+  <div class="segmented choice" role="group" [attr.aria-label]="i18n.t('settings.visualAlert')">
+    <button
+      *ngFor="let a of visualAlerts"
+      type="button"
+      [class.active]="prefs.visualAlert() === a.value"
+      [attr.aria-pressed]="prefs.visualAlert() === a.value"
+      (click)="setVisualAlert(a.value)"
+    >{{ i18n.t(a.key) }}</button>
+  </div>
+</div>
+
 <label class="duration">
   <span class="duration-head">
     <span>{{ i18n.t('settings.goal') }}</span>

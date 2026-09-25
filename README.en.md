@@ -119,6 +119,7 @@ visual timer is a simple, discreet and free tool at that level.
 | 📊 **History & statistics**      | Focus time today, completed sessions, day streak, chart of the last 7 days                                             |
 | 🏁 **Daily goal**                | A number of focus minutes to aim for each day (10-300 min), with a progress bar                                        |
 | 🔔 **Milestone sounds**          | A different sound at 45, 30 and 15 min left, then a chime at the end                                                   |
+| 💡 **Visual alert**              | A colored flash at the milestones and at the end, soft or strong, for anyone who can't hear or muted the sound        |
 | ⏱️ **Automatic +5 min**          | At 0, five more minutes to finish what you're doing (can be turned off)                                                |
 | 📳 **Vibration**                 | A light tap at the end and while adjusting                                                                             |
 | 📲 **Notifications**             | Alerts even with a locked phone or the app in the background, with the same sounds as the app                          |
@@ -141,7 +142,7 @@ when you come back, everything is up to date.
 | ↺                          | Reset                                                                         |
 | ⚙︎ → **Modes**              | Choose, create, edit or delete a mode                                         |
 | ⚙︎ → **Stats**              | See today's goal, your statistics and session history                         |
-| ⚙︎ → **Settings**           | Dark mode, sounds, +5 min, chaining, screen on, goal, language                |
+| ⚙︎ → **Settings**           | Dark mode, sounds, visual alert, +5 min, chaining, screen on, goal, language |
 
 <p align="center">
   <img src="docs/screenshot-modes.png" alt="Mode editor" width="260">
@@ -167,6 +168,10 @@ The app is designed to be usable by everyone:
 
 - 💻 **Keyboard only**: everything works without a mouse, with a visible marker on the active element.
 - 🔊 **With a screen reader**: the remaining time and changes are announced aloud.
+- 💡 **Without sound**: a colored flash marks the milestones and the end, and a "Time's up" banner
+  stays until the next action. The pulse is slow — one 1.6 s beat, that is 0.6 Hz, five times below
+  the three-flashes-per-second threshold that can trigger a photosensitive seizure (WCAG 2.3.1) —
+  and it holds still if your device asks for less motion.
 - 👁️ **Readable for all**: careful contrast, dark mode, colors always paired with a name.
 - 🔤 **Dyslexia-friendly font**: the OpenDyslexic font can be turned on in the settings.
 - 🌀 **Reduced motion**: if your device asks for less motion, the app respects it.
@@ -177,9 +182,9 @@ A dedicated page covers all of this, including the RGAA 4.1 accessibility statem
 (conformance status, non-accessible content, contact and remedies): see the
 **♿ Accessibility** link at the bottom right of the app.
 
-These guarantees are checked on every change: `npm run test:a11y` replays twenty checks
+These guarantees are checked on every change: `npm run test:a11y` replays twenty-four checks
 (axe-core on every view, in light, dark and Arabic; control of the dial by keyboard and by the
-− / + buttons; target sizes; the modal focus trap; no horizontal scrolling at 320 px), and CI runs them on every push.
+− / + buttons; the visual alert checked against a simulated countdown; target sizes; the modal focus trap; no horizontal scrolling at 320 px), and CI runs them on every push.
 
 ## For developers
 

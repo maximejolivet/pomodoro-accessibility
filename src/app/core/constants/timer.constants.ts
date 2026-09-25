@@ -17,3 +17,9 @@ export const LATE_ALERT_SECONDS = 90;
 
 /** Une pause longue toutes les N sessions de travail terminées. */
 export const LONG_BREAK_EVERY = 4;
+
+/**
+ * Durée du signal visuel, en millisecondes : une pulsation de 1,6 s aux paliers, trois à
+ * la fin. Soit 0,6 Hz — très loin des trois éclats par seconde interdits (WCAG 2.3.1).
+ */
+export const CUE_MS = { milestone: 1600, end: 4800 } as const;
