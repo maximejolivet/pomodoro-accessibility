@@ -168,8 +168,14 @@ L'application est pensée pour être utilisable par tout le monde :
 - 🔤 **Police pour la dyslexie** : la police OpenDyslexic peut être activée dans les réglages.
 - 🌀 **Animations réduites** : si ton appareil demande moins de mouvement, l'application le respecte.
 
-Une page dédiée détaille tout cela (référentiel RGAA 4.1) : lien **♿ Accessibilité** en bas
-à droite de l'application.
+Une page dédiée détaille tout cela, avec la déclaration d'accessibilité RGAA 4.1 (état de
+conformité, contenus non accessibles, contact et voies de recours) : lien **♿ Accessibilité**
+en bas à droite de l'application.
+
+Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue quinze contrôles
+(axe-core sur toutes les vues, en clair, en sombre et en arabe ; réglage du cadran au clavier ;
+piège à focus de la modale ; pas de défilement horizontal à 320 px), et la CI les relance à
+chaque push.
 
 ## Pour les développeurs
 
