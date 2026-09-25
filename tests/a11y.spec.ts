@@ -158,6 +158,25 @@ test.describe('mise en page', () => {
     }
   });
 
+  test('texte agrandi à 200 %, sans défilement horizontal (WCAG 1.4.4)', async ({ page }) => {
+    for (const url of ['/', '/accessibility']) {
+      await page.goto(url);
+      await ready(page);
+      // Zoom « texte seul » : lire toutes les tailles d'abord, les doubler ensuite,
+      // sinon l'héritage se compose et la page explose.
+      await page.evaluate(() => {
+        const els = [...document.querySelectorAll('*')];
+        const sizes = els.map(el => parseFloat(getComputedStyle(el).fontSize));
+        els.forEach((el, i) => {
+          if (sizes[i]) el.style.setProperty('font-size', `${sizes[i] * 2}px`, 'important');
+        });
+      });
+      const overflow = await page.evaluate(() =>
+        document.documentElement.scrollWidth - document.documentElement.clientWidth);
+      expect(overflow, `débordement sur ${url} à 200 %`).toBe(0);
+    }
+  });
+
   test("l'espacement du texte ne tronque rien (WCAG 1.4.12)", async ({ page }) => {
     await page.goto('/accessibility');
     await ready(page);
