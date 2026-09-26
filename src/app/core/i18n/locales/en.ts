@@ -108,6 +108,12 @@ export const en: Dictionary = {
   'routine.counted': "Count towards today's focus",
   'routine.countedHint': 'Off for brushing teeth, on for revision',
   'routine.restore': 'Restore the default routines',
+  'routine.reminder': 'Reminder',
+  'routine.reminderHint': 'A notification at the set time: it opens the routine, ready to start',
+  'routine.reminderTime': 'Time',
+  'routine.reminderDays': 'Days',
+  'routine.reminderAt': 'reminder at {time}',
+  'routine.reminderWeb': 'On the web the reminder does not fire: it needs the iOS or Android app.',
   'routine.empty': 'No routine yet. Create a sequence of steps that follow on.',
   'routine.morning': 'Morning routine',
   'routine.morning.dress': 'Get dressed',
@@ -146,5 +152,6 @@ export const en: Dictionary = {
   'notif.extraEndTitle': 'Extra time is over',
   'notif.nextBody': 'Up next: {name}',
   'notif.channel.milestone': 'Milestone {n} of 3',
+  'notif.reminderTitle': "It's time: {name}",
   'notif.channel.end': 'Timer end'
 };

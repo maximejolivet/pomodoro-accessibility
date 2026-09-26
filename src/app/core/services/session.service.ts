@@ -9,11 +9,11 @@ import { readPref, writePref } from '../helpers/storage';
 import { formatTime } from '../helpers/time';
 import { I18nService } from '../i18n/i18n.service';
 import type { I18nKey } from '../i18n/i18n.model';
-import type { Alert } from '../models/alert.model';
+import type { Alert, Reminder } from '../models/alert.model';
 import type { SpeechMode, VisualAlert } from '../models/preferences.model';
 import type { VisualCue } from '../models/session.model';
 import type { Preset, PresetKind } from '../models/preset.model';
-import type { Routine, RoutineStep } from '../models/routine.model';
+import { routineSeconds, type Routine, type RoutineStep } from '../models/routine.model';
 import type { ActiveSession } from '../models/session.model';
 import { HapticsService } from './haptics.service';
 import { HistoryService } from './history.service';
@@ -148,6 +148,32 @@ export class SessionService {
     this.inExtra() ? [] : milestonesFor(this.session()?.plannedSeconds ?? this.durationSeconds())
   );
 
+  /**
+   * Rappels à confier au système : un par routine et par jour coché. Le libellé est
+   * calculé ici parce qu'il dépend de la langue, que le système ne connaît pas.
+   */
+  private readonly reminders = computed<Reminder[]>(() =>
+    this.routineService.routines().flatMap(routine => {
+      const reminder = routine.reminder;
+      if (!reminder) return [];
+      // Le pictogramme d'abord : il dit laquelle des routines c'est, sans lire
+      const name = `${routine.icon} ${this.routineName(routine)}`;
+      const title = this.i18n.t('notif.reminderTitle', { name });
+      const body = this.i18n.t('routine.summary', {
+        n: routine.steps.length,
+        m: Math.round(routineSeconds(routine) / 60)
+      });
+      return reminder.days.map(day => ({
+        routineId: routine.id,
+        title,
+        body,
+        hour: reminder.hour,
+        minute: reminder.minute,
+        day
+      }));
+    })
+  );
+
   constructor() {
     this.durationSeconds.set(this.selectedPreset().seconds);
     this.sound.enabled = this.prefs.sound();
@@ -179,6 +205,27 @@ export class SessionService {
       this.history.dailyGoal();
       this.i18n.lang();
       untracked(() => this.syncWidget());
+    });
+
+    /**
+     * Les rappels vivent dans le système, qui ne sait pas qu'une routine a changé de nom,
+     * d'heure, ni que le son a été coupé : ils sont reprogrammés à chaque fois que l'un
+     * de ces trois éléments change — et une première fois au démarrage.
+     */
+    effect(() => {
+      const reminders = this.reminders();
+      const withSound = this.prefs.sound();
+      untracked(() => this.notifications.scheduleReminders(reminders, withSound));
+    });
+
+    /**
+     * Rappel touché : la routine est armée sur le cadran, prête à démarrer, mais rien ne
+     * part tout seul. Un décompte qui se lance sans qu'on l'ait touché est une source
+     * d'anxiété — le rappel propose, il n'impose pas.
+     */
+    this.notifications.reminderTapped$.subscribe(routineId => {
+      const routine = this.routineService.byId(routineId);
+      if (routine) this.startRoutine(routine);
     });
 
     // Téléphone verrouillé / app en arrière-plan : notifications locales ; au retour, on les annule

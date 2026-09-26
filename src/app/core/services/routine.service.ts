@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { PRESET_COLORS } from '../constants/preset.constants';
 import { DEFAULT_ROUTINES, STEP_ICONS } from '../constants/routine.constants';
 import { readJson, writeJson } from '../helpers/storage';
-import type { Routine, RoutineStep } from '../models/routine.model';
+import { normalizeReminder, type Routine, type RoutineStep } from '../models/routine.model';
 
 const STORAGE_KEY = 'routines';
 
@@ -56,13 +56,16 @@ export class RoutineService {
   private load(): Routine[] {
     const saved = readJson<Routine[] | null>(STORAGE_KEY, null);
     if (!Array.isArray(saved)) return DEFAULT_ROUTINES.map(r => ({ ...r, steps: r.steps.map(s => ({ ...s })) }));
-    return saved.filter(
-      r =>
-        r &&
-        typeof r.id === 'string' &&
-        Array.isArray(r.steps) &&
-        r.steps.length > 0 &&
-        r.steps.every(s => s && typeof s.id === 'string' && s.seconds > 0 && typeof s.color === 'string')
-    );
+    return saved
+      .filter(
+        r =>
+          r &&
+          typeof r.id === 'string' &&
+          Array.isArray(r.steps) &&
+          r.steps.length > 0 &&
+          r.steps.every(s => s && typeof s.id === 'string' && s.seconds > 0 && typeof s.color === 'string')
+      )
+      // Un rappel illisible est écarté sans emporter la routine, qui se lance très bien à la main
+      .map(r => ({ ...r, reminder: normalizeReminder(r.reminder) }));
   }
 }

@@ -1,11 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { LocalNotifications, LocalNotificationSchema } from '@capacitor/local-notifications';
+import { Subject } from 'rxjs';
 import { SOUND_FILES, SOUND_PATTERNS, SoundId, renderWav } from '../helpers/sound-patterns';
-import type { Alert, ChannelNames } from '../models/alert.model';
+import type { Alert, ChannelNames, Reminder } from '../models/alert.model';
 
 const QUIET_CHANNEL = 'quiet';
 const SILENT_FILE = 'silence.wav';
+
+/**
+ * Les rappels de routine vivent au-dessus de cette borne, les alertes d'une session
+ * en dessous. La distinction est vitale : les alertes sont annulées à chaque retour au
+ * premier plan, alors qu'un rappel doit survivre — il est programmé une fois et attend
+ * son heure, parfois des jours.
+ */
+const REMINDER_ID_BASE = 1000;
+
+/** Capacitor compte les jours à partir du dimanche (1) ; l'app les compte en ISO (1 = lundi). */
+function capacitorWeekday(isoDay: number): number {
+  return (isoDay % 7) + 1;
+}
 
 function channelId(sound: SoundId): string {
   return SOUND_FILES[sound].replace('.wav', '');
@@ -33,6 +47,10 @@ export class NotificationService {
   private readonly native = Capacitor.isNativePlatform();
   private permission: Promise<boolean> | null = null;
   private ready: Promise<void> | null = null;
+  private tapListener: Promise<unknown> | null = null;
+  private readonly reminderTapped = new Subject<string>();
+  /** Id de la routine dont le rappel vient d'être touché. */
+  readonly reminderTapped$ = this.reminderTapped.asObservable();
   /**
    * Programmer et annuler s'exécutent l'un après l'autre : sinon, un aller-retour rapide
    * (Centre de contrôle iOS) laisse l'annulation passer avant la programmation.
@@ -42,6 +60,7 @@ export class NotificationService {
   /** Prépare les sons (iOS) et les canaux (Android). À appeler une fois au démarrage. */
   setup(channelNames: ChannelNames): Promise<void> {
     if (!this.native) return Promise.resolve();
+    this.listenToTaps();
     this.ready ??= (this.platform === 'ios' ? this.installIosSounds() : this.createAndroidChannels(channelNames))
       .catch(() => {});
     return this.ready;
@@ -58,6 +77,15 @@ export class NotificationService {
 
   schedule(alerts: Alert[], withSound: boolean): Promise<void> {
     return this.enqueue(() => this.doSchedule(alerts, withSound));
+  }
+
+  /**
+   * Remplace tous les rappels de routine programmés. Appelé au démarrage et à chaque
+   * modification des routines : le système ne sait pas qu'une routine a changé de nom,
+   * d'heure, ou qu'elle a été supprimée.
+   */
+  scheduleReminders(reminders: Reminder[], withSound: boolean): Promise<void> {
+    return this.enqueue(() => this.doScheduleReminders(reminders, withSound));
   }
 
   cancelAll(): Promise<void> {
@@ -92,12 +120,55 @@ export class NotificationService {
     }
   }
 
-  private async cancelPending(): Promise<void> {
+  private async doScheduleReminders(reminders: Reminder[], withSound: boolean): Promise<void> {
+    if (!this.native) return;
+    // Un rappel n'a de sens que si l'appareil accepte de le montrer
+    if (reminders.length && !(await this.ensurePermission())) return;
+    await this.ready;
+    await this.cancelPending(true);
+    if (!reminders.length) return;
+
+    const notifications: LocalNotificationSchema[] = reminders.map((r, i) => ({
+      id: REMINDER_ID_BASE + i,
+      title: r.title,
+      body: r.body,
+      // `on` est la forme récurrente, façon cron : un jour, une heure, et rien d'autre —
+      // la notification revient chaque semaine, et survit au redémarrage de l'appareil
+      schedule: {
+        on: { weekday: capacitorWeekday(r.day), hour: r.hour, minute: r.minute, second: 0 },
+        allowWhileIdle: true
+      },
+      sound: withSound ? SOUND_FILES.end : SILENT_FILE,
+      channelId: withSound ? channelId('end') : QUIET_CHANNEL,
+      extra: { routineId: r.routineId }
+    }));
+
+    await LocalNotifications.schedule({ notifications }).catch(() => {});
+  }
+
+  /**
+   * L'appui sur un rappel dit quelle routine armer. L'écoute est posée au démarrage, et
+   * non à la première programmation : l'appui a lieu **avant** que l'app existe, et c'est
+   * lui qui la lance. Les deux plateformes retiennent l'événement jusqu'à ce qu'un
+   * écouteur le prenne, encore faut-il qu'il finisse par y en avoir un.
+   */
+  private listenToTaps(): void {
+    this.tapListener ??= LocalNotifications
+      .addListener('localNotificationActionPerformed', ({ notification }) => {
+        const routineId = (notification.extra as { routineId?: unknown } | null)?.routineId;
+        if (typeof routineId === 'string' && routineId) this.reminderTapped.next(routineId);
+      })
+      .catch(() => {});
+  }
+
+  /** `reminders` : les rappels de routine plutôt que les alertes d'une session. */
+  private async cancelPending(reminders = false): Promise<void> {
     if (!this.native) return;
     try {
       const { notifications } = await LocalNotifications.getPending();
-      if (notifications.length) {
-        await LocalNotifications.cancel({ notifications: notifications.map(n => ({ id: n.id })) });
+      const mine = notifications.filter(n => (n.id >= REMINDER_ID_BASE) === reminders);
+      if (mine.length) {
+        await LocalNotifications.cancel({ notifications: mine.map(n => ({ id: n.id })) });
       }
     } catch {
       // plugin indisponible : rien à annuler

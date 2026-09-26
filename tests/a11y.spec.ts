@@ -689,7 +689,7 @@ test.describe('routines', () => {
     ]
   };
 
-  async function seed(page: Page, spoken = false) {
+  async function seed(page: Page, spoken = false, reminder?: { hour: number; minute: number; days: number[] }) {
     await page.addInitScript(
       ([routine, capture]) => {
         localStorage.setItem('pomodoro-tdah.lang', 'fr');
@@ -703,7 +703,7 @@ test.describe('routines', () => {
           };
         }
       },
-      [JSON.stringify([ROUTINE]), spoken] as const
+      [JSON.stringify([{ ...ROUTINE, reminder }]), spoken] as const
     );
   }
 
@@ -816,6 +816,78 @@ test.describe('routines', () => {
     }
   });
 
+  test('le rappel se règle au clavier, et part avec la routine', async ({ page }) => {
+    await seed(page);
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+    await page.getByRole('button', { name: 'Modifier la routine Matin' }).click();
+
+    const reminder = page.getByRole('switch', { name: /Rappel/ });
+    await expect(reminder).not.toBeChecked();
+    await reminder.focus();
+    await page.keyboard.press(' ');
+    await expect(reminder).toBeChecked();
+
+    // Allumer coche la semaine entière : un rappel sans jour ne partirait jamais
+    const days = page.getByRole('group', { name: 'Jours' }).getByRole('button');
+    await expect(days).toHaveCount(7);
+    for (const day of await days.all()) await expect(day).toHaveAttribute('aria-pressed', 'true');
+
+    // « L » et « M » ne se distinguent pas à l'oreille : chaque jour porte son nom (WCAG 1.3.1)
+    await expect(days.first()).toHaveAccessibleName('lundi');
+    await expect(days.last()).toHaveAccessibleName('dimanche');
+
+    // Et les cibles restent atteignables (WCAG 2.5.8)
+    for (const target of [days.first(), page.locator('input[type="time"]')]) {
+      const box = await target.boundingBox();
+      expect(box!.height).toBeGreaterThanOrEqual(44);
+    }
+
+    // Le week-end décoché, le rappel ne part que les jours d'école
+    await days.nth(5).click();
+    await days.nth(6).click();
+    await expect(days.nth(5)).toHaveAttribute('aria-pressed', 'false');
+    await page.getByRole('button', { name: 'Enregistrer' }).click();
+
+    const saved = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('pomodoro-tdah.routines') ?? '[]')
+    );
+    expect(saved[0].reminder).toEqual({ hour: 8, minute: 0, days: [1, 2, 3, 4, 5] });
+  });
+
+  test('un rappel éteint ne laisse rien derrière lui', async ({ page }) => {
+    await seed(page, false, { hour: 7, minute: 30, days: [1, 2, 3, 4, 5] });
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+
+    await page.getByRole('button', { name: 'Modifier la routine Matin' }).click();
+    await expect(page.getByRole('switch', { name: /Rappel/ })).toBeChecked();
+    await page.getByRole('switch', { name: /Rappel/ }).click();
+    await expect(page.getByRole('group', { name: 'Jours' })).toHaveCount(0);
+    await page.getByRole('button', { name: 'Enregistrer' }).click();
+
+    const saved = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('pomodoro-tdah.routines') ?? '[]')
+    );
+    expect(saved[0].reminder).toBeUndefined();
+  });
+
+  test('la carte dit son rappel, et pas seulement en pastille', async ({ page }) => {
+    await seed(page, false, { hour: 7, minute: 30, days: [1, 2, 3, 4, 5] });
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+
+    // L'`aria-label` remplace tout le contenu du bouton : sans lui, ⏰ 07:30 ne serait vu
+    // que des voyants (WCAG 1.1.1)
+    await expect(page.getByRole('button', { name: /Lancer Matin/ })).toHaveAccessibleName(
+      'Lancer Matin, rappel à 07:30'
+    );
+    await expect(page.locator('.routine-bell')).toHaveText('⏰ 07:30');
+  });
+
   test('l’éditeur de routine se tient, étape dépliée comprise', async ({ page }) => {
     await seed(page);
     await page.goto('/');
@@ -832,6 +904,10 @@ test.describe('routines', () => {
     await step.click();
     await expect(step).toHaveAttribute('aria-expanded', 'true');
     expect(await violations(page), 'étape dépliée').toEqual([]);
+
+    await page.getByRole('switch', { name: /Rappel/ }).click();
+    await expect(page.getByRole('group', { name: 'Jours' })).toBeVisible();
+    expect(await violations(page), 'rappel allumé').toEqual([]);
 
     // Réordonner, puis enregistrer : la bande suit aussitôt
     await page.getByRole('button', { name: 'Descendre Habillage' }).click();

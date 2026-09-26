@@ -108,6 +108,12 @@ export const pt: Dictionary = {
   'routine.counted': 'Contar no foco de hoje',
   'routine.countedHint': 'Desligado para lavar os dentes, ligado para estudar',
   'routine.restore': 'Repor as rotinas predefinidas',
+  'routine.reminder': 'Lembrete',
+  'routine.reminderHint': 'Uma notificação à hora marcada: abre a rotina, pronta a começar',
+  'routine.reminderTime': 'Hora',
+  'routine.reminderDays': 'Dias',
+  'routine.reminderAt': 'lembrete às {time}',
+  'routine.reminderWeb': 'Na web o lembrete não toca: precisa da app iOS ou Android.',
   'routine.empty': 'Nenhuma rotina. Cria uma sequência de etapas que se encadeiam.',
   'routine.morning': 'Rotina da manhã',
   'routine.morning.dress': 'Vestir-se',
@@ -146,5 +152,6 @@ export const pt: Dictionary = {
   'notif.extraEndTitle': 'Tempo extra encerrado',
   'notif.nextBody': 'A seguir: {name}',
   'notif.channel.milestone': 'Marco {n} de 3',
+  'notif.reminderTitle': 'É hora: {name}',
   'notif.channel.end': 'Fim do timer'
 };

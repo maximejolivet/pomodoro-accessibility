@@ -12,13 +12,17 @@
         type="button"
         class="btn3d routine"
         [class.active]="activeRoutineId() === r.id"
-        [attr.aria-label]="i18n.t('routine.start', { name: routineName(r) })"
+        [attr.aria-label]="startLabel(r)"
         (click)="start(r)"
       >
         <span class="routine-badge" aria-hidden="true">{{ r.icon }}</span>
         <span class="routine-text">
           <span class="routine-name">{{ routineName(r) }}</span>
-          <span class="routine-summary">{{ summary(r) }}</span>
+          <span class="routine-summary">
+          {{ summary(r) }}
+          <!-- Le rappel se voit sur la carte ; l'`aria-label` du bouton le dit aussi -->
+          <span class="routine-bell" *ngIf="r.reminder">⏰ {{ clockTime(r.reminder) }}</span>
+        </span>
         </span>
         <!-- Les pictogrammes de la suite : on voit la routine entière sans la lire -->
         <span class="routine-preview" aria-hidden="true">
@@ -67,6 +71,53 @@
           (click)="d.icon = ic"
         >{{ ic }}</button>
       </div>
+    </div>
+
+    <!--
+      Le rappel fait venir l'outil à l'heure dite. Sans lui, une routine ne sert qu'à qui
+      a pensé à ouvrir l'app à 7 h 30 — c'est-à-dire à qui en avait le moins besoin.
+    -->
+    <div class="field reminder">
+      <label class="reminder-switch">
+        <span class="reminder-text">
+          {{ i18n.t('routine.reminder') }}
+          <small>{{ i18n.t('routine.reminderHint') }}</small>
+        </span>
+        <input
+          type="checkbox"
+          role="switch"
+          class="switch"
+          name="reminder-on"
+          [checked]="d.reminder.enabled"
+          (change)="toggleReminder(d, $any($event.target).checked)"
+        />
+      </label>
+
+      <ng-container *ngIf="d.reminder.enabled">
+        <label class="reminder-time">
+          <span>{{ i18n.t('routine.reminderTime') }}</span>
+          <input type="time" name="reminder-time" required [(ngModel)]="d.reminder.time" />
+        </label>
+
+        <div class="reminder-field">
+          <span id="reminder-days">{{ i18n.t('routine.reminderDays') }}</span>
+          <!-- Une lettre sur le bouton, le nom du jour pour les lecteurs d'écran : « L » et
+               « M » ne se distinguent pas à l'oreille (WCAG 1.3.1) -->
+          <div class="days" role="group" aria-labelledby="reminder-days">
+            <button
+              *ngFor="let w of weekdays()"
+              type="button"
+              class="day"
+              [class.active]="d.reminder.days.includes(w.iso)"
+              [attr.aria-pressed]="d.reminder.days.includes(w.iso)"
+              [attr.aria-label]="w.long"
+              (click)="toggleDay(d, w.iso)"
+            >{{ w.short }}</button>
+          </div>
+        </div>
+
+        <p class="reminder-web" *ngIf="!isNative">{{ i18n.t('routine.reminderWeb') }}</p>
+      </ng-container>
     </div>
 
     <div class="field">

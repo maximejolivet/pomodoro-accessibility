@@ -12,9 +12,25 @@ make open-android # build + sync + Android Studio
 
 ## Notifications locales
 
-L'autorisation est demandée au premier démarrage du minuteur. Les alertes (paliers, fin,
-fin de prolongation, fin de la session enchaînée) sont programmées quand l'app passe en
-arrière-plan et annulées au retour, là où les sons de l'app prennent le relais.
+L'autorisation est demandée au premier démarrage du minuteur, et au premier rappel réglé.
+Les alertes (paliers, fin, fin de prolongation, fin de la session enchaînée) sont programmées
+quand l'app passe en arrière-plan et annulées au retour, là où les sons de l'app prennent le
+relais.
+
+### Rappels de routine
+
+Une routine peut porter une heure et des jours (⚙︎ → Modes → *Routines* → crayon → *Rappel*).
+Ils suivent une autre vie que les alertes de session :
+
+- ils se programment en `schedule.on` (façon cron : un jour, une heure), donc se répètent
+  chaque semaine sans que l'app ait à s'exécuter ;
+- leurs identifiants partent de 1000, ce qui les met **hors de portée** de l'annulation faite
+  à chaque retour au premier plan — sans cela, ouvrir l'app une fois effacerait les rappels ;
+- Android les replace après un redémarrage de l'appareil, iOS les garde dans le centre de
+  notifications ;
+- l'appui ouvre l'app avec la routine armée sur le cadran : rien ne démarre tout seul.
+
+Ils empruntent le carillon de fin, faute de son propre à ce jour.
 
 ### Sons des notifications
 

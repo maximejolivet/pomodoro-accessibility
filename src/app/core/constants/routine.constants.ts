@@ -13,6 +13,12 @@ export const STEP_ICONS = [
   '💻', '📧', '📞', '🗂️', '🏃', '🧘', '🧸', '🌙'
 ];
 
+/**
+ * Heure proposée quand on allume un rappel : le matin, parce que c'est l'usage premier
+ * d'une routine — se préparer, partir à l'heure. Elle se change en deux gestes.
+ */
+export const DEFAULT_REMINDER_TIME = '08:00';
+
 /** Nombre maximal d'étapes : au-delà, la bande devient illisible et la routine, une corvée. */
 export const MAX_STEPS = 10;
 

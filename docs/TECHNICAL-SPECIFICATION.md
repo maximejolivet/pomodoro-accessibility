@@ -99,11 +99,13 @@ features/accessibility/  Page de déclaration d'accessibilité et ses textes
 | ---- | ------ | ----- |
 | `Preset` | `id`, `name`, `nameKey?`, `seconds`, `color`, `kind` | `kind` ∈ `focus` \| `break` \| `longBreak` ; `name` vide pour un mode par défaut, dont le libellé vient de `nameKey` (traduit) |
 | `RoutineStep` | `id`, `name`, `nameKey?`, `icon`, `seconds`, `color`, `kind` | Un `Preset` plus un pictogramme : une étape se démarre et s'enregistre exactement comme un mode (`kind` ∈ `focus` \| `break`) |
-| `Routine` | `id`, `name`, `nameKey?`, `icon`, `steps` | Suite ordonnée de 1 à 10 étapes (RG-16) |
+| `Routine` | `id`, `name`, `nameKey?`, `icon`, `steps`, `reminder?` | Suite ordonnée de 1 à 10 étapes (RG-16) |
+| `RoutineReminder` | `hour`, `minute`, `days` | `days` en ISO 8601 (1 = lundi … 7 = dimanche), jamais vide (RG-20) |
 | `Session` | `name`, `color`, `kind`, `plannedSeconds`, `activeSeconds`, `startedAt`, `endedAt`, `completed` | Nom et couleur figés à l'enregistrement (RG-9) |
 | `ActiveSession` | `name`, `color`, `kind`, `plannedSeconds`, `startedAt`, `activeMs`, `runningSince` | `runningSince` à `null` en pause ; `activeMs` cumule le temps décompté avant la reprise courante |
 | `DayStat` | `date`, `focusMinutes` | Une barre de l'histogramme hebdomadaire |
-| `Alert` | `id`, `at`, `title`, `body`, `sound` | Notification locale à programmer |
+| `Alert` | `id`, `at`, `title`, `body`, `sound` | Notification locale ponctuelle, programmée au passage en arrière-plan |
+| `Reminder` | `routineId`, `title`, `body`, `hour`, `minute`, `day` | Rappel hebdomadaire d'une routine : un par jour coché |
 | `WidgetState` | `dayStart`, `focusMinutes`, `goalMinutes`, `timer{…}`, `labels{…}`, `rtl` | Contrat partagé avec `PomodoroWidget.swift` |
 
 ### 3.2 Constantes du domaine
@@ -158,7 +160,9 @@ relus sont filtrés (identifiant chaîne, durée positive, couleur chaîne) et, 
 subsiste, les modes par défaut sont restaurés. Un JSON illisible retombe sur la valeur par défaut.
 L'objectif relu est borné et arrondi. Les routines relues sont filtrées de la même façon, étape
 par étape ; une liste vide est une liste vide (l'utilisateur a supprimé ses routines), alors
-qu'une clé absente rend les routines par défaut.
+qu'une clé absente rend les routines par défaut. Un rappel illisible (heure hors bornes, jours
+inconnus, champ absent d'une version précédente) est écarté sans emporter la routine, qui se
+lance très bien à la main.
 
 ---
 
@@ -291,6 +295,23 @@ passage en arrière-plan et annulées au retour. Pendant une routine, c'est l'é
 nomme la notification de fin (« Place à : Petit-déjeuner »), et aucune prolongation n'est
 programmée (RG-17). Sur Android 12+, les alarmes exactes peuvent
 requérir `SCHEDULE_EXACT_ALARM` dans `AndroidManifest.xml`. Aucun effet dans le navigateur.
+
+**Deux durées de vie cohabitent**, et la distinction est vitale :
+
+| | Alertes de session | Rappels de routine |
+| --- | --- | --- |
+| Ids | < `REMINDER_ID_BASE` (1000) | ≥ 1000 |
+| Programmation | au passage en arrière-plan | à chaque changement de routine, de langue ou du réglage *Son* |
+| Annulation | **toutes**, à chaque retour au premier plan | jamais, sauf reprogrammation en bloc |
+| Forme | `schedule.at`, ponctuelle | `schedule.on` (façon cron : jour, heure), hebdomadaire |
+
+`cancelPending()` filtre donc sur cette borne : sans ce filtre, le premier retour au premier plan
+effacerait tous les rappels (RG-22). Les jours sont convertis d'ISO 8601 vers la numérotation de
+Capacitor, qui compte à partir du dimanche. Android replace les rappels après un redémarrage
+(`LocalNotificationRestoreReceiver`), iOS les garde dans le centre de notifications.
+
+L'appui sur un rappel est reçu par `localNotificationActionPerformed` : `extra.routineId` remonte
+jusqu'à `SessionService`, qui **arme** la routine sans la démarrer (RG-21).
 
 ### 8.2 Widget iOS
 

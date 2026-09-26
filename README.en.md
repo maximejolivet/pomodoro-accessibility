@@ -55,6 +55,8 @@ This concrete cue is especially helpful for people who are **ADHD, autistic or n
   duration, then a closing chime: you know a change of activity is coming.
 - 🌱 **Encourage autonomy**: you manage your own work or break time, with no adult or
   colleague needing to remind you.
+- ⏰ **No need to remember**: a routine can remind you of itself, at the time and on the days
+  you choose — not noticing that it is time is precisely the difficulty.
 - 🏠 **Every day**: homework, morning routines, screen time, Pomodoro work sessions, at home,
   in class or at the office.
 
@@ -117,6 +119,7 @@ visual timer is a simple, discreet and free tool at that level.
 | 🔒 **Dial lock**                 | One tap and the dial stops responding: a resting palm can no longer change the time or wipe the session               |
 | 🎯 **Custom modes**              | Pomodoro, Break, Long break, ADHD Focus… or your own modes: name, duration (1-60 min), color, work or break            |
 | 🧩 **Picture routines**          | A sequence of steps that follow on their own — get dressed, breakfast, teeth, school bag — each with its picture and its length |
+| ⏰ **Routine reminder**          | A time, some days: the notification arrives when it should and opens the routine, ready to start                               |
 | 🔁 **Automatic chaining**        | Work → break → work, with a long break every 4 cycles (can be turned off)                                              |
 | 📊 **History & statistics**      | Focus time today, completed sessions, day streak, chart of the last 7 days                                             |
 | 🏁 **Daily goal**                | A number of focus minutes to aim for each day (10-300 min), with a progress bar                                        |
@@ -145,6 +148,7 @@ when you come back, everything is up to date.
 | ↺                          | Reset                                                                         |
 | ⚙︎ → **Modes**              | Choose, create, edit or delete a mode                                         |
 | ⚙︎ → **Modes** → *Routines* | Start a routine, create one, reorder its steps                                |
+| ⚙︎ → **Modes** → ✎ → *Reminder* | Set the time and the days when the routine comes to remind you            |
 | **Tap** a step             | Jump straight to that step of the routine; ✕ leaves the routine               |
 | ⚙︎ → **Stats**              | See today's goal, your statistics and session history                         |
 | ⚙︎ → **Settings**           | Dark mode, sounds, vibration, visual alert, spoken time, +5 min, chaining, screen on, goal, language |
@@ -206,7 +210,7 @@ A dedicated page covers all of this, including the RGAA 4.1 accessibility statem
 (conformance status, non-accessible content, contact and remedies): see the
 **♿ Accessibility** link at the bottom right of the app.
 
-These guarantees are checked on every change: `npm run test:a11y` replays forty-four checks
+These guarantees are checked on every change: `npm run test:a11y` replays forty-seven checks
 (axe-core on every view, in light, dark and Arabic; control of the dial by keyboard and by the
 − / + buttons; spoken time, vibration patterns and the visual alert checked against a simulated
 countdown, a short session's milestones included; the dial lock; the chaining of a routine's steps, its strip and its editor; target

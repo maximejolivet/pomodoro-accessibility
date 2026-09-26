@@ -107,6 +107,12 @@ export const fr = {
   'routine.counted': 'Compter dans le focus du jour',
   'routine.countedHint': "À laisser éteint pour se laver les dents, à allumer pour réviser",
   'routine.restore': 'Rétablir les routines par défaut',
+  'routine.reminder': 'Rappel',
+  'routine.reminderHint': "Une notification à l'heure dite : elle ouvre la routine, prête à démarrer",
+  'routine.reminderTime': 'Heure',
+  'routine.reminderDays': 'Jours',
+  'routine.reminderAt': 'rappel à {time}',
+  'routine.reminderWeb': "Sur le web, le rappel ne part pas : il demande l'app iOS ou Android.",
   'routine.empty': "Aucune routine. Crée une suite d'étapes qui s'enchaînent.",
   'routine.morning': 'Routine du matin',
   'routine.morning.dress': "S'habiller",
@@ -145,5 +151,6 @@ export const fr = {
   'notif.extraEndTitle': 'Prolongation terminée',
   'notif.nextBody': 'Place à : {name}',
   'notif.channel.milestone': 'Palier {n} sur 3',
+  'notif.reminderTitle': "C'est l'heure : {name}",
   'notif.channel.end': 'Fin du minuteur'
 };

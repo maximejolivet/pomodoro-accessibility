@@ -32,7 +32,7 @@ src/
     │       ├── sound.service.ts        # Lecture des sons (Web Audio)
     │       ├── speech.service.ts       # Temps restant dit à voix haute (Web Speech)
     │       ├── haptics.service.ts      # Motifs de vibration par palier (Capacitor Haptics)
-    │       ├── notification.service.ts # Notifications locales Capacitor + sons natifs
+    │       ├── notification.service.ts # Notifications locales Capacitor + sons natifs + rappels hebdomadaires
     │       ├── keep-awake.service.ts   # Écran toujours allumé
     │       └── widget.service.ts       # État transmis au widget iOS
     └── features/               # Une page par dossier

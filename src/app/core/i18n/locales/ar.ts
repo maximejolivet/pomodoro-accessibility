@@ -108,6 +108,12 @@ export const ar: Dictionary = {
   'routine.counted': 'احتسابها ضمن تركيز اليوم',
   'routine.countedHint': 'مطفأ لتنظيف الأسنان، مشغّل للمراجعة',
   'routine.restore': 'استعادة الروتينات الافتراضية',
+  'routine.reminder': 'تذكير',
+  'routine.reminderHint': 'إشعار في الوقت المحدد: يفتح الروتين جاهزًا للبدء',
+  'routine.reminderTime': 'الوقت',
+  'routine.reminderDays': 'الأيام',
+  'routine.reminderAt': 'تذكير في {time}',
+  'routine.reminderWeb': 'على الويب لا يعمل التذكير: يحتاج تطبيق iOS أو Android.',
   'routine.empty': 'لا يوجد أي روتين. أنشئ سلسلة خطوات متتابعة.',
   'routine.morning': 'روتين الصباح',
   'routine.morning.dress': 'ارتداء الملابس',
@@ -146,5 +152,6 @@ export const ar: Dictionary = {
   'notif.extraEndTitle': 'انتهى الوقت الإضافي',
   'notif.nextBody': 'التالي: {name}',
   'notif.channel.milestone': 'المحطة {n} من 3',
+  'notif.reminderTitle': 'حان الوقت: {name}',
   'notif.channel.end': 'نهاية المؤقت'
 };

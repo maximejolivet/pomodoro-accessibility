@@ -153,6 +153,10 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-ROU-9  | À la fin de la dernière étape, la routine est déclarée terminée et toutes ses étapes sont cochées.                                     | M    |
 | EF-ROU-10 | La routine chargée est mémorisée d'une ouverture à l'autre, et se quitte d'un bouton.                                                  | S    |
 | EF-ROU-11 | Le verrou du cadran neutralise le changement d'étape et la sortie de routine, comme il neutralise la remise à zéro.                    | M    |
+| EF-ROU-12 | Une routine peut porter un rappel : une heure, et les jours de la semaine où il part.                                                  | S    |
+| EF-ROU-13 | À l'heure dite, une notification nomme la routine et son pictogramme ; l'appui ouvre l'application et arme la routine sans la démarrer. | S    |
+| EF-ROU-14 | Le rappel survit à la fermeture de l'application et au redémarrage de l'appareil ; il est reprogrammé quand la routine ou la langue change. | M    |
+| EF-ROU-15 | Le rappel réglé est visible sur la carte de la routine, et dit dans son nom accessible.                                               | S    |
 
 ### 4.4 Enchaînement et prolongation (`EF-CHA`)
 
@@ -266,6 +270,9 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | RG-17 | Pendant une routine, la prolongation « +5 min » ne s'applique pas : ce qui a été annoncé arrive à l'heure dite.                                                         |
 | RG-18 | Pendant une routine, l'enchaînement suit les étapes de la routine, que l'option « enchaîner travail → pause » soit active ou non.                                       |
 | RG-19 | Une étape non comptée dans le focus du jour est enregistrée comme une pause : se laver les dents n'est pas du temps de travail (RG-10).                                 |
+| RG-20 | Un rappel sans jour coché n'est pas enregistré : mieux vaut pas de rappel qu'un rappel qui ne partira jamais. Allumer un rappel coche la semaine entière.               |
+| RG-21 | Un rappel touché **arme** la routine, il ne la démarre pas : un décompte qui part sans geste de l'utilisateur est une source d'anxiété.                                 |
+| RG-22 | Les rappels sont reprogrammés en bloc à chaque modification, et échappent à l'annulation des alertes de session qui a lieu à chaque retour au premier plan.             |
 
 ---
 
@@ -294,12 +301,20 @@ sur ▶ : le décompte part. À 0, le carillon sonne, « Place à : Petit-déjeu
 l'étape suivante démarre seule. Une étape déjà faite se retrouve d'un appui sur sa vignette.
 À la fin de la dernière, toutes les vignettes sont cochées et « Routine terminée » est dit.
 
-### 6.4 Création d'un mode
+### 6.4 Rappel d'une routine
+
+⚙︎ → Modes → *Routines* → crayon → *Rappel* : l'interrupteur allumé propose 8 h 00 et la
+semaine entière ; l'heure se règle, les jours se décochent. Enregistrer. À 7 h 30 le lundi,
+une notification « C'est l'heure : 🌅 Routine du matin — 4 étapes · 33 min » arrive, même
+application fermée. L'appui ouvre l'application avec la routine armée sur le cadran : il reste
+à appuyer sur ▶.
+
+### 6.5 Création d'un mode
 
 ⚙︎ → Modes → « nouveau » : saisir un nom, régler la durée, choisir une couleur (nom affiché),
 choisir la nature. Enregistrer. Le mode rejoint la liste et devient sélectionnable.
 
-### 6.5 Consultation des statistiques
+### 6.6 Consultation des statistiques
 
 ⚙︎ → Stats : objectif du jour et barre de progression, temps de focus, sessions terminées,
 série de jours, histogramme des 7 derniers jours, 10 dernières sessions.

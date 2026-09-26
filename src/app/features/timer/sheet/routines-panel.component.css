@@ -90,6 +90,12 @@
   unicode-bidi: isolate;
 }
 
+/* L'heure du rappel, à la suite du résumé : « 4 étapes · 33 min ⏰ 07:30 ». */
+.routine-bell {
+  margin-inline-start: 8px;
+  white-space: nowrap;
+}
+
 .routine-preview {
   grid-column: 2;
   display: flex;
@@ -350,6 +356,110 @@
 .swatch.active {
   outline: 3px solid var(--ink);
   outline-offset: 3px;
+}
+
+/* ---------- Rappel ---------- */
+
+.reminder {
+  gap: 14px;
+}
+
+.reminder-switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.reminder-text {
+  display: flex;
+  flex-direction: column;
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.reminder-text small {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.reminder-time {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/*
+ * Le champ d'heure est celui du système : clavier, molette et lecteur d'écran y
+ * fonctionnent déjà, et il s'affiche dans le format du pays. La hauteur assure la
+ * cible de 44 px (WCAG 2.5.8) que le rendu natif ne garantit pas.
+ */
+.reminder-time input[type='time'] {
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--range-bg);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.18);
+  font: inherit;
+  font-size: 16px;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.reminder-time input[type='time']:focus-visible {
+  outline: 3px solid var(--c);
+  outline-offset: 1px;
+}
+
+.reminder-field {
+  display: grid;
+  gap: 8px;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  padding: 4px;
+  border-radius: 14px;
+  background: var(--range-bg);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.day {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--muted-strong);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.day.active {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--c) 80%, #fff), var(--c));
+  color: #fff;
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--c) 68%, #000);
+}
+
+.day:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.reminder-web {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
 }
 
 .step-counted {
