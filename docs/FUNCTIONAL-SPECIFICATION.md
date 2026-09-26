@@ -168,7 +168,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 
 | Réf.     | Exigence                                                                                                                                            | Prio |
 | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
-| EF-ALE-1 | Un son différent est joué à 45, 30 et 15 minutes restantes, puis un carillon à 0.                                                                   | M    |
+| EF-ALE-1 | Trois paliers avant la fin, calculés sur la durée de la session, jouent chacun un son différent, puis un carillon à 0.                               | M    |
 | EF-ALE-2 | Les sons vont du plus discret au plus insistant à mesure que la fin approche.                                                                       | M    |
 | EF-ALE-3 | Les sons peuvent être écoutés à la demande depuis les réglages.                                                                                     | S    |
 | EF-ALE-4 | Les sons peuvent être coupés globalement ; le choix est mémorisé.                                                                                   | M    |
@@ -249,7 +249,8 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | RG-1  | Durée réglable : 0 à 60 minutes ; durée d'un mode : 1 à 60 minutes.                                                                                                     |
 | RG-2  | La prolongation automatique vaut 5 minutes, ne s'applique qu'aux sessions de **travail** et une seule fois par session.                                                 |
 | RG-3  | Une pause longue est proposée toutes les **4** sessions de travail terminées.                                                                                           |
-| RG-4  | Les paliers sonores se déclenchent à **45, 30 et 15** minutes restantes.                                                                                                |
+| RG-4  | Au-delà de **40 minutes**, les paliers se déclenchent à **45, 30 et 15** minutes restantes ; en dessous, à la **moitié**, au **dernier quart** et à **1 minute** de la fin. |
+| RG-4b | Le son, le motif de vibration et le canal de notification d'un palier viennent de son **rang** : le dernier palier est toujours le plus insistant.                       |
 | RG-5  | Aucun son de palier n'est joué pendant un réglage au doigt.                                                                                                             |
 | RG-6  | Une session interrompue avant **60 secondes** décomptées n'est pas enregistrée (faux départ).                                                                           |
 | RG-7  | L'historique conserve au maximum les **500** dernières sessions ; les plus anciennes sont supprimées.                                                                   |
@@ -275,7 +276,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 1. Ouverture : le mode mémorisé est sélectionné, sa durée s'affiche sur le cadran.
 2. Réglage facultatif au doigt, aux boutons − / + ou au clavier.
 3. Appui sur le cadran ou sur ▶ : le décompte démarre, l'écran reste allumé si l'option est active.
-4. Paliers à 45 / 30 / 15 min restantes : un son, et une notification si l'application est en arrière-plan.
+4. Paliers (45 / 30 / 15 min restantes au-delà de 40 min, sinon la moitié, le dernier quart et 1 min) : un son, et une notification si l'application est en arrière-plan.
 5. À 0 : carillon, motif de vibration de fin ; prolongation de 5 min si l'option est active, sinon fin.
 6. La session est enregistrée si elle a duré au moins 60 s ; les statistiques du jour se mettent à jour.
 

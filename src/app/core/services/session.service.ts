@@ -4,6 +4,7 @@ import { MIN_RECORDED_SECONDS } from '../constants/history.constants';
 import {
   CUE_MS, EXTRA_SECONDS, LATE_ALERT_SECONDS, LONG_BREAK_EVERY, MAX_MINUTES, MILESTONES, MIN_MINUTES
 } from '../constants/timer.constants';
+import { milestonesFor, type Milestone } from '../helpers/milestones';
 import { readPref, writePref } from '../helpers/storage';
 import { formatTime } from '../helpers/time';
 import { I18nService } from '../i18n/i18n.service';
@@ -135,14 +136,28 @@ export class SessionService {
   /** Vrai pendant un changement de temps manuel (doigt, curseur, reset) : pas de son de palier. */
   private manualChange = false;
 
+  /**
+   * Paliers de la session en cours, calculés sur la durée annoncée — celle qui a été
+   * réglée au départ, et non le temps restant : un réglage au doigt en cours de route ne
+   * déplace pas les paliers déjà franchis.
+   *
+   * Vide pendant la prolongation : ces cinq minutes sont un rabiot pour terminer, pas une
+   * session à jalonner. C'est aussi ce que faisaient déjà les notifications.
+   */
+  private readonly milestones = computed<Milestone[]>(() =>
+    this.inExtra() ? [] : milestonesFor(this.session()?.plannedSeconds ?? this.durationSeconds())
+  );
+
   constructor() {
     this.durationSeconds.set(this.selectedPreset().seconds);
     this.sound.enabled = this.prefs.sound();
     this.haptics.enabled = this.prefs.haptics();
+    // Les canaux portent un rang, pas un nombre de minutes : le même timbre sert à
+    // 45 minutes restantes sur une heure de travail et à 6 minutes sur un Pomodoro
     this.notifications.setup({
-      milestone45: this.i18n.t('notif.channel.milestone', { m: 45 }),
-      milestone30: this.i18n.t('notif.channel.milestone', { m: 30 }),
-      milestone15: this.i18n.t('notif.channel.milestone', { m: 15 }),
+      milestone45: this.i18n.t('notif.channel.milestone', { n: 1 }),
+      milestone30: this.i18n.t('notif.channel.milestone', { n: 2 }),
+      milestone15: this.i18n.t('notif.channel.milestone', { n: 3 }),
       end: this.i18n.t('notif.channel.end')
     });
 
@@ -497,19 +512,19 @@ export class SessionService {
     return this.presetService.byId(this.lastFocusPresetId) ?? this.presetService.firstOfKind('focus');
   }
 
-  /** Son de palier quand le décompte passe sous 45, 30 ou 15 minutes restantes. */
+  /** Alerte de palier quand le décompte passe sous l'un des paliers de la session. */
   private checkMilestones(previous: number, current: number): void {
     // Uniquement un décompte normal : pas un réglage au doigt, au curseur ni un reset
     if (!this.isRunning() || this.dragging() || this.manualChange) return;
-    for (const m of MILESTONES) {
-      const at = m * 60;
+    for (const { minutes, tone } of this.milestones()) {
+      const at = minutes * 60;
       if (previous > at && current <= at) {
         // Palier franchi depuis longtemps (retour d'arrière-plan) : déjà notifié
         if (at - current <= LATE_ALERT_SECONDS) {
-          this.sound.milestone(m);
-          this.haptics.play(`milestone${m}`);
+          this.sound.milestone(tone);
+          this.haptics.play(`milestone${tone}`);
           this.showCue('milestone');
-          this.announce(this.i18n.t('notif.milestoneTitle', { m }));
+          this.announce(this.milestoneText(minutes));
         }
         return;
       }
@@ -589,16 +604,14 @@ export class SessionService {
     const kind = this.session()?.kind ?? this.selectedPreset().kind;
     const alerts: Alert[] = [];
 
-    if (!this.inExtra()) {
-      for (const m of MILESTONES) {
-        alerts.push({
-          id: 100 + m,
-          at: endAt - m * 60_000,
-          title: t('notif.milestoneTitle', { m }),
-          body: t('notif.milestoneBody'),
-          sound: `milestone${m}`
-        });
-      }
+    for (const { minutes, tone } of this.milestones()) {
+      alerts.push({
+        id: 100 + minutes,
+        at: endAt - minutes * 60_000,
+        title: this.milestoneText(minutes),
+        body: t('notif.milestoneBody'),
+        sound: `milestone${tone}`
+      });
     }
 
     const routine = this.activeRoutine();
@@ -695,13 +708,19 @@ export class SessionService {
     const at = Math.ceil(current / 60) * 60;
     const minutes = at / 60;
     if (minutes < 1 || previous <= at) return;
-    if (mode === 'milestones' && !(MILESTONES as readonly number[]).includes(minutes)) return;
+    if (mode === 'milestones' && !this.milestones().some(m => m.minutes === minutes)) return;
 
-    this.say(
-      minutes === 1
-        ? this.i18n.t('speech.oneMinute')
-        : this.i18n.t('notif.milestoneTitle', { m: minutes })
-    );
+    this.say(this.milestoneText(minutes));
+  }
+
+  /**
+   * « Plus qu'une minute » plutôt que « Plus que 1 minutes » : le dernier palier d'une
+   * session courte tombe à une minute de la fin, c'est le cas le plus fréquent.
+   */
+  private milestoneText(minutes: number): string {
+    return minutes === 1
+      ? this.i18n.t('speech.oneMinute')
+      : this.i18n.t('notif.milestoneTitle', { m: minutes });
   }
 
   /** « Temps écoulé », suivi le cas échéant de ce qui prend la suite. */

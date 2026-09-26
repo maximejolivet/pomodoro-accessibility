@@ -145,6 +145,6 @@ export const ar: Dictionary = {
   'notif.endBody': 'خذ استراحة.',
   'notif.extraEndTitle': 'انتهى الوقت الإضافي',
   'notif.nextBody': 'التالي: {name}',
-  'notif.channel.milestone': 'تنبيه {m} دقيقة',
+  'notif.channel.milestone': 'المحطة {n} من 3',
   'notif.channel.end': 'نهاية المؤقت'
 };

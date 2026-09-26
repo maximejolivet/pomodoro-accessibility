@@ -145,6 +145,6 @@ export const de: Dictionary = {
   'notif.endBody': 'Mach eine Pause.',
   'notif.extraEndTitle': 'Verlängerung vorbei',
   'notif.nextBody': 'Als Nächstes: {name}',
-  'notif.channel.milestone': '{m}-Minuten-Marke',
+  'notif.channel.milestone': 'Marke {n} von 3',
   'notif.channel.end': 'Timer-Ende'
 };

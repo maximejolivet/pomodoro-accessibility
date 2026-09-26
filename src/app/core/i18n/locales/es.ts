@@ -145,6 +145,6 @@ export const es: Dictionary = {
   'notif.endBody': 'Tómate un descanso.',
   'notif.extraEndTitle': 'Tiempo extra terminado',
   'notif.nextBody': 'A continuación: {name}',
-  'notif.channel.milestone': 'Aviso de {m} min',
+  'notif.channel.milestone': 'Aviso {n} de 3',
   'notif.channel.end': 'Fin del temporizador'
 };

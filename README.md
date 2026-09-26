@@ -51,8 +51,8 @@ coup d'œil, on sait s'il reste beaucoup ou peu de temps, sans lire ni calculer.
 Ce repère concret aide particulièrement les personnes **TDAH, autistes ou neurodivergentes** :
 
 - 🧭 **Rendre le temps concret** : une durée abstraite devient une surface qui diminue.
-- 🔄 **Faciliter les transitions** : les sons à 45, 30 et 15 min puis le carillon de fin
-  préviennent en douceur qu'un changement d'activité approche.
+- 🔄 **Faciliter les transitions** : trois paliers annoncés avant la fin, calculés sur la durée
+  choisie, puis le carillon : on sait qu'un changement d'activité approche.
 - 🌱 **Favoriser l'autonomie** : on gère soi-même son temps de travail ou de pause, sans
   qu'un adulte ou un collègue ait à le rappeler.
 - 🏠 **Au quotidien** : devoirs, routines du matin, temps d'écran, séances de travail en
@@ -94,8 +94,8 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
 
 - 🎯 **Sessions de concentration** : découper une tâche en blocs Pomodoro avec des pauses, sans
   dépendre du regard d'un collègue ou d'un manager.
-- 🔄 **Enchaîner les tâches** : les paliers à 45, 30 et 15 min aident à conclure et à changer de
-  sujet sans coupure brutale.
+- 🔄 **Enchaîner les tâches** : trois paliers avant la fin, y compris sur une session courte,
+  aident à conclure et à changer de sujet sans coupure brutale.
 - 🤝 **Réunions et entretiens** : garder une durée visible pour tous, qui rassure et cadre l'échange.
 - 🎧 **Bureau ou télétravail** : vibration et notifications discrètes, sons désactivables en
   open space.
@@ -119,11 +119,11 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
 | 🔁 **Enchaînement automatique**  | Travail → pause → travail, avec une pause longue tous les 4 cycles (désactivable)                                      |
 | 📊 **Historique & statistiques** | Temps de focus du jour, sessions terminées, série de jours, graphique des 7 derniers jours                             |
 | 🏁 **Objectif quotidien**        | Un nombre de minutes de focus à viser chaque jour (10-300 min), avec une barre de progression                          |
-| 🔔 **Sons de palier**            | Un son différent à 45, 30 et 15 min restantes, puis un carillon à la fin                                               |
+| 🔔 **Sons de palier**            | Trois paliers avant la fin, calculés sur la durée réglée, chacun son son, puis un carillon                              |
 | 💡 **Alerte visuelle**           | Un éclat coloré aux paliers et à la fin, doux ou franc, pour qui n'entend pas ou a coupé le son                        |
 | 🗣️ **Annonce vocale**            | Le temps restant dit à voix haute, aux paliers ou à chaque minute, pour écouter sans regarder (désactivé par défaut)   |
 | ⏱️ **+5 min automatique**        | À 0, cinq minutes de plus pour terminer ce qui est en cours (désactivable)                                             |
-| 📳 **Vibration codée**           | Un motif différent par palier — 1 impulsion à 45, 2 à 30, 3 brèves à 15, 3 longues à la fin (désactivable)             |
+| 📳 **Vibration codée**           | Un motif différent par palier — 1 impulsion au premier, 2 au deuxième, 3 brèves au dernier, 3 longues à la fin (désactivable) |
 | 📲 **Notifications**             | Alertes même téléphone verrouillé ou app en arrière-plan, avec les mêmes sons que l'app                                |
 | 🔆 **Écran toujours allumé**     | L'écran ne s'éteint pas pendant le décompte (désactivable)                                                             |
 | 🧩 **Widget iPhone**             | Le décompte en cours ou l'objectif du jour, directement sur l'écran d'accueil                                          |
@@ -164,10 +164,15 @@ Ils vont du plus discret au plus insistant à mesure que la fin approche, et on 
 
 | Moment               | Son                                                 | Vibration                        |
 | -------------------- | --------------------------------------------------- | -------------------------------- |
-| **45 min** restantes | 1 note douce et ronde                               | 1 impulsion longue               |
-| **30 min**           | 2 notes montantes, un peu plus claires              | 2 impulsions                     |
-| **15 min**           | 3 notes rapides, façon « bip »                      | 3 impulsions brèves              |
+| **1ᵉʳ palier**        | 1 note douce et ronde                               | 1 impulsion longue               |
+| **2ᵉ palier**         | 2 notes montantes, un peu plus claires              | 2 impulsions                     |
+| **Dernier palier**   | 3 notes rapides, façon « bip »                      | 3 impulsions brèves              |
 | **0**                | Un carillon joué 3 fois                             | 3 impulsions longues             |
+
+Les paliers tombent à 45, 30 et 15 min restantes sur une session de plus de 40 min. En dessous,
+ils se calculent sur la durée choisie — la moitié, le dernier quart, puis 1 min avant la fin —
+sinon un Pomodoro de 25 min ne serait prévenu qu'une fois, et une étape de routine de 10 min
+jamais.
 
 La vibration suit le même rythme que le son : elle prévient sans rien montrer ni faire
 entendre — en réunion, en cours, en open space — et reste le seul canal d'alerte pour une
@@ -206,7 +211,7 @@ en bas à droite de l'application.
 Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue quarante-quatre
 contrôles (axe-core sur toutes les vues, en clair, en sombre et en arabe ; réglage du cadran au
 clavier et aux boutons − / + ; annonce vocale, motifs de vibration et alerte visuelle vérifiés sur
-un décompte simulé ; verrou du cadran ; enchaînement des étapes d'une routine, sa bande et son
+un décompte simulé, paliers d'une session courte comprise ; verrou du cadran ; enchaînement des étapes d'une routine, sa bande et son
 éditeur ; taille des cibles ; piège à focus de la modale ; pas de défilement horizontal à 320 px),
 et la CI les relance à chaque push.
 

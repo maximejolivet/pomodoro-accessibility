@@ -17,7 +17,7 @@ src/
     ├── core/                   # Ce qui ne dépend d'aucune page
     │   ├── constants/          # timer · history · preset · routine (règles et réglages du domaine)
     │   ├── models/             # preset · routine · session · alert · widget-state
-    │   ├── helpers/            # storage.ts · time.ts · sound-patterns.ts (motifs + WAV) · haptic-patterns.ts
+    │   ├── helpers/            # storage.ts · time.ts · milestones.ts (paliers d'une session) · sound-patterns.ts (motifs + WAV) · haptic-patterns.ts
     │   ├── i18n/
     │   │   ├── i18n.service.ts # Langue courante, sens d'écriture, traduction
     │   │   ├── i18n.model.ts   # Clés typées, liste des langues, langues RTL

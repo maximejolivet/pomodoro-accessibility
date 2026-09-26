@@ -14,6 +14,15 @@ async function openSheet(page: Page) {
   await expect(page.locator('.sheet.open')).toBeVisible();
 }
 
+/** Règle le cadran au clavier : Home remet à zéro, PageDown avance de 5 min, → de 1 min. */
+async function setMinutes(page: Page, minutes: number) {
+  await page.locator('.face').focus();
+  await page.keyboard.press('Home');
+  for (let i = 0; i < Math.floor(minutes / 5); i++) await page.keyboard.press('PageDown');
+  for (let i = 0; i < minutes % 5; i++) await page.keyboard.press('ArrowRight');
+  await expect(page.locator('.readout-time')).toHaveText(`${String(minutes).padStart(2, '0')}:00`);
+}
+
 async function violations(page: Page) {
   const { violations } = await new AxeBuilder({ page }).withTags(WCAG).analyze();
   return violations.map(v => `${v.id} (${v.impact}) × ${v.nodes.length} — ${v.nodes[0].failureSummary}`);
@@ -336,16 +345,12 @@ test.describe('annonce vocale', () => {
     }, mode);
   }
 
-  /** Lance un décompte de deux minutes, horloge simulée : le test ne dure pas deux minutes. */
-  async function startTwoMinutes(page: Page) {
+  /** Règle puis lance un décompte, horloge simulée : le test ne dure pas le temps réglé. */
+  async function startCountdown(page: Page, minutes: number) {
     await page.clock.install();
     await page.goto('/');
     await ready(page);
-    await page.locator('.face').focus();
-    await page.keyboard.press('Home');
-    await page.keyboard.press('ArrowRight');
-    await page.keyboard.press('ArrowRight');
-    await expect(page.locator('.readout-time')).toHaveText('02:00');
+    await setMinutes(page, minutes);
     await page.getByRole('button', { name: /démarrer/i }).click();
   }
 
@@ -404,7 +409,7 @@ test.describe('annonce vocale', () => {
 
   test('le décompte dit chaque minute, puis la fin et ce qui suit', async ({ page }) => {
     await captureSpeech(page, 'minutes');
-    await startTwoMinutes(page);
+    await startCountdown(page, 2);
     // Rien au démarrage : la durée réglée vient d'être lue, la répéter n'apporte rien
     expect(await spoken(page)).toEqual([]);
 
@@ -419,15 +424,31 @@ test.describe('annonce vocale', () => {
     ]);
   });
 
-  test('en mode Paliers, les minutes ordinaires restent silencieuses', async ({ page }) => {
+  test('en mode Paliers, seuls les paliers de la session se disent', async ({ page }) => {
+    // Six minutes d'horloge simulée, six cents ticks : le décompte est bavard
+    test.setTimeout(90_000);
     await captureSpeech(page, 'milestones');
-    await startTwoMinutes(page);
+    await startCountdown(page, 6);
+
+    // Une minute ordinaire ne dit rien : c'est ce qui distingue « Paliers » de « Chaque minute »
     await page.clock.runFor(61_000);
-    expect(await spoken(page), 'la minute 1 n\'est pas un palier').toEqual([]);
+    expect(await spoken(page), 'la 5e minute n\'est pas un palier').toEqual([]);
+
+    // Les paliers, eux, sont calculés sur la durée réglée : la moitié, le dernier quart,
+    // puis la dernière minute. Des paliers fixes à 45 / 30 / 15 ne préviendraient jamais
+    // une session de six minutes — ni une étape de routine.
+    await page.clock.runFor(2 * 60_000);
+    await page.clock.runFor(60_000);
+    await page.clock.runFor(60_000);
+    expect((await spoken(page)).map(s => s.text)).toEqual([
+      'Plus que 3 minutes',
+      'Plus que 2 minutes',
+      "Plus qu'une minute"
+    ]);
 
     // La fin, elle, se dit dans tous les modes
     await page.clock.runFor(61_000);
-    expect(await spoken(page)).toEqual([{ text: 'Temps écoulé. +5 min pour terminer.', lang: 'fr' }]);
+    expect((await spoken(page)).at(-1)?.text).toBe('Temps écoulé. +5 min pour terminer.');
   });
 });
 
@@ -456,10 +477,7 @@ test.describe('vibration', () => {
     await page.goto('/');
     await ready(page);
 
-    await page.locator('.face').focus();
-    await page.keyboard.press('Home');
-    await page.keyboard.press('ArrowRight');
-    await expect(page.locator('.readout-time')).toHaveText('01:00');
+    await setMinutes(page, 1);
     // Le pas de réglage se confirme par une impulsion légère, distincte des motifs.
     // Le module natif est chargé à la demande : on attend qu'il réponde plutôt que de le supposer.
     await expect.poll(() => vibrations(page)).toHaveLength(2);
@@ -471,23 +489,33 @@ test.describe('vibration', () => {
   });
 
   test('chaque palier a son propre motif, reconnaissable sans voir ni entendre', async ({ page }) => {
+    // Six minutes d'horloge simulée, six cents ticks : le décompte est bavard
+    test.setTimeout(90_000);
     await captureVibration(page);
     await page.clock.install();
     await page.goto('/');
     await ready(page);
 
-    // 16 min : le décompte ne franchira que le palier des 15 minutes
-    await page.locator('.face').focus();
-    await page.keyboard.press('Home');
-    for (let i = 0; i < 3; i++) await page.keyboard.press('PageDown');
-    await page.keyboard.press('ArrowRight');
-    await expect(page.locator('.readout-time')).toHaveText('16:00');
-
+    // 6 min : les paliers tombent à 3, 2 et 1 minute restantes — une session courte est
+    // prévenue elle aussi, ce que des paliers fixes à 45 / 30 / 15 ne faisaient pas
+    await setMinutes(page, 6);
     await page.getByRole('button', { name: /démarrer/i }).click();
     await page.evaluate(() => ((window as any).__vibrations.length = 0));
-    await page.clock.runFor(63_000);
-    // Trois impulsions brèves, là où la fin en donne trois longues : le rythme fait la différence
-    expect(await vibrations(page)).toEqual([120, 120, 180]);
+
+    // Une impulsion longue et posée pour le premier palier
+    await page.clock.runFor(3 * 60_000 + 3_000);
+    expect(await vibrations(page), 'palier 1 (3 min restantes)').toEqual([320]);
+
+    // Deux impulsions pour le deuxième
+    await page.clock.runFor(60_000);
+    expect((await vibrations(page)).slice(1), 'palier 2 (2 min restantes)').toEqual([200, 200]);
+
+    // Trois brèves pour le dernier, là où la fin en donne trois longues : le rythme fait la différence
+    await page.clock.runFor(60_000);
+    expect((await vibrations(page)).slice(3), 'palier 3 (1 min restante)').toEqual([120, 120, 180]);
+
+    await page.clock.runFor(61_000);
+    expect((await vibrations(page)).slice(6), 'fin').toEqual([500, 500, 500]);
   });
 
   test("l'interrupteur coupe toute vibration, et son état est annoncé", async ({ page }) => {

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import type { MilestoneTone } from '../constants/timer.constants';
 import { ENVELOPE, MASTER_GAIN, SOUND_PATTERNS, SoundId, voices } from '../helpers/sound-patterns';
 
 /**
@@ -18,9 +19,9 @@ export class SoundService {
     }
   }
 
-  /** Palier de temps restant : 45, 30 ou 15 minutes. */
-  milestone(minutes: 45 | 30 | 15): void {
-    this.play(`milestone${minutes}`);
+  /** Timbre de palier : le premier (doux), le deuxième (montant) ou le dernier (insistant). */
+  milestone(tone: MilestoneTone): void {
+    this.play(`milestone${tone}`);
   }
 
   /** Fin du minuteur. */

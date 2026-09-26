@@ -165,7 +165,7 @@ const fr: A11yText = {
   workText: 'La neurodiversité concerne aussi les équipes. Un minuteur visuel est un aménagement simple et discret, utile à tout le monde sans exposer personne.',
   workItems: [
     'Sessions de concentration en blocs Pomodoro, avec des pauses.',
-    'Paliers à 45, 30 et 15 minutes pour conclure et changer de sujet sans coupure brutale.',
+    'Trois paliers avant la fin, calculés sur la durée choisie, pour conclure et changer de sujet sans coupure brutale.',
     'Durée visible pendant les réunions et les entretiens.',
     'Vibration et notifications discrètes, sons désactivables en open space ou en télétravail.',
   ],
@@ -288,7 +288,7 @@ const en: A11yText = {
   workText: 'Neurodiversity concerns teams as well. A visual timer is a simple, discreet adjustment that helps everyone without singling anyone out.',
   workItems: [
     'Focus sessions in Pomodoro blocks, with breaks.',
-    'Milestones at 45, 30 and 15 minutes to wrap up and change topic without an abrupt cut.',
+    'Three milestones before the end, worked out from the chosen duration, to wrap up and change topic without an abrupt cut.',
     'A duration visible to all during meetings and interviews.',
     'Discreet vibration and notifications, sounds that can be turned off in an open space or when working remotely.',
   ],
@@ -411,7 +411,7 @@ const es: A11yText = {
   workText: 'La neurodiversidad también afecta a los equipos. Un temporizador visual es un ajuste sencillo y discreto, útil para todos sin señalar a nadie.',
   workItems: [
     'Sesiones de concentración en bloques Pomodoro, con pausas.',
-    'Hitos a los 45, 30 y 15 minutos para cerrar y cambiar de tema sin cortes bruscos.',
+    'Tres avisos antes del final, calculados según la duración elegida, para cerrar y cambiar de tema sin cortes bruscos.',
     'Una duración visible para todos durante reuniones y entrevistas.',
     'Vibración y notificaciones discretas, sonidos que se pueden desactivar en una oficina abierta o en teletrabajo.',
   ],
@@ -534,7 +534,7 @@ const de: A11yText = {
   workText: 'Neurodiversität betrifft auch Teams. Ein visueller Timer ist eine einfache, diskrete Anpassung, die allen nützt, ohne jemanden bloßzustellen.',
   workItems: [
     'Konzentrationsphasen in Pomodoro-Blöcken, mit Pausen.',
-    'Meilensteine bei 45, 30 und 15 Minuten, um ohne abrupten Bruch abzuschließen und das Thema zu wechseln.',
+    'Drei Marken vor dem Ende, aus der gewählten Dauer berechnet, um ohne abrupten Bruch abzuschließen und das Thema zu wechseln.',
     'Eine für alle sichtbare Dauer in Besprechungen und Gesprächen.',
     'Dezente Vibration und Benachrichtigungen, Töne lassen sich im Großraumbüro oder im Homeoffice abschalten.',
   ],
@@ -657,7 +657,7 @@ const it: A11yText = {
   workText: 'La neurodiversità riguarda anche i team. Un timer visivo è un accorgimento semplice e discreto, utile a tutti senza mettere in evidenza nessuno.',
   workItems: [
     'Sessioni di concentrazione a blocchi Pomodoro, con pause.',
-    'Tappe a 45, 30 e 15 minuti per concludere e cambiare argomento senza stacchi bruschi.',
+    'Tre traguardi prima della fine, calcolati sulla durata scelta, per concludere e cambiare argomento senza stacchi bruschi.',
     'Una durata visibile a tutti durante riunioni e colloqui.',
     'Vibrazione e notifiche discrete, suoni disattivabili in open space o in smart working.',
   ],
@@ -780,7 +780,7 @@ const pt: A11yText = {
   workText: 'A neurodiversidade também diz respeito às equipas. Um temporizador visual é um ajuste simples e discreto, útil para todos sem expor ninguém.',
   workItems: [
     'Sessões de concentração em blocos Pomodoro, com pausas.',
-    'Marcos aos 45, 30 e 15 minutos para concluir e mudar de assunto sem cortes bruscos.',
+    'Três marcos antes do fim, calculados a partir da duração escolhida, para concluir e mudar de assunto sem cortes bruscos.',
     'Uma duração visível para todos durante reuniões e entrevistas.',
     'Vibração e notificações discretas, sons que se podem desativar em open space ou em teletrabalho.',
   ],
@@ -903,7 +903,7 @@ const ar: A11yText = {
   workText: 'يهمّ التنوّع العصبي الفرق أيضًا. المؤقّت البصري تعديل بسيط وغير لافت، ينفع الجميع دون أن يُحرج أحدًا.',
   workItems: [
     'جلسات تركيز على شكل كتل بومودورو مع فترات راحة.',
-    'محطات عند 45 و30 و15 دقيقة للإنهاء وتغيير الموضوع دون انقطاع مفاجئ.',
+    'ثلاث محطات قبل النهاية، تُحسب من المدة المختارة، للإنهاء وتغيير الموضوع دون انقطاع مفاجئ.',
     'مدة مرئية للجميع أثناء الاجتماعات والمقابلات.',
     'اهتزاز وإشعارات هادئة، وأصوات يمكن إيقافها في المكاتب المفتوحة أو العمل عن بُعد.',
   ],

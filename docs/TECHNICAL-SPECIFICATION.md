@@ -16,15 +16,16 @@ pour le natif, [Build mobile](MOBILE.md).
 - [3. Modèle de données et persistance](#3-modèle-de-données-et-persistance)
 - [4. Services du domaine](#4-services-du-domaine)
 - [5. Rendu du cadran](#5-rendu-du-cadran)
-- [6. Sons](#6-sons)
-- [7. Intégration native](#7-intégration-native)
-- [8. Internationalisation](#8-internationalisation)
-- [9. Thème et styles](#9-thème-et-styles)
-- [10. Accessibilité technique](#10-accessibilité-technique)
-- [11. Build, exécution et intégration continue](#11-build-exécution-et-intégration-continue)
-- [12. Qualité et tests](#12-qualité-et-tests)
-- [13. Sécurité](#13-sécurité)
-- [14. Contraintes, limites et évolutions](#14-contraintes-limites-et-évolutions)
+- [6. Paliers](#6-paliers)
+- [7. Sons](#7-sons)
+- [8. Intégration native](#8-intégration-native)
+- [9. Internationalisation](#9-internationalisation)
+- [10. Thème et styles](#10-thème-et-styles)
+- [11. Accessibilité technique](#11-accessibilité-technique)
+- [12. Build, exécution et intégration continue](#12-build-exécution-et-intégration-continue)
+- [13. Qualité et tests](#13-qualité-et-tests)
+- [14. Sécurité](#14-sécurité)
+- [15. Contraintes, limites et évolutions](#15-contraintes-limites-et-évolutions)
 
 ---
 
@@ -111,7 +112,9 @@ features/accessibility/  Page de déclaration d'accessibilité et ses textes
 | --------- | ------ | ----------------- |
 | `MAX_MINUTES` | 60 | RG-1 |
 | `EXTRA_SECONDS` | 300 | RG-2 |
-| `MILESTONES` | `[45, 30, 15]` | RG-4 |
+| `MILESTONES` | `[45, 30, 15]` — les trois timbres, et les paliers d'une longue session | RG-4 |
+| `LONG_SESSION_MINUTES` | 40 | RG-4 |
+| `FINAL_WARNING_MINUTES` | 1 | RG-4 |
 | `LATE_ALERT_SECONDS` | 90 | RG-15 |
 | `LONG_BREAK_EVERY` | 4 | RG-3 |
 | `MAX_SESSIONS` | 500 | RG-7 |
@@ -225,11 +228,39 @@ redemande le maintien d'écran.
 - **Gestes** : événements *pointer* (`pointerdown` / `pointermove` / `pointerup` /
   `pointercancel`), un seul jeu de gestionnaires pour la souris, le tactile et le stylet.
 - **Clavier** : ← / → (±1 min), Page↑ / Page↓ (±5 min), Début / Fin (0 / 60 min).
-- Le SVG est `aria-hidden` ; c'est son conteneur qui porte la sémantique (voir §10).
+- Le SVG est `aria-hidden` ; c'est son conteneur qui porte la sémantique (voir §11).
 
 ---
 
-## 6. Sons
+## 6. Paliers
+
+`core/helpers/milestones.ts` calcule, à partir de la durée d'une session, la liste des paliers
+— minutes restantes et timbre emprunté.
+
+Des paliers fixes à 45 / 30 / 15 ne préviennent que les longues sessions : un Pomodoro de 25 min
+ne reçoit que celui des 15 minutes, et une étape de routine de 10 min aucun. Au-delà de
+`LONG_SESSION_MINUTES`, les trois paliers connus sont donc conservés tels quels ; en dessous, ils
+se déduisent de la durée : **la moitié, le dernier quart, puis une minute avant la fin**.
+
+| Durée | Paliers (minutes restantes) |
+| ----- | --------------------------- |
+| 60 min | 45, 30, 15 |
+| 25 min | 13, 6, 1 |
+| 10 min | 5, 3, 1 |
+| 2 min | 1 |
+| 1 min | aucun |
+
+Le timbre (son, motif de vibration, canal de notification) vient du **rang** et jamais du nombre
+de minutes : le dernier palier porte toujours le plus insistant. Un palier arrondi au même nombre
+de minutes qu'un autre est fusionné, et aucun ne tombe sur la durée totale elle-même.
+
+`SessionService` expose la liste sous forme de `computed`, calculée sur la durée annoncée de la
+session — un réglage au doigt en cours de route ne déplace donc pas les paliers déjà franchis —,
+et vide pendant la prolongation « +5 min », qui est un rabiot et non une session à jalonner.
+
+---
+
+## 7. Sons
 
 `core/helpers/sound-patterns.ts` définit les quatre motifs (`milestone45`, `milestone30`,
 `milestone15`, `end`) sous forme de notes — fréquence, décalage, durée, gain, forme d'onde — avec
@@ -246,9 +277,9 @@ de l'application et ceux des notifications sont ainsi identiques par constructio
 
 ---
 
-## 7. Intégration native
+## 8. Intégration native
 
-### 7.1 Notifications locales
+### 8.1 Notifications locales
 
 | Plateforme | Mise en œuvre |
 | ---------- | ------------- |
@@ -261,7 +292,7 @@ nomme la notification de fin (« Place à : Petit-déjeuner »), et aucune prolo
 programmée (RG-17). Sur Android 12+, les alarmes exactes peuvent
 requérir `SCHEDULE_EXACT_ALARM` dans `AndroidManifest.xml`. Aucun effet dans le navigateur.
 
-### 7.2 Widget iOS
+### 8.2 Widget iOS
 
 - Extension `PomodoroWidget` (SwiftUI, WidgetKit, iOS 17+).
 - Transport : plugin Capacitor **local** `WidgetBridge` (`ios/App/App/WidgetBridgePlugin.swift`),
@@ -274,14 +305,14 @@ requérir `SCHEDULE_EXACT_ALARM` dans `AndroidManifest.xml`. Aucun effet dans le
 - Sur appareil, l'équipe de signature doit être choisie pour les cibles **App** et
   **PomodoroWidget** afin que Xcode crée l'App Group.
 
-### 7.3 Identité de l'application
+### 8.3 Identité de l'application
 
 `appId` : `com.maximejolivet.pomodorotdah` · `appName` : Pomodoro Accessibilité · `webDir` : `www`.
 L'icône iOS est générée depuis `resources/app-icon.svg` par `make icon`.
 
 ---
 
-## 8. Internationalisation
+## 9. Internationalisation
 
 - Un dictionnaire par langue dans `core/i18n/locales/` : `fr`, `en`, `es`, `de`, `it`, `pt`, `ar`.
 - Les clés sont **typées d'après le français** (`type I18nKey = keyof typeof fr`) : une clé
@@ -296,7 +327,7 @@ L'icône iOS est générée depuis `resources/app-icon.svg` par `make icon`.
 
 ---
 
-## 9. Thème et styles
+## 10. Thème et styles
 
 | Fichier | Contenu |
 | ------- | ------- |
@@ -311,7 +342,7 @@ garantit l'homogénéité des contrastes (ENF-MNT-2).
 
 ---
 
-## 10. Accessibilité technique
+## 11. Accessibilité technique
 
 | Exigence | Mise en œuvre |
 | -------- | ------------- |
@@ -335,15 +366,15 @@ cahier des charges fonctionnel).
 
 ---
 
-## 11. Build, exécution et intégration continue
+## 12. Build, exécution et intégration continue
 
-### 11.1 Commandes
+### 12.1 Commandes
 
 Le `Makefile` est le point d'entrée (`make` seul affiche l'aide) : `install`, `dev`, `build`,
 `watch`, `test`, `sync`, `sounds`, `icon`, `ios`, `android`, `open-ios`, `open-android`, `clean`.
 Les scripts npm correspondants sont `start`, `build`, `watch`, `test`, `test:a11y`.
 
-### 11.2 Build web
+### 12.2 Build web
 
 - Builder `@angular-devkit/build-angular:application`, sortie `dist/pomodoro-tdah`.
 - Production : hachage des noms de fichiers, budgets **500 ko / 1 Mo** pour le bundle initial et
@@ -351,13 +382,13 @@ Les scripts npm correspondants sont `start`, `build`, `watch`, `test`, `test:a11
 - Développement : optimisation désactivée, *source maps*.
 - Les fichiers de `public/` sont copiés tels quels (favicons, icône Apple).
 
-### 11.3 Chaîne mobile
+### 12.3 Chaîne mobile
 
 `make sync` : build → copie de `dist/pomodoro-tdah/browser` dans `www/` → `npx cap sync` →
 `make sounds` (génération des WAV et copie dans `res/raw` si le dossier Android existe).
 `make open-ios` / `make open-android` enchaînent `sync` puis l'ouverture de l'IDE natif.
 
-### 11.4 Intégration continue
+### 12.4 Intégration continue
 
 Workflow GitHub Actions `.github/workflows/a11y.yml`, déclenché sur les poussées vers `main` et
 sur chaque demande de fusion, avec deux jobs sur `ubuntu-latest` :
@@ -368,7 +399,7 @@ sur chaque demande de fusion, avec deux jobs sur `ubuntu-latest` :
 
 La version de Node vient de `.nvmrc` ; le cache npm est activé.
 
-### 11.5 Déploiement
+### 12.5 Déploiement
 
 Le build web est un ensemble de fichiers statiques : n'importe quel hébergement statique convient,
 sans variable d'environnement ni service annexe. Les versions mobiles sont produites depuis Xcode
@@ -377,7 +408,7 @@ maintenue.
 
 ---
 
-## 12. Qualité et tests
+## 13. Qualité et tests
 
 | Niveau | Outil | Portée |
 | ------ | ----- | ------ |
@@ -401,7 +432,7 @@ sémantique.
 
 ---
 
-## 13. Sécurité
+## 14. Sécurité
 
 - **Surface d'attaque réduite** : aucun serveur, aucune requête sortante, aucune authentification,
   aucune donnée quittant l'appareil.
@@ -415,9 +446,9 @@ sémantique.
 
 ---
 
-## 14. Contraintes, limites et évolutions
+## 15. Contraintes, limites et évolutions
 
-### 14.1 Limites assumées
+### 15.1 Limites assumées
 
 | Limite | Raison |
 | ------ | ------ |
@@ -428,7 +459,7 @@ sémantique.
 | Pas de tests avec lecteur d'écran réel | Vérification automatique et revue de code seulement ; écart publié dans la déclaration |
 | Tests d'accessibilité sur Chromium seul | Un seul moteur en CI |
 
-### 14.2 Points de vigilance
+### 15.2 Points de vigilance
 
 - Toute nouvelle couleur doit passer par les jetons de thème et être vérifiée en clair **et** en sombre.
 - Tout nouveau texte doit exister dans les sept dictionnaires, sous peine d'erreur de compilation.
@@ -436,7 +467,7 @@ sémantique.
   quoi le comportement diffère selon que l'application est au premier plan ou non.
 - Tout nouvel état de session doit être porté par `SessionService`, jamais par un composant de page.
 
-### 14.3 Évolutions envisageables
+### 15.3 Évolutions envisageables
 
 Export et import des données · widget Android · audit manuel complet avec lecteur d'écran et
 agrandissement à 200 % · mesure du contraste des éléments non textuels sur le rendu · extension

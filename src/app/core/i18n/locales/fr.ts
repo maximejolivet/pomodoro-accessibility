@@ -144,6 +144,6 @@ export const fr = {
   'notif.endBody': 'Fais une pause.',
   'notif.extraEndTitle': 'Prolongation terminée',
   'notif.nextBody': 'Place à : {name}',
-  'notif.channel.milestone': 'Palier {m} min',
+  'notif.channel.milestone': 'Palier {n} sur 3',
   'notif.channel.end': 'Fin du minuteur'
 };
