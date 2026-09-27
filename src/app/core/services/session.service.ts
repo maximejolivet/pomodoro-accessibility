@@ -130,6 +130,12 @@ export class SessionService {
    */
   readonly settingLocked = computed(() => this.locked() || this.dialUnit() === 'seconds');
 
+  /**
+   * Mode sport : la routine chargée est un entraînement. La page prend alors la couleur
+   * de l'étape en cours, et le chrono grossit — on lit sa séance de loin, en bougeant.
+   */
+  readonly sportMode = computed(() => this.activeRoutine()?.workout === true);
+
   /** Étape assez courte pour que les dernières secondes se comptent une à une. */
   private readonly shortStep = computed(() => this.dialUnit() === 'seconds');
 

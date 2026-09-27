@@ -76,6 +76,15 @@ export interface Routine {
    * illisibles là où deux étapes et un nombre de tours se lisent d'un coup.
    */
   rounds?: number;
+  /**
+   * Routine d'entraînement : tant qu'elle est chargée, la couleur de l'étape en cours
+   * irrigue toute la page — rouge à l'effort, vert au repos. On sait où l'on en est d'un
+   * coup d'œil, de loin, le téléphone posé par terre.
+   *
+   * Porté par la routine et non par un réglage : une séance s'arme et se quitte, alors
+   * qu'un réglage global se rallume et s'oublie.
+   */
+  workout?: boolean;
   /** Absent tant qu'aucun rappel n'est réglé : une routine se lance très bien à la main. */
   reminder?: RoutineReminder;
 }

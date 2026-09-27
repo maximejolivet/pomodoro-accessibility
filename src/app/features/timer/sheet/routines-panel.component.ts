@@ -199,6 +199,7 @@ export class RoutinesPanelComponent {
       steps: routine.steps.map(step => this.toDraft(step)),
       reminder: this.toReminderDraft(routine.reminder),
       rounds: routineRounds(routine),
+      workout: routine.workout === true,
       isNew: false
     });
   }
@@ -213,6 +214,7 @@ export class RoutinesPanelComponent {
       steps: routine.steps.map(step => this.toDraft(step)),
       reminder: this.toReminderDraft(undefined),
       rounds: 1,
+      workout: false,
       isNew: true
     });
     this.openStep.set(routine.steps[0].id);
@@ -299,6 +301,7 @@ export class RoutinesPanelComponent {
       ...this.label(draft.name, draft.routine.nameKey, this.i18n.t('routine.new')),
       icon: draft.icon,
       rounds: Math.max(1, Math.min(MAX_ROUNDS, Math.round(draft.rounds))),
+      workout: draft.workout,
       reminder: this.fromReminderDraft(draft.reminder),
       steps: draft.steps.map(step => ({
         id: step.id,

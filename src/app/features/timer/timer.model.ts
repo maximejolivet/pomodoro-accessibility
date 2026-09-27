@@ -49,5 +49,7 @@ export interface RoutineDraft {
   reminder: RoutineReminderDraft;
   /** Nombre de tours : 1 quand la suite d'étapes ne se joue qu'une fois. */
   rounds: number;
+  /** Routine d'entraînement : la page passe en mode sport tant qu'elle est chargée. */
+  workout: boolean;
   isNew: boolean;
 }

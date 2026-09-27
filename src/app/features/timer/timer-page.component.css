@@ -29,6 +29,37 @@
   overflow-x: hidden;
 }
 
+/*
+ * Mode sport : la couleur de l'étape irrigue la page entière — rouge à l'effort, vert au
+ * repos. On sait dans quelle phase on est sans lire, de loin, le téléphone par terre.
+ *
+ * C'est une teinte posée sur le fond du thème (18 à 28 %), et non une couleur pleine :
+ * le fond reste clair en thème clair et sombre en thème sombre, donc tout ce qui s'écrit
+ * dessus garde le contraste qu'il avait. Une couleur pleine obligerait à revérifier
+ * chaque texte de l'application dans dix teintes.
+ */
+.stage.sport {
+  /*
+   * Le gris secondaire tombe à 2,82:1 sur le fond teinté — mesuré sur les dix couleurs
+   * de la palette, dans les deux thèmes, au pire endroit du dégradé. Il passe donc au
+   * gris fort (5,0:1 au pire), pour tout ce qui s'écrit sur la scène : l'état sous les
+   * boutons, le compteur de tours, le titre de la routine.
+   */
+  --muted: var(--muted-strong);
+
+  background:
+    radial-gradient(
+      ellipse at 50% 30%,
+      color-mix(in srgb, var(--sport-c) 22%, var(--bg-glow)) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--sport-c) 18%, var(--bg-top)),
+      color-mix(in srgb, var(--sport-c) 30%, var(--bg-bottom))
+    );
+}
+
 .accessibility-link {
   position: fixed;
   /*

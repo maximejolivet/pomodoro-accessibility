@@ -71,6 +71,7 @@ export const DEFAULT_ROUTINES: Routine[] = [
     // Pas d'échauffement dans la liste — les tours rejouent la routine entière, il
     // reviendrait huit fois. Un échauffement se fait en routine à part.
     rounds: 8,
+    workout: true,
     steps: [
       { id: 'tabata-work', name: '', nameKey: 'routine.tabata.work', icon: '🏃', seconds: 20, color: '#d63f4f', kind: 'focus' },
       { id: 'tabata-rest', name: '', nameKey: 'routine.tabata.rest', icon: '🧘', seconds: 10, color: '#56b27b', kind: 'break' }

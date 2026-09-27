@@ -164,6 +164,9 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-ROU-20 | Quand l'étape en cours dure moins d'une minute, le cadran gradue des **secondes** et l'affiche (pastille « sec »).                    | M    |
 | EF-ROU-21 | Sur une étape de moins d'une minute, les trois dernières secondes sont égrenées : un son, une vibration, un éclat, et le chiffre dit. | S    |
 | EF-ROU-22 | Sur une telle étape, la suivante est annoncée à voix haute 5 s avant la fin (« Ensuite : Repos »).                                    | S    |
+| EF-ROU-23 | Une routine peut être marquée **entraînement** ; le mode sport s'installe tant qu'elle est chargée, et la quitte avec elle.           | S    |
+| EF-ROU-24 | En mode sport, la couleur de l'étape en cours teinte toute la page : elle change à chaque phase, sans rien à lire.                    | S    |
+| EF-ROU-25 | En mode sport, le chrono et le nom de l'étape sont agrandis, le nom passé sous le chrono.                                             | S    |
 
 ### 4.4 Tutoriel d'accueil (`EF-TUT`)
 
@@ -295,6 +298,8 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | RG-25 | Le compteur de tours repart à 1 quand la routine est lancée ou quittée, jamais quand on saute d'une étape à l'autre : refaire une étape ne recommence pas l'entraînement. |
 | RG-26 | Cadran gradué en secondes : le **réglage** de la durée est neutralisé (glissement, flèches, boutons − / +), car il travaille en minutes. Démarrer et mettre en pause restent possibles. |
 | RG-27 | L'unité du cadran suit la **durée réglée**, jamais le temps restant : un Pomodoro ne bascule pas en secondes dans sa dernière minute.                                    |
+| RG-28 | Le mode sport **teinte** le fond du thème (18 à 30 %) au lieu de le remplacer : clair reste clair, sombre reste sombre, et les textes gardent leur contraste. |
+| RG-29 | Sur ce fond teinté, le gris secondaire passe au gris fort : mesuré sur les dix couleurs de la palette, il tombait à 2,82:1 (WCAG 1.4.3).                     |
 | RG-23 | Le tutoriel se montre tant qu'il n'a pas été vu. Passé, terminé ou revu, il ne se remontre plus de lui-même — seul *Revoir le tutoriel* le rouvre.                      |
 | RG-24 | Le tutoriel n'avance jamais seul, et le panneau de réglages se ferme avant qu'il ne s'ouvre : deux modales à la fois ne s'entendraient pas.                             |
 
@@ -332,6 +337,8 @@ Une routine répétée sert aussi d'entraînement : deux étapes — « Effort 2
 et huit tours font un Tabata, livré avec l'application. Sur une étape aussi courte, le cadran
 gradue des secondes, les trois dernières sont égrenées et la suivante est annoncée avant la fin.
 L'échauffement, lui, se fait en routine à part : les tours rejouent la routine entière.
+Marquée *entraînement*, la routine fait en plus passer la page en mode sport : la couleur de
+l'étape teinte tout l'écran — rouge à l'effort, vert au repos — et le chrono s'agrandit.
 
 ⚙︎ → Modes → *Routines* → « Routine du matin » : le panneau se ferme, la première étape
 (« S'habiller », 10 min) est armée sur le cadran, et la bande montre les quatre étapes. Appui

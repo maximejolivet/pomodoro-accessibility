@@ -115,6 +115,8 @@ export const de: Dictionary = {
   'routine.tabata': 'Tabata',
   'routine.tabata.work': 'Belastung',
   'routine.tabata.rest': 'Pause',
+  'routine.workout': 'Training',
+  'routine.workoutHint': 'Die Seite nimmt die Farbe des Schritts an, und die Uhr wird größer',
   'routine.rounds': 'Runden',
   'routine.roundsHint': 'Die Schritte erneut abspielen: acht Runden für ein Tabata',
   'routine.roundsOnce': 'Nur einmal',

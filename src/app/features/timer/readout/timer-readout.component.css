@@ -45,6 +45,34 @@
 }
 
 /*
+ * Mode sport : le chrono et le nom de l'étape se lisent à deux mètres, empilés plutôt
+ * qu'alignés. `:host-context` et non `.sport .readout` : la classe vit sur la page, hors
+ * du composant, et l'encapsulation Angular ne laisserait pas le sélecteur correspondre.
+ */
+:host-context(.sport) .readout-main {
+  flex-direction: column;
+  gap: 0;
+}
+
+:host-context(.sport) .readout-time {
+  font-size: 44px;
+  line-height: 1.1;
+}
+
+:host-context(.sport) .readout-mode {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+:host-context(.sport) .cycle {
+  margin-top: -8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--muted-strong);
+}
+
+/*
  * Régler la durée sans glisser : cible de 44 px, appui maintenu pour enchaîner
  * les minutes (WCAG 2.5.7 et 2.5.8).
  */

@@ -262,6 +262,16 @@
       </button>
     </div>
 
+    <!-- Une séance s'arme et se quitte : le mode sport suit la routine, pas un réglage
+         global qu'on rallume et qu'on oublie -->
+    <label class="reminder-switch workout">
+      <span class="reminder-text">
+        {{ i18n.t('routine.workout') }}
+        <small>{{ i18n.t('routine.workoutHint') }}</small>
+      </span>
+      <input type="checkbox" role="switch" class="switch" name="workout" [(ngModel)]="d.workout" />
+    </label>
+
     <!-- Rejouer la suite d'étapes : deux étapes et huit tours se lisent, seize étapes non -->
     <label class="duration rounds">
       <span class="duration-head">

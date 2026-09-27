@@ -115,6 +115,8 @@ export const es: Dictionary = {
   'routine.tabata': 'Tabata',
   'routine.tabata.work': 'Esfuerzo',
   'routine.tabata.rest': 'Descanso',
+  'routine.workout': 'Entrenamiento',
+  'routine.workoutHint': 'La página toma el color del paso, y el cronómetro crece',
   'routine.rounds': 'Vueltas',
   'routine.roundsHint': 'Repetir la serie de pasos: ocho vueltas para un Tabata',
   'routine.roundsOnce': 'Una sola vez',

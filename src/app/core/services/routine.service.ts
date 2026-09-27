@@ -77,6 +77,7 @@ export class RoutineService {
       .map(r => ({
         ...r,
         rounds: normalizeRounds(r.rounds),
+        workout: r.workout === true,
         steps: r.steps.map(step => ({
           ...step,
           seconds: Math.max(MIN_STEP_SECONDS, Math.min(MAX_STEP_SECONDS, Math.round(step.seconds)))

@@ -100,7 +100,7 @@ features/accessibility/  Page de déclaration d'accessibilité et ses textes
 | ---- | ------ | ----- |
 | `Preset` | `id`, `name`, `nameKey?`, `seconds`, `color`, `kind` | `kind` ∈ `focus` \| `break` \| `longBreak` ; `name` vide pour un mode par défaut, dont le libellé vient de `nameKey` (traduit) |
 | `RoutineStep` | `id`, `name`, `nameKey?`, `icon`, `seconds`, `color`, `kind` | Un `Preset` plus un pictogramme : une étape se démarre et s'enregistre exactement comme un mode (`kind` ∈ `focus` \| `break`) |
-| `Routine` | `id`, `name`, `nameKey?`, `icon`, `steps`, `rounds?`, `reminder?` | Suite ordonnée de 1 à 10 étapes (RG-16), jouée `rounds` fois (1 à 20) |
+| `Routine` | `id`, `name`, `nameKey?`, `icon`, `steps`, `rounds?`, `workout?`, `reminder?` | Suite ordonnée de 1 à 10 étapes (RG-16), jouée `rounds` fois (1 à 20) ; `workout` fait passer la page en mode sport |
 | `RoutineReminder` | `hour`, `minute`, `days` | `days` en ISO 8601 (1 = lundi … 7 = dimanche), jamais vide (RG-20) |
 | `Session` | `name`, `color`, `kind`, `plannedSeconds`, `activeSeconds`, `startedAt`, `endedAt`, `completed` | Nom et couleur figés à l'enregistrement (RG-9) |
 | `ActiveSession` | `name`, `color`, `kind`, `plannedSeconds`, `startedAt`, `activeMs`, `runningSince` | `runningSince` à `null` en pause ; `activeMs` cumule le temps décompté avant la reprise courante |
@@ -263,6 +263,26 @@ Deux garde-fous :
 
 Une pastille « sec » sous le bouton central dit l'unité : sans elle, un cadran réglé sur 20
 secondes se lit 20 minutes.
+
+### 5.2 Mode sport
+
+Une routine marquée `workout` pose la classe `sport` sur la scène, et y publie la couleur de
+l'étape en cours (`--sport-c`). Porté par la routine plutôt que par un réglage global : une
+séance s'arme et se quitte, un réglage se rallume et s'oublie.
+
+Le fond de la scène est alors **teinté** de cette couleur (18 % en haut, 30 % en bas) au lieu
+d'être remplacé : le clair reste clair et le sombre reste sombre, si bien que tout ce qui s'y
+écrit garde le contraste qu'il avait. Une couleur pleine aurait obligé à revérifier chaque
+texte de l'application dans dix teintes.
+
+Une exception mesurée : le gris secondaire tombait à **2,82:1** sur le fond teinté (pire cas
+sur les dix couleurs de la palette, thème clair, bas du dégradé). `.stage.sport` redéfinit donc
+`--muted` sur `--muted-strong`, ce qui remonte le pire cas à 5,0:1 et couvre d'un coup tout ce
+qui s'écrit sur la scène — l'état sous les boutons, le compteur de tours, le titre de la routine.
+
+Le chrono et le nom de l'étape s'agrandissent par `:host-context(.sport)` : la classe vit sur
+la page, hors du composant, et un sélecteur descendant ordinaire ne correspondrait pas sous
+l'encapsulation Angular.
 
 ---
 

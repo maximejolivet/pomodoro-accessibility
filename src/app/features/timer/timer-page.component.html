@@ -1,4 +1,8 @@
-<main class="stage">
+<main
+  class="stage"
+  [class.sport]="session.sportMode()"
+  [style.--sport-c]="session.selectedPreset().color"
+>
   <h1 class="sr-only">Pomodoro Accessibilité</h1>
   <!-- Zone d'annonces vocales pour lecteurs d'écran -->
   <div aria-live="polite" aria-atomic="true" class="sr-only" id="a11y-announcements">{{ session.announcement() }}</div>

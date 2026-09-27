@@ -114,6 +114,8 @@ export const fr = {
   'routine.tabata': 'Tabata',
   'routine.tabata.work': 'Effort',
   'routine.tabata.rest': 'Repos',
+  'routine.workout': 'Entraînement',
+  'routine.workoutHint': "La page prend la couleur de l'étape, et le chrono grossit",
   'routine.rounds': 'Tours',
   'routine.roundsHint': "Rejouer la suite d'étapes : huit tours pour un Tabata",
   'routine.roundsOnce': 'Une seule fois',

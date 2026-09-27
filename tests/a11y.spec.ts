@@ -1341,3 +1341,87 @@ test.describe('mode sport', () => {
     expect(await page.evaluate(() => (window as any).__vibrations as number[])).toEqual([500, 500, 500]);
   });
 });
+
+test.describe('mode sport (design)', () => {
+  /** Une routine marquée « entraînement » : c'est elle qui fait passer la page en sport. */
+  async function armWorkout(page: Page, workout = true) {
+    await page.addInitScript(on => {
+      localStorage.setItem('pomodoro-tdah.lang', 'fr');
+      localStorage.setItem('pomodoro-tdah.routine', 'tabata');
+      if (!on) {
+        const routines = JSON.parse(localStorage.getItem('pomodoro-tdah.routines') ?? 'null') ?? [];
+        localStorage.setItem('pomodoro-tdah.routines', JSON.stringify(routines));
+      }
+    }, workout);
+  }
+
+  test('la page prend la couleur de l’étape, et la rend au changement de phase', async ({ page }) => {
+    await armWorkout(page);
+    await page.clock.install();
+    await page.goto('/');
+    await ready(page);
+
+    const stage = page.locator('.stage');
+    const tint = () => stage.evaluate(el => ({
+      color: getComputedStyle(el).getPropertyValue('--sport-c').trim(),
+      background: getComputedStyle(el).backgroundImage
+    }));
+
+    await expect(stage).toHaveClass(/sport/);
+    const effort = await tint();
+    expect(effort.color, 'la teinte de l’effort').toBe('#d63f4f');
+
+    // Au repos, toute la page change de couleur : on sait où l'on en est sans lire
+    await page.getByRole('button', { name: /démarrer/i }).click();
+    await page.clock.runFor(21_000);
+    await expect(page.locator('.readout-mode')).toHaveText('Repos');
+    const repos = await tint();
+    expect(repos.color).toBe('#56b27b');
+    expect(repos.background, 'le fond a repeint').not.toEqual(effort.background);
+  });
+
+  test('une routine ordinaire laisse la page intacte', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('pomodoro-tdah.lang', 'fr');
+      localStorage.setItem('pomodoro-tdah.routine', 'morning');
+    });
+    await page.goto('/');
+    await ready(page);
+
+    await expect(page.locator('.routine-title')).toContainText('Routine du matin');
+    await expect(page.locator('.stage')).not.toHaveClass(/sport/);
+  });
+
+  for (const theme of ['light', 'dark'] as const) {
+    test(`le fond teinté ne casse aucun contraste, thème ${theme}`, async ({ page }) => {
+      await armWorkout(page);
+      await page.addInitScript(t => localStorage.setItem('pomodoro-tdah.theme', t), theme);
+      await page.goto('/');
+      await ready(page);
+
+      // Le gris secondaire tombait à 2,82:1 sur le fond teinté : c'est ce que ce contrôle garde
+      await expect(page.locator('.stage')).toHaveClass(/sport/);
+      expect(await violations(page)).toEqual([]);
+    });
+  }
+
+  test('l’interrupteur « Entraînement » se règle et s’enregistre', async ({ page }) => {
+    await armWorkout(page);
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+    await page.getByRole('button', { name: 'Modifier la routine Tabata' }).click();
+
+    const workout = page.getByRole('switch', { name: /Entraînement/ });
+    await expect(workout).toBeChecked();
+    await workout.click();
+    await page.getByRole('button', { name: 'Enregistrer' }).click();
+
+    // Décoché, la page revient à son fond ordinaire sans recharger
+    await expect(page.locator('.stage')).not.toHaveClass(/sport/);
+    const saved = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('pomodoro-tdah.routines') ?? '[]')
+    );
+    expect(saved.find((r: { id: string }) => r.id === 'tabata').workout).toBe(false);
+  });
+});

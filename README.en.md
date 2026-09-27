@@ -123,6 +123,7 @@ visual timer is a simple, discreet and free tool at that level.
 | 🔁 **Rounds and seconds**        | A step lasts from 5 s to 60 min, a routine replays up to 20 times: "work 20 s, rest 10 s" × 8 is a Tabata |
 | 💪 **Dial in seconds**           | Below a minute the graduation counts seconds — a 20 s effort drains before your eyes instead of being a sliver |
 | 3️⃣ **Last three counted down**   | A tick, a pulse and a flash each second, and what comes next announced before the end |
+| 🎨 **Workout mode**              | A routine marked *workout* tints the whole page with the step's colour — red for work, green for rest |
 | ⏰ **Routine reminder**          | A time, some days: the notification arrives when it should and opens the routine, ready to start                               |
 | 🔁 **Automatic chaining**        | Work → break → work, with a long break every 4 cycles (can be turned off)                                              |
 | 📊 **History & statistics**      | Focus time today, completed sessions, day streak, chart of the last 7 days                                             |
@@ -216,7 +217,7 @@ A dedicated page covers all of this, including the RGAA 4.1 accessibility statem
 (conformance status, non-accessible content, contact and remedies): see the
 **♿ Accessibility** link at the bottom right of the app.
 
-These guarantees are checked on every change: `npm run test:a11y` replays sixty-seven checks
+These guarantees are checked on every change: `npm run test:a11y` replays seventy-two checks
 (axe-core on every view, in light, dark and Arabic; control of the dial by keyboard and by the
 − / + buttons; spoken time, vibration patterns and the visual alert checked against a simulated
 countdown, a short session's milestones included; the dial in seconds, the last three seconds

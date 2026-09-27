@@ -122,6 +122,7 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
 | 🔁 **Tours et secondes**         | Une étape dure de 5 s à 60 min, une routine se rejoue jusqu'à 20 fois : « effort 20 s, repos 10 s » × 8, c'est un Tabata |
 | 💪 **Cadran en secondes**        | Sous la minute, la graduation passe en secondes — un effort de 20 s se vide sous les yeux au lieu d'être un filet   |
 | 3️⃣ **Décompte des 3 dernières**  | Un tic, une impulsion et un éclat par seconde, et la suite annoncée avant la fin : finir son effort sans regarder   |
+| 🎨 **Mode sport**                | Une routine marquée *entraînement* teinte toute la page de la couleur de l'étape — rouge à l'effort, vert au repos |
 | ⏰ **Rappel de routine**         | Une heure, des jours : la notification arrive à l'heure dite et ouvre la routine, prête à démarrer                      |
 | 🔁 **Enchaînement automatique**  | Travail → pause → travail, avec une pause longue tous les 4 cycles (désactivable)                                      |
 | 📊 **Historique & statistiques** | Temps de focus du jour, sessions terminées, série de jours, graphique des 7 derniers jours                             |
@@ -218,7 +219,7 @@ Une page dédiée détaille tout cela, avec la déclaration d'accessibilité RGA
 conformité, contenus non accessibles, contact et voies de recours) : lien **♿ Accessibilité**
 en bas à droite de l'application.
 
-Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue soixante-sept
+Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue soixante-douze
 contrôles (axe-core sur toutes les vues, en clair, en sombre et en arabe ; réglage du cadran au
 clavier et aux boutons − / + ; annonce vocale, motifs de vibration et alerte visuelle vérifiés sur
 un décompte simulé, paliers d'une session courte comprise ; cadran en secondes, décompte des

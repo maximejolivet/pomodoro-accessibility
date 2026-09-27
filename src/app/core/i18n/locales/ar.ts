@@ -115,6 +115,8 @@ export const ar: Dictionary = {
   'routine.tabata': 'تاباتا',
   'routine.tabata.work': 'مجهود',
   'routine.tabata.rest': 'راحة',
+  'routine.workout': 'تدريب',
+  'routine.workoutHint': 'تأخذ الصفحة لون الخطوة، ويكبر المؤقّت',
   'routine.rounds': 'الجولات',
   'routine.roundsHint': 'إعادة تشغيل سلسلة الخطوات: ثماني جولات لتاباتا',
   'routine.roundsOnce': 'مرة واحدة فقط',
