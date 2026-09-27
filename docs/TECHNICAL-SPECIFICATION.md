@@ -16,16 +16,17 @@ pour le natif, [Build mobile](MOBILE.md).
 - [3. Modèle de données et persistance](#3-modèle-de-données-et-persistance)
 - [4. Services du domaine](#4-services-du-domaine)
 - [5. Rendu du cadran](#5-rendu-du-cadran)
-- [6. Paliers](#6-paliers)
-- [7. Sons](#7-sons)
-- [8. Intégration native](#8-intégration-native)
-- [9. Internationalisation](#9-internationalisation)
-- [10. Thème et styles](#10-thème-et-styles)
-- [11. Accessibilité technique](#11-accessibilité-technique)
-- [12. Build, exécution et intégration continue](#12-build-exécution-et-intégration-continue)
-- [13. Qualité et tests](#13-qualité-et-tests)
-- [14. Sécurité](#14-sécurité)
-- [15. Contraintes, limites et évolutions](#15-contraintes-limites-et-évolutions)
+- [6. Tutoriel d'accueil](#6-tutoriel-daccueil)
+- [7. Paliers](#7-paliers)
+- [8. Sons](#8-sons)
+- [9. Intégration native](#9-intégration-native)
+- [10. Internationalisation](#10-internationalisation)
+- [11. Thème et styles](#11-thème-et-styles)
+- [12. Accessibilité technique](#12-accessibilité-technique)
+- [13. Build, exécution et intégration continue](#13-build-exécution-et-intégration-continue)
+- [14. Qualité et tests](#14-qualité-et-tests)
+- [15. Sécurité](#15-sécurité)
+- [16. Contraintes, limites et évolutions](#16-contraintes-limites-et-évolutions)
 
 ---
 
@@ -125,6 +126,7 @@ features/accessibility/  Page de déclaration d'accessibilité et ses textes
 | `PRESET_COLORS` | 10 teintes de l'anneau | EF-MOD-3 |
 | `DEFAULT_PRESETS` | Pomodoro 25, Pause 5, Pause longue 15, Focus 15 | EF-MOD-1 |
 | `STEP_ICONS` | 32 pictogrammes (quotidien, école, travail) | EF-ROU-2 |
+| `TUTORIAL_SLIDES` | 5 vues (pictogramme, titre, texte, couleur) | EF-TUT-1 |
 | `MAX_STEPS` | 10 | RG-16 |
 | `DEFAULT_ROUTINES` | Routine du matin (4 étapes), Devoirs (4 étapes) | EF-ROU-3 |
 
@@ -147,6 +149,7 @@ la session (RG-14).
 | `keep-awake` | Écran allumé | `'on'` \| `'off'` (défaut : on) |
 | `dial-lock` | Verrou du cadran | `'on'` \| `'off'` (défaut : off) |
 | `speech` | Annonce vocale | `'off'` \| `'milestones'` \| `'minutes'` (défaut : off) |
+| `tutorial-seen` | Tutoriel d'accueil déjà vu | `'on'` \| `'off'` (défaut : off — il se montre au premier lancement) |
 | `lang` | Langue | code de langue ou `'auto'` |
 | `preset` | Mode sélectionné | identifiant |
 | `presets` | Modes | JSON `Preset[]` |
@@ -232,11 +235,43 @@ redemande le maintien d'écran.
 - **Gestes** : événements *pointer* (`pointerdown` / `pointermove` / `pointerup` /
   `pointercancel`), un seul jeu de gestionnaires pour la souris, le tactile et le stylet.
 - **Clavier** : ← / → (±1 min), Page↑ / Page↓ (±5 min), Début / Fin (0 / 60 min).
-- Le SVG est `aria-hidden` ; c'est son conteneur qui porte la sémantique (voir §11).
+- Le SVG est `aria-hidden` ; c'est son conteneur qui porte la sémantique (voir §12).
 
 ---
 
-## 6. Paliers
+## 6. Tutoriel d'accueil
+
+`features/timer/tutorial/` : cinq vues plein écran montrées une fois, à la première ouverture,
+pilotées par la préférence `tutorial-seen`. La page du minuteur les affiche tant qu'elle est fausse ; *Revoir
+le tutoriel* la remet à faux et ferme le panneau, ce qui rouvre le tutoriel.
+
+Les contraintes qui ont dessiné le composant :
+
+- **Aucune avance automatique** (WCAG 2.2.2) : rien ne bouge sans un geste. Un carrousel qui
+  défile seul dépossède de son rythme qui lit lentement.
+- **Trois entrées équivalentes** : glissement horizontal, boutons (Précédent / Suivant, points),
+  flèches du clavier. Le glissement n'est jamais le seul moyen (WCAG 2.5.1).
+- **Le focus part sur *Suivant* et y reste** d'une vue à l'autre : on traverse le tutoriel en
+  répétant la même touche. Une région `aria-live` dit « Étape 2 sur 5 : Régler la durée » —
+  le rang et le titre seulement, le texte se lisant sur place.
+- **Les quatre vues hors écran sont `inert` et `aria-hidden`** : elles restent dans le document
+  pour le glissement, mais ni la tabulation ni le lecteur d'écran n'y entrent.
+- **Le reste de la page est `inert`** tant que le tutoriel est là, comme pour le panneau de
+  réglages : sans cela la tabulation sortirait d'une modale qui se déclare `aria-modal`.
+- **Les points font 44 px de cible** pour un point de 10 px visible (WCAG 2.5.8).
+- **Plein écran plutôt qu'une carte** : au premier lancement, rien derrière ne mérite d'être
+  regardé, et la surface entière laisse la place à un pictogramme assez grand pour porter
+  l'idée sans le texte. La colonne de lecture reste à 420 px, centrée, sur un grand écran.
+  Les tailles suivent la hauteur (`clamp(…vh…)`) et la vue défile au lieu d'être rognée quand
+  le téléphone est couché (`align-items: safe center`).
+- `prefers-reduced-motion` supprime le glissement : les vues se remplacent.
+- En arabe, `flex` inverse déjà l'ordre des vues ; le décalage est inversé par
+  `:host-context([dir='rtl'])` — et non `[dir='rtl'] .track`, que l'encapsulation Angular
+  empêcherait de correspondre, l'attribut vivant sur `<html>`.
+
+---
+
+## 7. Paliers
 
 `core/helpers/milestones.ts` calcule, à partir de la durée d'une session, la liste des paliers
 — minutes restantes et timbre emprunté.
@@ -264,7 +299,7 @@ et vide pendant la prolongation « +5 min », qui est un rabiot et non une sessi
 
 ---
 
-## 7. Sons
+## 8. Sons
 
 `core/helpers/sound-patterns.ts` définit les quatre motifs (`milestone45`, `milestone30`,
 `milestone15`, `end`) sous forme de notes — fréquence, décalage, durée, gain, forme d'onde — avec
@@ -281,9 +316,9 @@ de l'application et ceux des notifications sont ainsi identiques par constructio
 
 ---
 
-## 8. Intégration native
+## 9. Intégration native
 
-### 8.1 Notifications locales
+### 9.1 Notifications locales
 
 | Plateforme | Mise en œuvre |
 | ---------- | ------------- |
@@ -313,7 +348,7 @@ Capacitor, qui compte à partir du dimanche. Android replace les rappels après 
 L'appui sur un rappel est reçu par `localNotificationActionPerformed` : `extra.routineId` remonte
 jusqu'à `SessionService`, qui **arme** la routine sans la démarrer (RG-21).
 
-### 8.2 Widget iOS
+### 9.2 Widget iOS
 
 - Extension `PomodoroWidget` (SwiftUI, WidgetKit, iOS 17+).
 - Transport : plugin Capacitor **local** `WidgetBridge` (`ios/App/App/WidgetBridgePlugin.swift`),
@@ -326,14 +361,14 @@ jusqu'à `SessionService`, qui **arme** la routine sans la démarrer (RG-21).
 - Sur appareil, l'équipe de signature doit être choisie pour les cibles **App** et
   **PomodoroWidget** afin que Xcode crée l'App Group.
 
-### 8.3 Identité de l'application
+### 9.3 Identité de l'application
 
 `appId` : `com.maximejolivet.pomodorotdah` · `appName` : Pomodoro Accessibilité · `webDir` : `www`.
 L'icône iOS est générée depuis `resources/app-icon.svg` par `make icon`.
 
 ---
 
-## 9. Internationalisation
+## 10. Internationalisation
 
 - Un dictionnaire par langue dans `core/i18n/locales/` : `fr`, `en`, `es`, `de`, `it`, `pt`, `ar`.
 - Les clés sont **typées d'après le français** (`type I18nKey = keyof typeof fr`) : une clé
@@ -348,7 +383,7 @@ L'icône iOS est générée depuis `resources/app-icon.svg` par `make icon`.
 
 ---
 
-## 10. Thème et styles
+## 11. Thème et styles
 
 | Fichier | Contenu |
 | ------- | ------- |
@@ -363,7 +398,7 @@ garantit l'homogénéité des contrastes (ENF-MNT-2).
 
 ---
 
-## 11. Accessibilité technique
+## 12. Accessibilité technique
 
 | Exigence | Mise en œuvre |
 | -------- | ------------- |
@@ -387,15 +422,15 @@ cahier des charges fonctionnel).
 
 ---
 
-## 12. Build, exécution et intégration continue
+## 13. Build, exécution et intégration continue
 
-### 12.1 Commandes
+### 13.1 Commandes
 
 Le `Makefile` est le point d'entrée (`make` seul affiche l'aide) : `install`, `dev`, `build`,
 `watch`, `test`, `sync`, `sounds`, `icon`, `ios`, `android`, `open-ios`, `open-android`, `clean`.
 Les scripts npm correspondants sont `start`, `build`, `watch`, `test`, `test:a11y`.
 
-### 12.2 Build web
+### 13.2 Build web
 
 - Builder `@angular-devkit/build-angular:application`, sortie `dist/pomodoro-tdah`.
 - Production : hachage des noms de fichiers, budgets **500 ko / 1 Mo** pour le bundle initial et
@@ -403,13 +438,13 @@ Les scripts npm correspondants sont `start`, `build`, `watch`, `test`, `test:a11
 - Développement : optimisation désactivée, *source maps*.
 - Les fichiers de `public/` sont copiés tels quels (favicons, icône Apple).
 
-### 12.3 Chaîne mobile
+### 13.3 Chaîne mobile
 
 `make sync` : build → copie de `dist/pomodoro-tdah/browser` dans `www/` → `npx cap sync` →
 `make sounds` (génération des WAV et copie dans `res/raw` si le dossier Android existe).
 `make open-ios` / `make open-android` enchaînent `sync` puis l'ouverture de l'IDE natif.
 
-### 12.4 Intégration continue
+### 13.4 Intégration continue
 
 Workflow GitHub Actions `.github/workflows/a11y.yml`, déclenché sur les poussées vers `main` et
 sur chaque demande de fusion, avec deux jobs sur `ubuntu-latest` :
@@ -420,7 +455,7 @@ sur chaque demande de fusion, avec deux jobs sur `ubuntu-latest` :
 
 La version de Node vient de `.nvmrc` ; le cache npm est activé.
 
-### 12.5 Déploiement
+### 13.5 Déploiement
 
 Le build web est un ensemble de fichiers statiques : n'importe quel hébergement statique convient,
 sans variable d'environnement ni service annexe. Les versions mobiles sont produites depuis Xcode
@@ -429,7 +464,7 @@ maintenue.
 
 ---
 
-## 13. Qualité et tests
+## 14. Qualité et tests
 
 | Niveau | Outil | Portée |
 | ------ | ----- | ------ |
@@ -453,7 +488,7 @@ sémantique.
 
 ---
 
-## 14. Sécurité
+## 15. Sécurité
 
 - **Surface d'attaque réduite** : aucun serveur, aucune requête sortante, aucune authentification,
   aucune donnée quittant l'appareil.
@@ -467,9 +502,9 @@ sémantique.
 
 ---
 
-## 15. Contraintes, limites et évolutions
+## 16. Contraintes, limites et évolutions
 
-### 15.1 Limites assumées
+### 16.1 Limites assumées
 
 | Limite | Raison |
 | ------ | ------ |
@@ -480,7 +515,7 @@ sémantique.
 | Pas de tests avec lecteur d'écran réel | Vérification automatique et revue de code seulement ; écart publié dans la déclaration |
 | Tests d'accessibilité sur Chromium seul | Un seul moteur en CI |
 
-### 15.2 Points de vigilance
+### 16.2 Points de vigilance
 
 - Toute nouvelle couleur doit passer par les jetons de thème et être vérifiée en clair **et** en sombre.
 - Tout nouveau texte doit exister dans les sept dictionnaires, sous peine d'erreur de compilation.
@@ -488,7 +523,7 @@ sémantique.
   quoi le comportement diffère selon que l'application est au premier plan ou non.
 - Tout nouvel état de session doit être porté par `SessionService`, jamais par un composant de page.
 
-### 15.3 Évolutions envisageables
+### 16.3 Évolutions envisageables
 
 Export et import des données · widget Android · audit manuel complet avec lecteur d'écran et
 agrandissement à 200 % · mesure du contraste des éléments non textuels sur le rendu · extension

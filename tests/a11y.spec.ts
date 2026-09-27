@@ -23,6 +23,29 @@ async function setMinutes(page: Page, minutes: number) {
   await expect(page.locator('.readout-time')).toHaveText(`${String(minutes).padStart(2, '0')}:00`);
 }
 
+/**
+ * Le tutoriel d'accueil se montre au premier lancement, donc dans chaque test : sans ce
+ * drapeau, il couvrirait l'application partout ailleurs. Les tests qui le visent le
+ * retirent avec `showTutorial`.
+ */
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('pomodoro-tdah.tutorial-seen', 'on'));
+});
+
+/**
+ * Remet l'application dans l'état d'un premier lancement. Le drapeau n'est retiré qu'au
+ * tout premier chargement de l'onglet : un script d'initialisation rejoue à chaque
+ * navigation, et le tutoriel reviendrait après un rechargement censé prouver le contraire.
+ */
+async function showTutorial(page: Page, lang = 'fr') {
+  await page.addInitScript(l => {
+    localStorage.setItem('pomodoro-tdah.lang', l);
+    if (sessionStorage.getItem('first-load')) return;
+    sessionStorage.setItem('first-load', 'done');
+    localStorage.removeItem('pomodoro-tdah.tutorial-seen');
+  }, lang);
+}
+
 async function violations(page: Page) {
   const { violations } = await new AxeBuilder({ page }).withTags(WCAG).analyze();
   return violations.map(v => `${v.id} (${v.impact}) × ${v.nodes.length} — ${v.nodes[0].failureSummary}`);
@@ -913,5 +936,136 @@ test.describe('routines', () => {
     await page.getByRole('button', { name: 'Descendre Habillage' }).click();
     await page.getByRole('button', { name: 'Enregistrer' }).click();
     await expect(chips(page).first()).toHaveAccessibleName(/Repas/);
+  });
+});
+
+test.describe("tutoriel d'accueil", () => {
+  const dialog = (page: Page) => page.getByRole('dialog', { name: 'Bienvenue' });
+  const next = (page: Page) => page.getByRole('button', { name: 'Suivant' });
+  const previous = (page: Page) => page.getByRole('button', { name: 'Précédent' });
+  const dots = (page: Page) => page.getByRole('group', { name: 'Bienvenue' }).getByRole('button');
+
+  async function open(page: Page, lang = 'fr') {
+    await showTutorial(page, lang);
+    await page.goto('/');
+    await ready(page);
+    await expect(page.locator('.tutorial')).toBeVisible();
+  }
+
+  for (const theme of ['light', 'dark'] as const) {
+    test(`axe-core n'y trouve rien, thème ${theme}`, async ({ page }) => {
+      // Le thème est posé avant le premier rendu : un rechargement ferait du lancement
+      // suivant un lancement ordinaire, sans tutoriel
+      await page.addInitScript(t => localStorage.setItem('pomodoro-tdah.theme', t), theme);
+      await open(page);
+      await expect(dialog(page)).toBeVisible();
+      expect(await violations(page), 'première vue').toEqual([]);
+
+      await next(page).click();
+      await next(page).click();
+      expect(await violations(page), 'troisième vue').toEqual([]);
+    });
+  }
+
+  test('en arabe, les vues défilent dans le bon sens', async ({ page }) => {
+    await open(page, 'ar');
+    await expect(page.getByRole('dialog', { name: 'أهلًا بك' })).toBeVisible();
+    // La deuxième vue doit être lisible : un décalage pris à l'envers laisserait le vide
+    await page.getByRole('button', { name: 'التالي' }).click();
+    await expect(page.locator('.slide:not([inert]) .slide-title')).toHaveText('ضبط المدة');
+    expect(await violations(page)).toEqual([]);
+  });
+
+  test('il se traverse au clavier, sans jamais quitter la modale', async ({ page }) => {
+    await open(page);
+
+    // Le focus part sur « Suivant » et y reste : on traverse en répétant la même touche
+    await expect(next(page)).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(next(page)).toBeFocused();
+    await expect(page.locator('.slide:not([inert]) .slide-title')).toHaveText('Régler la durée');
+
+    // Les flèches avancent et reculent
+    await page.keyboard.press('ArrowRight');
+    await expect(page.locator('.slide:not([inert]) .slide-title')).toHaveText('Démarrer, faire une pause');
+    await page.keyboard.press('ArrowLeft');
+    await expect(page.locator('.slide:not([inert]) .slide-title')).toHaveText('Régler la durée');
+
+    // Derrière, la page est inerte : la tabulation ne peut pas en sortir (WCAG 2.1.2)
+    await expect(page.locator('.stage-content')).toHaveAttribute('inert', '');
+    for (let i = 0; i < 12; i++) await page.keyboard.press('Tab');
+    expect(await page.evaluate(() => !!document.activeElement?.closest('.tutorial'))).toBe(true);
+  });
+
+  test('la dernière vue termine, et le focus revient sur Démarrer', async ({ page }) => {
+    await open(page);
+    for (let i = 0; i < 4; i++) await next(page).click();
+
+    // Sur la dernière, le bouton dit que c'est fini plutôt que « Suivant »
+    const done = page.getByRole('button', { name: "C'est parti" });
+    await expect(done).toBeVisible();
+    await done.click();
+
+    await expect(dialog(page)).toHaveCount(0);
+    await expect(page.getByRole('button', { name: /démarrer/i })).toBeFocused();
+    await expect(page.locator('.stage-content')).not.toHaveAttribute('inert', '');
+  });
+
+  test('seules les vues à l’écran sont lues, et les points y mènent', async ({ page }) => {
+    await open(page);
+
+    // Quatre vues sur cinq sont hors du champ : ni la tabulation ni le lecteur d'écran
+    await expect(page.locator('.slide[aria-hidden="true"]')).toHaveCount(4);
+    await expect(page.locator('.slide:not([aria-hidden])')).toHaveCount(1);
+
+    const points = dots(page);
+    await expect(points).toHaveCount(5);
+    await expect(points.first()).toHaveAccessibleName("Aller à l'étape 1");
+    await expect(points.first()).toHaveAttribute('aria-pressed', 'true');
+
+    // Les cibles se visent, même d'une main qui tremble (WCAG 2.5.8)
+    for (const target of [points.first(), next(page), previous(page)]) {
+      const box = await target.boundingBox();
+      expect(box!.height, await target.getAttribute('aria-label') ?? '').toBeGreaterThanOrEqual(44);
+    }
+
+    // Et chaque point mène directement à sa vue
+    await points.nth(4).click();
+    await expect(points.nth(4)).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('.slide:not([inert]) .slide-title')).toHaveText('Être prévenu à ta façon');
+  });
+
+  test('« Passer » le referme, et il ne revient pas tout seul', async ({ page }) => {
+    await open(page);
+    await page.getByRole('button', { name: 'Passer' }).click();
+    await expect(dialog(page)).toHaveCount(0);
+    expect(await page.evaluate(() => localStorage.getItem('pomodoro-tdah.tutorial-seen'))).toBe('on');
+
+    // Au lancement suivant, le minuteur est là tout de suite
+    await page.reload();
+    await ready(page);
+    await expect(dialog(page)).toHaveCount(0);
+  });
+
+  test('Échap le passe aussi, où que soit le focus', async ({ page }) => {
+    await open(page);
+    await page.keyboard.press('Escape');
+    await expect(dialog(page)).toHaveCount(0);
+  });
+
+  test('il se revoit depuis les réglages', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('pomodoro-tdah.lang', 'fr'));
+    await page.goto('/');
+    await ready(page);
+    await expect(dialog(page)).toHaveCount(0);
+
+    await openSheet(page);
+    await page.locator('.tabs button:nth-child(3)').click();
+    await page.getByRole('button', { name: 'Revoir le tutoriel' }).click();
+
+    // Le panneau cède la place : deux modales à la fois ne s'entendraient pas
+    await expect(page.locator('.sheet.open')).toHaveCount(0);
+    await expect(dialog(page)).toBeVisible();
+    await expect(next(page)).toBeFocused();
   });
 });

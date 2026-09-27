@@ -117,6 +117,7 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
 | ➖➕ **Boutons − et +**            | Une minute par appui, sans glisser : pour les mains qui tremblent, un seul doigt ou un contacteur                      |
 | 🔒 **Verrou du cadran**          | Un appui et le cadran ne répond plus : une paume posée ne peut plus changer la durée ni effacer la session            |
 | 🎯 **Modes personnalisables**    | Pomodoro, Pause, Pause longue, Focus TDAH… ou tes propres modes : nom, durée (1-60 min), couleur, travail ou pause     |
+| 👋 **Tutoriel d'accueil**        | Cinq vues au premier lancement : voir le temps, le régler, le lancer, les routines, les alertes             |
 | 🧩 **Routines en pictogrammes**  | Une suite d'étapes qui s'enchaînent — s'habiller, petit-déjeuner, dents, cartable — chacune avec son image et sa durée |
 | ⏰ **Rappel de routine**         | Une heure, des jours : la notification arrive à l'heure dite et ouvre la routine, prête à démarrer                      |
 | 🔁 **Enchaînement automatique**  | Travail → pause → travail, avec une pause longue tous les 4 cycles (désactivable)                                      |
@@ -152,6 +153,7 @@ verrouille : au retour, tout est à jour.
 | **Toucher** une étape      | Aller directement à cette étape de la routine ; ✕ pour quitter la routine    |
 | ⚙︎ → **Stats**              | Voir son objectif du jour, ses statistiques et l'historique des sessions     |
 | ⚙︎ → **Réglages**           | Mode sombre, sons, vibration, alerte visuelle, annonce vocale, +5 min, enchaînement, écran allumé, objectif, langue |
+| ⚙︎ → **Réglages** → *Revoir le tutoriel* | Rejouer les cinq vues d'accueil                                 |
 
 <p align="center">
   <img src="docs/screenshot-routine.png" alt="Routine du matin en cours, avec la bande de ses quatre étapes" width="260">
@@ -212,10 +214,11 @@ Une page dédiée détaille tout cela, avec la déclaration d'accessibilité RGA
 conformité, contenus non accessibles, contact et voies de recours) : lien **♿ Accessibilité**
 en bas à droite de l'application.
 
-Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue quarante-sept
+Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue cinquante-six
 contrôles (axe-core sur toutes les vues, en clair, en sombre et en arabe ; réglage du cadran au
 clavier et aux boutons − / + ; annonce vocale, motifs de vibration et alerte visuelle vérifiés sur
-un décompte simulé, paliers d'une session courte comprise ; verrou du cadran ; enchaînement des étapes d'une routine, sa bande et son
+un décompte simulé, paliers d'une session courte comprise ; tutoriel d'accueil au clavier,
+en arabe et sans fuite du focus ; verrou du cadran ; enchaînement des étapes d'une routine, sa bande et son
 éditeur ; taille des cibles ; piège à focus de la modale ; pas de défilement horizontal à 320 px),
 et la CI les relance à chaque push.
 

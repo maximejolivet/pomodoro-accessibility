@@ -1,0 +1,228 @@
+/* Tutoriel d'accueil : cinq vues qui défilent, montrées au premier lancement. */
+
+:host {
+  display: contents;
+}
+
+/*
+ * Plein écran, et non une carte posée au milieu : au premier lancement il n'y a rien
+ * derrière qui mérite d'être regardé, et une surface entière laisse la place à un
+ * pictogramme assez grand pour porter l'idée sans le texte.
+ */
+.tutorial {
+  position: fixed;
+  inset: 0;
+  /* Au-dessus de tout : de la pastille d'accessibilité (100) et du panneau (1000) */
+  z-index: 1100;
+  display: flex;
+  justify-content: center;
+  padding:
+    calc(12px + env(safe-area-inset-top))
+    calc(16px + env(safe-area-inset-right))
+    calc(20px + env(safe-area-inset-bottom))
+    calc(16px + env(safe-area-inset-left));
+  background: linear-gradient(180deg, var(--surface-hi), var(--surface-lo));
+  animation: tutorial-fade-in 0.2s ease;
+}
+
+/* La colonne de lecture garde la largeur du reste de l'app, même sur un grand écran. */
+.tutorial-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: min(100%, 420px);
+}
+
+.tutorial-skip {
+  align-self: flex-end;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--muted-strong);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.tutorial-skip:focus-visible {
+  outline: 3px solid var(--c);
+  outline-offset: 2px;
+}
+
+/*
+ * La fenêtre sur la bande : une seule vue visible, les autres à côté. Elle prend toute
+ * la hauteur libre, et la vue s'y centre — les boutons restent en bas, à portée du pouce.
+ */
+.viewport {
+  flex: 1;
+  display: flex;
+  /*
+   * `safe` : quand la vue est plus haute que la place (téléphone couché), le centrage
+   * rognerait le haut du pictogramme — l'alignement repart alors du début, et ce qui
+   * dépasse se fait défiler au lieu d'être coupé.
+   */
+  align-items: safe center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* Le glissement horizontal appartient au tutoriel ; le défilement vertical reste au système */
+  touch-action: pan-y;
+}
+
+.track {
+  display: flex;
+  width: 100%;
+  /* En arabe, `flex` inverse déjà l'ordre des vues : le décalage suit le sens d'écriture */
+  transform: translateX(calc(var(--i) * -100%));
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* `:host-context` et non `[dir='rtl'] .track` : l'attribut est sur `<html>`, hors du
+   composant, et l'encapsulation Angular ne laisserait jamais le sélecteur correspondre. */
+:host-context([dir='rtl']) .track {
+  transform: translateX(calc(var(--i) * 100%));
+}
+
+.slide {
+  flex: 0 0 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 6px;
+  text-align: center;
+}
+
+/* Le pictogramme d'abord, et grand : il porte l'idée avant le texte. */
+.slide-icon {
+  display: grid;
+  place-items: center;
+  /* Aussi grand que l'écran le permet : plein sur un téléphone debout, réduit couché */
+  width: clamp(72px, 15vh, 132px);
+  height: clamp(72px, 15vh, 132px);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--c) 45%, #fff), var(--c));
+  box-shadow: 0 5px 0 color-mix(in srgb, var(--c) 68%, #000), 0 10px 20px rgba(25, 55, 65, 0.2);
+  font-size: clamp(34px, 7vh, 64px);
+  line-height: 1;
+}
+
+.slide-title {
+  margin: 0;
+  font-size: clamp(19px, 3vh, 24px);
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.slide-text {
+  margin: 0;
+  max-width: 34ch;
+  font-size: clamp(14px, 2vh, 16px);
+  line-height: 1.55;
+  color: var(--muted-strong);
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+/*
+ * La cible fait 44 px (WCAG 2.5.8) ; seul le point se voit, centré dedans. Un point
+ * de 10 px serait impossible à viser pour une main qui tremble.
+ */
+.dot {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.dot::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: width 0.25s ease, background-color 0.25s ease;
+}
+
+.dot.active::before {
+  width: 26px;
+  border-radius: 999px;
+  background: var(--c);
+}
+
+.dot:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: -6px;
+  border-radius: 14px;
+}
+
+.tutorial-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.tutorial-actions button {
+  flex: 1;
+  min-height: 48px;
+}
+
+.btn-text {
+  --c: inherit;
+  padding: 11px 18px;
+  font-size: 15px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.btn-neutral {
+  --c: var(--neutral);
+  --c-dark: var(--neutral-edge);
+  color: var(--muted-strong);
+  text-shadow: none;
+}
+
+/* Première vue : « Précédent » ne mène nulle part, mais reste atteignable et annoncé. */
+.tutorial-actions button[aria-disabled='true'] {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* Nom propre au composant : les `@keyframes` sont globales, même en styles scopés. */
+@keyframes tutorial-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Moins de mouvement : les vues se remplacent au lieu de glisser. */
+@media (prefers-reduced-motion: reduce) {
+  .tutorial {
+    animation: none;
+  }
+
+  .track,
+  .dot::before {
+    transition: none;
+  }
+}
+
+/* Écran bas (téléphone couché) : la colonne se resserre, les tailles suivent déjà le vh. */
+@media (max-height: 560px) {
+  .tutorial-inner {
+    gap: 10px;
+  }
+
+  .slide {
+    gap: 8px;
+  }
+}

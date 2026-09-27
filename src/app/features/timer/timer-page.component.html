@@ -16,7 +16,7 @@
 
 <!-- Derrière la modale, tout devient inerte : sinon la tabulation en sort,
        alors que le panneau se déclare aria-modal -->
-  <div class="stage-content" [attr.inert]="showSheet ? '' : null">
+  <div class="stage-content" [attr.inert]="showSheet || showTutorial() ? '' : null">
     <!-- Reste affiché jusqu'à la prochaine action : une alerte qui passe se rate. -->
     <p class="end-banner" *ngIf="showEndBanner()" [style.--c]="session.selectedPreset().color">
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -42,4 +42,7 @@
   </div>
 
   <app-settings-sheet [open]="showSheet" (closed)="onSheetClosed()" />
+
+  <!-- Au premier lancement seulement : cinq vues qui disent ce que fait l'application -->
+  <app-tutorial *ngIf="showTutorial()" (closed)="onTutorialClosed()" />
 </main>

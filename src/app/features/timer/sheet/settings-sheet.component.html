@@ -44,7 +44,7 @@
     </div>
 
     <div id="panel-settings" role="tabpanel" aria-labelledby="tab-settings" *ngIf="tab === 'settings'">
-      <app-settings-tab />
+      <app-settings-tab (closeSheet)="close()" />
     </div>
   </div>
 </section>

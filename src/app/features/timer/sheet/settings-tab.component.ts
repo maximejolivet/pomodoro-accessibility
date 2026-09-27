@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -29,6 +29,9 @@ export class SettingsTabComponent {
   readonly i18n = inject(I18nService);
   private readonly sound = inject(SoundService);
   private readonly speech = inject(SpeechService);
+
+  /** Le panneau se ferme pour laisser la place au tutoriel, qui est modal lui aussi. */
+  @Output() readonly closeSheet = new EventEmitter<void>();
 
   readonly languages = LANGUAGES;
   readonly speechAvailable = this.speech.available;
@@ -68,6 +71,12 @@ export class SettingsTabComponent {
 
   setLanguage(choice: LangChoice): void {
     this.i18n.setChoice(choice);
+  }
+
+  /** « Pas vu » remet le tutoriel à l'écran : c'est la page qui l'observe. */
+  replayTutorial(): void {
+    this.prefs.setTutorialSeen(false);
+    this.closeSheet.emit();
   }
 
   previewSound(value: 45 | 30 | 15 | 0): void {

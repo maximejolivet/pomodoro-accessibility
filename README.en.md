@@ -118,6 +118,7 @@ visual timer is a simple, discreet and free tool at that level.
 | ➖➕ **− and + buttons**           | One minute per tap, no dragging: for shaky hands, a single finger or a switch device                                   |
 | 🔒 **Dial lock**                 | One tap and the dial stops responding: a resting palm can no longer change the time or wipe the session               |
 | 🎯 **Custom modes**              | Pomodoro, Break, Long break, ADHD Focus… or your own modes: name, duration (1-60 min), color, work or break            |
+| 👋 **Welcome tutorial**          | Five views on first launch: seeing time, setting it, starting it, routines, alerts                          |
 | 🧩 **Picture routines**          | A sequence of steps that follow on their own — get dressed, breakfast, teeth, school bag — each with its picture and its length |
 | ⏰ **Routine reminder**          | A time, some days: the notification arrives when it should and opens the routine, ready to start                               |
 | 🔁 **Automatic chaining**        | Work → break → work, with a long break every 4 cycles (can be turned off)                                              |
@@ -151,6 +152,7 @@ when you come back, everything is up to date.
 | ⚙︎ → **Modes** → ✎ → *Reminder* | Set the time and the days when the routine comes to remind you            |
 | **Tap** a step             | Jump straight to that step of the routine; ✕ leaves the routine               |
 | ⚙︎ → **Stats**              | See today's goal, your statistics and session history                         |
+| ⚙︎ → **Settings** → *Play the tutorial again* | Replay the five welcome views                               |
 | ⚙︎ → **Settings**           | Dark mode, sounds, vibration, visual alert, spoken time, +5 min, chaining, screen on, goal, language |
 
 <p align="center">
@@ -210,10 +212,11 @@ A dedicated page covers all of this, including the RGAA 4.1 accessibility statem
 (conformance status, non-accessible content, contact and remedies): see the
 **♿ Accessibility** link at the bottom right of the app.
 
-These guarantees are checked on every change: `npm run test:a11y` replays forty-seven checks
+These guarantees are checked on every change: `npm run test:a11y` replays fifty-six checks
 (axe-core on every view, in light, dark and Arabic; control of the dial by keyboard and by the
 − / + buttons; spoken time, vibration patterns and the visual alert checked against a simulated
-countdown, a short session's milestones included; the dial lock; the chaining of a routine's steps, its strip and its editor; target
+countdown, a short session's milestones included; the welcome tutorial by keyboard, in
+Arabic and with no focus escape; the dial lock; the chaining of a routine's steps, its strip and its editor; target
 sizes; the modal focus trap; no horizontal scrolling at 320 px), and CI runs them on every push.
 
 ## For developers

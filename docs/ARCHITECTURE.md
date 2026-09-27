@@ -15,7 +15,7 @@ src/
     ├── app.config.ts           # Providers (routeur)
     ├── app.routes.ts           # Routes, chargées à la demande (loadComponent)
     ├── core/                   # Ce qui ne dépend d'aucune page
-    │   ├── constants/          # timer · history · preset · routine (règles et réglages du domaine)
+    │   ├── constants/          # timer · history · preset · routine · tutorial (règles et réglages du domaine)
     │   ├── models/             # preset · routine · session · alert · widget-state
     │   ├── helpers/            # storage.ts · time.ts · milestones.ts (paliers d'une session) · sound-patterns.ts (motifs + WAV) · haptic-patterns.ts
     │   ├── i18n/
@@ -44,6 +44,7 @@ src/
         │   ├── controls/               # Remise à zéro, démarrage / pause, réglages
         │   ├── sheet/                  # Panneau coulissant + onglets Modes / Stats / Réglages
         │   │                           #   (l'onglet Modes contient la section Routines et son éditeur)
+        │   ├── tutorial/               # Tutoriel d'accueil : cinq vues, au premier lancement
         │   ├── dial-geometry.ts        # Chemins SVG du cadran (fonctions pures)
         │   └── timer.model.ts          # Onglets du panneau, mode et routine en cours d'édition
         └── accessibility/
