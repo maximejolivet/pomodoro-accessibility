@@ -121,6 +121,8 @@ visual timer is a simple, discreet and free tool at that level.
 | 👋 **Welcome tutorial**          | Five views on first launch: seeing time, setting it, starting it, routines, alerts                          |
 | 🧩 **Picture routines**          | A sequence of steps that follow on their own — get dressed, breakfast, teeth, school bag — each with its picture and its length |
 | 🔁 **Rounds and seconds**        | A step lasts from 5 s to 60 min, a routine replays up to 20 times: "work 20 s, rest 10 s" × 8 is a Tabata |
+| 💪 **Dial in seconds**           | Below a minute the graduation counts seconds — a 20 s effort drains before your eyes instead of being a sliver |
+| 3️⃣ **Last three counted down**   | A tick, a pulse and a flash each second, and what comes next announced before the end |
 | ⏰ **Routine reminder**          | A time, some days: the notification arrives when it should and opens the routine, ready to start                               |
 | 🔁 **Automatic chaining**        | Work → break → work, with a long break every 4 cycles (can be turned off)                                              |
 | 📊 **History & statistics**      | Focus time today, completed sessions, day streak, chart of the last 7 days                                             |
@@ -214,11 +216,12 @@ A dedicated page covers all of this, including the RGAA 4.1 accessibility statem
 (conformance status, non-accessible content, contact and remedies): see the
 **♿ Accessibility** link at the bottom right of the app.
 
-These guarantees are checked on every change: `npm run test:a11y` replays sixty checks
+These guarantees are checked on every change: `npm run test:a11y` replays sixty-seven checks
 (axe-core on every view, in light, dark and Arabic; control of the dial by keyboard and by the
 − / + buttons; spoken time, vibration patterns and the visual alert checked against a simulated
-countdown, a short session's milestones included; the welcome tutorial by keyboard, in
-Arabic and with no focus escape; the dial lock; the chaining of a routine's steps, its strip and its editor; target
+countdown, a short session's milestones included; the dial in seconds, the last three seconds
+counted down and rounds chaining; the welcome tutorial by keyboard, in Arabic and with no
+focus escape; the dial lock; the chaining of a routine's steps, its strip and its editor; target
 sizes; the modal focus trap; no horizontal scrolling at 320 px), and CI runs them on every push.
 
 ## For developers

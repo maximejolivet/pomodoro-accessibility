@@ -27,6 +27,7 @@ export const ar: Dictionary = {
 
   'unit.minute': 'دقيقة',
   'unit.minutes': 'دقائق',
+  'unit.secShort': 'ث',
   'unit.second': 'ثانية',
   'unit.seconds': 'ثوانٍ',
 
@@ -111,6 +112,9 @@ export const ar: Dictionary = {
   'routine.counted': 'احتسابها ضمن تركيز اليوم',
   'routine.countedHint': 'مطفأ لتنظيف الأسنان، مشغّل للمراجعة',
   'routine.restore': 'استعادة الروتينات الافتراضية',
+  'routine.tabata': 'تاباتا',
+  'routine.tabata.work': 'مجهود',
+  'routine.tabata.rest': 'راحة',
   'routine.rounds': 'الجولات',
   'routine.roundsHint': 'إعادة تشغيل سلسلة الخطوات: ثماني جولات لتاباتا',
   'routine.roundsOnce': 'مرة واحدة فقط',
@@ -151,6 +155,7 @@ export const ar: Dictionary = {
   'stats.goalReached': 'تم بلوغ الهدف!',
 
   'speech.oneMinute': 'تبقّت دقيقة واحدة',
+  'speech.next': 'بعدها: {name}',
 
   'notif.milestoneTitle': 'تبقّى {m} دقيقة',
   'notif.milestoneBody': 'الوقت يمضي، واصل التقدم.',

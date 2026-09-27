@@ -1195,3 +1195,134 @@ test.describe('secondes et tours', () => {
     await expect(page.locator('#a11y-announcements')).toHaveText('Routine terminée : Tabata');
   });
 });
+
+test.describe('mode sport', () => {
+  /** L'entraînement livré avec l'app : 20 s d'effort, 10 s de repos, huit tours. */
+  async function armTabata(page: Page) {
+    await page.addInitScript(() => {
+      localStorage.setItem('pomodoro-tdah.lang', 'fr');
+      localStorage.setItem('pomodoro-tdah.routine', 'tabata');
+    });
+  }
+
+  const dial = (page: Page) => page.locator('.face');
+
+  test('le cadran passe en secondes sous la minute, et le dit', async ({ page }) => {
+    await armTabata(page);
+    await page.goto('/');
+    await ready(page);
+
+    // Vingt secondes sur une graduation d'une heure ne se verraient pas : ce sont
+    // maintenant des secondes, et une pastille le dit pour qui lit 20 comme 20 minutes
+    await expect(dial(page)).toHaveAttribute('aria-valuetext', '20 secondes');
+    await expect(dial(page)).toHaveAttribute('aria-valuenow', '20');
+    await expect(page.locator('.unit')).toHaveText('sec');
+    expect(await violations(page), 'thème clair').toEqual([]);
+
+    await page.evaluate(() => localStorage.setItem('pomodoro-tdah.theme', 'dark'));
+    await page.reload();
+    await ready(page);
+    await expect(page.locator('.unit')).toHaveText('sec');
+    expect(await violations(page), 'thème sombre').toEqual([]);
+
+    // Et le disque couvre vraiment un tiers du cadran, là où 20 s n'en étaient qu'un filet
+    const veil = await page.locator('.disk-veil').boundingBox();
+    const face = await page.locator('.dial').boundingBox();
+    expect(veil!.width / face!.width, 'largeur du disque').toBeGreaterThan(0.3);
+  });
+
+  test('en secondes, le cadran ne se règle plus mais démarre toujours', async ({ page }) => {
+    await armTabata(page);
+    await page.goto('/');
+    await ready(page);
+
+    // Le réglage travaille en minutes : il donnerait une durée sans rapport avec l'affichage
+    await expect(dial(page)).toHaveAttribute('aria-readonly', 'true');
+    await expect(page.locator('.step').first()).toHaveAttribute('aria-disabled', 'true');
+    await expect(page.locator('.step').last()).toHaveAttribute('aria-disabled', 'true');
+
+    await dial(page).focus();
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('PageDown');
+    await expect(page.locator('.readout-time')).toHaveText('00:20');
+
+    // Mais l'appui sur le cadran démarre : c'est le verrou, lui, qui le retire
+    await dial(page).click();
+    await expect(page.getByRole('button', { name: /pause/i })).toBeVisible();
+  });
+
+  test('un mode ordinaire garde la graduation en minutes', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('pomodoro-tdah.lang', 'fr'));
+    await page.goto('/');
+    await ready(page);
+
+    await expect(dial(page)).toHaveAttribute('aria-valuetext', '25 minutes');
+    await expect(dial(page)).not.toHaveAttribute('aria-readonly', 'true');
+    await expect(page.locator('.unit')).toHaveCount(0);
+  });
+
+  test('les trois dernières secondes se comptent, et la suite est annoncée', async ({ page }) => {
+    await armTabata(page);
+    await page.addInitScript(() => {
+      localStorage.setItem('pomodoro-tdah.speech', 'milestones');
+      (window as any).__spoken = [];
+      (window as any).__vibrations = [];
+      SpeechSynthesis.prototype.speak = function (u: SpeechSynthesisUtterance) {
+        (window as any).__spoken.push(u.text);
+      };
+      Object.defineProperty(navigator, 'vibrate', {
+        value: (pattern: number | number[]) => {
+          (window as any).__vibrations.push(Array.isArray(pattern) ? pattern[0] : pattern);
+          return true;
+        }
+      });
+    });
+    await page.clock.install();
+    await page.goto('/');
+    await ready(page);
+    await page.getByRole('button', { name: /démarrer/i }).click();
+    await page.evaluate(() => ((window as any).__vibrations.length = 0));
+
+    // À cinq secondes de la fin, la suite est dite : on prépare le geste sans lire l'écran
+    await page.clock.runFor(15_100);
+    expect(await page.evaluate(() => (window as any).__spoken as string[])).toEqual(['Ensuite : Repos']);
+
+    // Puis une impulsion sèche par seconde, et le chiffre
+    await page.clock.runFor(2_000);
+    expect(await page.evaluate(() => (window as any).__vibrations as number[])).toEqual([60]);
+    await page.clock.runFor(2_000);
+    expect(await page.evaluate(() => (window as any).__vibrations as number[])).toEqual([60, 60, 60]);
+    expect(await page.evaluate(() => (window as any).__spoken as string[])).toEqual([
+      'Ensuite : Repos', '3', '2', '1'
+    ]);
+
+    // La fin enchaîne sur le repos, avec son motif à elle
+    await page.clock.runFor(3_000);
+    await expect(page.locator('.readout-mode')).toHaveText('Repos');
+    expect((await page.evaluate(() => (window as any).__vibrations as number[])).slice(3))
+      .toEqual([500, 500, 500]);
+  });
+
+  test('une étape longue ne déclenche aucun décompte', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('pomodoro-tdah.lang', 'fr');
+      (window as any).__vibrations = [];
+      Object.defineProperty(navigator, 'vibrate', {
+        value: (pattern: number | number[]) => {
+          (window as any).__vibrations.push(Array.isArray(pattern) ? pattern[0] : pattern);
+          return true;
+        }
+      });
+    });
+    await page.clock.install();
+    await page.goto('/');
+    await ready(page);
+    await setMinutes(page, 1);
+    await page.getByRole('button', { name: /démarrer/i }).click();
+    await page.evaluate(() => ((window as any).__vibrations.length = 0));
+
+    // Une minute reste une minute : aucun tic, seulement le motif de fin
+    await page.clock.runFor(63_000);
+    expect(await page.evaluate(() => (window as any).__vibrations as number[])).toEqual([500, 500, 500]);
+  });
+});

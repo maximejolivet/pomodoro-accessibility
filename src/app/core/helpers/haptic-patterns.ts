@@ -12,7 +12,7 @@
  * vibration système de longueur fixe. Le rythme, lui, passe partout.
  */
 
-export type HapticId = 'milestone45' | 'milestone30' | 'milestone15' | 'end';
+export type HapticId = 'milestone45' | 'milestone30' | 'milestone15' | 'end' | 'tick';
 
 /** Une impulsion : sa durée, puis le silence qui la sépare de la suivante (millisecondes). */
 export interface Pulse {
@@ -34,6 +34,8 @@ export const HAPTIC_PATTERNS: Record<HapticId, Pulse[]> = {
     { duration: 120, pause: 100 },
     { duration: 180, pause: 0 }
   ],
+  // Une des dernières secondes : une impulsion sèche, sentie sans être comptée
+  tick: [{ duration: 60, pause: 0 }],
   // Fin : trois longues impulsions espacées, comme le carillon joué trois fois
   end: [
     { duration: 500, pause: 320 },

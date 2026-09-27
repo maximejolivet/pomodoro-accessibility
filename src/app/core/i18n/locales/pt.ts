@@ -27,6 +27,7 @@ export const pt: Dictionary = {
 
   'unit.minute': 'minuto',
   'unit.minutes': 'minutos',
+  'unit.secShort': 'seg',
   'unit.second': 'segundo',
   'unit.seconds': 'segundos',
 
@@ -111,6 +112,9 @@ export const pt: Dictionary = {
   'routine.counted': 'Contar no foco de hoje',
   'routine.countedHint': 'Desligado para lavar os dentes, ligado para estudar',
   'routine.restore': 'Repor as rotinas predefinidas',
+  'routine.tabata': 'Tabata',
+  'routine.tabata.work': 'Esforço',
+  'routine.tabata.rest': 'Descanso',
   'routine.rounds': 'Voltas',
   'routine.roundsHint': 'Repetir a série de passos: oito voltas para um Tabata',
   'routine.roundsOnce': 'Uma só vez',
@@ -151,6 +155,7 @@ export const pt: Dictionary = {
   'stats.goalReached': 'Meta alcançada!',
 
   'speech.oneMinute': 'Falta um minuto',
+  'speech.next': 'A seguir: {name}',
 
   'notif.milestoneTitle': 'Faltam {m} minutos',
   'notif.milestoneBody': 'O tempo está passando, continue firme.',

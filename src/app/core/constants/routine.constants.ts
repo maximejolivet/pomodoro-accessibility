@@ -63,6 +63,20 @@ export const DEFAULT_ROUTINES: Routine[] = [
     ]
   },
   {
+    id: 'tabata',
+    name: '',
+    nameKey: 'routine.tabata',
+    icon: '💪',
+    // Huit tours de 20 s d'effort et 10 s de repos : le Tabata, tel qu'il se pratique.
+    // Pas d'échauffement dans la liste — les tours rejouent la routine entière, il
+    // reviendrait huit fois. Un échauffement se fait en routine à part.
+    rounds: 8,
+    steps: [
+      { id: 'tabata-work', name: '', nameKey: 'routine.tabata.work', icon: '🏃', seconds: 20, color: '#d63f4f', kind: 'focus' },
+      { id: 'tabata-rest', name: '', nameKey: 'routine.tabata.rest', icon: '🧘', seconds: 10, color: '#56b27b', kind: 'break' }
+    ]
+  },
+  {
     id: 'homework',
     name: '',
     nameKey: 'routine.homework',

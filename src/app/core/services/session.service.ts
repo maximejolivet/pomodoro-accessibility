@@ -2,7 +2,8 @@ import { Injectable, computed, effect, inject, signal, untracked } from '@angula
 import { App } from '@capacitor/app';
 import { MIN_RECORDED_SECONDS } from '../constants/history.constants';
 import {
-  CUE_MS, EXTRA_SECONDS, LATE_ALERT_SECONDS, LONG_BREAK_EVERY, MAX_MINUTES, MILESTONES, MIN_MINUTES
+  COUNTDOWN_FROM, CUE_MS, EXTRA_SECONDS, LATE_ALERT_SECONDS, LONG_BREAK_EVERY, MAX_MINUTES,
+  MILESTONES, MIN_MINUTES, NEXT_ANNOUNCE_SECONDS, SECONDS_DIAL_BELOW
 } from '../constants/timer.constants';
 import { milestonesFor, type Milestone } from '../helpers/milestones';
 import { readPref, writePref } from '../helpers/storage';
@@ -105,6 +106,33 @@ export class SessionService {
 
   readonly displayMinutes = computed(() => Math.min(60, this.displaySeconds() / 60));
 
+  /**
+   * Unité du cadran. Une étape d'entraînement dure vingt secondes : sur une graduation
+   * d'une heure elle ne se voit pas, sur une graduation d'une minute elle se vide sous
+   * les yeux. C'est la durée réglée qui décide, et non le temps restant — sinon le cadran
+   * changerait d'unité dans la dernière minute d'un Pomodoro.
+   */
+  readonly dialUnit = computed<'seconds' | 'minutes'>(() =>
+    this.durationSeconds() > 0 && this.durationSeconds() < SECONDS_DIAL_BELOW ? 'seconds' : 'minutes'
+  );
+
+  /** Ce que le cadran gradue, toujours de 0 à 60 : des secondes ou des minutes. */
+  readonly displayUnits = computed(() =>
+    this.dialUnit() === 'seconds' ? this.displaySeconds() : this.displayMinutes()
+  );
+
+  /**
+   * Le cadran ne se règle pas quand il compte en secondes : le glissement, les flèches et
+   * les boutons − / + travaillent en minutes, et donneraient une durée sans rapport avec
+   * ce qui est affiché. Une étape de quelques secondes se règle dans l'éditeur de routine.
+   *
+   * Démarrer et mettre en pause restent possibles : c'est le verrou, lui, qui les retire.
+   */
+  readonly settingLocked = computed(() => this.locked() || this.dialUnit() === 'seconds');
+
+  /** Étape assez courte pour que les dernières secondes se comptent une à une. */
+  private readonly shortStep = computed(() => this.dialUnit() === 'seconds');
+
   readonly modeName = computed(() => {
     if (this.inExtra()) return this.i18n.t('mode.extra');
     const session = this.session();
@@ -199,6 +227,7 @@ export class SessionService {
 
     this.timer.timeLeft$.subscribe(t => {
       this.checkMilestones(this.timeLeft(), t);
+      this.checkCountdown(this.timeLeft(), t);
       this.speakRemaining(this.timeLeft(), t);
       this.timeLeft.set(t);
     });
@@ -408,7 +437,7 @@ export class SessionService {
 
   /** Règle le temps affiché (cadran, curseur, clavier) ; arrondi et borné à 0-60 minutes. */
   setMinutes(minutes: number): void {
-    if (this.locked()) return;
+    if (this.settingLocked()) return;
     const clamped = Math.max(0, Math.min(MAX_MINUTES, Math.round(minutes)));
     const seconds = clamped * 60;
     const current = Math.ceil(this.displaySeconds() / 60);
@@ -440,7 +469,7 @@ export class SessionService {
    * dont le lecteur d'écran lit déjà `aria-valuetext`.
    */
   stepMinutes(delta: number, speak = false): void {
-    if (this.locked()) return;
+    if (this.settingLocked()) return;
     // Un décompte tombe rarement sur une minute ronde : on part de l'entier situé du bon côté
     const from = delta < 0 ? Math.ceil(this.displayMinutes()) : Math.floor(this.displayMinutes());
     const minutes = Math.max(MIN_MINUTES, Math.min(MAX_MINUTES, from + delta));
@@ -452,7 +481,7 @@ export class SessionService {
 
   /** Vrai si un pas dans ce sens changerait encore la durée (boutons − / + désactivés aux bornes). */
   canStep(delta: number): boolean {
-    if (this.locked()) return false;
+    if (this.settingLocked()) return false;
     const minutes = this.displayMinutes();
     return delta < 0 ? minutes > MIN_MINUTES : minutes < MAX_MINUTES;
   }
@@ -625,6 +654,37 @@ export class SessionService {
           this.showCue('milestone');
           this.announce(this.milestoneText(minutes));
         }
+        return;
+      }
+    }
+  }
+
+  /**
+   * Dernières secondes d'une étape courte : un tic, une impulsion et un éclat par seconde,
+   * et la suite annoncée un peu avant.
+   *
+   * Un effort de vingt secondes ne reçoit aucun palier — ils se calculent en minutes, et
+   * le premier tomberait après le carillon. Ce décompte est ce qui permet de finir son
+   * effort sans regarder l'écran, et de savoir ce qui vient sans l'avoir lu.
+   */
+  private checkCountdown(previous: number, current: number): void {
+    if (!this.shortStep() || !this.isRunning() || this.dragging() || this.manualChange) return;
+
+    // La suite d'abord : elle demande une phrase, qui doit être finie avant les tics
+    const routine = this.activeRoutine();
+    if (routine && previous > NEXT_ANNOUNCE_SECONDS && current <= NEXT_ANNOUNCE_SECONDS) {
+      const next = this.stepAfter(routine, this.routineIndex(), this.routineRound())?.step;
+      if (next) this.say(this.i18n.t('speech.next', { name: this.presetName(next) }));
+      return;
+    }
+
+    for (let at = COUNTDOWN_FROM; at >= 1; at--) {
+      if (previous > at && current <= at) {
+        this.sound.tick();
+        this.haptics.play('tick');
+        this.showCue('milestone');
+        // La voix ne dit qu'un chiffre : à une seconde d'intervalle, une phrase serait coupée
+        if (this.prefs.speech() !== 'off') this.say(String(at));
         return;
       }
     }

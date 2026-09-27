@@ -29,6 +29,26 @@ export const LONG_SESSION_MINUTES = 40;
 /** Dernier palier d'une session courte : une minute pour conclure ce qui est en cours. */
 export const FINAL_WARNING_MINUTES = 1;
 
+/**
+ * En dessous de cette durée, le cadran gradue des **secondes** : ses douze segments
+ * valent 5 s au lieu de 5 min, et les chiffres 0 à 55 se lisent en secondes.
+ *
+ * Sans cela, un effort de 20 s couvre deux degrés de disque — invisible, alors que voir
+ * le temps est toute la raison d'être de l'application. Les chiffres de la face, eux, ne
+ * changent pas : 0, 5, 10… valent pour les deux unités.
+ */
+export const SECONDS_DIAL_BELOW = 60;
+
+/** Dernières secondes égrenées une à une, sur une étape assez courte pour les compter. */
+export const COUNTDOWN_FROM = 3;
+
+/**
+ * Secondes avant la fin d'une étape courte où la suivante est annoncée à voix haute :
+ * « Ensuite : Repos ». Assez tôt pour préparer le geste, assez tard pour ne pas être
+ * oublié d'ici là.
+ */
+export const NEXT_ANNOUNCE_SECONDS = 5;
+
 /** Au-delà de ce retard (app en arrière-plan), la notification a déjà prévenu : pas de son en rattrapage. */
 export const LATE_ALERT_SECONDS = 90;
 

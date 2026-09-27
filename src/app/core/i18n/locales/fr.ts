@@ -26,6 +26,7 @@ export const fr = {
 
   'unit.minute': 'minute',
   'unit.minutes': 'minutes',
+  'unit.secShort': 'sec',
   'unit.second': 'seconde',
   'unit.seconds': 'secondes',
 
@@ -110,6 +111,9 @@ export const fr = {
   'routine.counted': 'Compter dans le focus du jour',
   'routine.countedHint': "À laisser éteint pour se laver les dents, à allumer pour réviser",
   'routine.restore': 'Rétablir les routines par défaut',
+  'routine.tabata': 'Tabata',
+  'routine.tabata.work': 'Effort',
+  'routine.tabata.rest': 'Repos',
   'routine.rounds': 'Tours',
   'routine.roundsHint': "Rejouer la suite d'étapes : huit tours pour un Tabata",
   'routine.roundsOnce': 'Une seule fois',
@@ -150,6 +154,7 @@ export const fr = {
   'stats.goalReached': 'Objectif atteint !',
 
   'speech.oneMinute': "Plus qu'une minute",
+  'speech.next': 'Ensuite : {name}',
 
   'notif.milestoneTitle': 'Plus que {m} minutes',
   'notif.milestoneBody': 'Le temps avance, garde le cap.',

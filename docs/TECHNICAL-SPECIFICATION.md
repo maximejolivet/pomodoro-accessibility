@@ -130,7 +130,10 @@ features/accessibility/  Page de déclaration d'accessibilité et ses textes
 | `MAX_STEPS` | 10 | RG-16 |
 | `STEP_DURATIONS` | 5 → 55 s par pas de 5, puis 1 → 60 min par pas de 1 | EF-ROU-16 |
 | `MAX_ROUNDS` | 20 | EF-ROU-17 |
-| `DEFAULT_ROUTINES` | Routine du matin (4 étapes), Devoirs (4 étapes) | EF-ROU-3 |
+| `SECONDS_DIAL_BELOW` | 60 | EF-ROU-20 |
+| `COUNTDOWN_FROM` | 3 | EF-ROU-21 |
+| `NEXT_ANNOUNCE_SECONDS` | 5 | EF-ROU-22 |
+| `DEFAULT_ROUTINES` | Routine du matin (4 étapes), Tabata (2 étapes × 8 tours), Devoirs (4 étapes) | EF-ROU-3 |
 
 ### 3.3 Persistance
 
@@ -239,6 +242,28 @@ redemande le maintien d'écran.
 - **Clavier** : ← / → (±1 min), Page↑ / Page↓ (±5 min), Début / Fin (0 / 60 min).
 - Le SVG est `aria-hidden` ; c'est son conteneur qui porte la sémantique (voir §12).
 
+### 5.1 Graduation en secondes
+
+Le cadran projette une valeur de 0 à 60 sur un cercle. Rien n'y oblige à ce que cette valeur
+soit des minutes : quand la durée réglée descend sous `SECONDS_DIAL_BELOW`, `SessionService`
+alimente la même géométrie en **secondes**. Les douze segments valent alors 5 s, et les chiffres
+de la face — 0, 5, 10… — restent justes sans changer, puisqu'ils valent pour les deux unités.
+
+Sans cela, un effort de 20 s couvre deux degrés de disque : l'application perd exactement ce
+qu'elle promet, voir le temps. Avec, le disque part au tiers du cadran et se vide sous les yeux.
+
+Deux garde-fous :
+
+- l'unité suit la **durée réglée** et non le temps restant, sinon un Pomodoro basculerait en
+  secondes dans sa dernière minute (RG-27) ;
+- le **réglage** est neutralisé tant que la graduation est en secondes : glissement, flèches et
+  boutons − / + travaillent en minutes et donneraient une durée sans rapport avec l'affichage
+  (RG-26). Démarrer et mettre en pause restent possibles — c'est le verrou, lui, qui les retire,
+  et l'attribut porté est `aria-readonly`, non `aria-disabled`.
+
+Une pastille « sec » sous le bouton central dit l'unité : sans elle, un cadran réglé sur 20
+secondes se lit 20 minutes.
+
 ---
 
 ## 6. Tutoriel d'accueil
@@ -270,8 +295,6 @@ Les contraintes qui ont dessiné le composant :
 - En arabe, `flex` inverse déjà l'ordre des vues ; le décalage est inversé par
   `:host-context([dir='rtl'])` — et non `[dir='rtl'] .track`, que l'encapsulation Angular
   empêcherait de correspondre, l'attribut vivant sur `<html>`.
-
----
 
 ## 7. Paliers
 

@@ -55,6 +55,16 @@ export const SOUND_PATTERNS: Record<SoundId, SoundPattern> = {
   end: { notes: endArpeggio, bell: true }
 };
 
+/**
+ * Motifs joués seulement dans l'application, jamais par une notification : ils n'ont donc
+ * ni fichier WAV ni canal Android. Le tic des dernières secondes en fait partie — il
+ * arrive une fois par seconde, ce qu'aucune notification ne saurait faire.
+ */
+export const CUE_PATTERNS = {
+  // Une note brève et sèche, assez haute pour passer par-dessus un souffle d'effort
+  tick: { notes: [{ freq: 880, at: 0, dur: 0.12, gain: 0.3, wave: 'sine' as Wave }] }
+} satisfies Record<string, SoundPattern>;
+
 /** Noms des fichiers (minuscules et _ : contrainte des ressources Android `res/raw`). */
 export const SOUND_FILES: Record<SoundId, string> = {
   milestone45: 'milestone_45.wav',

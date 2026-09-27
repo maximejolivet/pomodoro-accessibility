@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import type { MilestoneTone } from '../constants/timer.constants';
-import { ENVELOPE, MASTER_GAIN, SOUND_PATTERNS, SoundId, voices } from '../helpers/sound-patterns';
+import {
+  CUE_PATTERNS, ENVELOPE, MASTER_GAIN, SOUND_PATTERNS, SoundId, SoundPattern, voices
+} from '../helpers/sound-patterns';
 
 /**
  * Sons synthétisés avec Web Audio (aucun fichier audio).
@@ -29,7 +31,16 @@ export class SoundService {
     this.play('end');
   }
 
+  /** Tic d'une des dernières secondes d'une étape courte : « 3, 2, 1 ». */
+  tick(): void {
+    this.render(CUE_PATTERNS.tick);
+  }
+
   play(id: SoundId): void {
+    this.render(SOUND_PATTERNS[id]);
+  }
+
+  private render(pattern: SoundPattern): void {
     if (!this.enabled) return;
     const ctx = this.context();
     if (!ctx) return;
@@ -40,7 +51,7 @@ export class SoundService {
     master.connect(ctx.destination);
 
     const now = ctx.currentTime + 0.02;
-    for (const v of voices(SOUND_PATTERNS[id])) {
+    for (const v of voices(pattern)) {
       const start = now + v.at;
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();

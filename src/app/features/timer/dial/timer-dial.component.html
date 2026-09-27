@@ -15,9 +15,10 @@
         role="slider"
         [attr.aria-valuemin]="1"
         [attr.aria-valuemax]="maxMinutes"
-        [attr.aria-valuenow]="Math.ceil(displayMinutes)"
-        [attr.aria-valuetext]="minutesText"
+        [attr.aria-valuenow]="Math.ceil(displayUnits)"
+        [attr.aria-valuetext]="dialText"
         [attr.aria-disabled]="locked"
+        [attr.aria-readonly]="inSeconds ? 'true' : null"
         [class.dragging]="isDragging"
         (click)="onFaceClick()"
         (pointerdown)="onDragStart($event)"
@@ -119,6 +120,14 @@
             [attr.x]="t.x" [attr.y]="t.y"
             class="label"
           >{{ t.text }}</text>
+
+          <!--
+            L'unité, seulement quand ce ne sont plus des minutes : sans elle, un cadran
+            réglé sur 20 secondes se lit 20 minutes. Les chiffres, eux, valent pour les deux.
+          -->
+          <text *ngIf="inSeconds" [attr.x]="cx" [attr.y]="cy + 66" class="unit">
+            {{ i18n.t('unit.secShort') }}
+          </text>
 
           <!-- Bouton central -->
           <g filter="url(#knobShadow)">

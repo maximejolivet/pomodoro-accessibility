@@ -200,6 +200,17 @@
   dominant-baseline: central;
 }
 
+/* Pastille d'unité, sous le bouton central : elle n'apparaît qu'en secondes. */
+.unit {
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  fill: var(--muted);
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
 .gasket {
   fill: #1d282d;
 }

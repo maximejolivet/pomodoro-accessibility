@@ -121,10 +121,15 @@
   font-weight: 700;
 }
 
+/*
+ * `--muted-strong` et non `--muted` : sur la pastille en cours, le fond est teinté de la
+ * couleur de l'étape, et le gris clair tombait à 4,44:1 sur les teintes rouge, magenta et
+ * grise — sous les 4,5:1 exigés (WCAG 1.4.3).
+ */
 .step-time {
   font-size: 11px;
   font-weight: 600;
-  color: var(--muted);
+  color: var(--muted-strong);
   font-variant-numeric: tabular-nums;
   /* « 10 min » : ordre gauche → droite, même en arabe */
   direction: ltr;
