@@ -741,9 +741,9 @@ test.describe('routines', () => {
     await expect(page.locator('.routine-title')).toContainText('Matin');
     await expect(chips(page)).toHaveCount(3);
     // L'état est dit, pas seulement montré par la couleur et la coche (WCAG 1.4.1)
-    await expect(chips(page).first()).toHaveAccessibleName('Étape 1 sur 3 : Habillage, 1 minutes, en cours');
+    await expect(chips(page).first()).toHaveAccessibleName('Étape 1 sur 3 : Habillage, 1 minute, en cours');
     await expect(chips(page).first()).toHaveAttribute('aria-current', 'step');
-    await expect(chips(page).nth(1)).toHaveAccessibleName('Étape 2 sur 3 : Repas, 1 minutes');
+    await expect(chips(page).nth(1)).toHaveAccessibleName('Étape 2 sur 3 : Repas, 1 minute');
     expect(await violations(page)).toEqual([]);
   });
 
@@ -1067,5 +1067,131 @@ test.describe("tutoriel d'accueil", () => {
     await expect(page.locator('.sheet.open')).toHaveCount(0);
     await expect(dialog(page)).toBeVisible();
     await expect(next(page)).toBeFocused();
+  });
+});
+
+test.describe('secondes et tours', () => {
+  /**
+   * Un Tabata : deux étapes de cinq secondes, jouées deux fois. Cinq secondes plutôt que
+   * vingt pour que l'horloge simulée n'ait pas mille ticks à jouer — la règle testée est
+   * l'enchaînement des tours, pas la durée.
+   */
+  const TABATA = {
+    id: 'tabata',
+    name: 'Tabata',
+    icon: '💪',
+    rounds: 2,
+    steps: [
+      { id: 'work', name: 'Effort', icon: '🏃', seconds: 5, color: '#d63f4f', kind: 'focus' },
+      { id: 'rest', name: 'Repos', icon: '🧘', seconds: 5, color: '#56b27b', kind: 'break' }
+    ]
+  };
+
+  async function seedTabata(page: Page) {
+    await page.addInitScript(routine => {
+      localStorage.setItem('pomodoro-tdah.lang', 'fr');
+      localStorage.setItem('pomodoro-tdah.routines', routine as string);
+      localStorage.setItem('pomodoro-tdah.routine', 'tabata');
+    }, JSON.stringify([TABATA]));
+  }
+
+  const chips = (page: Page) => page.locator('.step-chip');
+
+  test('une étape peut durer quelques secondes, et le dire', async ({ page }) => {
+    await seedTabata(page);
+    await page.goto('/');
+    await ready(page);
+
+    // Le cadran et la bande comptent en secondes, sans arrondir à la minute
+    await expect(page.locator('.readout-time')).toHaveText('00:05');
+    await expect(chips(page).first()).toHaveAccessibleName('Étape 1 sur 2 : Effort, 5 secondes, en cours');
+    await expect(chips(page).first().locator('.step-time')).toHaveText('5 s');
+  });
+
+  test('la durée se règle au clavier, d’une seconde à une heure', async ({ page }) => {
+    await seedTabata(page);
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+    await page.getByRole('button', { name: 'Modifier la routine Tabata' }).click();
+    await page.getByRole('button', { name: 'Modifier Effort' }).click();
+
+    // Dans le panneau : le cadran porte lui aussi le nom « Durée »
+    const duration = page.locator('.sheet').getByRole('slider', { name: /Durée/ });
+    await duration.focus();
+    // Le pas vaut 5 s en bas de l'échelle : c'est là que se règlent les exercices
+    await page.keyboard.press('Home');
+    await expect(duration).toHaveAttribute('aria-valuetext', '5 secondes');
+    await page.keyboard.press('ArrowRight');
+    await expect(duration).toHaveAttribute('aria-valuetext', '10 secondes');
+
+    // Et une minute au-delà : une routine ne se règle pas à la seconde près
+    await page.keyboard.press('End');
+    await expect(duration).toHaveAttribute('aria-valuetext', '60 minutes');
+    await page.keyboard.press('ArrowLeft');
+    await expect(duration).toHaveAttribute('aria-valuetext', '59 minutes');
+
+    for (let i = 0; i < 59; i++) await page.keyboard.press('ArrowLeft');
+    await expect(duration).toHaveAttribute('aria-valuetext', '55 secondes');
+
+    await page.getByRole('button', { name: 'Enregistrer' }).click();
+    const saved = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('pomodoro-tdah.routines') ?? '[]')
+    );
+    expect(saved[0].steps[0].seconds).toBe(55);
+  });
+
+  test('les tours se règlent, et le panneau reste valide pour axe-core', async ({ page }) => {
+    await seedTabata(page);
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+    await page.getByRole('button', { name: 'Modifier la routine Tabata' }).click();
+
+    const rounds = page.locator('.sheet').getByRole('slider', { name: /Tours/ });
+    await expect(rounds).toHaveAttribute('aria-valuetext', '2 fois');
+    await rounds.focus();
+    // « Une seule fois » plutôt que « 1 fois » : le nombre nu ne dirait pas de quoi il parle
+    await page.keyboard.press('Home');
+    await expect(rounds).toHaveAttribute('aria-valuetext', 'Une seule fois');
+    for (let i = 0; i < 7; i++) await page.keyboard.press('ArrowRight');
+    await expect(rounds).toHaveAttribute('aria-valuetext', '8 fois');
+    expect(await violations(page)).toEqual([]);
+
+    await page.getByRole('button', { name: 'Enregistrer' }).click();
+    const saved = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('pomodoro-tdah.routines') ?? '[]')
+    );
+    expect(saved[0].rounds).toBe(8);
+    // La carte annonce le temps total, tours compris, et le nombre de tours
+    await expect(page.getByRole('button', { name: /Lancer Tabata/ })).toContainText('×8');
+  });
+
+  test('la routine rejoue ses étapes, et dit à quel tour elle en est', async ({ page }) => {
+    await seedTabata(page);
+    await page.clock.install();
+    await page.goto('/');
+    await ready(page);
+
+    // Les pastilles comptent les tours de la routine, pas les cycles pomodoro
+    await expect(page.locator('.cycle')).toHaveText(/Tour 1 sur 2/);
+    await expect(page.locator('.cycle-dot')).toHaveCount(2);
+
+    await page.getByRole('button', { name: /démarrer/i }).click();
+    await page.clock.runFor(5_100);
+    await expect(page.locator('.readout-mode')).toHaveText('Repos');
+    await expect(page.locator('.cycle')).toHaveText(/Tour 1 sur 2/);
+
+    // Fin du premier tour : la bande repart à la première étape, et le tour est annoncé
+    await page.clock.runFor(5_100);
+    await expect(page.locator('.readout-mode')).toHaveText('Effort');
+    await expect(page.locator('.cycle')).toHaveText(/Tour 2 sur 2/);
+    await expect(chips(page).first()).toHaveAttribute('aria-current', 'step');
+    await expect(page.locator('#a11y-announcements')).toContainText('Tour 2 sur 2');
+
+    // Le dernier tour fini, la routine est terminée : elle ne repart pas à l'infini
+    await page.clock.runFor(10_200);
+    await expect(page.locator('.step-chip.done')).toHaveCount(2);
+    await expect(page.locator('#a11y-announcements')).toHaveText('Routine terminée : Tabata');
   });
 });

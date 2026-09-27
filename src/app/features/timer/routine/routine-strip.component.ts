@@ -35,8 +35,9 @@ export class RoutineStripComponent {
     return this.session.presetName(step) || this.i18n.t('routine.stepUntitled');
   }
 
-  minutes(step: RoutineStep): number {
-    return Math.round(step.seconds / 60);
+  /** « 20 s » ou « 15 min » : la pastille est étroite, la durée s'y écrit en abrégé. */
+  shortDuration(step: RoutineStep): string {
+    return this.session.shortDuration(step.seconds);
   }
 
   isCurrent(index: number): boolean {

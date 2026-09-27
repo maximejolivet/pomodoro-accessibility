@@ -68,11 +68,29 @@ export interface Routine {
   nameKey?: I18nKey;
   icon: string;
   steps: RoutineStep[];
+  /**
+   * Nombre de fois que la suite d'étapes est jouée. Absent ou 1 : elle se joue une fois.
+   *
+   * C'est ce qui sépare une routine du matin d'un entraînement : « 20 s d'effort, 10 s de
+   * repos » n'a de sens que répété huit fois, et vingt étapes dans la bande seraient
+   * illisibles là où deux étapes et un nombre de tours se lisent d'un coup.
+   */
+  rounds?: number;
   /** Absent tant qu'aucun rappel n'est réglé : une routine se lance très bien à la main. */
   reminder?: RoutineReminder;
 }
 
-/** Durée totale d'une routine, en secondes. */
+/** Durée d'un tour de routine, en secondes. */
 export function routineSeconds(routine: Routine): number {
   return routine.steps.reduce((total, step) => total + step.seconds, 0);
+}
+
+/** Tours d'une routine : 1 quand rien n'est réglé. La valeur est bornée à l'écriture. */
+export function routineRounds(routine: Routine): number {
+  return routine.rounds ?? 1;
+}
+
+/** Durée de la routine entière, tours compris. */
+export function routineTotalSeconds(routine: Routine): number {
+  return routineSeconds(routine) * routineRounds(routine);
 }

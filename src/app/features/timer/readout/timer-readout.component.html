@@ -35,9 +35,9 @@
 <div class="cycle" *ngIf="cycleLabel as cycle">
   <span class="cycle-dots" aria-hidden="true">
     <span
-      *ngFor="let slot of cycleSlots; let i = index"
+      *ngFor="let slot of cycleSlots(); let i = index"
       class="cycle-dot"
-      [class.done]="i < focusRounds % longBreakEvery"
+      [class.done]="i < cycleDone()"
       [style.--c]="selectedPreset.color"
     ></span>
   </span>

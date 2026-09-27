@@ -16,7 +16,7 @@
         [attr.aria-valuemin]="1"
         [attr.aria-valuemax]="maxMinutes"
         [attr.aria-valuenow]="Math.ceil(displayMinutes)"
-        [attr.aria-valuetext]="Math.ceil(displayMinutes) + ' ' + i18n.t('unit.minutes')"
+        [attr.aria-valuetext]="minutesText"
         [attr.aria-disabled]="locked"
         [class.dragging]="isDragging"
         (click)="onFaceClick()"

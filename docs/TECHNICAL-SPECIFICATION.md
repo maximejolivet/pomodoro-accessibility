@@ -100,7 +100,7 @@ features/accessibility/  Page de déclaration d'accessibilité et ses textes
 | ---- | ------ | ----- |
 | `Preset` | `id`, `name`, `nameKey?`, `seconds`, `color`, `kind` | `kind` ∈ `focus` \| `break` \| `longBreak` ; `name` vide pour un mode par défaut, dont le libellé vient de `nameKey` (traduit) |
 | `RoutineStep` | `id`, `name`, `nameKey?`, `icon`, `seconds`, `color`, `kind` | Un `Preset` plus un pictogramme : une étape se démarre et s'enregistre exactement comme un mode (`kind` ∈ `focus` \| `break`) |
-| `Routine` | `id`, `name`, `nameKey?`, `icon`, `steps`, `reminder?` | Suite ordonnée de 1 à 10 étapes (RG-16) |
+| `Routine` | `id`, `name`, `nameKey?`, `icon`, `steps`, `rounds?`, `reminder?` | Suite ordonnée de 1 à 10 étapes (RG-16), jouée `rounds` fois (1 à 20) |
 | `RoutineReminder` | `hour`, `minute`, `days` | `days` en ISO 8601 (1 = lundi … 7 = dimanche), jamais vide (RG-20) |
 | `Session` | `name`, `color`, `kind`, `plannedSeconds`, `activeSeconds`, `startedAt`, `endedAt`, `completed` | Nom et couleur figés à l'enregistrement (RG-9) |
 | `ActiveSession` | `name`, `color`, `kind`, `plannedSeconds`, `startedAt`, `activeMs`, `runningSince` | `runningSince` à `null` en pause ; `activeMs` cumule le temps décompté avant la reprise courante |
@@ -128,6 +128,8 @@ features/accessibility/  Page de déclaration d'accessibilité et ses textes
 | `STEP_ICONS` | 32 pictogrammes (quotidien, école, travail) | EF-ROU-2 |
 | `TUTORIAL_SLIDES` | 5 vues (pictogramme, titre, texte, couleur) | EF-TUT-1 |
 | `MAX_STEPS` | 10 | RG-16 |
+| `STEP_DURATIONS` | 5 → 55 s par pas de 5, puis 1 → 60 min par pas de 1 | EF-ROU-16 |
+| `MAX_ROUNDS` | 20 | EF-ROU-17 |
 | `DEFAULT_ROUTINES` | Routine du matin (4 étapes), Devoirs (4 étapes) | EF-ROU-3 |
 
 ### 3.3 Persistance
@@ -288,6 +290,11 @@ se déduisent de la durée : **la moitié, le dernier quart, puis une minute ava
 | 10 min | 5, 3, 1 |
 | 2 min | 1 |
 | 1 min | aucun |
+| 20 s | aucun |
+
+Une étape d'entraînement de quelques secondes ne reçoit donc aucun palier : le premier tomberait
+après le carillon. C'est voulu — un décompte « 3, 2, 1 » à la seconde est un autre signal, qui
+reste à écrire.
 
 Le timbre (son, motif de vibration, canal de notification) vient du **rang** et jamais du nombre
 de minutes : le dernier palier porte toujours le plus insistant. Un palier arrondi au même nombre

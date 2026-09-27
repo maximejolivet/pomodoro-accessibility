@@ -143,7 +143,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | Réf.      | Exigence                                                                                                                               | Prio |
 | --------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---- |
 | EF-ROU-1  | Une routine est une suite ordonnée d'étapes qui s'enchaînent d'elles-mêmes, sans action de l'utilisateur.                              | M    |
-| EF-ROU-2  | Une étape porte : un pictogramme, un nom, une durée de 1 à 60 min, une couleur, et le fait d'être comptée ou non dans le focus du jour. | M    |
+| EF-ROU-2  | Une étape porte : un pictogramme, un nom, une durée de 5 s à 60 min, une couleur, et le fait d'être comptée ou non dans le focus du jour. | M    |
 | EF-ROU-3  | L'application est livrée avec deux routines d'exemple : « Routine du matin » et « Devoirs », restaurables depuis le panneau.            | S    |
 | EF-ROU-4  | L'utilisateur peut créer, renommer, réordonner et supprimer ses routines et leurs étapes (1 à 10 étapes par routine).                  | M    |
 | EF-ROU-5  | Choisir une routine arme sa première étape sur le cadran sans rien démarrer ; le décompte part du même geste qu'un mode.               | M    |
@@ -157,6 +157,9 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-ROU-13 | À l'heure dite, une notification nomme la routine et son pictogramme ; l'appui ouvre l'application et arme la routine sans la démarrer. | S    |
 | EF-ROU-14 | Le rappel survit à la fermeture de l'application et au redémarrage de l'appareil ; il est reprogrammé quand la routine ou la langue change. | M    |
 | EF-ROU-15 | Le rappel réglé est visible sur la carte de la routine, et dit dans son nom accessible.                                               | S    |
+| EF-ROU-16 | La durée d'une étape se règle d'un seul curseur : par pas de 5 s en dessous d'une minute, par pas d'une minute au-dessus.             | M    |
+| EF-ROU-17 | Une routine peut être répétée de 1 à 20 fois ; la suite d'étapes reprend à la première à chaque tour.                                 | S    |
+| EF-ROU-18 | Le tour en cours est affiché (« Tour 2 sur 8 ») et annoncé quand il change ; les pastilles comptent les tours, pas les cycles pomodoro. | M    |
 
 ### 4.4 Tutoriel d'accueil (`EF-TUT`)
 
@@ -278,12 +281,14 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | RG-14 | Si le stockage local est indisponible (navigation privée, stockage bloqué), l'application reste utilisable, les réglages ne valant que pour la session.                 |
 | RG-15 | Un palier dépassé de plus de 90 secondes lors d'un retour au premier plan n'est pas rejoué.                                                                             |
 | RG-16 | Une routine compte de 1 à 10 étapes ; la dernière étape d'une routine ne peut pas être supprimée.                                                                       |
+| RG-16b | Une étape dure de **5 secondes à 60 minutes** ; une routine se joue de **1 à 20 tours**. Une durée ou un nombre de tours hors bornes est ramené dans les bornes à la lecture. |
 | RG-17 | Pendant une routine, la prolongation « +5 min » ne s'applique pas : ce qui a été annoncé arrive à l'heure dite.                                                         |
 | RG-18 | Pendant une routine, l'enchaînement suit les étapes de la routine, que l'option « enchaîner travail → pause » soit active ou non.                                       |
 | RG-19 | Une étape non comptée dans le focus du jour est enregistrée comme une pause : se laver les dents n'est pas du temps de travail (RG-10).                                 |
 | RG-20 | Un rappel sans jour coché n'est pas enregistré : mieux vaut pas de rappel qu'un rappel qui ne partira jamais. Allumer un rappel coche la semaine entière.               |
 | RG-21 | Un rappel touché **arme** la routine, il ne la démarre pas : un décompte qui part sans geste de l'utilisateur est une source d'anxiété.                                 |
 | RG-22 | Les rappels sont reprogrammés en bloc à chaque modification, et échappent à l'annulation des alertes de session qui a lieu à chaque retour au premier plan.             |
+| RG-25 | Le compteur de tours repart à 1 quand la routine est lancée ou quittée, jamais quand on saute d'une étape à l'autre : refaire une étape ne recommence pas l'entraînement. |
 | RG-23 | Le tutoriel se montre tant qu'il n'a pas été vu. Passé, terminé ou revu, il ne se remontre plus de lui-même — seul *Revoir le tutoriel* le rouvre.                      |
 | RG-24 | Le tutoriel n'avance jamais seul, et le panneau de réglages se ferme avant qu'il ne s'ouvre : deux modales à la fois ne s'entendraient pas.                             |
 
@@ -316,6 +321,9 @@ session de travail reprend. Toutes les 4 sessions de travail terminées, la paus
 la pause courte. L'utilisateur peut interrompre la chaîne à tout moment.
 
 ### 6.4 Déroulé d'une routine
+
+Une routine répétée sert aussi d'entraînement : deux étapes — « Effort 20 s », « Repos 10 s » —
+et huit tours font un Tabata, là où seize étapes seraient illisibles dans la bande.
 
 ⚙︎ → Modes → *Routines* → « Routine du matin » : le panneau se ferme, la première étape
 (« S'habiller », 10 min) est armée sur le cadran, et la bande montre les quatre étapes. Appui

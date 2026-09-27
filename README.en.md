@@ -120,6 +120,7 @@ visual timer is a simple, discreet and free tool at that level.
 | 🎯 **Custom modes**              | Pomodoro, Break, Long break, ADHD Focus… or your own modes: name, duration (1-60 min), color, work or break            |
 | 👋 **Welcome tutorial**          | Five views on first launch: seeing time, setting it, starting it, routines, alerts                          |
 | 🧩 **Picture routines**          | A sequence of steps that follow on their own — get dressed, breakfast, teeth, school bag — each with its picture and its length |
+| 🔁 **Rounds and seconds**        | A step lasts from 5 s to 60 min, a routine replays up to 20 times: "work 20 s, rest 10 s" × 8 is a Tabata |
 | ⏰ **Routine reminder**          | A time, some days: the notification arrives when it should and opens the routine, ready to start                               |
 | 🔁 **Automatic chaining**        | Work → break → work, with a long break every 4 cycles (can be turned off)                                              |
 | 📊 **History & statistics**      | Focus time today, completed sessions, day streak, chart of the last 7 days                                             |
@@ -149,6 +150,7 @@ when you come back, everything is up to date.
 | ↺                          | Reset                                                                         |
 | ⚙︎ → **Modes**              | Choose, create, edit or delete a mode                                         |
 | ⚙︎ → **Modes** → *Routines* | Start a routine, create one, reorder its steps                                |
+| ⚙︎ → **Modes** → ✎ → *Rounds* | Replay the steps: eight rounds for a Tabata                                 |
 | ⚙︎ → **Modes** → ✎ → *Reminder* | Set the time and the days when the routine comes to remind you            |
 | **Tap** a step             | Jump straight to that step of the routine; ✕ leaves the routine               |
 | ⚙︎ → **Stats**              | See today's goal, your statistics and session history                         |
@@ -212,7 +214,7 @@ A dedicated page covers all of this, including the RGAA 4.1 accessibility statem
 (conformance status, non-accessible content, contact and remedies): see the
 **♿ Accessibility** link at the bottom right of the app.
 
-These guarantees are checked on every change: `npm run test:a11y` replays fifty-six checks
+These guarantees are checked on every change: `npm run test:a11y` replays sixty checks
 (axe-core on every view, in light, dark and Arabic; control of the dial by keyboard and by the
 − / + buttons; spoken time, vibration patterns and the visual alert checked against a simulated
 countdown, a short session's milestones included; the welcome tutorial by keyboard, in

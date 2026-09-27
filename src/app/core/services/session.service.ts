@@ -6,14 +6,14 @@ import {
 } from '../constants/timer.constants';
 import { milestonesFor, type Milestone } from '../helpers/milestones';
 import { readPref, writePref } from '../helpers/storage';
-import { formatTime } from '../helpers/time';
+import { durationParts, formatTime } from '../helpers/time';
 import { I18nService } from '../i18n/i18n.service';
 import type { I18nKey } from '../i18n/i18n.model';
 import type { Alert, Reminder } from '../models/alert.model';
 import type { SpeechMode, VisualAlert } from '../models/preferences.model';
 import type { VisualCue } from '../models/session.model';
 import type { Preset, PresetKind } from '../models/preset.model';
-import { routineSeconds, type Routine, type RoutineStep } from '../models/routine.model';
+import { routineRounds, routineSeconds, type Routine, type RoutineStep } from '../models/routine.model';
 import type { ActiveSession } from '../models/session.model';
 import { HapticsService } from './haptics.service';
 import { HistoryService } from './history.service';
@@ -60,6 +60,8 @@ export class SessionService {
   readonly routineIndex = signal(0);
   /** Dernière étape terminée : la bande reste affichée, toutes les étapes cochées. */
   readonly routineDone = signal(false);
+  /** Tour en cours d'une routine répétée, à partir de 1. */
+  readonly routineRound = signal(1);
   readonly currentStep = computed<RoutineStep | null>(() => {
     const routine = this.activeRoutine();
     return routine?.steps[this.routineIndex()] ?? null;
@@ -118,11 +120,19 @@ export class SessionService {
     return this.i18n.t(this.finished() ? 'state.finished' : 'state.ready');
   });
 
-  /** « Cycle n/4 » pendant une session de travail, si l'enchaînement est actif. */
+  /**
+   * « Cycle n/4 » pendant une session de travail, ou « Tour 2 sur 8 » dans une routine
+   * répétée : c'est la même place à l'écran, et la même question — où en suis-je dans
+   * ce qui se répète ?
+   */
   readonly cycleLabel = computed<string | null>(() => {
+    const routine = this.activeRoutine();
+    if (routine) {
+      const total = routineRounds(routine);
+      return total > 1 ? this.i18n.t('routine.round', { n: this.routineRound(), total }) : null;
+    }
     const kind = this.session()?.kind ?? this.selectedPreset().kind;
-    // Une routine a sa propre suite d'étapes : le cycle pomodoro ne la décrit pas
-    if (this.activeRoutine() || !this.prefs.autoChain() || kind !== 'focus') return null;
+    if (!this.prefs.autoChain() || kind !== 'focus') return null;
     return this.i18n.t('cycle', { n: (this.focusRounds() % LONG_BREAK_EVERY) + 1, total: LONG_BREAK_EVERY });
   });
 
@@ -315,6 +325,7 @@ export class SessionService {
    */
   startRoutine(routine: Routine): void {
     this.activeRoutine.set(routine);
+    this.routineRound.set(1);
     writePref('routine', routine.id);
     // Comme choisir un mode, le geste vient du panneau : le verrou ne s'y oppose pas
     this.armStep(0);
@@ -349,8 +360,31 @@ export class SessionService {
       n: index + 1,
       total: routine.steps.length,
       name: this.presetName(step),
-      m: Math.round(step.seconds / 60)
+      d: this.durationLabel(step.seconds)
     });
+  }
+
+  /**
+   * « 20 secondes », « 15 minutes » : chaque durée se dit dans son unité, au singulier
+   * quand il le faut. Une étape d'effort se compte en secondes, un petit-déjeuner non.
+   */
+  durationLabel(seconds: number): string {
+    const { value, unit } = durationParts(seconds);
+    const key = unit === 'seconds'
+      ? (value === 1 ? 'unit.second' : 'unit.seconds')
+      : (value === 1 ? 'unit.minute' : 'unit.minutes');
+    return `${value} ${this.i18n.t(key)}`;
+  }
+
+  /** « 1 minute », « 26 minutes » : le cadran se règle en minutes, le pluriel suit le nombre. */
+  minutesLabel(minutes: number): string {
+    return `${minutes} ${this.i18n.t(minutes === 1 ? 'unit.minute' : 'unit.minutes')}`;
+  }
+
+  /** La même durée, en abrégé, pour les pastilles où la place manque : « 20 s », « 15 min ». */
+  shortDuration(seconds: number): string {
+    const { value, unit } = durationParts(seconds);
+    return `${value} ${unit === 'seconds' ? 's' : 'min'}`;
   }
 
   /** Charge une étape sur le cadran, à l'arrêt, et la dit. */
@@ -367,6 +401,7 @@ export class SessionService {
   private leaveRoutine(): void {
     this.activeRoutine.set(null);
     this.routineIndex.set(0);
+    this.routineRound.set(1);
     this.routineDone.set(false);
     writePref('routine', '');
   }
@@ -411,7 +446,7 @@ export class SessionService {
     const minutes = Math.max(MIN_MINUTES, Math.min(MAX_MINUTES, from + delta));
     this.setMinutes(minutes);
     if (speak) {
-      this.announce(`${minutes} ${this.i18n.t('unit.minutes')}`);
+      this.announce(this.minutesLabel(minutes));
     }
   }
 
@@ -439,6 +474,8 @@ export class SessionService {
     this.activeRoutine.set(routine);
     const index = Math.min(this.routineIndex(), routine.steps.length - 1);
     this.routineIndex.set(index);
+    // Les tours ont pu être réduits pendant l'édition : on ne reste pas au tour 8 sur 3
+    this.routineRound.set(Math.min(this.routineRound(), routineRounds(routine)));
     if (!this.session()) {
       this.durationSeconds.set(routine.steps[index].seconds);
     }
@@ -550,6 +587,21 @@ export class SessionService {
     if (completed && s.kind === 'longBreak') this.focusRounds.set(0);
   }
 
+  /**
+   * Ce qui suit une étape dans une routine : l'étape suivante de la liste, ou la première
+   * du tour d'après. Rien quand le dernier tour vient de se terminer.
+   */
+  private stepAfter(
+    routine: Routine,
+    index: number,
+    round: number
+  ): { step: RoutineStep; index: number; round: number } | undefined {
+    const next = index + 1;
+    if (next < routine.steps.length) return { step: routine.steps[next], index: next, round };
+    if (round >= routineRounds(routine)) return undefined;
+    return { step: routine.steps[0], index: 0, round: round + 1 };
+  }
+
   /** Mode suivant dans le cycle travail → pause (longue toutes les N sessions) → travail. */
   private nextInChain(kind: PresetKind, roundsAfter: number): Preset | undefined {
     if (kind === 'focus') {
@@ -611,22 +663,29 @@ export class SessionService {
     this.endSession(true, lateBy);
 
     // Une routine s'enchaîne d'elle-même : c'est sa définition, pas l'option « enchaîner »
+    const ahead = routine ? this.stepAfter(routine, this.routineIndex(), this.routineRound()) : undefined;
     const next = routine
-      ? routine.steps[this.routineIndex() + 1]
+      ? ahead?.step
       : this.prefs.autoChain()
         ? this.nextInChain(kind, this.focusRounds())
         : undefined;
     if (next && next.seconds - lateBy > 0) {
-      if (routine) {
-        this.routineIndex.update(i => i + 1);
-      } else {
+      // Un tour qui recommence se dit : sans cela, la bande repart à zéro sans raison visible
+      const newRound = !!ahead && ahead.round !== this.routineRound();
+      if (routine && ahead) {
+        this.routineIndex.set(ahead.index);
+        this.routineRound.set(ahead.round);
+      } else if (!routine) {
         this.setSelectedPreset(next);
       }
       this.durationSeconds.set(next.seconds);
       this.startSession(next, next.seconds - lateBy, lateBy);
-      this.announce(this.i18n.t('state.running') + ', ' + this.presetName(next));
+      const name = newRound
+        ? `${this.cycleLabel()}, ${this.presetName(next)}`
+        : this.presetName(next);
+      this.announce(this.i18n.t('state.running') + ', ' + name);
       if (fresh) {
-        this.sayEnd(this.i18n.t('notif.nextBody', { name: this.presetName(next) }));
+        this.sayEnd(this.i18n.t('notif.nextBody', { name }));
       }
       return;
     }
@@ -665,7 +724,7 @@ export class SessionService {
     const willExtend = this.prefs.autoExtra() && !this.inExtra() && kind === 'focus' && !routine;
     const roundsAfter = kind === 'focus' ? this.focusRounds() + 1 : this.focusRounds();
     const next = routine
-      ? routine.steps[this.routineIndex() + 1]
+      ? this.stepAfter(routine, this.routineIndex(), this.routineRound())?.step
       : this.prefs.autoChain()
         ? this.nextInChain(kind, roundsAfter)
         : undefined;

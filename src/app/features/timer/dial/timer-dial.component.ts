@@ -56,6 +56,11 @@ export class TimerDialComponent {
     return this.session.displayMinutes();
   }
 
+  /** Ce que le lecteur d'écran annonce à chaque pas : « 24 minutes », « 1 minute ». */
+  get minutesText(): string {
+    return this.session.minutesLabel(Math.ceil(this.displayMinutes));
+  }
+
   get isDragging(): boolean {
     return this.session.dragging();
   }

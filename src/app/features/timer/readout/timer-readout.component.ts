@@ -1,9 +1,10 @@
-import { Component, OnDestroy, inject } from '@angular/core';
+import { Component, OnDestroy, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LONG_BREAK_EVERY } from '../../../core/constants/timer.constants';
 import { formatTime } from '../../../core/helpers/time';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import type { Preset } from '../../../core/models/preset.model';
+import { routineRounds } from '../../../core/models/routine.model';
 import { SessionService } from '../../../core/services/session.service';
 
 /** Attente avant que l'appui maintenu se mette à répéter, puis intervalle entre deux pas. */
@@ -27,7 +28,22 @@ export class TimerReadoutComponent implements OnDestroy {
   readonly i18n = inject(I18nService);
 
   readonly longBreakEvery = LONG_BREAK_EVERY;
-  readonly cycleSlots = Array.from({ length: LONG_BREAK_EVERY }, (_, i) => i);
+
+  /**
+   * Les pastilles comptent ce que le libellé annonce : les quatre cycles avant la pause
+   * longue, ou les tours d'une routine répétée. Quatre pastilles en face de « Tour 1 sur
+   * 8 » diraient le contraire du texte.
+   */
+  readonly cycleSlots = computed(() => {
+    const routine = this.session.activeRoutine();
+    const total = routine ? routineRounds(routine) : LONG_BREAK_EVERY;
+    return Array.from({ length: total }, (_, i) => i);
+  });
+
+  readonly cycleDone = computed(() => {
+    const routine = this.session.activeRoutine();
+    return routine ? this.session.routineRound() - 1 : this.session.focusRounds() % LONG_BREAK_EVERY;
+  });
 
   private holdTimer: ReturnType<typeof setTimeout> | null = null;
   private holdInterval: ReturnType<typeof setInterval> | null = null;

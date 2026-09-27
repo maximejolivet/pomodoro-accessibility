@@ -102,9 +102,12 @@
   color: var(--muted);
 }
 
+/* Jusqu'à vingt tours : les pastilles passent à la ligne plutôt que de pousser le texte. */
 .cycle-dots {
   display: flex;
+  flex-wrap: wrap;
   gap: 5px;
+  max-width: 140px;
 }
 
 .cycle-dot {

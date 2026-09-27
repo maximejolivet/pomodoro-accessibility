@@ -1,10 +1,18 @@
 import { Injectable, signal } from '@angular/core';
 import { PRESET_COLORS } from '../constants/preset.constants';
-import { DEFAULT_ROUTINES, STEP_ICONS } from '../constants/routine.constants';
+import {
+  DEFAULT_ROUTINES, MAX_ROUNDS, MAX_STEP_SECONDS, MIN_STEP_SECONDS, STEP_ICONS
+} from '../constants/routine.constants';
 import { readJson, writeJson } from '../helpers/storage';
 import { normalizeReminder, type Routine, type RoutineStep } from '../models/routine.model';
 
 const STORAGE_KEY = 'routines';
+
+/** Tours relus du stockage : un entier de 1 à `MAX_ROUNDS`, sinon un seul tour. */
+function normalizeRounds(rounds: unknown): number {
+  if (!Number.isInteger(rounds)) return 1;
+  return Math.max(1, Math.min(MAX_ROUNDS, rounds as number));
+}
 
 /** Routines enregistrées : mêmes règles que les modes, mais la liste peut être vide. */
 @Injectable({ providedIn: 'root' })
@@ -66,6 +74,14 @@ export class RoutineService {
           r.steps.every(s => s && typeof s.id === 'string' && s.seconds > 0 && typeof s.color === 'string')
       )
       // Un rappel illisible est écarté sans emporter la routine, qui se lance très bien à la main
-      .map(r => ({ ...r, reminder: normalizeReminder(r.reminder) }));
+      .map(r => ({
+        ...r,
+        rounds: normalizeRounds(r.rounds),
+        steps: r.steps.map(step => ({
+          ...step,
+          seconds: Math.max(MIN_STEP_SECONDS, Math.min(MAX_STEP_SECONDS, Math.round(step.seconds)))
+        })),
+        reminder: normalizeReminder(r.reminder)
+      }));
   }
 }

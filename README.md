@@ -119,6 +119,7 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
 | 🎯 **Modes personnalisables**    | Pomodoro, Pause, Pause longue, Focus TDAH… ou tes propres modes : nom, durée (1-60 min), couleur, travail ou pause     |
 | 👋 **Tutoriel d'accueil**        | Cinq vues au premier lancement : voir le temps, le régler, le lancer, les routines, les alertes             |
 | 🧩 **Routines en pictogrammes**  | Une suite d'étapes qui s'enchaînent — s'habiller, petit-déjeuner, dents, cartable — chacune avec son image et sa durée |
+| 🔁 **Tours et secondes**         | Une étape dure de 5 s à 60 min, une routine se rejoue jusqu'à 20 fois : « effort 20 s, repos 10 s » × 8, c'est un Tabata |
 | ⏰ **Rappel de routine**         | Une heure, des jours : la notification arrive à l'heure dite et ouvre la routine, prête à démarrer                      |
 | 🔁 **Enchaînement automatique**  | Travail → pause → travail, avec une pause longue tous les 4 cycles (désactivable)                                      |
 | 📊 **Historique & statistiques** | Temps de focus du jour, sessions terminées, série de jours, graphique des 7 derniers jours                             |
@@ -149,6 +150,7 @@ verrouille : au retour, tout est à jour.
 | ↺                          | Remettre à zéro                                                              |
 | ⚙︎ → **Modes**              | Choisir, créer, modifier ou supprimer un mode                                |
 | ⚙︎ → **Modes** → *Routines* | Lancer une routine, en créer une, réordonner ses étapes                      |
+| ⚙︎ → **Modes** → ✎ → *Tours* | Rejouer la suite d'étapes : huit tours pour un Tabata                       |
 | ⚙︎ → **Modes** → ✎ → *Rappel* | Régler l'heure et les jours où la routine vient se rappeler à toi          |
 | **Toucher** une étape      | Aller directement à cette étape de la routine ; ✕ pour quitter la routine    |
 | ⚙︎ → **Stats**              | Voir son objectif du jour, ses statistiques et l'historique des sessions     |
@@ -214,7 +216,7 @@ Une page dédiée détaille tout cela, avec la déclaration d'accessibilité RGA
 conformité, contenus non accessibles, contact et voies de recours) : lien **♿ Accessibilité**
 en bas à droite de l'application.
 
-Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue cinquante-six
+Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue soixante
 contrôles (axe-core sur toutes les vues, en clair, en sombre et en arabe ; réglage du cadran au
 clavier et aux boutons − / + ; annonce vocale, motifs de vibration et alerte visuelle vérifiés sur
 un décompte simulé, paliers d'une session courte comprise ; tutoriel d'accueil au clavier,

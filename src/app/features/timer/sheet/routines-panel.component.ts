@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Capacitor } from '@capacitor/core';
 import { PRESET_COLORS } from '../../../core/constants/preset.constants';
-import { DEFAULT_REMINDER_TIME, MAX_STEPS, STEP_ICONS } from '../../../core/constants/routine.constants';
-import { MAX_MINUTES, MIN_MINUTES } from '../../../core/constants/timer.constants';
+import {
+  DEFAULT_REMINDER_TIME, MAX_ROUNDS, MAX_STEPS, STEP_DURATIONS, STEP_ICONS
+} from '../../../core/constants/routine.constants';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import type { I18nKey } from '../../../core/i18n/i18n.model';
 import type { Routine, RoutineReminder, RoutineStep } from '../../../core/models/routine.model';
-import { WEEKDAYS, routineSeconds } from '../../../core/models/routine.model';
+import { WEEKDAYS, routineRounds, routineTotalSeconds } from '../../../core/models/routine.model';
 import { RoutineService } from '../../../core/services/routine.service';
 import { SessionService } from '../../../core/services/session.service';
 import type { RoutineDraft, RoutineReminderDraft, RoutineStepDraft } from '../timer.model';
@@ -36,9 +37,10 @@ export class RoutinesPanelComponent {
   @Output() readonly editing = new EventEmitter<boolean>();
   @Output() readonly closeSheet = new EventEmitter<void>();
 
-  readonly minMinutes = MIN_MINUTES;
-  readonly maxMinutes = MAX_MINUTES;
   readonly maxSteps = MAX_STEPS;
+  readonly maxRounds = MAX_ROUNDS;
+  /** Le curseur de durée parcourt la liste des durées : sa valeur est un rang, pas des secondes. */
+  readonly lastDuration = STEP_DURATIONS.length - 1;
   readonly stepIcons = STEP_ICONS;
   readonly presetColors = PRESET_COLORS;
 
@@ -99,9 +101,35 @@ export class RoutinesPanelComponent {
     return { hour, minute, days: [...draft.days].sort() };
   }
 
-  /** Une étape en cours d'édition : la durée passe en minutes, le nom traduit se remplit. */
+  /** Une étape en cours d'édition : le nom traduit se remplit, la durée reste en secondes. */
   private toDraft(step: RoutineStep): RoutineStepDraft {
-    return { ...step, name: this.rawName(step), minutes: Math.round(step.seconds / 60) };
+    return { ...step, name: this.rawName(step) };
+  }
+
+  /** Rang de la durée dans la liste : la plus proche, quand une valeur ancienne tombe entre deux. */
+  durationIndex(step: RoutineStepDraft): number {
+    let best = 0;
+    for (let i = 1; i < STEP_DURATIONS.length; i++) {
+      if (Math.abs(STEP_DURATIONS[i] - step.seconds) < Math.abs(STEP_DURATIONS[best] - step.seconds)) best = i;
+    }
+    return best;
+  }
+
+  setDurationIndex(step: RoutineStepDraft, index: number): void {
+    step.seconds = STEP_DURATIONS[Math.max(0, Math.min(this.lastDuration, Math.round(index)))];
+  }
+
+  durationLabel(seconds: number): string {
+    return this.session.durationLabel(seconds);
+  }
+
+  shortDuration(seconds: number): string {
+    return this.session.shortDuration(seconds);
+  }
+
+  /** « Une seule fois » ou « 8 fois » : le nombre nu ne dirait pas de quoi il parle. */
+  roundsLabel(rounds: number): string {
+    return rounds <= 1 ? this.i18n.t('routine.roundsOnce') : this.i18n.t('routine.roundsTimes', { n: rounds });
   }
 
   /**
@@ -126,11 +154,14 @@ export class RoutinesPanelComponent {
     return new Intl.DateTimeFormat(this.i18n.lang(), { hour: '2-digit', minute: '2-digit' }).format(at);
   }
 
+  /** « 4 étapes · 33 min », tours compris : c'est le temps que la routine prendra vraiment. */
   summary(routine: Routine): string {
-    return this.i18n.t('routine.summary', {
+    const rounds = routineRounds(routine);
+    const summary = this.i18n.t('routine.summary', {
       n: routine.steps.length,
-      m: Math.round(routineSeconds(routine) / 60)
+      m: Math.round(routineTotalSeconds(routine) / 60)
     });
+    return rounds > 1 ? `${summary} · ×${rounds}` : summary;
   }
 
   colorLabel(hex: string): string {
@@ -167,6 +198,7 @@ export class RoutinesPanelComponent {
       icon: routine.icon,
       steps: routine.steps.map(step => this.toDraft(step)),
       reminder: this.toReminderDraft(routine.reminder),
+      rounds: routineRounds(routine),
       isNew: false
     });
   }
@@ -180,6 +212,7 @@ export class RoutinesPanelComponent {
       icon: routine.icon,
       steps: routine.steps.map(step => this.toDraft(step)),
       reminder: this.toReminderDraft(undefined),
+      rounds: 1,
       isNew: true
     });
     this.openStep.set(routine.steps[0].id);
@@ -265,12 +298,13 @@ export class RoutinesPanelComponent {
       id: draft.routine.id,
       ...this.label(draft.name, draft.routine.nameKey, this.i18n.t('routine.new')),
       icon: draft.icon,
+      rounds: Math.max(1, Math.min(MAX_ROUNDS, Math.round(draft.rounds))),
       reminder: this.fromReminderDraft(draft.reminder),
       steps: draft.steps.map(step => ({
         id: step.id,
         ...this.label(step.name, step.nameKey, this.i18n.t('routine.stepUntitled')),
         icon: step.icon,
-        seconds: Math.max(MIN_MINUTES, Math.min(MAX_MINUTES, Math.round(step.minutes))) * 60,
+        seconds: step.seconds,
         color: step.color,
         kind: step.kind
       }))

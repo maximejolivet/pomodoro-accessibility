@@ -15,13 +15,16 @@ export interface PresetDraft {
   isNew: boolean;
 }
 
-/** Étape en cours d'édition : la durée s'y règle en minutes, comme dans l'éditeur de mode. */
+/**
+ * Étape en cours d'édition. La durée y reste en secondes, contrairement à l'éditeur de
+ * mode : une étape peut durer 20 secondes, et un arrondi en minutes les perdrait.
+ */
 export interface RoutineStepDraft {
   id: string;
   name: string;
   nameKey?: I18nKey;
   icon: string;
-  minutes: number;
+  seconds: number;
   color: string;
   kind: PresetKind;
 }
@@ -44,5 +47,7 @@ export interface RoutineDraft {
   icon: string;
   steps: RoutineStepDraft[];
   reminder: RoutineReminderDraft;
+  /** Nombre de tours : 1 quand la suite d'étapes ne se joue qu'une fois. */
+  rounds: number;
   isNew: boolean;
 }
