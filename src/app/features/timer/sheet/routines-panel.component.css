@@ -55,9 +55,14 @@
 }
 
 /* La routine chargée sur le cadran, comme un mode sélectionné. */
+/*
+ * Texte sombre et non blanc : `--c` est redéclaré par `.btn3d`, si bien que la carte
+ * active tombe toujours sur le bleu pâle du bouton — le blanc y valait 1,7:1, loin des
+ * 4,5:1 exigés (WCAG 1.4.3). Sur ce fond clair, l'encre monte à 8,8:1.
+ */
 .routine.active {
   background: linear-gradient(180deg, color-mix(in srgb, var(--c) 80%, #fff), var(--c));
-  color: #fff;
+  color: var(--ink);
   box-shadow:
     inset 0 2px 0 rgba(255, 255, 255, 0.4),
     0 5px 0 var(--c-dark),

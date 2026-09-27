@@ -1303,6 +1303,21 @@ test.describe('mode sport', () => {
       .toEqual([500, 500, 500]);
   });
 
+  for (const theme of ['light', 'dark'] as const) {
+    test(`la carte de la routine chargée reste lisible, thème ${theme}`, async ({ page }) => {
+      await armTabata(page);
+      await page.addInitScript(t => localStorage.setItem('pomodoro-tdah.theme', t), theme);
+      await page.goto('/');
+      await ready(page);
+      await openSheet(page);
+
+      // La carte de la routine en cours n'était jusqu'ici jamais passée sous axe-core :
+      // aucun test n'ouvrait le panneau avec une routine chargée
+      await expect(page.locator('.routine.active')).toBeVisible();
+      expect(await violations(page)).toEqual([]);
+    });
+  }
+
   test('une étape longue ne déclenche aucun décompte', async ({ page }) => {
     await page.addInitScript(() => {
       localStorage.setItem('pomodoro-tdah.lang', 'fr');
