@@ -14,6 +14,7 @@ import type { Alert, Reminder } from '../models/alert.model';
 import type { SpeechMode, VisualAlert } from '../models/preferences.model';
 import type { VisualCue } from '../models/session.model';
 import type { Preset, PresetKind } from '../models/preset.model';
+import type { WidgetState } from '../models/widget-state.model';
 import { routineRounds, routineSeconds, type Routine, type RoutineStep } from '../models/routine.model';
 import type { ActiveSession } from '../models/session.model';
 import { HapticsService } from './haptics.service';
@@ -26,6 +27,7 @@ import { RoutineService } from './routine.service';
 import { SoundService } from './sound.service';
 import { SpeechService } from './speech.service';
 import { TimerService } from './timer.service';
+import { LiveStatusService } from './live-status.service';
 import { WidgetService } from './widget.service';
 
 /**
@@ -48,6 +50,7 @@ export class SessionService {
   private readonly notifications = inject(NotificationService);
   private readonly keepAwake = inject(KeepAwakeService);
   private readonly widget = inject(WidgetService);
+  private readonly live = inject(LiveStatusService);
   private readonly i18n = inject(I18nService);
 
   private readonly selectedPresetId = signal(readPref('preset'));
@@ -135,6 +138,16 @@ export class SessionService {
    * de l'étape en cours, et le chrono grossit — on lit sa séance de loin, en bougeant.
    */
   readonly sportMode = computed(() => this.activeRoutine()?.workout === true);
+
+  /**
+   * Mode table : le téléphone posé debout sur un bureau devient un vrai minuteur visuel,
+   * lisible à deux mètres. Le cadran prend tout, le reste s'efface — il ne demeure que
+   * Démarrer / Pause, le verrou, et de quoi sortir.
+   *
+   * C'est un état de vue, pas une préférence : on n'ouvre pas l'app en mode table trois
+   * jours plus tard sans se souvenir pourquoi elle n'a plus de boutons.
+   */
+  readonly tableMode = signal(false);
 
   /** Étape assez courte pour que les dernières secondes se comptent une à une. */
   private readonly shortStep = computed(() => this.dialUnit() === 'seconds');
@@ -240,15 +253,18 @@ export class SessionService {
     this.timer.finished$.subscribe(lateBy => this.onFinished(lateBy));
     this.timer.isRunning$.subscribe(running => {
       this.isRunning.set(running);
-      this.keepAwake.set(running && this.prefs.keepAwake());
+      this.keepAwake.set(this.tableMode() || (running && this.prefs.keepAwake()));
       this.syncWidget();
     });
 
-    // Stats du jour, objectif ou langue modifiés : le widget se met à jour
+    // Stats du jour, objectif, langue, thème ou durée réglée : le widget se met à jour.
+    // La durée, pas le temps restant : suivre le décompte réécrirait l'état chaque seconde.
     effect(() => {
       this.history.today();
       this.history.dailyGoal();
       this.i18n.lang();
+      this.prefs.darkMode();
+      this.durationSeconds();
       untracked(() => this.syncWidget());
     });
 
@@ -325,6 +341,17 @@ export class SessionService {
   /** Bascule le verrou du cadran. */
   toggleLock(): void {
     this.prefs.setLocked(!this.locked());
+  }
+
+  /**
+   * Entre ou sort du mode table. L'écran y reste allumé quoi qu'en dise le réglage : un
+   * minuteur posé sur une table qui s'éteint au bout d'une minute ne sert à rien. En
+   * sortant, on rend la main au réglage — et au décompte, s'il tourne.
+   */
+  setTableMode(on: boolean): void {
+    this.tableMode.set(on);
+    this.keepAwake.set(on || (this.isRunning() && this.prefs.keepAwake()));
+    this.announce(this.i18n.t(on ? 'table.entered' : 'table.left'));
   }
 
   reset(): void {
@@ -822,12 +849,16 @@ export class SessionService {
     this.notifications.schedule(alerts, this.prefs.sound());
   }
 
-  /** Transmet au widget l'état affiché (mode, fin du décompte, objectif du jour). */
+  /**
+   * Transmet l'état affiché (mode, fin du décompte, objectif du jour) aux deux surfaces qui
+   * le montrent hors de l'app : le widget de l'écran d'accueil, et le décompte permanent de
+   * l'écran verrouillé. Même état, deux endroits — d'où un seul objet, construit une fois.
+   */
   private syncWidget(): void {
     const endAt = this.timer.endTime;
     const state = endAt !== null ? 'running' : this.isPaused() ? 'paused' : 'idle';
     const t = (key: I18nKey) => this.i18n.t(key);
-    this.widget.update({
+    const snapshot: WidgetState = {
       dayStart: this.history.dayStart(),
       focusMinutes: this.history.today().focusMinutes,
       goalMinutes: this.history.dailyGoal(),
@@ -836,17 +867,23 @@ export class SessionService {
         name: this.modeName(),
         color: this.session()?.color ?? this.selectedPreset().color,
         endAt: endAt ?? undefined,
-        remainingSeconds: state === 'paused' ? Math.round(this.timeLeft()) : undefined
+        remainingSeconds: state === 'paused' ? Math.round(this.timeLeft()) : undefined,
+        dialUnit: this.dialUnit(),
+        dialSeconds: Math.round(this.displaySeconds())
       },
       labels: {
         today: t('stats.focus'),
         goalReached: t('stats.goalReached'),
         paused: t('state.paused'),
         ready: this.stateLabel(),
-        finished: t('state.finished')
+        finished: t('state.finished'),
+        secShort: t('unit.secShort')
       },
-      rtl: this.i18n.dir() === 'rtl'
-    });
+      rtl: this.i18n.dir() === 'rtl',
+      dark: this.prefs.darkMode()
+    };
+    this.widget.update(snapshot);
+    this.live.update(snapshot);
   }
 
   /**

@@ -2,17 +2,21 @@ import { Injectable } from '@angular/core';
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import type { WidgetState } from '../models/widget-state.model';
 
-/** Plugin natif propre à l'app (ios/App/App/WidgetBridgePlugin.swift). */
+/** Plugin natif propre à l'app (`WidgetBridgePlugin` en Swift et en Java). */
 interface WidgetBridgePlugin {
   update(options: { json: string }): Promise<void>;
 }
 
 const WidgetBridge = registerPlugin<WidgetBridgePlugin>('WidgetBridge');
 
-/** Widget d'écran d'accueil (iOS) : l'app lui transmet son état, le widget décompte seul ensuite. */
+/**
+ * Widget d'écran d'accueil (iOS et Android) : l'app lui transmet son état, le widget décompte
+ * seul ensuite. Le plugin est local aux deux plateformes — `WidgetBridgePlugin.swift` d'un
+ * côté, `WidgetBridgePlugin.java` de l'autre.
+ */
 @Injectable({ providedIn: 'root' })
 export class WidgetService {
-  private readonly enabled = Capacitor.getPlatform() === 'ios';
+  private readonly enabled = Capacitor.isNativePlatform();
   private lastJson = '';
 
   update(state: WidgetState): void {
