@@ -63,10 +63,15 @@ Ce repère concret aide particulièrement les personnes **TDAH, autistes ou neur
 
 ### Neurodiversité : quelques repères
 
-- **Neurodivergent** : personne dont le fonctionnement neurologique diverge des normes sociétales. Une personne autiste, ayant un TDAH ou dyslexique est considérée comme neurodivergente.
-- **Neurotypique** : personne dont le fonctionnement neurologique correspond aux normes dominantes de la société.
+- **Neurodivergent** : personne dont le fonctionnement neurologique diverge des normes
+  sociétales. Une personne autiste, ayant un TDAH ou dyslexique est considérée comme
+  neurodivergente.
+- **Neurotypique** : personne dont le fonctionnement neurologique correspond aux normes
+  dominantes de la société.
 
-Le concept de neurodiversité intègre ainsi l'idée que certains cerveaux perçoivent et comprennent le monde différemment, et qu'il convient aussi de reconnaître leurs forces : créativité, pensée en arborescence, pensée systémique, persévérance, honnêteté.
+Le concept de neurodiversité intègre ainsi l'idée que certains cerveaux perçoivent et comprennent
+le monde différemment, et qu'il convient aussi de reconnaître leurs forces : créativité, pensée en
+arborescence, pensée systémique, persévérance, honnêteté.
 
 ### Le temps, difficile à ressentir
 
@@ -75,12 +80,17 @@ heure peuvent paraître identiques, et regarder l'heure n'aide pas toujours à s
 reste. Ce n'est ni un manque de volonté ni de la mauvaise humeur : c'est une autre façon de
 percevoir la durée. Un disque qui rétrécit remplace un calcul par une image.
 
-| Profil                | Difficulté fréquente                                                    | Ce que l'application apporte                                                       |
-| --------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| **TDAH**              | Estimer la durée, démarrer, s'arrêter à temps                           | Un repère visuel, des sessions courtes suivies de pauses, un mode *Focus TDAH*     |
-| **Autisme**           | Passer d'une activité à une autre, supporter l'imprévu et le bruit      | Des paliers annoncés à l'avance, des routines en images, des sons doux et désactivables |
-| **Troubles DYS**      | Lire des chiffres ou une heure, se fatiguer sur le texte                | Un temps lisible sans chiffres, la police OpenDyslexic, un texte bien espacé       |
-| **Autres profils**    | Besoin de consignes claires, d'un rythme adapté, de moins de pression   | Des durées libres de 1 à 60 min, des modes personnalisés, aucune note ni sanction  |
+**TDAH** — estimer la durée, démarrer, s'arrêter à temps.
+→ Un repère visuel, des sessions courtes suivies de pauses, un mode *Focus TDAH*.
+
+**Autisme** — passer d'une activité à une autre, supporter l'imprévu et le bruit.
+→ Des paliers annoncés à l'avance, des routines en images, des sons doux et désactivables.
+
+**Troubles DYS** — lire des chiffres ou une heure, se fatiguer sur le texte.
+→ Un temps lisible sans chiffres, la police OpenDyslexic, un texte bien espacé.
+
+**Autres profils** — besoin de consignes claires, d'un rythme adapté, de moins de pression.
+→ Des durées libres de 1 à 60 min, des modes personnalisés, aucune note ni sanction.
 
 ### Un outil sans pression
 
@@ -111,58 +121,99 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
 
 ## Ce que fait l'application
 
-|                                 |                                                                                                                        |
-| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| 🕒 **Un cadran qui se vide**     | Un disque coloré recule vers 0, avec un anneau arc-en-ciel en 12 segments de 5 min, jusqu'à 60 min                     |
-| 👆 **Réglage au doigt**          | Il suffit de glisser sur le cadran pour choisir les minutes, même pendant le décompte                                  |
-| ➖➕ **Boutons − et +**            | Une minute par appui, sans glisser : pour les mains qui tremblent, un seul doigt ou un contacteur                      |
-| 🔒 **Verrou du cadran**          | Un appui et le cadran ne répond plus : une paume posée ne peut plus changer la durée ni effacer la session            |
-| 🎯 **Modes personnalisables**    | Pomodoro, Pause, Pause longue, Focus TDAH… ou tes propres modes : nom, durée (1-60 min), couleur, travail ou pause     |
-| 👋 **Tutoriel d'accueil**        | Cinq vues au premier lancement : voir le temps, le régler, le lancer, les routines, les alertes             |
-| 🧩 **Routines en pictogrammes**  | Une suite d'étapes qui s'enchaînent — s'habiller, petit-déjeuner, dents, cartable — chacune avec son image et sa durée |
-| 🔁 **Tours et secondes**         | Une étape dure de 5 s à 60 min, une routine se rejoue jusqu'à 20 fois : « effort 20 s, repos 10 s » × 8, c'est un Tabata |
-| 💪 **Cadran en secondes**        | Sous la minute, la graduation passe en secondes — un effort de 20 s se vide sous les yeux au lieu d'être un filet   |
-| 3️⃣ **Décompte des 3 dernières**  | Un tic, une impulsion et un éclat par seconde, et la suite annoncée avant la fin : finir son effort sans regarder   |
-| 🎨 **Mode sport**                | Une routine marquée *entraînement* teinte toute la page de la couleur de l'étape — rouge à l'effort, vert au repos |
-| ⏰ **Rappel de routine**         | Une heure, des jours : la notification arrive à l'heure dite et ouvre la routine, prête à démarrer                      |
-| 🧪 **Test de notification**      | Un bouton programme une notification à cinq secondes : le temps de verrouiller l'écran, et de savoir avant d'en avoir besoin si l'appareil prévient |
-| 🔁 **Enchaînement automatique**  | Travail → pause → travail, avec une pause longue tous les 4 cycles (désactivable)                                      |
-| 📊 **Historique & statistiques** | Temps de focus du jour, sessions terminées, série de jours, graphique des 7 derniers jours                             |
-| 🏁 **Objectif quotidien**        | Un nombre de minutes de focus à viser chaque jour (10-300 min), avec une barre de progression                          |
-| 🔔 **Sons de palier**            | Trois paliers avant la fin, calculés sur la durée réglée, chacun son son, puis un carillon                              |
-| 💡 **Alerte visuelle**           | Un éclat coloré aux paliers et à la fin, doux ou franc, pour qui n'entend pas ou a coupé le son                        |
-| 🗣️ **Annonce vocale**            | Le temps restant dit à voix haute, aux paliers ou à chaque minute, pour écouter sans regarder (désactivé par défaut)   |
-| ⏱️ **+5 min automatique**        | À 0, cinq minutes de plus pour terminer ce qui est en cours (désactivable)                                             |
-| 📳 **Vibration codée**           | Un motif différent par palier — 1 impulsion au premier, 2 au deuxième, 3 brèves au dernier, 3 longues à la fin (désactivable) |
-| 📲 **Notifications**             | Alertes même téléphone verrouillé ou app en arrière-plan, avec les mêmes sons que l'app                                |
-| 🔆 **Écran toujours allumé**     | L'écran ne s'éteint pas pendant le décompte (désactivable)                                                             |
-| 🧩 **Widget iPhone et Android**  | Le cadran lui-même sur l'écran d'accueil : le disque s'y vide minute par minute, avec le temps et l'objectif du jour   |
-| ⏱️ **Décompte sur l'écran verrouillé** | Une notification muette sur Android, une Live Activity sur iPhone : le temps restant sans déverrouiller |
-| 🍽️ **Mode table**                | Le cadran en grand, tout le reste effacé : le téléphone posé debout devient le minuteur de la table ou de la classe |
-| 🌍 **7 langues**                 | Français, anglais, espagnol, allemand, italien, portugais, arabe (lu de droite à gauche)                               |
-| 🌗 **Mode sombre**               | Suit le réglage de l'appareil, puis modifiable dans ⚙︎                                                                  |
-| 🔇 **Son on/off**                | Coupure complète des sons, choix mémorisé                                                                              |
+### Le cadran
+
+- 🕒 **Un cadran qui se vide** — un disque coloré recule vers 0, avec un anneau arc-en-ciel en
+  12 segments de 5 min, jusqu'à 60 min
+- 👆 **Réglage au doigt** — il suffit de glisser sur le cadran pour choisir les minutes, même
+  pendant le décompte
+- ➖➕ **Boutons − et +** — une minute par appui, sans glisser : pour les mains qui tremblent,
+  un seul doigt ou un contacteur
+- 🔒 **Verrou du cadran** — un appui et le cadran ne répond plus : une paume posée ne peut plus
+  changer la durée ni effacer la session
+- 💪 **Cadran en secondes** — sous la minute, la graduation passe en secondes : un effort de 20 s
+  se vide sous les yeux au lieu d'être un filet
+- 🍽️ **Mode table** — le cadran en grand, tout le reste effacé : le téléphone posé debout devient
+  le minuteur de la table ou de la classe
+
+### Modes et routines
+
+- 🎯 **Modes personnalisables** — Pomodoro, Pause, Pause longue, Focus TDAH… ou tes propres
+  modes : nom, durée (1-60 min), couleur, travail ou pause
+- 🧩 **Routines en pictogrammes** — une suite d'étapes qui s'enchaînent — s'habiller,
+  petit-déjeuner, dents, cartable — chacune avec son image et sa durée
+- 🔁 **Tours et secondes** — une étape dure de 5 s à 60 min, une routine se rejoue jusqu'à
+  20 fois : « effort 20 s, repos 10 s » × 8, c'est un Tabata
+- 🎨 **Mode sport** — une routine marquée *entraînement* teinte toute la page de la couleur de
+  l'étape : rouge à l'effort, vert au repos
+- ⏰ **Rappel de routine** — une heure, des jours : la notification arrive à l'heure dite et ouvre
+  la routine, prête à démarrer
+- 🔁 **Enchaînement automatique** — travail → pause → travail, avec une pause longue tous les
+  4 cycles (désactivable)
+
+### Les alertes
+
+- 🔔 **Sons de palier** — trois paliers avant la fin, calculés sur la durée réglée, chacun son
+  son, puis un carillon
+- 3️⃣ **Décompte des 3 dernières** — un tic, une impulsion et un éclat par seconde, et la suite
+  annoncée avant la fin : finir son effort sans regarder
+- 💡 **Alerte visuelle** — un éclat coloré aux paliers et à la fin, doux ou franc, pour qui
+  n'entend pas ou a coupé le son
+- 🗣️ **Annonce vocale** — le temps restant dit à voix haute, aux paliers ou à chaque minute, pour
+  écouter sans regarder (désactivé par défaut)
+- 📳 **Vibration codée** — un motif différent par palier : 1 impulsion au premier, 2 au deuxième,
+  3 brèves au dernier, 3 longues à la fin (désactivable)
+- 📲 **Notifications** — alertes même téléphone verrouillé ou application en arrière-plan, avec
+  les mêmes sons que l'application
+- 🧪 **Test de notification** — un bouton programme une notification à cinq secondes : le temps de
+  verrouiller l'écran, et de savoir avant d'en avoir besoin si l'appareil prévient
+- ⏱️ **+5 min automatique** — à 0, cinq minutes de plus pour terminer ce qui est en cours
+  (désactivable)
+
+### Le suivi
+
+- 📊 **Historique & statistiques** — temps de focus du jour, sessions terminées, série de jours,
+  graphique des 7 derniers jours
+- 🏁 **Objectif quotidien** — un nombre de minutes de focus à viser chaque jour (10-300 min), avec
+  une barre de progression
+
+### Hors de l'application
+
+- 🧩 **Widget iPhone et Android** — le cadran lui-même sur l'écran d'accueil : le disque s'y vide
+  minute par minute, avec le temps et l'objectif du jour
+- ⏱️ **Décompte sur l'écran verrouillé** — une notification muette sur Android, une Live Activity
+  sur iPhone : le temps restant sans déverrouiller
+- 🔆 **Écran toujours allumé** — l'écran ne s'éteint pas pendant le décompte (désactivable)
+
+### Confort et réglages
+
+- 👋 **Tutoriel d'accueil** — cinq vues au premier lancement : voir le temps, le régler, le
+  lancer, les routines, les alertes
+- 🌍 **7 langues** — français, anglais, espagnol, allemand, italien, portugais, arabe (lu de
+  droite à gauche)
+- 🌗 **Mode sombre** — suit le réglage de l'appareil, puis modifiable dans ⚙︎
+- 🔇 **Son on/off** — coupure complète des sons, choix mémorisé
 
 Le décompte reste juste même si l'application passe en arrière-plan ou si le téléphone se
 verrouille : au retour, tout est à jour.
 
 ## Comment s'en servir
 
-| Geste                      | Action                                                                       |
-| -------------------------- | ---------------------------------------------------------------------------- |
-| **Toucher** le cadran ou ▶ | Démarrer, mettre en pause ou reprendre                                       |
-| **Glisser** sur le cadran  | Régler les minutes (0 → 60)                                                  |
-| **−** / **+** sous le cadran | Retirer ou ajouter une minute ; appui maintenu pour défiler                 |
-| 🔒 sous le boîtier         | Verrouiller ou déverrouiller le cadran                                       |
-| ↺                          | Remettre à zéro                                                              |
-| ⚙︎ → **Modes**              | Choisir, créer, modifier ou supprimer un mode                                |
-| ⚙︎ → **Modes** → *Routines* | Lancer une routine, en créer une, réordonner ses étapes                      |
-| ⚙︎ → **Modes** → ✎ → *Tours* | Rejouer la suite d'étapes : huit tours pour un Tabata                       |
-| ⚙︎ → **Modes** → ✎ → *Rappel* | Régler l'heure et les jours où la routine vient se rappeler à toi          |
-| **Toucher** une étape      | Aller directement à cette étape de la routine ; ✕ pour quitter la routine    |
-| ⚙︎ → **Stats**              | Voir son objectif du jour, ses statistiques et l'historique des sessions     |
-| ⚙︎ → **Réglages**           | Mode sombre, sons, vibration, alerte visuelle, annonce vocale, +5 min, enchaînement, écran allumé, objectif, langue |
-| ⚙︎ → **Réglages** → *Revoir le tutoriel* | Rejouer les cinq vues d'accueil                                 |
+| Geste | Action |
+| --- | --- |
+| **Toucher** le cadran ou ▶ | Démarrer, mettre en pause ou reprendre |
+| **Glisser** sur le cadran | Régler les minutes (0 → 60) |
+| **−** / **+** sous le cadran | Retirer ou ajouter une minute ; appui maintenu pour défiler |
+| 🔒 sous le boîtier | Verrouiller ou déverrouiller le cadran |
+| ↺ | Remettre à zéro |
+| ⚙︎ → **Modes** | Choisir, créer, modifier ou supprimer un mode |
+| ⚙︎ → **Modes** → *Routines* | Lancer une routine, en créer une, réordonner ses étapes |
+| ⚙︎ → **Modes** → ✎ → *Tours* | Rejouer la suite d'étapes : huit tours pour un Tabata |
+| ⚙︎ → **Modes** → ✎ → *Rappel* | Régler l'heure et les jours où la routine vient se rappeler à toi |
+| **Toucher** une étape | Aller directement à cette étape de la routine ; ✕ pour quitter la routine |
+| ⚙︎ → **Stats** | Voir son objectif du jour, ses statistiques et l'historique des sessions |
+| ⚙︎ → **Réglages** | Mode sombre, sons, vibration, alerte visuelle, annonce vocale, +5 min, enchaînement, écran allumé, objectif, langue |
+| ⚙︎ → **Réglages** → *Revoir le tutoriel* | Rejouer les cinq vues d'accueil |
 
 <p align="center">
   <img src="docs/screenshot-routine.png" alt="Routine du matin en cours, avec la bande de ses quatre étapes" width="260">
@@ -177,12 +228,12 @@ verrouille : au retour, tout est à jour.
 Ils vont du plus discret au plus insistant à mesure que la fin approche, et on peut les
 écouter dans ⚙︎ → *Écouter les sons*.
 
-| Moment               | Son                                                 | Vibration                        |
-| -------------------- | --------------------------------------------------- | -------------------------------- |
-| **1ᵉʳ palier**        | 1 note douce et ronde                               | 1 impulsion longue               |
-| **2ᵉ palier**         | 2 notes montantes, un peu plus claires              | 2 impulsions                     |
-| **Dernier palier**   | 3 notes rapides, façon « bip »                      | 3 impulsions brèves              |
-| **0**                | Un carillon joué 3 fois                             | 3 impulsions longues             |
+| Moment             | Son                                    | Vibration            |
+| ------------------ | -------------------------------------- | -------------------- |
+| **1ᵉʳ palier**     | 1 note douce et ronde                  | 1 impulsion longue   |
+| **2ᵉ palier**      | 2 notes montantes, un peu plus claires | 2 impulsions         |
+| **Dernier palier** | 3 notes rapides, façon « bip »         | 3 impulsions brèves  |
+| **0**              | Un carillon joué 3 fois                | 3 impulsions longues |
 
 Les paliers tombent à 45, 30 et 15 min restantes sur une session de plus de 40 min. En dessous,
 ils se calculent sur la durée choisie — la moitié, le dernier quart, puis 1 min avant la fin —

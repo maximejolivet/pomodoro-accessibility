@@ -51,7 +51,7 @@ Un son de l'app et un son de notification ne passent pas par le même curseur, e
 chose à vérifier quand « les sons ne sont pas forts » :
 
 | Ce qui joue | Flux Android | Réglage |
-| ----------- | ------------ | ------- |
+| --- | --- | --- |
 | Les sons de l'app, au premier plan (Web Audio) | média | Volume **multimédia** |
 | Les notifications, app en arrière-plan ou écran verrouillé | notification (`USAGE_NOTIFICATION`) | Volume **notifications** |
 

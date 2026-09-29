@@ -63,10 +63,14 @@ This concrete cue is especially helpful for people who are **ADHD, autistic or n
 
 ### Neurodiversity: a few definitions
 
-- **Neurodivergent**: a person whose neurological functioning diverges from societal norms. An autistic person, or someone with ADHD or dyslexia, is considered neurodivergent.
-- **Neurotypical**: a person whose neurological functioning matches the dominant norms of society.
+- **Neurodivergent**: a person whose neurological functioning diverges from societal norms. An
+  autistic person, or someone with ADHD or dyslexia, is considered neurodivergent.
+- **Neurotypical**: a person whose neurological functioning matches the dominant norms of
+  society.
 
-The concept of neurodiversity thus includes the idea that some brains perceive and understand the world differently, and that their strengths should also be recognized: creativity, branching thinking, systems thinking, perseverance, honesty.
+The concept of neurodiversity thus includes the idea that some brains perceive and understand the
+world differently, and that their strengths should also be recognized: creativity, branching
+thinking, systems thinking, perseverance, honesty.
 
 ### Time is hard to feel
 
@@ -75,12 +79,17 @@ seem the same, and looking at a clock does not always tell how much is left. Thi
 lack of willpower or a bad mood; it is a different way of perceiving duration. A shrinking
 disc replaces a calculation with an image.
 
-| Profile               | Common difficulty                                                       | What the app offers                                                                |
-| --------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| **ADHD**              | Estimating duration, starting, stopping on time                         | A visual cue, short sessions followed by breaks, a *Focus TDAH* mode               |
-| **Autism**            | Switching activities, coping with the unexpected and with noise         | Milestones announced in advance, routines in pictures, soft sounds that can be turned off |
-| **DYS disorders**     | Reading numbers or a clock time, tiring quickly on text                 | Time you can read without numbers, the OpenDyslexic font, well-spaced text         |
-| **Other profiles**    | Need for clear instructions, an adapted pace, less pressure             | Free durations from 1 to 60 min, custom modes, no grades or penalties              |
+**ADHD** — estimating duration, starting, stopping on time.
+→ A visual cue, short sessions followed by breaks, a *Focus TDAH* mode.
+
+**Autism** — switching activities, coping with the unexpected and with noise.
+→ Milestones announced in advance, routines in pictures, soft sounds that can be turned off.
+
+**DYS disorders** — reading numbers or a clock time, tiring quickly on text.
+→ Time you can read without numbers, the OpenDyslexic font, well-spaced text.
+
+**Other profiles** — need for clear instructions, an adapted pace, less pressure.
+→ Free durations from 1 to 60 min, custom modes, no grades or penalties.
 
 ### A tool without pressure
 
@@ -112,57 +121,98 @@ visual timer is a simple, discreet and free tool at that level.
 
 ## What the app does
 
-|                                 |                                                                                                                        |
-| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| 🕒 **A dial that empties**       | A colored disc shrinks toward 0, with a rainbow ring of 12 five-minute segments, up to 60 min                          |
-| 👆 **Set it with your finger**   | Just drag on the dial to choose the minutes, even while the countdown is running                                       |
-| ➖➕ **− and + buttons**           | One minute per tap, no dragging: for shaky hands, a single finger or a switch device                                   |
-| 🔒 **Dial lock**                 | One tap and the dial stops responding: a resting palm can no longer change the time or wipe the session               |
-| 🎯 **Custom modes**              | Pomodoro, Break, Long break, ADHD Focus… or your own modes: name, duration (1-60 min), color, work or break            |
-| 👋 **Welcome tutorial**          | Five views on first launch: seeing time, setting it, starting it, routines, alerts                          |
-| 🧩 **Picture routines**          | A sequence of steps that follow on their own — get dressed, breakfast, teeth, school bag — each with its picture and its length |
-| 🔁 **Rounds and seconds**        | A step lasts from 5 s to 60 min, a routine replays up to 20 times: "work 20 s, rest 10 s" × 8 is a Tabata |
-| 💪 **Dial in seconds**           | Below a minute the graduation counts seconds — a 20 s effort drains before your eyes instead of being a sliver |
-| 3️⃣ **Last three counted down**   | A tick, a pulse and a flash each second, and what comes next announced before the end |
-| 🎨 **Workout mode**              | A routine marked *workout* tints the whole page with the step's colour — red for work, green for rest |
-| ⏰ **Routine reminder**          | A time, some days: the notification arrives when it should and opens the routine, ready to start                               |
-| 🧪 **Notification test**         | A button schedules a notification five seconds out: time enough to lock the screen, and to know the device warns you before you need it |
-| 🔁 **Automatic chaining**        | Work → break → work, with a long break every 4 cycles (can be turned off)                                              |
-| 📊 **History & statistics**      | Focus time today, completed sessions, day streak, chart of the last 7 days                                             |
-| 🏁 **Daily goal**                | A number of focus minutes to aim for each day (10-300 min), with a progress bar                                        |
-| 🔔 **Milestone sounds**          | Three milestones before the end, worked out from the set duration, each with its own sound, then a chime               |
-| 💡 **Visual alert**              | A colored flash at the milestones and at the end, soft or strong, for anyone who can't hear or muted the sound        |
-| 🗣️ **Spoken time**               | The time left read out loud, at the milestones or every minute, to listen instead of looking (off by default)          |
-| ⏱️ **Automatic +5 min**          | At 0, five more minutes to finish what you're doing (can be turned off)                                                |
-| 📳 **Coded vibration**           | A different pattern per milestone — 1 pulse on the first, 2 on the second, 3 short on the last, 3 long at the end (can be turned off) |
-| 📲 **Notifications**             | Alerts even with a locked phone or the app in the background, with the same sounds as the app                          |
-| 🔆 **Screen always on**          | The screen doesn't turn off during the countdown (can be turned off)                                                   |
-| 🧩 **iPhone and Android widget** | The dial itself on your home screen: the disk empties minute by minute, with the time left and today's goal            |
-| ⏱️ **Countdown on the lock screen** | A silent notification on Android, a Live Activity on iPhone: the time left without unlocking |
-| 🍽️ **Table mode**                | The dial writ large, everything else cleared away: a phone stood on a desk becomes the timer for the table or the classroom |
-| 🌍 **7 languages**               | French, English, Spanish, German, Italian, Portuguese, Arabic (read right to left)                                     |
-| 🌗 **Dark mode**                 | Follows your device setting, then adjustable in ⚙︎                                                                      |
-| 🔇 **Sound on/off**              | Mute everything, and the choice is remembered                                                                          |
+### The dial
+
+- 🕒 **A dial that empties** — a colored disc shrinks toward 0, with a rainbow ring of 12
+  five-minute segments, up to 60 min
+- 👆 **Set it with your finger** — just drag on the dial to choose the minutes, even while the
+  countdown is running
+- ➖➕ **− and + buttons** — one minute per tap, no dragging: for shaky hands, a single finger or
+  a switch device
+- 🔒 **Dial lock** — one tap and the dial stops responding: a resting palm can no longer change
+  the time or wipe the session
+- 💪 **Dial in seconds** — below a minute the graduation counts seconds: a 20 s effort drains
+  before your eyes instead of being a sliver
+- 🍽️ **Table mode** — the dial writ large, everything else cleared away: a phone stood on a desk
+  becomes the timer for the table or the classroom
+
+### Modes and routines
+
+- 🎯 **Custom modes** — Pomodoro, Break, Long break, ADHD Focus… or your own modes: name,
+  duration (1-60 min), color, work or break
+- 🧩 **Picture routines** — a sequence of steps that follow on their own — get dressed, breakfast,
+  teeth, school bag — each with its picture and its length
+- 🔁 **Rounds and seconds** — a step lasts from 5 s to 60 min, a routine replays up to 20 times:
+  "work 20 s, rest 10 s" × 8 is a Tabata
+- 🎨 **Workout mode** — a routine marked *workout* tints the whole page with the step's colour:
+  red for work, green for rest
+- ⏰ **Routine reminder** — a time, some days: the notification arrives when it should and opens
+  the routine, ready to start
+- 🔁 **Automatic chaining** — work → break → work, with a long break every 4 cycles (can be
+  turned off)
+
+### The alerts
+
+- 🔔 **Milestone sounds** — three milestones before the end, worked out from the set duration,
+  each with its own sound, then a chime
+- 3️⃣ **Last three counted down** — a tick, a pulse and a flash each second, and what comes next
+  announced before the end
+- 💡 **Visual alert** — a colored flash at the milestones and at the end, soft or strong, for
+  anyone who can't hear or muted the sound
+- 🗣️ **Spoken time** — the time left read out loud, at the milestones or every minute, to listen
+  instead of looking (off by default)
+- 📳 **Coded vibration** — a different pattern per milestone: 1 pulse on the first, 2 on the
+  second, 3 short on the last, 3 long at the end (can be turned off)
+- 📲 **Notifications** — alerts even with a locked phone or the app in the background, with the
+  same sounds as the app
+- 🧪 **Notification test** — a button schedules a notification five seconds out: time enough to
+  lock the screen, and to know the device warns you before you need it
+- ⏱️ **Automatic +5 min** — at 0, five more minutes to finish what you're doing (can be turned
+  off)
+
+### Keeping track
+
+- 📊 **History & statistics** — focus time today, completed sessions, day streak, chart of the
+  last 7 days
+- 🏁 **Daily goal** — a number of focus minutes to aim for each day (10-300 min), with a progress
+  bar
+
+### Outside the app
+
+- 🧩 **iPhone and Android widget** — the dial itself on your home screen: the disk empties minute
+  by minute, with the time left and today's goal
+- ⏱️ **Countdown on the lock screen** — a silent notification on Android, a Live Activity on
+  iPhone: the time left without unlocking
+- 🔆 **Screen always on** — the screen doesn't turn off during the countdown (can be turned off)
+
+### Comfort and settings
+
+- 👋 **Welcome tutorial** — five views on first launch: seeing time, setting it, starting it,
+  routines, alerts
+- 🌍 **7 languages** — French, English, Spanish, German, Italian, Portuguese, Arabic (read right
+  to left)
+- 🌗 **Dark mode** — follows your device setting, then adjustable in ⚙︎
+- 🔇 **Sound on/off** — mute everything, and the choice is remembered
 
 The countdown stays accurate even if the app goes to the background or the phone locks:
 when you come back, everything is up to date.
 
 ## How to use it
 
-| Gesture                    | Action                                                                        |
-| -------------------------- | ----------------------------------------------------------------------------- |
-| **Tap** the dial or ▶      | Start, pause or resume                                                        |
-| **Drag** on the dial       | Set the minutes (0 → 60)                                                      |
-| **−** / **+** under the dial | Remove or add a minute; press and hold to run through them                   |
-| ↺                          | Reset                                                                         |
-| ⚙︎ → **Modes**              | Choose, create, edit or delete a mode                                         |
-| ⚙︎ → **Modes** → *Routines* | Start a routine, create one, reorder its steps                                |
-| ⚙︎ → **Modes** → ✎ → *Rounds* | Replay the steps: eight rounds for a Tabata                                 |
-| ⚙︎ → **Modes** → ✎ → *Reminder* | Set the time and the days when the routine comes to remind you            |
-| **Tap** a step             | Jump straight to that step of the routine; ✕ leaves the routine               |
-| ⚙︎ → **Stats**              | See today's goal, your statistics and session history                         |
-| ⚙︎ → **Settings** → *Play the tutorial again* | Replay the five welcome views                               |
-| ⚙︎ → **Settings**           | Dark mode, sounds, vibration, visual alert, spoken time, +5 min, chaining, screen on, goal, language |
+| Gesture | Action |
+| --- | --- |
+| **Tap** the dial or ▶ | Start, pause or resume |
+| **Drag** on the dial | Set the minutes (0 → 60) |
+| **−** / **+** under the dial | Remove or add a minute; press and hold to run through them |
+| ↺ | Reset |
+| ⚙︎ → **Modes** | Choose, create, edit or delete a mode |
+| ⚙︎ → **Modes** → *Routines* | Start a routine, create one, reorder its steps |
+| ⚙︎ → **Modes** → ✎ → *Rounds* | Replay the steps: eight rounds for a Tabata |
+| ⚙︎ → **Modes** → ✎ → *Reminder* | Set the time and the days when the routine comes to remind you |
+| **Tap** a step | Jump straight to that step of the routine; ✕ leaves the routine |
+| ⚙︎ → **Stats** | See today's goal, your statistics and session history |
+| ⚙︎ → **Settings** → *Play the tutorial again* | Replay the five welcome views |
+| ⚙︎ → **Settings** | Dark mode, sounds, vibration, visual alert, spoken time, +5 min, chaining, screen on, goal, language |
 
 <p align="center">
   <img src="docs/screenshot-routine.png" alt="The morning routine loaded, with the strip of its four steps" width="260">
@@ -177,12 +227,12 @@ when you come back, everything is up to date.
 They go from the gentlest to the most insistent as the end approaches, and you can listen to
 them in ⚙︎ → *Listen to sounds*.
 
-| Moment               | Sound                                               | Vibration                        |
-| -------------------- | --------------------------------------------------- | -------------------------------- |
-| **1st milestone**    | 1 soft, round note                                  | 1 long pulse                     |
-| **2nd milestone**    | 2 rising notes, a bit brighter                      | 2 pulses                         |
-| **Last milestone**   | 3 quick notes, "beep" style                         | 3 short pulses                   |
-| **0**                | A chime played 3 times                              | 3 long pulses                    |
+| Moment             | Sound                          | Vibration      |
+| ------------------ | ------------------------------ | -------------- |
+| **1st milestone**  | 1 soft, round note             | 1 long pulse   |
+| **2nd milestone**  | 2 rising notes, a bit brighter | 2 pulses       |
+| **Last milestone** | 3 quick notes, "beep" style    | 3 short pulses |
+| **0**              | A chime played 3 times         | 3 long pulses  |
 
 Milestones land at 45, 30 and 15 min left on a session longer than 40 min. Below that they are
 worked out from the chosen duration — halfway, the last quarter, then 1 min before the end —
