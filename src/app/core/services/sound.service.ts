@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import type { MilestoneTone } from '../constants/timer.constants';
 import {
-  CUE_PATTERNS, ENVELOPE, MASTER_GAIN, SOUND_PATTERNS, SoundId, SoundPattern, voices
+  CUE_PATTERNS, ENVELOPE, SOUND_PATTERNS, SoundId, SoundPattern, level, voices
 } from '../helpers/sound-patterns';
 
 /**
@@ -46,8 +46,12 @@ export class SoundService {
     if (!ctx) return;
     if (ctx.state === 'suspended') ctx.resume().catch(() => {});
 
+    // Le motif est porté à la même crête que son fichier WAV, mesurée sur le signal rendu.
+    // Pas de limiteur derrière : la marge laissée par `PEAK_TARGET` absorbe le peu que les
+    // oscillateurs de Web Audio ajoutent en partant d'une phase quelconque (crête relevée à
+    // -0,5 dB au pire), et un compresseur écraserait le tic, trop bref pour lui échapper.
     const master = ctx.createGain();
-    master.gain.value = MASTER_GAIN;
+    master.gain.value = level(pattern);
     master.connect(ctx.destination);
 
     const now = ctx.currentTime + 0.02;
@@ -59,7 +63,7 @@ export class SoundService {
       osc.frequency.value = v.freq;
       gain.gain.setValueAtTime(ENVELOPE.floor, start);
       gain.gain.exponentialRampToValueAtTime(v.gain, start + ENVELOPE.attack);
-      gain.gain.exponentialRampToValueAtTime(ENVELOPE.floor, start + v.dur);
+      gain.gain.exponentialRampToValueAtTime(v.gain * ENVELOPE.decay, start + v.dur);
       osc.connect(gain).connect(master);
       osc.start(start);
       osc.stop(start + v.dur + 0.05);
