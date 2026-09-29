@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ic_launcher_background">#FFFFFF</color>
+    <!-- Le bleu du boîtier (jeton `bumper`) : l'icône adaptative garde la famille de l'app. -->
+    <color name="ic_launcher_background">#A6CCD6</color>
 </resources>
