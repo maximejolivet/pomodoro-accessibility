@@ -150,6 +150,42 @@
 <!-- Le tutoriel d'accueil se revoit : il passe vite, et on n'y retient pas tout -->
 <button type="button" class="link-btn" (click)="replayTutorial()">{{ i18n.t('tutorial.replay') }}</button>
 
+<!-- Le téléphone posé debout devient le minuteur visuel de la table : le cadran, et rien d'autre. -->
+<div class="table-mode">
+  <span class="setting-text">
+    {{ i18n.t('table.open') }}
+    <small>{{ i18n.t('table.hint') }}</small>
+  </span>
+  <button type="button" class="btn3d btn-text" (click)="openTableMode()">{{ i18n.t('table.open') }}</button>
+</div>
+
+<!-- Une notification de test : la seule façon de savoir, avant d'en avoir besoin, que l'appareil prévient. -->
+<div class="notif-test">
+  <span class="field-head">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M18 9a6 6 0 1 0-12 0c0 5-2 6.5-2 6.5h16S18 14 18 9Z" />
+      <path d="M10.5 19a2 2 0 0 0 3 0" />
+    </svg>
+    <span class="setting-text">
+      {{ i18n.t('settings.notifTest') }}
+      <small>{{ i18n.t('settings.notifTestHint') }}</small>
+    </span>
+  </span>
+  <button
+    type="button"
+    class="btn3d btn-text"
+    [disabled]="testPending()"
+    (click)="testNotification()"
+  >{{ i18n.t('settings.notifTestSend') }}</button>
+  <p class="notif-test-status" aria-live="polite" aria-atomic="true">{{ testMessage() }}</p>
+  <!-- L'écran système est à deux pas : le test diagnostique, ce lien répare. -->
+  <button
+    type="button"
+    class="link-btn"
+    (click)="openExactAlarmSettings()"
+  >{{ i18n.t('settings.notifTestExactLink') }}</button>
+</div>
+
 <div class="sound-test">
   <span class="sound-test-head">{{ i18n.t('settings.listen') }}</span>
   <div class="sound-test-buttons">
