@@ -14,8 +14,12 @@ const ROOT = join(import.meta.dirname, '..');
 const ICON = readFileSync(join(ROOT, 'resources/app-icon.svg'), 'utf8');
 const FOREGROUND = readFileSync(join(ROOT, 'resources/app-icon-foreground.svg'), 'utf8');
 
-/** Fond de l'écran de lancement : le haut du dégradé de l'app en thème clair (`--bg-top`). */
-const SPLASH_BG = '#f1f3f2';
+/**
+ * Fond de l'écran de lancement : noir. Il vaut pour les deux thèmes, il ne fait aucun éclair
+ * blanc au réveil dans le noir, et c'est sur lui que le voile d'amorçage de l'app enchaîne
+ * sans une couture — `index.html` ouvre sur le même noir.
+ */
+const SPLASH_BG = '#000000';
 
 /** Densités Android, et le facteur qui les sépare de mdpi. */
 const DENSITIES = [

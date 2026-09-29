@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Le noir de l'écran de lancement : aucun éclair blanc au réveil, et les deux thèmes
+         de l'app enchaînent dessus sans heurt. -->
+    <color name="splash_background">#000000</color>
+</resources>
