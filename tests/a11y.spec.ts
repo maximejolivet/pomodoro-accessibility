@@ -1516,3 +1516,29 @@ test.describe('mode table', () => {
     });
   }
 });
+
+/**
+ * Voile d'amorçage : il tient l'écran entre l'image de lancement du système et la première
+ * image de l'app. Deux choses comptent — qu'il s'en aille, sinon il ne reste qu'un écran
+ * noir dont personne ne sait rien ; et qu'il se fige pour qui demande moins de mouvement.
+ */
+test.describe('voile d’amorçage', () => {
+  test('il s’efface une fois l’application prête', async ({ page }) => {
+    await page.goto('/');
+    await ready(page);
+    await expect(page.locator('#boot')).toHaveCount(0);
+    await expect(page.locator('html')).not.toHaveClass(/booting/);
+  });
+
+  test('le cadran se fige sous prefers-reduced-motion', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    // Avant que l'app ne l'ait retiré, l'anneau ne doit porter aucune animation
+    const animation = await page.evaluate(() => {
+      const ring = document.querySelector('.boot-ring');
+      return ring ? getComputedStyle(ring).animationName : 'absent';
+    });
+    expect(['none', 'absent']).toContain(animation);
+    await ready(page);
+  });
+});
