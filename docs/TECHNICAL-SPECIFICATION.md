@@ -364,6 +364,34 @@ Ce fichier unique sert **deux consommateurs** :
 C'est la raison pour laquelle il n'importe rien : il doit rester exécutable hors bundle. Les sons
 de l'application et ceux des notifications sont ainsi identiques par construction.
 
+### 8.1 Mise à niveau
+
+Les gains écrits dans les motifs sont relatifs : ils règlent l'équilibre entre les notes d'un même
+motif, pas son volume. Celui-ci vient de `level(pattern)`, qui **mesure la crête du signal rendu**
+et la porte à `PEAK_TARGET` (0,89, soit −1 dBFS). Mesurer plutôt que calculer est nécessaire :
+les notes se chevauchent et s'additionnent, si bien qu'un gain posé à la main laisse le motif soit
+écrêté, soit très en dessous. Le facteur sert des deux côtés — gain maître en Web Audio, échelle
+des échantillons dans le WAV — et il est mémoïsé, le calcul valant un rendu complet.
+
+Deux conséquences voulues :
+
+- **tous les motifs sortent à la même crête**, alors qu'ils s'étalaient auparavant sur 17 dB
+  (le carillon de fin couvrait les paliers, et le palier des 15 min était le plus discret des
+  quatre — le contraire de son rôle) ;
+- **un son d'alerte doit sortir fort**, parce que l'appareil ne fait que réduire ce qu'on lui
+  donne. Un fichier rendu à mi-échelle arrive irrémédiablement discret, notamment sur Android
+  où le volume des notifications est un réglage à part.
+
+L'enveloppe décroît vers un niveau **relatif** à la crête de la note (−48 dB au bout de `dur`).
+Un plancher absolu plongeait d'autant plus vite que la note partait bas : une note douce n'était
+qu'un claquement, et ce qui ne résonne pas ne s'entend pas.
+
+Aucun limiteur ne ferme la chaîne Web Audio. La mise à niveau est mesurée sur un rendu où les
+oscillateurs partent en phase, ce que Web Audio ne garantit pas : la crête réelle y monte jusqu'à
+−0,5 dB au lieu de −1, ce que la marge de `PEAK_TARGET` absorbe. Un `DynamicsCompressorNode`,
+mesuré à l'occasion, coûtait 3,9 dB au tic — trop bref pour échapper à son attaque — pour ne rien
+protéger.
+
 ---
 
 ## 9. Intégration native
@@ -379,8 +407,26 @@ de l'application et ceux des notifications sont ainsi identiques par constructio
 pas. Un canal né d'un build fait **avant** `make sounds` pointe vers une ressource `raw`
 absente et reste muet pour toujours sur cette installation — la notification s'affiche, sans
 un bruit. D'où `CHANNEL_VERSION` dans `notification.service.ts` : les identifiants portent
-`_v<n>`, et changer le son d'un canal veut dire **incrémenter cette version**, ce qui en crée
-de nouveaux et supprime les précédents (`deleteChannel`).
+`_v<n>`, et l'incrémenter crée des canaux neufs en supprimant les précédents (`deleteChannel`),
+pour ne pas laisser deux fois les mêmes intitulés dans les réglages du téléphone.
+
+Ce qui est figé mérite d'être précis, sous peine de bumper pour rien : le canal retient une
+**URI**, `android.resource://<package>/raw/<nom>` (voir `SoundResolver` côté plugin), un renvoi
+par nom résolu à la lecture.
+
+| Ce qui change | Bump de `CHANNEL_VERSION` ? |
+| ------------- | --------------------------- |
+| Le **contenu** d'un WAV (niveau, timbre, motif) | Non — réinstaller l'APK suffit, l'URI désigne toujours la même ressource |
+| Le **nom** d'un fichier, ou le son associé à un canal | Oui |
+| L'**importance** ou la vibration d'un canal | Oui |
+| Un canal créé alors que la ressource `raw` manquait | Oui — il est muet à vie |
+
+**Deux flux audio, deux volumes.** Le canal est créé avec `USAGE_NOTIFICATION` et
+`CONTENT_TYPE_SONIFICATION` : les notifications suivent donc le volume **notifications** d'Android,
+tandis que les sons joués par l'application au premier plan passent par Web Audio, donc par le
+volume **multimédia**. Les deux curseurs sont indépendants, et l'application ne choisit ni l'un
+ni l'autre. C'est la première chose à écarter devant un rapport de son trop faible — la seconde
+étant le niveau des motifs eux-mêmes (§ 8.1).
 
 Les alertes (paliers, fin, fin de prolongation, fin de la session enchaînée) sont programmées au
 passage en arrière-plan et annulées au retour. Pendant une routine, c'est l'étape suivante qui

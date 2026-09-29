@@ -189,6 +189,14 @@ ils se calculent sur la durée choisie — la moitié, le dernier quart, puis 1 
 sinon un Pomodoro de 25 min ne serait prévenu qu'une fois, et une étape de routine de 10 min
 jamais.
 
+Les quatre sortent au même volume, près du maximum : ce qui monte d'un palier au suivant, c'est
+le motif et le timbre, pas le niveau. Un premier palier discret serait un palier manqué.
+
+⚠️ **Sur Android, deux curseurs de volume entrent en jeu** : les sons joués par l'application
+suivent le volume **multimédia**, ceux des notifications (écran verrouillé, app en arrière-plan)
+suivent le volume **notifications**. Si les sons paraissent faibles pendant une session, c'est le
+multimédia qu'il faut monter — le système choisit lui-même le curseur, l'app n'y peut rien.
+
 La vibration suit le même rythme que le son : elle prévient sans rien montrer ni faire
 entendre — en réunion, en cours, en open space — et reste le seul canal d'alerte pour une
 personne sourde-aveugle. Elle demande un téléphone ou une tablette (iOS et Android ; sur le

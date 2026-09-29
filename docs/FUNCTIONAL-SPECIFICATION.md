@@ -205,7 +205,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | Réf.     | Exigence                                                                                                                                            | Prio |
 | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
 | EF-ALE-1 | Trois paliers avant la fin, calculés sur la durée de la session, jouent chacun un son différent, puis un carillon à 0.                               | M    |
-| EF-ALE-2 | Les sons vont du plus discret au plus insistant à mesure que la fin approche.                                                                       | M    |
+| EF-ALE-2 | Les sons vont du plus discret au plus insistant à mesure que la fin approche. Cette progression est portée par le motif et le timbre — une note ronde, deux notes montantes, trois bips rapides — et non par le volume : un palier ne doit pas être manqué parce qu'il est le premier. | M    |
 | EF-ALE-3 | Les sons peuvent être écoutés à la demande depuis les réglages.                                                                                     | S    |
 | EF-ALE-4 | Les sons peuvent être coupés globalement ; le choix est mémorisé.                                                                                   | M    |
 | EF-ALE-5 | Sur mobile, des notifications locales reprennent ces alertes quand l'application est en arrière-plan ou l'appareil verrouillé, avec les mêmes sons. | M    |
@@ -223,6 +223,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-ALE-17 | Pendant une session, un décompte permanent se pose hors de l'application — notification muette sur Android, Live Activity sur iOS — et donne le temps restant sans déverrouiller. | S    |
 | EF-ALE-18 | Ce décompte n'alerte jamais : ni son, ni vibration, ni pastille. Il informe, et laisse les paliers se faire entendre. | M    |
 | EF-ALE-19 | Il disparaît dès que le décompte s'arrête, et l'appui dessus ouvre l'application sans rien démarrer. | M    |
+| EF-ALE-20 | Tous les sons sortent au même niveau, près du maximum de l'échelle, dans l'application comme en notification. Un appareil ne fait que réduire ce qu'on lui donne : un son rendu à mi-échelle arrive irrémédiablement discret, et une alerte qui ne s'entend pas ne remplit pas son rôle. | M    |
 
 ### 4.7 Historique, statistiques et objectif (`EF-HIS`)
 

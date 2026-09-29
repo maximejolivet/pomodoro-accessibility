@@ -40,6 +40,39 @@ Ils sont générés à partir des mêmes motifs que l'app (`src/app/core/helpers
 - **Android** : `make sounds` (appelé par `make sync`) copie les WAV dans
   `android/app/src/main/res/raw`, et l'app crée un canal de notification par son.
 
+Les WAV sortent à une crête de −1 dBFS, la même pour les quatre. C'est volontaire et c'est le
+niveau attendu d'un son d'alerte : l'appareil ne fait que **réduire** ce qu'on lui donne, donc un
+fichier rendu à mi-échelle arrive irrémédiablement discret, quel que soit le volume réglé. Voir
+[§ 8.1 du cahier des charges technique](TECHNICAL-SPECIFICATION.md#81-mise-à-niveau).
+
+### Deux volumes à ne pas confondre
+
+Un son de l'app et un son de notification ne passent pas par le même curseur, et c'est la première
+chose à vérifier quand « les sons ne sont pas forts » :
+
+| Ce qui joue | Flux Android | Réglage |
+| ----------- | ------------ | ------- |
+| Les sons de l'app, au premier plan (Web Audio) | média | Volume **multimédia** |
+| Les notifications, app en arrière-plan ou écran verrouillé | notification (`USAGE_NOTIFICATION`) | Volume **notifications** |
+
+Un multimédia à 20 % garde donc les paliers discrets pendant une session, même si les
+notifications, elles, sonnent fort. L'app n'y peut rien : c'est le système qui choisit le flux
+d'un son, pas elle.
+
+### Canaux Android : ce qui est immuable et ce qui ne l'est pas
+
+Un canal de notification est **immuable** après sa création : le recréer ne change ni son
+importance ni son son. D'où `CHANNEL_VERSION` dans `notification.service.ts`, qu'il faut
+incrémenter pour repartir de canaux neufs (les précédents sont alors supprimés, sinon
+l'utilisateur verrait deux fois les mêmes intitulés dans les réglages du téléphone).
+
+Ce qui est figé est l'URI, `android.resource://<package>/raw/<nom>` — un renvoi par **nom**,
+résolu à la lecture. **Remplacer le contenu d'un WAV ne demande donc aucun bump** : il suffit de
+réinstaller l'APK. Ce qui en demande un, c'est renommer un fichier, changer le son associé à un
+canal, ou toucher à son importance.
+
+### Alarmes exactes et test d'une notification
+
 Sur Android 12+, les alarmes exactes peuvent nécessiter la permission
 `SCHEDULE_EXACT_ALARM` dans `AndroidManifest.xml`. L'app n'attend pas la fin d'une session pour
 le dire : ⚙︎ → *Réglages* → **Tester une notification** en programme une à cinq secondes — le

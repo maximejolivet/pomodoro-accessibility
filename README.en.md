@@ -188,6 +188,14 @@ Milestones land at 45, 30 and 15 min left on a session longer than 40 min. Below
 worked out from the chosen duration — halfway, the last quarter, then 1 min before the end —
 otherwise a 25 min Pomodoro would only be warned once, and a 10 min routine step never.
 
+All four come out at the same volume, close to the maximum: what rises from one milestone to the
+next is the pattern and the timbre, not the level. A quiet first milestone would be a missed one.
+
+⚠️ **On Android, two volume sliders are involved**: the sounds the app itself plays follow the
+**media** volume, while notification sounds (locked screen, app in the background) follow the
+**notification** volume. If the sounds seem weak during a session, media is the one to turn up —
+the system picks the slider, not the app.
+
 The vibration follows the same rhythm as the sound: it warns you without showing or playing
 anything — in a meeting, in class, in an open space — and it is the only alert channel left for
 a deafblind person. It needs a phone or a tablet (iOS and Android; on the web, only Android
