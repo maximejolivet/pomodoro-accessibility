@@ -58,22 +58,54 @@ export interface A11yText {
   /** Noms propres : la même liste dans toutes les langues. */
   stack: string[];
   declarationTitle: string;
+  /** Engagement : la phrase que le décret n° 2019-768 attend en tête de déclaration. */
+  declCommitment: string;
   declarationIntro: string;
-  declLabels: { env: string; tools: string; pages: string; date: string };
+  /** Cette application n'entre pas dans le champ de l'article 47 : la déclaration est volontaire. */
+  declVoluntary: string;
+  conformityTitle: string;
+  conformityText: string;
+  testsTitle: string;
+  testsText: string;
+  nonAccessibleTitle: string;
+  nonComplianceTitle: string;
+  nonAccessibleItems: string[];
+  derogationsTitle: string;
+  derogationsText: string;
+  notSubjectTitle: string;
+  notSubjectText: string;
+  establishedTitle: string;
+  declLabels: { date: string; tech: string; env: string; tools: string; pages: string };
+  declTech: string;
   declEnv: string;
   declTools: string;
-  nonAccessibleTitle: string;
-  nonAccessibleItems: string[];
+  declPages: string;
   contactTitle: string;
   contactText: string;
   contactLink: string;
   remedyTitle: string;
   remedyText: string;
+  remedyItems: string[];
   footerText: string;
   officialRef: string;
 }
 
 const fr: A11yText = {
+  declCommitment: "Pomodoro Accessibilité s'engage à rendre son application accessible, conformément à l'article 47 de la loi n° 2005-102 du 11 février 2005.",
+  declVoluntary: "Cette application n'entre pas dans le champ de l'obligation légale, qui vise les organismes publics et les entreprises de plus de 250 millions d'euros de chiffre d'affaires. La déclaration est publiée volontairement, dans le format prévu par le décret n° 2019-768 du 24 juillet 2019.",
+  conformityTitle: 'État de conformité',
+  conformityText: 'Pomodoro Accessibilité est <strong>partiellement conforme</strong> au RGAA 4.1, en raison des non-conformités listées ci-dessous.',
+  testsTitle: 'Résultats des tests',
+  testsText: "Aucun audit de conformité n'a été mené par un tiers : il s'agit d'une auto-évaluation. Aucun taux de conformité n'est donc annoncé — un pourcentage sans audit serait trompeur. Des contrôles automatisés sont rejoués à chaque modification du code.",
+  nonComplianceTitle: 'Non-conformités',
+  derogationsTitle: 'Dérogations pour charge disproportionnée',
+  derogationsText: 'Aucune.',
+  notSubjectTitle: "Contenus non soumis à l'obligation d'accessibilité",
+  notSubjectText: 'Aucun.',
+  establishedTitle: 'Établissement de cette déclaration',
+  declTech: 'HTML, CSS, JavaScript (Angular), SVG et ARIA. Les versions iOS et Android affichent la même application dans une vue web (Capacitor).',
+  declPages: "Le minuteur, le panneau de réglages (Modes, Stats, Réglages), l'éditeur de routine, le tutoriel d'accueil et cette page.",
+  remedyItems: ['écrire un message au Défenseur des droits ;', 'contacter le délégué du Défenseur des droits près de chez vous ;', 'envoyer un courrier par la poste, gratuitement, sans affranchir : Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.'],
   pageTitle: 'Accessibilité – Pomodoro Accessibilité',
   back: 'Retour au minuteur',
   h1: 'Accessibilité',
@@ -179,9 +211,9 @@ const fr: A11yText = {
   stackLabel: 'Construit avec',
   stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
   declarationTitle: "Déclaration d'accessibilité",
-  declarationIntro: "Cette déclaration s'applique à Pomodoro Accessibilité, dans ses versions web, iOS et Android.",
-  declLabels: { env: 'Environnement de test', tools: "Outils d'évaluation", pages: 'Pages évaluées', date: 'Établie le' },
-  declEnv: "Chromium sur macOS, sans test avec un lecteur d'écran.",
+  declarationIntro: "Cette déclaration d'accessibilité s'applique à l'application Pomodoro Accessibilité, dans ses versions web, iOS et Android.",
+  declLabels: { date: 'Établie le', tech: 'Technologies utilisées', env: 'Environnement de test', tools: "Outils d'évaluation", pages: 'Pages évaluées' },
+  declEnv: "Chromium sur macOS. Aucune technologie d'assistance n'a été utilisée : le parcours au lecteur d'écran n'est pas vérifié.",
   declTools: 'axe-core 4.13 et mesure des contrastes sur le rendu, rejoués automatiquement à chaque modification, et revue du code.',
   nonAccessibleTitle: 'Contenus non accessibles',
   nonAccessibleItems: [
@@ -192,12 +224,27 @@ const fr: A11yText = {
   contactText: "Si vous ne parvenez pas à accéder à un contenu, signalez-le pour être orienté vers une solution accessible :",
   contactLink: 'ouvrir un ticket sur GitHub',
   remedyTitle: 'Voies de recours',
-  remedyText: "Si un signalement reste sans réponse, vous pouvez saisir le Défenseur des droits, contacter son délégué dans votre région, ou écrire sans affranchir à : Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.",
+  remedyText: "Si vous constatez un défaut d'accessibilité qui vous empêche d'accéder à un contenu ou à une fonctionnalité, que vous nous le signalez et que vous ne parvenez pas à obtenir de réponse, vous êtes en droit de faire parvenir vos doléances ou une demande de saisine au Défenseur des droits. Plusieurs moyens sont à votre disposition :",
   footerText: "L'accessibilité est intégrée dans <strong>chaque ligne de code</strong> de Pomodoro Accessibilité.",
   officialRef: 'Référentiel officiel du RGAA 4.1 :',
 };
 
 const en: A11yText = {
+  declCommitment: 'Pomodoro Accessibilité undertakes to make its application accessible, in accordance with article 47 of French law no. 2005-102 of 11 February 2005.',
+  declVoluntary: 'This application falls outside the legal obligation, which covers public bodies and companies with a turnover above 250 million euros. The statement is published voluntarily, in the form set out by French decree no. 2019-768 of 24 July 2019.',
+  conformityTitle: 'Compliance status',
+  conformityText: 'Pomodoro Accessibilité is <strong>partially compliant</strong> with RGAA 4.1, because of the non-compliances listed below.',
+  testsTitle: 'Test results',
+  testsText: 'No third-party compliance audit has been carried out: this is a self-assessment. No compliance rate is therefore given — a percentage without an audit would be misleading. Automated checks are replayed on every change to the code.',
+  nonComplianceTitle: 'Non-compliances',
+  derogationsTitle: 'Derogations for disproportionate burden',
+  derogationsText: 'None.',
+  notSubjectTitle: 'Content outside the scope of the accessibility obligation',
+  notSubjectText: 'None.',
+  establishedTitle: 'How this statement was drawn up',
+  declTech: 'HTML, CSS, JavaScript (Angular), SVG and ARIA. The iOS and Android versions show the same application in a web view (Capacitor).',
+  declPages: 'The timer, the settings panel (Modes, Stats, Settings), the routine editor, the welcome tutorial and this page.',
+  remedyItems: ['write a message to the Défenseur des droits;', 'contact the Défenseur des droits delegate for your area;', 'send a letter by post, free of charge, with no stamp: Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.'],
   pageTitle: 'Accessibility – Pomodoro Accessibilité',
   back: 'Back to the timer',
   h1: 'Accessibility',
@@ -303,9 +350,9 @@ const en: A11yText = {
   stackLabel: 'Built with',
   stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
   declarationTitle: 'Accessibility statement',
-  declarationIntro: 'This statement applies to Pomodoro Accessibilité, in its web, iOS and Android versions.',
-  declLabels: { env: 'Test environment', tools: 'Evaluation tools', pages: 'Pages assessed', date: 'Published on' },
-  declEnv: 'Chromium on macOS, without screen reader testing.',
+  declarationIntro: 'This accessibility statement applies to the Pomodoro Accessibilité application, in its web, iOS and Android versions.',
+  declLabels: { date: 'Published on', tech: 'Technologies used', env: 'Test environment', tools: 'Evaluation tools', pages: 'Pages assessed' },
+  declEnv: 'Chromium on macOS. No assistive technology was used: the screen reader journey has not been verified.',
   declTools: 'axe-core 4.13 and contrast measured on the rendered page, both replayed automatically on every change, plus a code review.',
   nonAccessibleTitle: 'Non-accessible content',
   nonAccessibleItems: [
@@ -316,12 +363,27 @@ const en: A11yText = {
   contactText: 'If you cannot reach some content, report it so you can be pointed to an accessible alternative:',
   contactLink: 'open an issue on GitHub',
   remedyTitle: 'Remedies',
-  remedyText: 'If a report goes unanswered, French users may refer the matter to the Défenseur des droits, contact its regional delegate, or write postage-free to: Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.',
+  remedyText: 'If you find an accessibility failure that keeps you from a content or a feature, you report it and you get no answer, you are entitled to send your complaint or a referral to the Défenseur des droits. Several ways are open to you:',
   footerText: 'Accessibility is built into <strong>every line of code</strong> of Pomodoro Accessibilité.',
   officialRef: 'Official RGAA 4.1 reference (in French):',
 };
 
 const es: A11yText = {
+  declCommitment: 'Pomodoro Accessibilité se compromete a hacer accesible su aplicación, conforme al artículo 47 de la ley francesa n.º 2005-102 del 11 de febrero de 2005.',
+  declVoluntary: 'Esta aplicación queda fuera de la obligación legal, que afecta a los organismos públicos y a las empresas con más de 250 millones de euros de facturación. La declaración se publica de forma voluntaria, en el formato previsto por el decreto francés n.º 2019-768 del 24 de julio de 2019.',
+  conformityTitle: 'Estado de conformidad',
+  conformityText: 'Pomodoro Accessibilité es <strong>parcialmente conforme</strong> con el RGAA 4.1, debido a las no conformidades que se enumeran más abajo.',
+  testsTitle: 'Resultados de las pruebas',
+  testsText: 'No se ha realizado ninguna auditoría de conformidad por un tercero: se trata de una autoevaluación. Por tanto no se anuncia ningún porcentaje de conformidad — un porcentaje sin auditoría sería engañoso. Se ejecutan comprobaciones automáticas con cada cambio del código.',
+  nonComplianceTitle: 'No conformidades',
+  derogationsTitle: 'Exenciones por carga desproporcionada',
+  derogationsText: 'Ninguna.',
+  notSubjectTitle: 'Contenidos no sujetos a la obligación de accesibilidad',
+  notSubjectText: 'Ninguno.',
+  establishedTitle: 'Elaboración de esta declaración',
+  declTech: 'HTML, CSS, JavaScript (Angular), SVG y ARIA. Las versiones iOS y Android muestran la misma aplicación en una vista web (Capacitor).',
+  declPages: 'El temporizador, el panel de ajustes (Modos, Estadísticas, Ajustes), el editor de rutinas, el tutorial de bienvenida y esta página.',
+  remedyItems: ['escribir un mensaje al Défenseur des droits;', 'contactar con el delegado del Défenseur des droits de su zona;', 'enviar una carta por correo, gratuitamente y sin franqueo: Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.'],
   pageTitle: 'Accesibilidad – Pomodoro Accessibilité',
   back: 'Volver al temporizador',
   h1: 'Accesibilidad',
@@ -427,9 +489,9 @@ const es: A11yText = {
   stackLabel: 'Construido con',
   stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
   declarationTitle: 'Declaración de accesibilidad',
-  declarationIntro: 'Esta declaración se aplica a Pomodoro Accessibilité, en sus versiones web, iOS y Android.',
-  declLabels: { env: 'Entorno de prueba', tools: 'Herramientas de evaluación', pages: 'Páginas evaluadas', date: 'Publicada el' },
-  declEnv: 'Chromium en macOS, sin pruebas con lector de pantalla.',
+  declarationIntro: 'Esta declaración de accesibilidad se aplica a la aplicación Pomodoro Accessibilité, en sus versiones web, iOS y Android.',
+  declLabels: { date: 'Publicada el', tech: 'Tecnologías utilizadas', env: 'Entorno de prueba', tools: 'Herramientas de evaluación', pages: 'Páginas evaluadas' },
+  declEnv: 'Chromium en macOS. No se ha utilizado ninguna tecnología de apoyo: el recorrido con lector de pantalla no está verificado.',
   declTools: 'axe-core 4.13 y medición de los contrastes sobre la página renderizada, ejecutados automáticamente en cada cambio, y una revisión del código.',
   nonAccessibleTitle: 'Contenidos no accesibles',
   nonAccessibleItems: [
@@ -440,12 +502,27 @@ const es: A11yText = {
   contactText: 'Si no consigue acceder a algún contenido, comuníquelo para que se le indique una alternativa accesible:',
   contactLink: 'abrir una incidencia en GitHub',
   remedyTitle: 'Vías de recurso',
-  remedyText: 'Si una comunicación queda sin respuesta, en Francia se puede recurrir al Défenseur des droits, contactar con su delegado regional o escribir sin franqueo a: Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.',
+  remedyText: 'Si detecta un defecto de accesibilidad que le impide acceder a un contenido o a una función, lo comunica y no obtiene respuesta, tiene derecho a dirigir su reclamación al Défenseur des droits. Dispone de varias vías:',
   footerText: 'La accesibilidad está integrada en <strong>cada línea de código</strong> de Pomodoro Accessibilité.',
   officialRef: 'Referencial oficial del RGAA 4.1 (en francés):',
 };
 
 const de: A11yText = {
+  declCommitment: 'Pomodoro Accessibilité verpflichtet sich, seine Anwendung barrierefrei zu gestalten, gemäß Artikel 47 des französischen Gesetzes Nr. 2005-102 vom 11. Februar 2005.',
+  declVoluntary: 'Diese Anwendung fällt nicht unter die gesetzliche Pflicht, die öffentliche Stellen und Unternehmen mit mehr als 250 Millionen Euro Umsatz betrifft. Die Erklärung wird freiwillig veröffentlicht, in der vom französischen Dekret Nr. 2019-768 vom 24. Juli 2019 vorgesehenen Form.',
+  conformityTitle: 'Stand der Konformität',
+  conformityText: 'Pomodoro Accessibilité ist <strong>teilweise konform</strong> mit RGAA 4.1, wegen der unten aufgeführten Abweichungen.',
+  testsTitle: 'Testergebnisse',
+  testsText: 'Es wurde kein Konformitätsaudit durch Dritte durchgeführt: Es handelt sich um eine Selbstbewertung. Daher wird keine Konformitätsquote genannt — ein Prozentsatz ohne Audit wäre irreführend. Automatisierte Prüfungen laufen bei jeder Änderung am Code erneut.',
+  nonComplianceTitle: 'Abweichungen',
+  derogationsTitle: 'Ausnahmen wegen unverhältnismäßiger Belastung',
+  derogationsText: 'Keine.',
+  notSubjectTitle: 'Inhalte, die nicht unter die Barrierefreiheitspflicht fallen',
+  notSubjectText: 'Keine.',
+  establishedTitle: 'Erstellung dieser Erklärung',
+  declTech: 'HTML, CSS, JavaScript (Angular), SVG und ARIA. Die iOS- und Android-Versionen zeigen dieselbe Anwendung in einer Web-Ansicht (Capacitor).',
+  declPages: 'Der Timer, das Einstellungsfeld (Modi, Statistik, Einstellungen), der Routine-Editor, das Willkommens-Tutorial und diese Seite.',
+  remedyItems: ['dem Défenseur des droits eine Nachricht schreiben;', 'die Vertretung des Défenseur des droits in Ihrer Nähe kontaktieren;', 'kostenlos und ohne Briefmarke schreiben an: Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.'],
   pageTitle: 'Barrierefreiheit – Pomodoro Accessibilité',
   back: 'Zurück zum Timer',
   h1: 'Barrierefreiheit',
@@ -551,9 +628,9 @@ const de: A11yText = {
   stackLabel: 'Gebaut mit',
   stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
   declarationTitle: 'Erklärung zur Barrierefreiheit',
-  declarationIntro: 'Diese Erklärung gilt für Pomodoro Accessibilité in den Versionen Web, iOS und Android.',
-  declLabels: { env: 'Testumgebung', tools: 'Bewertungswerkzeuge', pages: 'Geprüfte Seiten', date: 'Erstellt am' },
-  declEnv: 'Chromium unter macOS, ohne Test mit einem Screenreader.',
+  declarationIntro: 'Diese Erklärung zur Barrierefreiheit gilt für die Anwendung Pomodoro Accessibilité in den Versionen Web, iOS und Android.',
+  declLabels: { date: 'Erstellt am', tech: 'Verwendete Technologien', env: 'Testumgebung', tools: 'Bewertungswerkzeuge', pages: 'Geprüfte Seiten' },
+  declEnv: 'Chromium unter macOS. Es wurde keine assistive Technologie eingesetzt: Der Weg mit dem Screenreader ist nicht überprüft.',
   declTools: 'axe-core 4.13 und Kontrastmessung am gerenderten Ergebnis, bei jeder Änderung automatisch ausgeführt, sowie eine Code-Durchsicht.',
   nonAccessibleTitle: 'Nicht barrierefreie Inhalte',
   nonAccessibleItems: [
@@ -564,12 +641,27 @@ const de: A11yText = {
   contactText: 'Wenn Sie einen Inhalt nicht erreichen können, melden Sie es, damit Ihnen eine barrierefreie Alternative genannt werden kann:',
   contactLink: 'ein Ticket auf GitHub eröffnen',
   remedyTitle: 'Rechtsbehelfe',
-  remedyText: 'Bleibt eine Meldung unbeantwortet, kann in Frankreich der Défenseur des droits angerufen werden — über seine regionale Vertretung oder portofrei schriftlich an: Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.',
+  remedyText: 'Wenn Sie einen Mangel an Barrierefreiheit feststellen, der Sie an einem Inhalt oder einer Funktion hindert, ihn melden und keine Antwort erhalten, können Sie sich an den Défenseur des droits wenden. Dafür stehen mehrere Wege offen:',
   footerText: 'Barrierefreiheit steckt in <strong>jeder Codezeile</strong> von Pomodoro Accessibilité.',
   officialRef: 'Offizielle RGAA-4.1-Referenz (auf Französisch):',
 };
 
 const it: A11yText = {
+  declCommitment: "Pomodoro Accessibilité si impegna a rendere accessibile la propria applicazione, conformemente all'articolo 47 della legge francese n. 2005-102 dell'11 febbraio 2005.",
+  declVoluntary: "Questa applicazione non rientra nell'obbligo di legge, che riguarda gli enti pubblici e le imprese con più di 250 milioni di euro di fatturato. La dichiarazione è pubblicata volontariamente, nel formato previsto dal decreto francese n. 2019-768 del 24 luglio 2019.",
+  conformityTitle: 'Stato di conformità',
+  conformityText: 'Pomodoro Accessibilité è <strong>parzialmente conforme</strong> al RGAA 4.1, a causa delle non conformità elencate di seguito.',
+  testsTitle: 'Risultati dei test',
+  testsText: "Non è stato svolto alcun audit di conformità da parte di terzi: si tratta di un'autovalutazione. Non viene quindi indicata alcuna percentuale di conformità — una percentuale senza audit sarebbe fuorviante. Controlli automatici vengono rieseguiti a ogni modifica del codice.",
+  nonComplianceTitle: 'Non conformità',
+  derogationsTitle: 'Deroghe per onere sproporzionato',
+  derogationsText: 'Nessuna.',
+  notSubjectTitle: "Contenuti non soggetti all'obbligo di accessibilità",
+  notSubjectText: 'Nessuno.',
+  establishedTitle: 'Redazione di questa dichiarazione',
+  declTech: 'HTML, CSS, JavaScript (Angular), SVG e ARIA. Le versioni iOS e Android mostrano la stessa applicazione in una vista web (Capacitor).',
+  declPages: "Il timer, il pannello delle impostazioni (Modalità, Statistiche, Impostazioni), l'editor di routine, il tutorial di benvenuto e questa pagina.",
+  remedyItems: ['scrivere un messaggio al Défenseur des droits;', 'contattare il delegato del Défenseur des droits della tua zona;', 'inviare una lettera per posta, gratuitamente e senza affrancatura: Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.'],
   pageTitle: 'Accessibilità – Pomodoro Accessibilité',
   back: 'Torna al timer',
   h1: 'Accessibilità',
@@ -675,9 +767,9 @@ const it: A11yText = {
   stackLabel: 'Realizzato con',
   stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
   declarationTitle: 'Dichiarazione di accessibilità',
-  declarationIntro: 'Questa dichiarazione riguarda Pomodoro Accessibilité, nelle versioni web, iOS e Android.',
-  declLabels: { env: 'Ambiente di prova', tools: 'Strumenti di valutazione', pages: 'Pagine valutate', date: 'Redatta il' },
-  declEnv: 'Chromium su macOS, senza test con uno screen reader.',
+  declarationIntro: "Questa dichiarazione di accessibilità riguarda l'applicazione Pomodoro Accessibilité, nelle versioni web, iOS e Android.",
+  declLabels: { date: 'Redatta il', tech: 'Tecnologie utilizzate', env: 'Ambiente di prova', tools: 'Strumenti di valutazione', pages: 'Pagine valutate' },
+  declEnv: 'Chromium su macOS. Non è stata usata alcuna tecnologia assistiva: il percorso con lo screen reader non è verificato.',
   declTools: 'axe-core 4.13 e misura dei contrasti sul risultato renderizzato, rieseguiti automaticamente a ogni modifica, e una revisione del codice.',
   nonAccessibleTitle: 'Contenuti non accessibili',
   nonAccessibleItems: [
@@ -688,12 +780,27 @@ const it: A11yText = {
   contactText: 'Se non riesci a raggiungere un contenuto, segnalalo per essere indirizzato a un\'alternativa accessibile:',
   contactLink: 'aprire una segnalazione su GitHub',
   remedyTitle: 'Mezzi di ricorso',
-  remedyText: 'Se una segnalazione resta senza risposta, in Francia ci si può rivolgere al Défenseur des droits, contattare il suo delegato regionale o scrivere senza affrancatura a: Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.',
+  remedyText: 'Se riscontri un difetto di accessibilità che ti impedisce di accedere a un contenuto o a una funzione, lo segnali e non ricevi risposta, hai diritto di rivolgerti al Défenseur des droits. Sono disponibili più strade:',
   footerText: 'L’accessibilità è integrata in <strong>ogni riga di codice</strong> di Pomodoro Accessibilité.',
   officialRef: 'Riferimento ufficiale RGAA 4.1 (in francese):',
 };
 
 const pt: A11yText = {
+  declCommitment: 'A Pomodoro Accessibilité compromete-se a tornar a sua aplicação acessível, nos termos do artigo 47.º da lei francesa n.º 2005-102, de 11 de fevereiro de 2005.',
+  declVoluntary: 'Esta aplicação não está abrangida pela obrigação legal, que visa os organismos públicos e as empresas com mais de 250 milhões de euros de volume de negócios. A declaração é publicada voluntariamente, no formato previsto pelo decreto francês n.º 2019-768, de 24 de julho de 2019.',
+  conformityTitle: 'Estado de conformidade',
+  conformityText: 'O Pomodoro Accessibilité está <strong>parcialmente conforme</strong> com o RGAA 4.1, devido às não conformidades listadas abaixo.',
+  testsTitle: 'Resultados dos testes',
+  testsText: 'Não foi realizada qualquer auditoria de conformidade por terceiros: trata-se de uma autoavaliação. Por isso não é anunciada nenhuma taxa de conformidade — uma percentagem sem auditoria seria enganadora. São executadas verificações automáticas a cada alteração do código.',
+  nonComplianceTitle: 'Não conformidades',
+  derogationsTitle: 'Derrogações por encargo desproporcionado',
+  derogationsText: 'Nenhuma.',
+  notSubjectTitle: 'Conteúdos não sujeitos à obrigação de acessibilidade',
+  notSubjectText: 'Nenhum.',
+  establishedTitle: 'Elaboração desta declaração',
+  declTech: 'HTML, CSS, JavaScript (Angular), SVG e ARIA. As versões iOS e Android mostram a mesma aplicação numa vista web (Capacitor).',
+  declPages: 'O temporizador, o painel de definições (Modos, Estatísticas, Definições), o editor de rotinas, o tutorial de boas-vindas e esta página.',
+  remedyItems: ['escrever uma mensagem ao Défenseur des droits;', 'contactar o delegado do Défenseur des droits da sua área;', 'enviar uma carta pelo correio, gratuitamente e sem selo: Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.'],
   pageTitle: 'Acessibilidade – Pomodoro Accessibilité',
   back: 'Voltar ao temporizador',
   h1: 'Acessibilidade',
@@ -799,9 +906,9 @@ const pt: A11yText = {
   stackLabel: 'Construído com',
   stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
   declarationTitle: 'Declaração de acessibilidade',
-  declarationIntro: 'Esta declaração aplica-se ao Pomodoro Accessibilité, nas versões web, iOS e Android.',
-  declLabels: { env: 'Ambiente de teste', tools: 'Ferramentas de avaliação', pages: 'Páginas avaliadas', date: 'Elaborada a' },
-  declEnv: 'Chromium em macOS, sem testes com leitor de ecrã.',
+  declarationIntro: 'Esta declaração de acessibilidade aplica-se à aplicação Pomodoro Accessibilité, nas versões web, iOS e Android.',
+  declLabels: { date: 'Publicada a', tech: 'Tecnologias utilizadas', env: 'Ambiente de teste', tools: 'Ferramentas de avaliação', pages: 'Páginas avaliadas' },
+  declEnv: 'Chromium em macOS. Não foi usada qualquer tecnologia de apoio: o percurso com leitor de ecrã não está verificado.',
   declTools: 'axe-core 4.13 e medição dos contrastes no resultado apresentado, executados automaticamente a cada alteração, e uma revisão do código.',
   nonAccessibleTitle: 'Conteúdos não acessíveis',
   nonAccessibleItems: [
@@ -812,12 +919,27 @@ const pt: A11yText = {
   contactText: 'Se não conseguir aceder a algum conteúdo, comunique-o para ser encaminhado para uma alternativa acessível:',
   contactLink: 'abrir um pedido no GitHub',
   remedyTitle: 'Vias de recurso',
-  remedyText: 'Se uma comunicação ficar sem resposta, em França é possível recorrer ao Défenseur des droits, contactar o seu delegado regional ou escrever sem franquia para: Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.',
+  remedyText: 'Se encontrar uma falha de acessibilidade que o impeça de aceder a um conteúdo ou a uma funcionalidade, a comunicar e não obtiver resposta, tem o direito de enviar a sua reclamação ao Défenseur des droits. Existem várias vias:',
   footerText: 'A acessibilidade está integrada em <strong>cada linha de código</strong> do Pomodoro Accessibilité.',
   officialRef: 'Referencial oficial do RGAA 4.1 (em francês):',
 };
 
 const ar: A11yText = {
+  declCommitment: 'يلتزم Pomodoro Accessibilité بجعل تطبيقه متاحًا، وفقًا للمادة 47 من القانون الفرنسي رقم 2005-102 الصادر في 11 فبراير 2005.',
+  declVoluntary: 'لا يدخل هذا التطبيق في نطاق الإلزام القانوني، الذي يستهدف الهيئات العامة والشركات التي يتجاوز حجم أعمالها 250 مليون يورو. يُنشر البيان طوعًا، بالصيغة التي ينص عليها المرسوم الفرنسي رقم 2019-768 الصادر في 24 يوليو 2019.',
+  conformityTitle: 'حالة المطابقة',
+  conformityText: '\u200fPomodoro Accessibilité <strong>مطابق جزئيًا</strong> لمعيار RGAA 4.1، بسبب حالات عدم المطابقة المذكورة أدناه.',
+  testsTitle: 'نتائج الاختبارات',
+  testsText: 'لم يُجرَ أي تدقيق مطابقة من طرف ثالث: هذا تقييم ذاتي. لذلك لا تُعلَن أي نسبة مطابقة — فنسبة بلا تدقيق ستكون مضلِّلة. تُعاد الفحوص الآلية عند كل تعديل للشيفرة.',
+  nonComplianceTitle: 'حالات عدم المطابقة',
+  derogationsTitle: 'الإعفاءات بسبب العبء غير المتناسب',
+  derogationsText: 'لا يوجد.',
+  notSubjectTitle: 'المحتويات غير الخاضعة لإلزام إمكانية الوصول',
+  notSubjectText: 'لا يوجد.',
+  establishedTitle: 'إعداد هذا البيان',
+  declTech: '\u200fHTML وCSS وJavaScript\u200f (Angular) وSVG وARIA. تعرض نسختا iOS وAndroid التطبيق نفسه داخل عرض ويب (Capacitor).',
+  declPages: 'المؤقّت، ولوحة الإعدادات (الأوضاع، الإحصاءات، الإعدادات)، ومحرّر الروتين، وشرح الترحيب، وهذه الصفحة.',
+  remedyItems: ['كتابة رسالة إلى المدافع عن الحقوق؛', 'الاتصال بمندوب المدافع عن الحقوق القريب منك؛', 'إرسال رسالة بالبريد مجانًا ودون طابع: Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.'],
   pageTitle: 'إمكانية الوصول – Pomodoro Accessibilité',
   back: 'العودة إلى المؤقّت',
   h1: 'إمكانية الوصول',
@@ -923,9 +1045,9 @@ const ar: A11yText = {
   stackLabel: 'مبني باستخدام',
   stack: ['Angular 22', 'TypeScript 6', 'RxJS 7', 'Tailwind CSS 4', 'Capacitor 8', 'Swift (widget iOS)'],
   declarationTitle: 'بيان إمكانية الوصول',
-  declarationIntro: 'ينطبق هذا البيان على Pomodoro Accessibilité في نسخه للويب و iOS و Android.',
-  declLabels: { env: 'بيئة الاختبار', tools: 'أدوات التقييم', pages: 'الصفحات المُقيَّمة', date: 'حُرِّر في' },
-  declEnv: 'Chromium على macOS، دون اختبار بقارئ الشاشة.',
+  declarationIntro: 'ينطبق بيان إمكانية الوصول هذا على تطبيق Pomodoro Accessibilité في نسخه للويب و iOS و Android.',
+  declLabels: { date: 'حُرّر في', tech: 'التقنيات المستخدمة', env: 'بيئة الاختبار', tools: 'أدوات التقييم', pages: 'الصفحات المقيَّمة' },
+  declEnv: '\u200fChromium على macOS. لم تُستخدم أي تقنية مساعدة: مسار قارئ الشاشة غير محقَّق.',
   declTools: 'axe-core 4.13 وقياس التباين على الصفحة المعروضة، يُعادان تلقائيًّا عند كل تعديل، ومراجعة للشيفرة.',
   nonAccessibleTitle: 'محتويات غير متاحة',
   nonAccessibleItems: [
@@ -936,7 +1058,7 @@ const ar: A11yText = {
   contactText: 'إذا تعذّر عليك الوصول إلى محتوى ما، فأبلغ عنه ليُرشَد إلى بديل متاح:',
   contactLink: 'فتح تذكرة على GitHub',
   remedyTitle: 'سبل التظلّم',
-  remedyText: 'إذا بقي البلاغ دون ردّ، يمكن في فرنسا اللجوء إلى Défenseur des droits، أو التواصل مع مندوبه في المنطقة، أو المراسلة دون طابع بريدي إلى: Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07.',
+  remedyText: 'إذا واجهت خللًا في إمكانية الوصول يمنعك من محتوى أو وظيفة، وأبلغت عنه ولم تتلقَّ ردًا، يحق لك رفع شكواك إلى المدافع عن الحقوق. وأمامك عدة وسائل:',
   footerText: 'إمكانية الوصول مدمجة في <strong>كل سطر من شيفرة</strong> Pomodoro Accessibilité.',
   officialRef: 'المرجع الرسمي لـ RGAA 4.1 (بالفرنسية):',
 };
