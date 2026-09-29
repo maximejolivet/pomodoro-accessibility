@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      Android 12 a repris la main sur l'écran de lancement : il ne montre plus l'image de
+      fond, mais l'icône de l'app sur une couleur. On lui donne donc le même noir et la même
+      icône, pour que la version 12 et les précédentes ouvrent de la même façon.
+      `android:background` reste déclaré : ce style remplace entièrement celui de `values/`.
+    -->
+    <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
+        <item name="android:background">@drawable/splash</item>
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+    </style>
+</resources>

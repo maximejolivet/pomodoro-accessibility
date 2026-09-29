@@ -143,7 +143,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | Réf.      | Exigence                                                                                                                               | Prio |
 | --------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ---- |
 | EF-ROU-1  | Une routine est une suite ordonnée d'étapes qui s'enchaînent d'elles-mêmes, sans action de l'utilisateur.                              | M    |
-| EF-ROU-2  | Une étape porte : un pictogramme, un nom, une durée de 1 à 60 min, une couleur, et le fait d'être comptée ou non dans le focus du jour. | M    |
+| EF-ROU-2  | Une étape porte : un pictogramme, un nom, une durée de 5 s à 60 min, une couleur, et le fait d'être comptée ou non dans le focus du jour. | M    |
 | EF-ROU-3  | L'application est livrée avec deux routines d'exemple : « Routine du matin » et « Devoirs », restaurables depuis le panneau.            | S    |
 | EF-ROU-4  | L'utilisateur peut créer, renommer, réordonner et supprimer ses routines et leurs étapes (1 à 10 étapes par routine).                  | M    |
 | EF-ROU-5  | Choisir une routine arme sa première étape sur le cadran sans rien démarrer ; le décompte part du même geste qu'un mode.               | M    |
@@ -153,8 +153,44 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-ROU-9  | À la fin de la dernière étape, la routine est déclarée terminée et toutes ses étapes sont cochées.                                     | M    |
 | EF-ROU-10 | La routine chargée est mémorisée d'une ouverture à l'autre, et se quitte d'un bouton.                                                  | S    |
 | EF-ROU-11 | Le verrou du cadran neutralise le changement d'étape et la sortie de routine, comme il neutralise la remise à zéro.                    | M    |
+| EF-ROU-12 | Une routine peut porter un rappel : une heure, et les jours de la semaine où il part.                                                  | S    |
+| EF-ROU-13 | À l'heure dite, une notification nomme la routine et son pictogramme ; l'appui ouvre l'application et arme la routine sans la démarrer. | S    |
+| EF-ROU-14 | Le rappel survit à la fermeture de l'application et au redémarrage de l'appareil ; il est reprogrammé quand la routine ou la langue change. | M    |
+| EF-ROU-15 | Le rappel réglé est visible sur la carte de la routine, et dit dans son nom accessible.                                               | S    |
+| EF-ROU-16 | La durée d'une étape se règle d'un seul curseur : par pas de 5 s en dessous d'une minute, par pas d'une minute au-dessus.             | M    |
+| EF-ROU-17 | Une routine peut être répétée de 1 à 20 fois ; la suite d'étapes reprend à la première à chaque tour.                                 | S    |
+| EF-ROU-18 | Le tour en cours est affiché (« Tour 2 sur 8 ») et annoncé quand il change ; les pastilles comptent les tours, pas les cycles pomodoro. | M    |
+| EF-ROU-19 | Une routine d'entraînement est livrée : Tabata, 20 s d'effort et 10 s de repos, huit tours.                                           | S    |
+| EF-ROU-20 | Quand l'étape en cours dure moins d'une minute, le cadran gradue des **secondes** et l'affiche (pastille « sec »).                    | M    |
+| EF-ROU-21 | Sur une étape de moins d'une minute, les trois dernières secondes sont égrenées : un son, une vibration, un éclat, et le chiffre dit. | S    |
+| EF-ROU-22 | Sur une telle étape, la suivante est annoncée à voix haute 5 s avant la fin (« Ensuite : Repos »).                                    | S    |
+| EF-ROU-23 | Une routine peut être marquée **entraînement** ; le mode sport s'installe tant qu'elle est chargée, et la quitte avec elle.           | S    |
+| EF-ROU-24 | En mode sport, la couleur de l'étape en cours teinte toute la page : elle change à chaque phase, sans rien à lire.                    | S    |
+| EF-ROU-25 | En mode sport, le chrono et le nom de l'étape sont agrandis, le nom passé sous le chrono.                                             | S    |
 
-### 4.4 Enchaînement et prolongation (`EF-CHA`)
+### 4.4 Tutoriel d'accueil (`EF-TUT`)
+
+| Réf.     | Exigence                                                                                                                        | Prio |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------- | ---- |
+| EF-TUT-1 | Au premier lancement, cinq vues plein écran présentent l'application : voir le temps, le régler, le démarrer, les modes et routines, les alertes. | S    |
+| EF-TUT-2 | Chaque vue porte un pictogramme avant son titre, et une phrase au plus.                                                         | M    |
+| EF-TUT-3 | On avance au doigt (glissement), aux boutons (Précédent / Suivant, points) ou au clavier (flèches).                             | M    |
+| EF-TUT-4 | Aucune avance automatique : le rythme appartient à qui lit (WCAG 2.2.2).                                                        | M    |
+| EF-TUT-5 | Le tutoriel se passe d'un appui sur *Passer* ou sur Échap, et ne se remontre plus de lui-même.                                   | M    |
+| EF-TUT-6 | Il se rejoue à la demande depuis ⚙︎ → Réglages → *Revoir le tutoriel*.                                                           | S    |
+
+### 4.4b Mode table (`EF-TAB`)
+
+| Réf.     | Exigence                                                                                                                      | Prio |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------- | ---- |
+| EF-TAB-1 | Un mode table affiche le cadran en grand : le téléphone posé debout sert de minuteur visuel à une table ou à une classe.      | S    |
+| EF-TAB-2 | Tout ce qui ne se lit pas à deux mètres s'efface : réglages, remise à zéro, boutons − / +, pastille d'accessibilité.          | S    |
+| EF-TAB-3 | Démarrer / Pause et le verrou du cadran restent : un minuteur qu'on ne peut plus lancer ne sert à rien.                       | M    |
+| EF-TAB-4 | En paysage, le cadran se met à gauche et le temps à droite : empilés, ni l'un ni l'autre ne tiendrait.                        | S    |
+| EF-TAB-5 | La sortie est visible, nommée en toutes lettres, atteignable au clavier, et Échap en sort aussi.                              | M    |
+| EF-TAB-6 | L'écran reste allumé tant que dure le mode table, quel que soit le réglage — un minuteur de table qui s'éteint ne sert à rien. | M    |
+
+### 4.5 Enchaînement et prolongation (`EF-CHA`)
 
 | Réf.     | Exigence                                                                                     | Prio |
 | -------- | -------------------------------------------------------------------------------------------- | ---- |
@@ -164,12 +200,12 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-CHA-4 | Une pause longue est proposée toutes les 4 sessions de travail terminées.                    | S    |
 | EF-CHA-5 | Les deux options sont désactivables indépendamment.                                          | M    |
 
-### 4.5 Alertes sonores, tactiles et notifications (`EF-ALE`)
+### 4.6 Alertes sonores, tactiles et notifications (`EF-ALE`)
 
 | Réf.     | Exigence                                                                                                                                            | Prio |
 | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---- |
-| EF-ALE-1 | Un son différent est joué à 45, 30 et 15 minutes restantes, puis un carillon à 0.                                                                   | M    |
-| EF-ALE-2 | Les sons vont du plus discret au plus insistant à mesure que la fin approche.                                                                       | M    |
+| EF-ALE-1 | Trois paliers avant la fin, calculés sur la durée de la session, jouent chacun un son différent, puis un carillon à 0.                               | M    |
+| EF-ALE-2 | Les sons vont du plus discret au plus insistant à mesure que la fin approche. Cette progression est portée par le motif et le timbre — une note ronde, deux notes montantes, trois bips rapides — et non par le volume : un palier ne doit pas être manqué parce qu'il est le premier. | M    |
 | EF-ALE-3 | Les sons peuvent être écoutés à la demande depuis les réglages.                                                                                     | S    |
 | EF-ALE-4 | Les sons peuvent être coupés globalement ; le choix est mémorisé.                                                                                   | M    |
 | EF-ALE-5 | Sur mobile, des notifications locales reprennent ces alertes quand l'application est en arrière-plan ou l'appareil verrouillé, avec les mêmes sons. | M    |
@@ -181,8 +217,15 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-ALE-12 | Le signal visuel bat à 0,6 Hz au plus, se fige sous `prefers-reduced-motion`, n'intercepte aucun clic et n'est pas exposé aux lecteurs d'écran.    | M    |
 | EF-ALE-13 | À la fin, un bandeau « Temps écoulé » reste affiché jusqu'à la prochaine action : une alerte qui passe se rate.                                    | S    |
 | EF-ALE-10 | Le motif se reconnaît d'abord au nombre d'impulsions et à leur rythme : la durée demandée est respectée sur Android et sur iPhone à Taptic Engine, mais un appareil iOS plus ancien retombe sur une vibration système de longueur fixe. | S    |
+| EF-ALE-14 | Depuis les réglages, une notification de test se programme à cinq secondes : le délai est le sujet même du test, il laisse le temps de verrouiller l'écran, et c'est écran verrouillé qu'on veut savoir si l'appareil prévient. | S    |
+| EF-ALE-15 | Le test dit à la même place ce qu'il est advenu, dans une région live : programmée, programmée sans alarme exacte, notifications refusées, indisponible hors de l'application installée, ou échouée. | M    |
+| EF-ALE-16 | Un lien mène à l'écran système « Alarmes et rappels » (Android 12+) ; ailleurs, il annonce que cet écran n'existe pas plutôt que de faire croire à un refus. | S    |
+| EF-ALE-17 | Pendant une session, un décompte permanent se pose hors de l'application — notification muette sur Android, Live Activity sur iOS — et donne le temps restant sans déverrouiller. | S    |
+| EF-ALE-18 | Ce décompte n'alerte jamais : ni son, ni vibration, ni pastille. Il informe, et laisse les paliers se faire entendre. | M    |
+| EF-ALE-19 | Il disparaît dès que le décompte s'arrête, et l'appui dessus ouvre l'application sans rien démarrer. | M    |
+| EF-ALE-20 | Tous les sons sortent au même niveau, près du maximum de l'échelle, dans l'application comme en notification. Un appareil ne fait que réduire ce qu'on lui donne : un son rendu à mi-échelle arrive irrémédiablement discret, et une alerte qui ne s'entend pas ne remplit pas son rôle. | M    |
 
-### 4.6 Historique, statistiques et objectif (`EF-HIS`)
+### 4.7 Historique, statistiques et objectif (`EF-HIS`)
 
 | Réf.     | Exigence                                                                                                                         | Prio |
 | -------- | -------------------------------------------------------------------------------------------------------------------------------- | ---- |
@@ -194,7 +237,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-HIS-6 | Les statistiques du jour se recalculent au passage de minuit sans redémarrage.                                                   | S    |
 | EF-HIS-7 | Les statistiques sont indicatives : aucun score négatif, aucune notion d'échec.                                                  | M    |
 
-### 4.7 Préférences (`EF-PRE`)
+### 4.8 Préférences (`EF-PRE`)
 
 | Réf.     | Exigence                                                                         | Prio |
 | -------- | -------------------------------------------------------------------------------- | ---- |
@@ -212,7 +255,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-PRE-12 | Alerte visuelle : aucune, douce ou forte (défaut : douce) ; le choix se montre aussitôt. | S    |
 | EF-PRE-13 | Verrou du cadran on/off (défaut : off), conservé d'une ouverture à l'autre.       | S    |
 
-### 4.8 Internationalisation (`EF-I18`)
+### 4.9 Internationalisation (`EF-I18`)
 
 | Réf.     | Exigence                                                                                   | Prio |
 | -------- | ------------------------------------------------------------------------------------------ | ---- |
@@ -222,23 +265,30 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-I18-4 | Le changement de langue est immédiat, sans rechargement.                                   | M    |
 | EF-I18-5 | Les libellés transmis au widget et aux notifications suivent la langue de l'application.   | S    |
 
-### 4.9 Écran allumé et widget (`EF-NAT`)
+### 4.10 Écran allumé et widget (`EF-NAT`)
 
 | Réf.     | Exigence                                                                                                     | Prio |
 | -------- | ------------------------------------------------------------------------------------------------------------ | ---- |
 | EF-NAT-1 | L'écran ne s'éteint pas pendant le décompte lorsque l'option est active.                                     | S    |
-| EF-NAT-2 | Un widget d'écran d'accueil iOS affiche le décompte en cours ou l'objectif du jour.                          | C    |
-| EF-NAT-3 | Le widget continue de décompter seul entre deux mises à jour de l'application.                               | C    |
+| EF-NAT-2 | Un widget d'écran d'accueil, sur iOS et sur Android, reprend le cadran de l'application — anneau de couleurs, disque du mode, bouton central — avec le temps et l'objectif du jour. | C    |
+| EF-NAT-5 | Le widget suit le thème choisi dans l'application, clair ou sombre, et non celui du système.                  | C    |
+| EF-NAT-6 | Toucher le widget ouvre l'application, sans rien démarrer : il montre, il ne commande pas.                    | C    |
+| EF-NAT-7 | L'application ouvre sur un fond noir où le cadran tourne, jusqu'à ce qu'elle soit prête — puis le voile s'efface. | S    |
+| EF-NAT-8 | Le cadran de l'ouverture se fige sous `prefers-reduced-motion`, et le voile s'efface quoi qu'il arrive, même si le démarrage échoue. | M    |
+| EF-NAT-3 | Le widget continue de décompter seul entre deux mises à jour de l'application, et son disque se vide graduation par graduation. | C    |
 | EF-NAT-4 | Le widget est mis à jour aux changements : démarrage, pause, fin, passage en arrière-plan, objectif, langue. | C    |
 
-### 4.10 Page d'accessibilité (`EF-A11`)
+### 4.11 Page d'accessibilité (`EF-A11`)
 
 | Réf.     | Exigence                                                                                                                                               | Prio |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- |
 | EF-A11-1 | Un lien « ♿ Accessibilité » est accessible depuis le minuteur.                                                                                         | M    |
-| EF-A11-2 | La page publie la déclaration d'accessibilité : standards visés, environnement et outils de test, contenus non accessibles, contact, voies de recours. | M    |
+| EF-A11-2 | La page publie la déclaration d'accessibilité dans le plan du décret n° 2019-768 : engagement, état de conformité, résultats des tests, contenus non accessibles (non-conformités, dérogations pour charge disproportionnée, contenus non soumis), établissement de la déclaration, contact, voies de recours. | M    |
 | EF-A11-3 | La page est traduite dans les sept langues.                                                                                                            | M    |
 | EF-A11-4 | Une session en cours continue, se termine et s'enregistre pendant la consultation de cette page.                                                       | M    |
+| EF-A11-5 | La page dit que la déclaration est volontaire : l'application n'entre pas dans le champ de l'article 47, et laisser croire à une obligation serait faux. | M    |
+| EF-A11-6 | Aucun taux de conformité n'est annoncé tant qu'aucun audit n'a été mené par un tiers : un pourcentage auto-attribué tromperait sur ce qui a été vérifié. | M    |
+| EF-A11-7 | L'établissement de la déclaration nomme la date, les technologies, l'environnement de test, les outils et les pages évaluées, et dit qu'aucune technologie d'assistance n'a été utilisée. | M    |
 
 ---
 
@@ -249,7 +299,8 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | RG-1  | Durée réglable : 0 à 60 minutes ; durée d'un mode : 1 à 60 minutes.                                                                                                     |
 | RG-2  | La prolongation automatique vaut 5 minutes, ne s'applique qu'aux sessions de **travail** et une seule fois par session.                                                 |
 | RG-3  | Une pause longue est proposée toutes les **4** sessions de travail terminées.                                                                                           |
-| RG-4  | Les paliers sonores se déclenchent à **45, 30 et 15** minutes restantes.                                                                                                |
+| RG-4  | Au-delà de **40 minutes**, les paliers se déclenchent à **45, 30 et 15** minutes restantes ; en dessous, à la **moitié**, au **dernier quart** et à **1 minute** de la fin. |
+| RG-4b | Le son, le motif de vibration et le canal de notification d'un palier viennent de son **rang** : le dernier palier est toujours le plus insistant.                       |
 | RG-5  | Aucun son de palier n'est joué pendant un réglage au doigt.                                                                                                             |
 | RG-6  | Une session interrompue avant **60 secondes** décomptées n'est pas enregistrée (faux départ).                                                                           |
 | RG-7  | L'historique conserve au maximum les **500** dernières sessions ; les plus anciennes sont supprimées.                                                                   |
@@ -262,30 +313,58 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | RG-14 | Si le stockage local est indisponible (navigation privée, stockage bloqué), l'application reste utilisable, les réglages ne valant que pour la session.                 |
 | RG-15 | Un palier dépassé de plus de 90 secondes lors d'un retour au premier plan n'est pas rejoué.                                                                             |
 | RG-16 | Une routine compte de 1 à 10 étapes ; la dernière étape d'une routine ne peut pas être supprimée.                                                                       |
+| RG-16b | Une étape dure de **5 secondes à 60 minutes** ; une routine se joue de **1 à 20 tours**. Une durée ou un nombre de tours hors bornes est ramené dans les bornes à la lecture. |
 | RG-17 | Pendant une routine, la prolongation « +5 min » ne s'applique pas : ce qui a été annoncé arrive à l'heure dite.                                                         |
 | RG-18 | Pendant une routine, l'enchaînement suit les étapes de la routine, que l'option « enchaîner travail → pause » soit active ou non.                                       |
 | RG-19 | Une étape non comptée dans le focus du jour est enregistrée comme une pause : se laver les dents n'est pas du temps de travail (RG-10).                                 |
+| RG-20 | Un rappel sans jour coché n'est pas enregistré : mieux vaut pas de rappel qu'un rappel qui ne partira jamais. Allumer un rappel coche la semaine entière.               |
+| RG-21 | Un rappel touché **arme** la routine, il ne la démarre pas : un décompte qui part sans geste de l'utilisateur est une source d'anxiété.                                 |
+| RG-22 | Les rappels sont reprogrammés en bloc à chaque modification, et échappent à l'annulation des alertes de session qui a lieu à chaque retour au premier plan.             |
+| RG-25 | Le compteur de tours repart à 1 quand la routine est lancée ou quittée, jamais quand on saute d'une étape à l'autre : refaire une étape ne recommence pas l'entraînement. |
+| RG-26 | Cadran gradué en secondes : le **réglage** de la durée est neutralisé (glissement, flèches, boutons − / +), car il travaille en minutes. Démarrer et mettre en pause restent possibles. |
+| RG-27 | L'unité du cadran suit la **durée réglée**, jamais le temps restant : un Pomodoro ne bascule pas en secondes dans sa dernière minute.                                    |
+| RG-28 | Le mode sport **teinte** le fond du thème (18 à 30 %) au lieu de le remplacer : clair reste clair, sombre reste sombre, et les textes gardent leur contraste. |
+| RG-29 | Sur ce fond teinté, le gris secondaire passe au gris fort : mesuré sur les dix couleurs de la palette, il tombait à 2,82:1 (WCAG 1.4.3).                     |
+| RG-30 | La notification de test vit au-dessus des deux autres bornes d'identifiant : ni le retour au premier plan, qui annule les alertes de session, ni la réécriture en bloc des rappels ne l'effacent — elle doit arriver, c'est tout son objet. |
+| RG-23 | Le tutoriel se montre tant qu'il n'a pas été vu. Passé, terminé ou revu, il ne se remontre plus de lui-même — seul *Revoir le tutoriel* le rouvre.                      |
+| RG-24 | Le tutoriel n'avance jamais seul, et le panneau de réglages se ferme avant qu'il ne s'ouvre : deux modales à la fois ne s'entendraient pas.                             |
 
 ---
 
 ## 6. Parcours utilisateur
 
-### 6.1 Session simple
+### 6.1 Premier lancement
+
+Le tutoriel s'ouvre en plein écran sur la première de ses cinq vues, le reste de la page
+devenant inerte. Le
+focus est sur *Suivant* et y reste d'une vue à l'autre : on traverse le tutoriel en répétant la
+même touche, pendant qu'une annonce dit « Étape 2 sur 5 : Régler la durée ». *Passer* ou Échap
+l'abrègent. La dernière vue dit *C'est parti* ; le focus revient alors sur ▶, qui est le geste
+suivant. Au lancement d'après, le minuteur est là tout de suite.
+
+### 6.2 Session simple
 
 1. Ouverture : le mode mémorisé est sélectionné, sa durée s'affiche sur le cadran.
 2. Réglage facultatif au doigt, aux boutons − / + ou au clavier.
 3. Appui sur le cadran ou sur ▶ : le décompte démarre, l'écran reste allumé si l'option est active.
-4. Paliers à 45 / 30 / 15 min restantes : un son, et une notification si l'application est en arrière-plan.
+4. Paliers (45 / 30 / 15 min restantes au-delà de 40 min, sinon la moitié, le dernier quart et 1 min) : un son, et une notification si l'application est en arrière-plan.
 5. À 0 : carillon, motif de vibration de fin ; prolongation de 5 min si l'option est active, sinon fin.
 6. La session est enregistrée si elle a duré au moins 60 s ; les statistiques du jour se mettent à jour.
 
-### 6.2 Enchaînement automatique
+### 6.3 Enchaînement automatique
 
 À la fin d'une session de travail, la pause correspondante démarre ; à la fin de la pause, une
 session de travail reprend. Toutes les 4 sessions de travail terminées, la pause longue remplace
 la pause courte. L'utilisateur peut interrompre la chaîne à tout moment.
 
-### 6.3 Déroulé d'une routine
+### 6.4 Déroulé d'une routine
+
+Une routine répétée sert aussi d'entraînement : deux étapes — « Effort 20 s », « Repos 10 s » —
+et huit tours font un Tabata, livré avec l'application. Sur une étape aussi courte, le cadran
+gradue des secondes, les trois dernières sont égrenées et la suivante est annoncée avant la fin.
+L'échauffement, lui, se fait en routine à part : les tours rejouent la routine entière.
+Marquée *entraînement*, la routine fait en plus passer la page en mode sport : la couleur de
+l'étape teinte tout l'écran — rouge à l'effort, vert au repos — et le chrono s'agrandit.
 
 ⚙︎ → Modes → *Routines* → « Routine du matin » : le panneau se ferme, la première étape
 (« S'habiller », 10 min) est armée sur le cadran, et la bande montre les quatre étapes. Appui
@@ -293,12 +372,20 @@ sur ▶ : le décompte part. À 0, le carillon sonne, « Place à : Petit-déjeu
 l'étape suivante démarre seule. Une étape déjà faite se retrouve d'un appui sur sa vignette.
 À la fin de la dernière, toutes les vignettes sont cochées et « Routine terminée » est dit.
 
-### 6.4 Création d'un mode
+### 6.5 Rappel d'une routine
+
+⚙︎ → Modes → *Routines* → crayon → *Rappel* : l'interrupteur allumé propose 8 h 00 et la
+semaine entière ; l'heure se règle, les jours se décochent. Enregistrer. À 7 h 30 le lundi,
+une notification « C'est l'heure : 🌅 Routine du matin — 4 étapes · 33 min » arrive, même
+application fermée. L'appui ouvre l'application avec la routine armée sur le cadran : il reste
+à appuyer sur ▶.
+
+### 6.6 Création d'un mode
 
 ⚙︎ → Modes → « nouveau » : saisir un nom, régler la durée, choisir une couleur (nom affiché),
 choisir la nature. Enregistrer. Le mode rejoint la liste et devient sélectionnable.
 
-### 6.5 Consultation des statistiques
+### 6.7 Consultation des statistiques
 
 ⚙︎ → Stats : objectif du jour et barre de progression, temps de focus, sessions terminées,
 série de jours, histogramme des 7 derniers jours, 10 dernières sessions.

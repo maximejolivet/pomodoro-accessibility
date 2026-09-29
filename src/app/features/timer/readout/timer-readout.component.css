@@ -45,6 +45,34 @@
 }
 
 /*
+ * Mode sport : le chrono et le nom de l'étape se lisent à deux mètres, empilés plutôt
+ * qu'alignés. `:host-context` et non `.sport .readout` : la classe vit sur la page, hors
+ * du composant, et l'encapsulation Angular ne laisserait pas le sélecteur correspondre.
+ */
+:host-context(.sport) .readout-main {
+  flex-direction: column;
+  gap: 0;
+}
+
+:host-context(.sport) .readout-time {
+  font-size: 44px;
+  line-height: 1.1;
+}
+
+:host-context(.sport) .readout-mode {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+:host-context(.sport) .cycle {
+  margin-top: -8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--muted-strong);
+}
+
+/*
  * Régler la durée sans glisser : cible de 44 px, appui maintenu pour enchaîner
  * les minutes (WCAG 2.5.7 et 2.5.8).
  */
@@ -102,9 +130,12 @@
   color: var(--muted);
 }
 
+/* Jusqu'à vingt tours : les pastilles passent à la ligne plutôt que de pousser le texte. */
 .cycle-dots {
   display: flex;
+  flex-wrap: wrap;
   gap: 5px;
+  max-width: 140px;
 }
 
 .cycle-dot {
@@ -118,4 +149,32 @@
 .cycle-dot.done {
   background: var(--c);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+/*
+ * Mode table : le temps se lit de loin. Les boutons − / + disparaissent — on ne règle pas
+ * une durée à deux mètres, et un appui involontaire sur une table passée est vite arrivé.
+ */
+:host-context(.table) .step {
+  display: none;
+}
+
+:host-context(.table) .readout {
+  min-width: 0;
+}
+
+:host-context(.table) .readout-main {
+  flex-direction: column;
+  gap: 0;
+}
+
+:host-context(.table) .readout-time {
+  font-size: clamp(44px, 9vmin, 84px);
+  line-height: 1.05;
+}
+
+:host-context(.table) .readout-mode {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }

@@ -20,6 +20,10 @@
 		5AA1CD590A057C4EF237CB1C /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8535652A7CBDB240942EB2 /* MainViewController.swift */; };
 		7781DDD2C88D752B59365991 /* PomodoroWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8F6A05B430BB38046A8067D /* PomodoroWidget.swift */; };
 		0F43A1BA3994B9167767D73B /* PomodoroWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 086221A879E51136F1D52F7C /* PomodoroWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A1C0DE01000000000000BF01 /* PomodoroActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C0DE01000000000000AC01 /* PomodoroActivity.swift */; };
+		A1C0DE01000000000000BF02 /* PomodoroActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C0DE01000000000000AC01 /* PomodoroActivity.swift */; };
+		A1C0DE01000000000000BF03 /* PomodoroLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C0DE01000000000000AC02 /* PomodoroLiveActivity.swift */; };
+		A1C0DE01000000000000BF04 /* LiveStatusPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C0DE01000000000000AC03 /* LiveStatusPlugin.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +69,9 @@
 		4788408D59FCC5378F9D13F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71AEB454DBA237A103F13AF0 /* PomodoroWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PomodoroWidget.entitlements; sourceTree = "<group>"; };
 		086221A879E51136F1D52F7C /* PomodoroWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PomodoroWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1C0DE01000000000000AC01 /* PomodoroActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroActivity.swift; sourceTree = "<group>"; };
+		A1C0DE01000000000000AC02 /* PomodoroLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroLiveActivity.swift; sourceTree = "<group>"; };
+		A1C0DE01000000000000AC03 /* LiveStatusPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveStatusPlugin.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +118,7 @@
 				9582B6822FE993A50072D4E8 /* SceneDelegate.swift */,
 				1B8535652A7CBDB240942EB2 /* MainViewController.swift */,
 				6A645C7E95EC2266A0BC23A3 /* WidgetBridgePlugin.swift */,
+				A1C0DE01000000000000AC03 /* LiveStatusPlugin.swift */,
 				9E6434A9C91E211B7064D637 /* App.entitlements */,
 				50379B222058CBB4000EE86E /* capacitor.config.json */,
 				504EC3071FED79650016851F /* AppDelegate.swift */,
@@ -128,6 +136,8 @@
 			isa = PBXGroup;
 			children = (
 				A8F6A05B430BB38046A8067D /* PomodoroWidget.swift */,
+				A1C0DE01000000000000AC01 /* PomodoroActivity.swift */,
+				A1C0DE01000000000000AC02 /* PomodoroLiveActivity.swift */,
 				4788408D59FCC5378F9D13F6 /* Info.plist */,
 				71AEB454DBA237A103F13AF0 /* PomodoroWidget.entitlements */,
 			);
@@ -250,6 +260,8 @@
 				9582B6832FE993A70072D4E8 /* SceneDelegate.swift in Sources */,
 				5AA1CD590A057C4EF237CB1C /* MainViewController.swift in Sources */,
 				46127B0DA357633B56301F22 /* WidgetBridgePlugin.swift in Sources */,
+				A1C0DE01000000000000BF04 /* LiveStatusPlugin.swift in Sources */,
+				A1C0DE01000000000000BF02 /* PomodoroActivity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,6 +270,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7781DDD2C88D752B59365991 /* PomodoroWidget.swift in Sources */,
+				A1C0DE01000000000000BF03 /* PomodoroLiveActivity.swift in Sources */,
+				A1C0DE01000000000000BF01 /* PomodoroActivity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

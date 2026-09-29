@@ -200,6 +200,17 @@
   dominant-baseline: central;
 }
 
+/* Pastille d'unité, sous le bouton central : elle n'apparaît qu'en secondes. */
+.unit {
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  fill: var(--muted);
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
 .gasket {
   fill: #1d282d;
 }
@@ -225,5 +236,23 @@
      * sur les écrans très courts.
      */
     width: min(calc(100vw - 32px), 560px, calc(100dvh - 330px - var(--pill-band) + 40px));
+  }
+}
+
+/*
+ * Mode table : le cadran prend ce que les commandes effacées lui laissent. En paysage, il
+ * se cale sur la hauteur — c'est elle qui manque — et laisse la largeur au chrono.
+ */
+:host-context(.table) .tilt-zone {
+  padding: 4px 0 30px;
+}
+
+:host-context(.table) .device {
+  width: min(calc(100vw - 24px), calc(100dvh - 210px));
+}
+
+@media (orientation: landscape) {
+  :host-context(.table) .device {
+    width: min(calc(100dvh - 52px), calc(100vw - 340px));
   }
 }

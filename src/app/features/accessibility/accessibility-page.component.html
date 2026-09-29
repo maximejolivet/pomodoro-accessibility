@@ -71,7 +71,7 @@
       <h2 id="profiles-title">{{ s().profilesTitle }}</h2>
       <ul class="profiles-timeline">
         <li class="profile-item" *ngFor="let p of s().profiles; let i = index">
-          <span class="profile-marker" aria-hidden="true">{{ ['🔊', '💻', '👁', '💤', '🧠', '📖'][i] }}</span>
+          <span class="profile-marker" aria-hidden="true">{{ profileIcons[i] }}</span>
           <div class="profile-info">
             <strong>{{ p.title }}</strong>
             <p>{{ p.text }}</p>
@@ -124,16 +124,52 @@
         <p [innerHTML]="s().criteriaStatement"></p>
         <p class="criteria-note">{{ s().criteriaNote }}</p>
       </div>
+      <!-- Sans la coche : elle se lisait « thème validé », ce qu'aucun audit n'établit -->
       <ul class="criteria-badges" [attr.aria-label]="s().badgesLabel">
-        <li class="badge" *ngFor="let b of s().badges"><span aria-hidden="true">✓</span> {{ b }}</li>
+        <li class="badge" *ngFor="let b of s().badges">{{ b }}</li>
       </ul>
     </section>
 
+    <!--
+      L'ordre et les rubriques sont ceux qu'impose le décret n° 2019-768 : engagement,
+      état de conformité, résultats des tests, contenus non accessibles (en trois volets),
+      établissement de la déclaration, contact, voies de recours. Rien n'y est décoratif.
+    -->
     <section class="declaration" aria-labelledby="declaration-title">
       <h2 id="declaration-title">{{ s().declarationTitle }}</h2>
+      <p>{{ s().declCommitment }}</p>
       <p>{{ s().declarationIntro }}</p>
+      <p class="decl-note">{{ s().declVoluntary }}</p>
 
+      <h3>{{ s().conformityTitle }}</h3>
+      <p [innerHTML]="s().conformityText"></p>
+
+      <h3>{{ s().testsTitle }}</h3>
+      <p>{{ s().testsText }}</p>
+
+      <h3>{{ s().nonAccessibleTitle }}</h3>
+
+      <h4>{{ s().nonComplianceTitle }}</h4>
+      <ul class="decl-list">
+        <li *ngFor="let item of s().nonAccessibleItems">{{ item }}</li>
+      </ul>
+
+      <h4>{{ s().derogationsTitle }}</h4>
+      <p>{{ s().derogationsText }}</p>
+
+      <h4>{{ s().notSubjectTitle }}</h4>
+      <p>{{ s().notSubjectText }}</p>
+
+      <h3>{{ s().establishedTitle }}</h3>
       <dl class="decl-rows">
+        <div class="decl-row">
+          <dt>{{ s().declLabels.date }}</dt>
+          <dd>{{ declarationDate() }}</dd>
+        </div>
+        <div class="decl-row">
+          <dt>{{ s().declLabels.tech }}</dt>
+          <dd>{{ s().declTech }}</dd>
+        </div>
         <div class="decl-row">
           <dt>{{ s().declLabels.env }}</dt>
           <dd>{{ s().declEnv }}</dd>
@@ -144,18 +180,9 @@
         </div>
         <div class="decl-row">
           <dt>{{ s().declLabels.pages }}</dt>
-          <dd><code>/</code> · <code>/accessibility</code></dd>
-        </div>
-        <div class="decl-row">
-          <dt>{{ s().declLabels.date }}</dt>
-          <dd>{{ declarationDate() }}</dd>
+          <dd>{{ s().declPages }}</dd>
         </div>
       </dl>
-
-      <h3>{{ s().nonAccessibleTitle }}</h3>
-      <ul class="decl-list">
-        <li *ngFor="let item of s().nonAccessibleItems">{{ item }}</li>
-      </ul>
 
       <h3>{{ s().contactTitle }}</h3>
       <p>
@@ -165,6 +192,9 @@
 
       <h3>{{ s().remedyTitle }}</h3>
       <p>{{ s().remedyText }}</p>
+      <ul class="decl-list">
+        <li *ngFor="let item of s().remedyItems">{{ item }}</li>
+      </ul>
     </section>
 
     <section class="stack" aria-labelledby="stack-title">

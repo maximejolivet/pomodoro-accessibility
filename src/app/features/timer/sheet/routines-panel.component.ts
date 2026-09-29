@@ -1,16 +1,18 @@
 import { Component, ElementRef, EventEmitter, Output, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Capacitor } from '@capacitor/core';
 import { PRESET_COLORS } from '../../../core/constants/preset.constants';
-import { MAX_STEPS, STEP_ICONS } from '../../../core/constants/routine.constants';
-import { MAX_MINUTES, MIN_MINUTES } from '../../../core/constants/timer.constants';
+import {
+  DEFAULT_REMINDER_TIME, MAX_ROUNDS, MAX_STEPS, STEP_DURATIONS, STEP_ICONS
+} from '../../../core/constants/routine.constants';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import type { I18nKey } from '../../../core/i18n/i18n.model';
-import type { Routine, RoutineStep } from '../../../core/models/routine.model';
-import { routineSeconds } from '../../../core/models/routine.model';
+import type { Routine, RoutineReminder, RoutineStep } from '../../../core/models/routine.model';
+import { WEEKDAYS, routineRounds, routineTotalSeconds } from '../../../core/models/routine.model';
 import { RoutineService } from '../../../core/services/routine.service';
 import { SessionService } from '../../../core/services/session.service';
-import type { RoutineDraft, RoutineStepDraft } from '../timer.model';
+import type { RoutineDraft, RoutineReminderDraft, RoutineStepDraft } from '../timer.model';
 
 /**
  * Section « Routines » de l'onglet Modes : la liste des routines, et leur éditeur.
@@ -35,9 +37,10 @@ export class RoutinesPanelComponent {
   @Output() readonly editing = new EventEmitter<boolean>();
   @Output() readonly closeSheet = new EventEmitter<void>();
 
-  readonly minMinutes = MIN_MINUTES;
-  readonly maxMinutes = MAX_MINUTES;
   readonly maxSteps = MAX_STEPS;
+  readonly maxRounds = MAX_ROUNDS;
+  /** Le curseur de durée parcourt la liste des durées : sa valeur est un rang, pas des secondes. */
+  readonly lastDuration = STEP_DURATIONS.length - 1;
   readonly stepIcons = STEP_ICONS;
   readonly presetColors = PRESET_COLORS;
 
@@ -48,6 +51,24 @@ export class RoutinesPanelComponent {
   readonly confirming = signal<'delete' | 'restore' | null>(null);
 
   readonly activeRoutineId = computed(() => this.session.activeRoutine()?.id ?? null);
+
+  /** Hors iOS et Android, aucune notification ne part : le dire plutôt que le laisser croire. */
+  readonly isNative = Capacitor.isNativePlatform();
+
+  /**
+   * Les sept jours, lundi d'abord, nommés par le navigateur : une lettre sur le bouton,
+   * le nom entier pour les lecteurs d'écran, dans les sept langues et sans rien traduire.
+   */
+  readonly weekdays = computed(() => {
+    const lang = this.i18n.lang();
+    const narrow = new Intl.DateTimeFormat(lang, { weekday: 'narrow', timeZone: 'UTC' });
+    const long = new Intl.DateTimeFormat(lang, { weekday: 'long', timeZone: 'UTC' });
+    // Le 1er janvier 2024 est un lundi : sept jours de suite donnent la semaine ISO
+    return WEEKDAYS.map(iso => {
+      const day = new Date(Date.UTC(2024, 0, iso));
+      return { iso, short: narrow.format(day), long: long.format(day) };
+    });
+  });
 
   routineName(routine: Routine): string {
     return this.session.routineName(routine);
@@ -62,16 +83,85 @@ export class RoutinesPanelComponent {
     return step.name || (step.nameKey ? this.i18n.t(step.nameKey) : '');
   }
 
-  /** Une étape en cours d'édition : la durée passe en minutes, le nom traduit se remplit. */
-  private toDraft(step: RoutineStep): RoutineStepDraft {
-    return { ...step, name: this.rawName(step), minutes: Math.round(step.seconds / 60) };
+  /** Le rappel d'une routine, en brouillon : « HH:MM » pour le champ d'heure. */
+  private toReminderDraft(reminder: RoutineReminder | undefined): RoutineReminderDraft {
+    if (!reminder) return { enabled: false, time: DEFAULT_REMINDER_TIME, days: [...WEEKDAYS] };
+    const time = `${String(reminder.hour).padStart(2, '0')}:${String(reminder.minute).padStart(2, '0')}`;
+    return { enabled: true, time, days: [...reminder.days] };
   }
 
+  /**
+   * Le brouillon rendu au modèle. Un rappel éteint, sans jour coché ou sans heure lisible
+   * n'est pas enregistré : mieux vaut pas de rappel qu'un rappel qui ne partira jamais.
+   */
+  private fromReminderDraft(draft: RoutineReminderDraft): RoutineReminder | undefined {
+    const [hour, minute] = (draft.time ?? '').split(':').map(Number);
+    if (!draft.enabled || !draft.days.length) return undefined;
+    if (!Number.isInteger(hour) || !Number.isInteger(minute)) return undefined;
+    return { hour, minute, days: [...draft.days].sort() };
+  }
+
+  /** Une étape en cours d'édition : le nom traduit se remplit, la durée reste en secondes. */
+  private toDraft(step: RoutineStep): RoutineStepDraft {
+    return { ...step, name: this.rawName(step) };
+  }
+
+  /** Rang de la durée dans la liste : la plus proche, quand une valeur ancienne tombe entre deux. */
+  durationIndex(step: RoutineStepDraft): number {
+    let best = 0;
+    for (let i = 1; i < STEP_DURATIONS.length; i++) {
+      if (Math.abs(STEP_DURATIONS[i] - step.seconds) < Math.abs(STEP_DURATIONS[best] - step.seconds)) best = i;
+    }
+    return best;
+  }
+
+  setDurationIndex(step: RoutineStepDraft, index: number): void {
+    step.seconds = STEP_DURATIONS[Math.max(0, Math.min(this.lastDuration, Math.round(index)))];
+  }
+
+  durationLabel(seconds: number): string {
+    return this.session.durationLabel(seconds);
+  }
+
+  shortDuration(seconds: number): string {
+    return this.session.shortDuration(seconds);
+  }
+
+  /** « Une seule fois » ou « 8 fois » : le nombre nu ne dirait pas de quoi il parle. */
+  roundsLabel(rounds: number): string {
+    return rounds <= 1 ? this.i18n.t('routine.roundsOnce') : this.i18n.t('routine.roundsTimes', { n: rounds });
+  }
+
+  /**
+   * Nom accessible de la carte : le rappel y est dit, parce que l'`aria-label` remplace
+   * tout le contenu du bouton — la pastille ⏰ ne serait vue que des voyants.
+   */
+  startLabel(routine: Routine): string {
+    const label = this.i18n.t('routine.start', { name: this.routineName(routine) });
+    const at = this.reminderAt(routine);
+    return at ? `${label}, ${at}` : label;
+  }
+
+  /** « rappel à 07:30 », ou une chaîne vide quand la routine n'en a pas. */
+  reminderAt(routine: Routine): string {
+    const reminder = routine.reminder;
+    return reminder ? this.i18n.t('routine.reminderAt', { time: this.clockTime(reminder) }) : '';
+  }
+
+  /** L'heure comme le pays l'écrit : « 07:30 » en français, « 7:30 AM » en anglais. */
+  clockTime(reminder: RoutineReminder): string {
+    const at = new Date(2024, 0, 1, reminder.hour, reminder.minute);
+    return new Intl.DateTimeFormat(this.i18n.lang(), { hour: '2-digit', minute: '2-digit' }).format(at);
+  }
+
+  /** « 4 étapes · 33 min », tours compris : c'est le temps que la routine prendra vraiment. */
   summary(routine: Routine): string {
-    return this.i18n.t('routine.summary', {
+    const rounds = routineRounds(routine);
+    const summary = this.i18n.t('routine.summary', {
       n: routine.steps.length,
-      m: Math.round(routineSeconds(routine) / 60)
+      m: Math.round(routineTotalSeconds(routine) / 60)
     });
+    return rounds > 1 ? `${summary} · ×${rounds}` : summary;
   }
 
   colorLabel(hex: string): string {
@@ -107,6 +197,9 @@ export class RoutinesPanelComponent {
       name: this.routineName(routine),
       icon: routine.icon,
       steps: routine.steps.map(step => this.toDraft(step)),
+      reminder: this.toReminderDraft(routine.reminder),
+      rounds: routineRounds(routine),
+      workout: routine.workout === true,
       isNew: false
     });
   }
@@ -119,6 +212,9 @@ export class RoutinesPanelComponent {
       name: '',
       icon: routine.icon,
       steps: routine.steps.map(step => this.toDraft(step)),
+      reminder: this.toReminderDraft(undefined),
+      rounds: 1,
+      workout: false,
       isNew: true
     });
     this.openStep.set(routine.steps[0].id);
@@ -176,6 +272,22 @@ export class RoutinesPanelComponent {
     if (this.openStep() === removed.id) this.openStep.set(null);
   }
 
+  /**
+   * Allumer un rappel coche la semaine entière : un rappel sans jour ne partirait jamais,
+   * et décocher est plus rapide que cocher sept fois.
+   */
+  toggleReminder(draft: RoutineDraft, on: boolean): void {
+    draft.reminder.enabled = on;
+    if (on && !draft.reminder.days.length) draft.reminder.days = [...WEEKDAYS];
+  }
+
+  toggleDay(draft: RoutineDraft, iso: number): void {
+    const days = draft.reminder.days;
+    const at = days.indexOf(iso);
+    if (at === -1) days.push(iso);
+    else days.splice(at, 1);
+  }
+
   /** L'interrupteur dit ce que l'étape fait aux statistiques, pas sa « nature ». */
   setCounted(step: RoutineStepDraft, counted: boolean): void {
     step.kind = counted ? 'focus' : 'break';
@@ -188,11 +300,14 @@ export class RoutinesPanelComponent {
       id: draft.routine.id,
       ...this.label(draft.name, draft.routine.nameKey, this.i18n.t('routine.new')),
       icon: draft.icon,
+      rounds: Math.max(1, Math.min(MAX_ROUNDS, Math.round(draft.rounds))),
+      workout: draft.workout,
+      reminder: this.fromReminderDraft(draft.reminder),
       steps: draft.steps.map(step => ({
         id: step.id,
         ...this.label(step.name, step.nameKey, this.i18n.t('routine.stepUntitled')),
         icon: step.icon,
-        seconds: Math.max(MIN_MINUTES, Math.min(MAX_MINUTES, Math.round(step.minutes))) * 60,
+        seconds: step.seconds,
         color: step.color,
         kind: step.kind
       }))

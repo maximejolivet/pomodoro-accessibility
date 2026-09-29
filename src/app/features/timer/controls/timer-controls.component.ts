@@ -19,6 +19,7 @@ export class TimerControlsComponent {
   @Output() readonly openSettings = new EventEmitter<void>();
 
   @ViewChild('settingsButton') private settingsButton?: ElementRef<HTMLButtonElement>;
+  @ViewChild('mainButton') private mainButton?: ElementRef<HTMLButtonElement>;
 
   get selectedPreset(): Preset {
     return this.session.selectedPreset();
@@ -52,5 +53,13 @@ export class TimerControlsComponent {
   /** Rend le focus au bouton Réglages à la fermeture du panneau. */
   focusSettingsButton(): void {
     this.settingsButton?.nativeElement.focus();
+  }
+
+  /**
+   * Rend le focus à Démarrer après le tutoriel : c'est le geste suivant, et le renvoyer
+   * en haut du document obligerait à retraverser la page pour y arriver.
+   */
+  focusMainButton(): void {
+    this.mainButton?.nativeElement.focus();
   }
 }

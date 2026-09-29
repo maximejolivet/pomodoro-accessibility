@@ -56,6 +56,27 @@ export class TimerDialComponent {
     return this.session.displayMinutes();
   }
 
+  /**
+   * Ce que le cadran gradue : des minutes, ou des secondes quand l'étape en cours dure
+   * moins d'une minute. La valeur va de 0 à 60 dans les deux cas — les chiffres de la
+   * face, eux, ne changent pas.
+   */
+  get displayUnits(): number {
+    return this.session.displayUnits();
+  }
+
+  /** Vrai quand la graduation vaut des secondes : le cadran le dit, et ne se règle plus. */
+  get inSeconds(): boolean {
+    return this.session.dialUnit() === 'seconds';
+  }
+
+  /** Ce que le lecteur d'écran annonce à chaque pas : « 24 minutes », « 20 secondes ». */
+  get dialText(): string {
+    return this.inSeconds
+      ? this.session.durationLabel(Math.ceil(this.session.displaySeconds()))
+      : this.session.minutesLabel(Math.ceil(this.displayMinutes));
+  }
+
   get isDragging(): boolean {
     return this.session.dragging();
   }
@@ -64,25 +85,30 @@ export class TimerDialComponent {
     return this.session.locked();
   }
 
+  /** Le réglage seul est neutralisé : en secondes, glisser donnerait des minutes. */
+  get settingLocked(): boolean {
+    return this.session.settingLocked();
+  }
+
   get mainActionLabel(): string {
     return this.session.mainActionLabel();
   }
 
   /** Angle (degrés, sens horaire depuis le haut) du bord du disque. */
   get edgeAngle(): number {
-    return -this.displayMinutes * 6;
+    return -this.displayUnits * 6;
   }
 
   get diskOuterPath(): string {
-    return sectorPath(DISK_R, this.displayMinutes);
+    return sectorPath(DISK_R, this.displayUnits);
   }
 
   get diskInnerPath(): string {
-    return sectorPath(RING_INNER, this.displayMinutes);
+    return sectorPath(RING_INNER, this.displayUnits);
   }
 
   get edgeLine() {
-    return point(DISK_R, this.displayMinutes);
+    return point(DISK_R, this.displayUnits);
   }
 
   toggleLock(): void {
@@ -109,7 +135,7 @@ export class TimerDialComponent {
   }
 
   onDragStart(event: PointerEvent): void {
-    if (event.button !== 0 || this.locked) return;
+    if (event.button !== 0 || this.settingLocked) return;
     this.dragStart = { x: event.clientX, y: event.clientY, id: event.pointerId };
     this.dragMinutes = this.displayMinutes;
     this.suppressClick = false;

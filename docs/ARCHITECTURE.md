@@ -15,9 +15,9 @@ src/
     ├── app.config.ts           # Providers (routeur)
     ├── app.routes.ts           # Routes, chargées à la demande (loadComponent)
     ├── core/                   # Ce qui ne dépend d'aucune page
-    │   ├── constants/          # timer · history · preset · routine (règles et réglages du domaine)
+    │   ├── constants/          # timer · history · preset · routine · tutorial (règles et réglages du domaine)
     │   ├── models/             # preset · routine · session · alert · widget-state
-    │   ├── helpers/            # storage.ts · time.ts · sound-patterns.ts (motifs + WAV) · haptic-patterns.ts
+    │   ├── helpers/            # storage.ts · time.ts · milestones.ts (paliers d'une session) · sound-patterns.ts (motifs, mise à niveau, WAV) · haptic-patterns.ts
     │   ├── i18n/
     │   │   ├── i18n.service.ts # Langue courante, sens d'écriture, traduction
     │   │   ├── i18n.model.ts   # Clés typées, liste des langues, langues RTL
@@ -27,12 +27,12 @@ src/
     │       ├── session.service.ts      # Session en cours, enchaînement, sons, notifications, widget
     │       ├── preferences.service.ts  # Préférences persistées, en signaux
     │       ├── preset.service.ts       # Modes personnalisables
-│       ├── routine.service.ts      # Routines : suites d'étapes enchaînées
+    │       ├── routine.service.ts      # Routines : suites d'étapes enchaînées
     │       ├── history.service.ts      # Historique des sessions et statistiques
-    │       ├── sound.service.ts        # Lecture des sons (Web Audio)
+    │       ├── sound.service.ts        # Lecture des sons (Web Audio), au niveau mesuré dans les motifs
     │       ├── speech.service.ts       # Temps restant dit à voix haute (Web Speech)
     │       ├── haptics.service.ts      # Motifs de vibration par palier (Capacitor Haptics)
-    │       ├── notification.service.ts # Notifications locales Capacitor + sons natifs
+    │       ├── notification.service.ts # Notifications locales Capacitor + sons natifs + rappels hebdomadaires
     │       ├── keep-awake.service.ts   # Écran toujours allumé
     │       └── widget.service.ts       # État transmis au widget iOS
     └── features/               # Une page par dossier
@@ -44,6 +44,7 @@ src/
         │   ├── controls/               # Remise à zéro, démarrage / pause, réglages
         │   ├── sheet/                  # Panneau coulissant + onglets Modes / Stats / Réglages
         │   │                           #   (l'onglet Modes contient la section Routines et son éditeur)
+        │   ├── tutorial/               # Tutoriel d'accueil : cinq vues, au premier lancement
         │   ├── dial-geometry.ts        # Chemins SVG du cadran (fonctions pures)
         │   └── timer.model.ts          # Onglets du panneau, mode et routine en cours d'édition
         └── accessibility/
@@ -54,9 +55,10 @@ tests/
 playwright.config.ts            # Démarre l'app et joue les tests sur Chromium
 .github/workflows/a11y.yml      # Build de production + tests d'accessibilité à chaque push
 scripts/
-└── generate-sounds.ts          # WAV des notifications (node scripts/generate-sounds.ts)
-resources/sounds/               # WAV générés
-resources/app-icon.svg          # Icône iOS (make icon)
+└── generate-sounds.ts          # WAV des notifications (make sounds — les copie aussi dans res/raw)
+resources/sounds/               # WAV générés, crête à −1 dBFS
+resources/app-icon.svg          # Icônes et écrans de lancement, iOS · Android · web (make icons)
+resources/app-icon-foreground.svg  # Calque avant de l'icône adaptative Android
 ios/App/
 ├── App/WidgetBridgePlugin.swift  # Plugin local : état → App Group → widget
 ├── App/MainViewController.swift  # Enregistre les plugins locaux
@@ -84,9 +86,20 @@ docs/
   navigation. `SessionService` (racine) porte donc la session en cours, l'enchaînement, les
   sons, les notifications et le widget ; la page du minuteur n'en est qu'une vue. Une session
   continue, se termine et s'enregistre pendant la lecture de la page d'accessibilité.
+- **Sons définis une fois, joués de deux façons** : `core/helpers/sound-patterns.ts` décrit les
+  motifs en notes et n'importe **rien**, parce qu'il est exécuté à la fois dans le bundle et par
+  Node. L'app les synthétise en Web Audio, `scripts/generate-sounds.ts` les rend en WAV pour les
+  notifications natives : les deux sont identiques par construction, et un son ajouté d'un côté
+  ne peut pas manquer de l'autre. Le volume n'est pas écrit dans les motifs — les gains des notes
+  n'y règlent que leur équilibre entre elles. C'est `level(pattern)` qui **mesure la crête du
+  signal rendu** et la porte à −1 dBFS, du même facteur des deux côtés. Mesurer plutôt que
+  calculer est nécessaire : les notes se chevauchent et s'additionnent, si bien qu'un gain posé à
+  la main laisse le motif soit écrêté, soit très en dessous. Un son d'alerte doit sortir fort,
+  parce que l'appareil ne fait que réduire ce qu'on lui donne — et sur Android, le volume des
+  notifications est un curseur à part de celui du média.
 - **Thèmes** : toutes les couleurs sont des variables CSS dans `src/theme/`, posées sur
   `<app-root>` et redéfinies sous `app-root.dark`, donc héritées par les pages.
-- **Accessibilité testée en continu** : `npm run test:a11y` lance l'app et vérifie une quarantaine de
+- **Accessibilité testée en continu** : `npm run test:a11y` lance l'app et vérifie soixante-douze
   points — axe-core sur l'accueil, le panneau (trois onglets), l'éditeur de mode, l'éditeur de
   routine et la page d'accessibilité, en thème clair et sombre et en arabe ; le réglage du
   cadran au clavier ; l'enchaînement des étapes d'une routine et sa bande ;

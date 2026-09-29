@@ -5,6 +5,15 @@ import { RouterModule } from '@angular/router';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { A11Y_TEXTS, DECLARATION_DATE } from './accessibility.i18n';
 
+/**
+ * Un pictogramme par profil, dans l'ordre de `profiles`. Ils vivaient en tableau anonyme
+ * dans le gabarit, et avaient dérivé : six images pour huit profils, si bien que « Dyslexie »
+ * et « Personnes qui ne lisent pas » n'en avaient aucune, et que « Sourds et malentendants »
+ * héritait du dormeur. Ils sont décoratifs — le texte dit tout — mais ils ne doivent pas
+ * contredire ce qu'ils accompagnent.
+ */
+const PROFILE_ICONS = ['🦯', '⌨️', '🔍', '🦻', '📳', '🧠', '🔤', '🖼️'];
+
 @Component({
   selector: 'app-accessibility-page',
   standalone: true,
@@ -13,6 +22,7 @@ import { A11Y_TEXTS, DECLARATION_DATE } from './accessibility.i18n';
   styleUrls: ['./accessibility-page.component.css']
 })
 export class AccessibilityPageComponent implements AfterViewInit, OnDestroy {
+  readonly profileIcons = PROFILE_ICONS;
   readonly i18n = inject(I18nService);
   private readonly titleService = inject(Title);
   private readonly previousTitle = this.titleService.getTitle();

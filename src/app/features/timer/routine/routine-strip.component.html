@@ -31,7 +31,7 @@
         <span class="step-icon" aria-hidden="true">{{ step.icon }}</span>
         <span class="step-text" aria-hidden="true">
           <span class="step-name">{{ stepName(step) }}</span>
-          <span class="step-time">{{ minutes(step) }} min</span>
+          <span class="step-time">{{ shortDuration(step) }}</span>
         </span>
         <!-- La coche double la couleur : l'étape faite ne se reconnaît pas qu'au gris (WCAG 1.4.1) -->
         <svg *ngIf="isDone(i)" class="step-check" viewBox="0 0 24 24" aria-hidden="true">

@@ -2,17 +2,20 @@ import { Injectable, computed, effect, inject, signal, untracked } from '@angula
 import { App } from '@capacitor/app';
 import { MIN_RECORDED_SECONDS } from '../constants/history.constants';
 import {
-  CUE_MS, EXTRA_SECONDS, LATE_ALERT_SECONDS, LONG_BREAK_EVERY, MAX_MINUTES, MILESTONES, MIN_MINUTES
+  COUNTDOWN_FROM, CUE_MS, EXTRA_SECONDS, LATE_ALERT_SECONDS, LONG_BREAK_EVERY, MAX_MINUTES,
+  MILESTONES, MIN_MINUTES, NEXT_ANNOUNCE_SECONDS, SECONDS_DIAL_BELOW
 } from '../constants/timer.constants';
+import { milestonesFor, type Milestone } from '../helpers/milestones';
 import { readPref, writePref } from '../helpers/storage';
-import { formatTime } from '../helpers/time';
+import { durationParts, formatTime } from '../helpers/time';
 import { I18nService } from '../i18n/i18n.service';
 import type { I18nKey } from '../i18n/i18n.model';
-import type { Alert } from '../models/alert.model';
+import type { Alert, Reminder } from '../models/alert.model';
 import type { SpeechMode, VisualAlert } from '../models/preferences.model';
 import type { VisualCue } from '../models/session.model';
 import type { Preset, PresetKind } from '../models/preset.model';
-import type { Routine, RoutineStep } from '../models/routine.model';
+import type { WidgetState } from '../models/widget-state.model';
+import { routineRounds, routineSeconds, type Routine, type RoutineStep } from '../models/routine.model';
 import type { ActiveSession } from '../models/session.model';
 import { HapticsService } from './haptics.service';
 import { HistoryService } from './history.service';
@@ -24,6 +27,7 @@ import { RoutineService } from './routine.service';
 import { SoundService } from './sound.service';
 import { SpeechService } from './speech.service';
 import { TimerService } from './timer.service';
+import { LiveStatusService } from './live-status.service';
 import { WidgetService } from './widget.service';
 
 /**
@@ -46,6 +50,7 @@ export class SessionService {
   private readonly notifications = inject(NotificationService);
   private readonly keepAwake = inject(KeepAwakeService);
   private readonly widget = inject(WidgetService);
+  private readonly live = inject(LiveStatusService);
   private readonly i18n = inject(I18nService);
 
   private readonly selectedPresetId = signal(readPref('preset'));
@@ -59,6 +64,8 @@ export class SessionService {
   readonly routineIndex = signal(0);
   /** Dernière étape terminée : la bande reste affichée, toutes les étapes cochées. */
   readonly routineDone = signal(false);
+  /** Tour en cours d'une routine répétée, à partir de 1. */
+  readonly routineRound = signal(1);
   readonly currentStep = computed<RoutineStep | null>(() => {
     const routine = this.activeRoutine();
     return routine?.steps[this.routineIndex()] ?? null;
@@ -102,6 +109,49 @@ export class SessionService {
 
   readonly displayMinutes = computed(() => Math.min(60, this.displaySeconds() / 60));
 
+  /**
+   * Unité du cadran. Une étape d'entraînement dure vingt secondes : sur une graduation
+   * d'une heure elle ne se voit pas, sur une graduation d'une minute elle se vide sous
+   * les yeux. C'est la durée réglée qui décide, et non le temps restant — sinon le cadran
+   * changerait d'unité dans la dernière minute d'un Pomodoro.
+   */
+  readonly dialUnit = computed<'seconds' | 'minutes'>(() =>
+    this.durationSeconds() > 0 && this.durationSeconds() < SECONDS_DIAL_BELOW ? 'seconds' : 'minutes'
+  );
+
+  /** Ce que le cadran gradue, toujours de 0 à 60 : des secondes ou des minutes. */
+  readonly displayUnits = computed(() =>
+    this.dialUnit() === 'seconds' ? this.displaySeconds() : this.displayMinutes()
+  );
+
+  /**
+   * Le cadran ne se règle pas quand il compte en secondes : le glissement, les flèches et
+   * les boutons − / + travaillent en minutes, et donneraient une durée sans rapport avec
+   * ce qui est affiché. Une étape de quelques secondes se règle dans l'éditeur de routine.
+   *
+   * Démarrer et mettre en pause restent possibles : c'est le verrou, lui, qui les retire.
+   */
+  readonly settingLocked = computed(() => this.locked() || this.dialUnit() === 'seconds');
+
+  /**
+   * Mode sport : la routine chargée est un entraînement. La page prend alors la couleur
+   * de l'étape en cours, et le chrono grossit — on lit sa séance de loin, en bougeant.
+   */
+  readonly sportMode = computed(() => this.activeRoutine()?.workout === true);
+
+  /**
+   * Mode table : le téléphone posé debout sur un bureau devient un vrai minuteur visuel,
+   * lisible à deux mètres. Le cadran prend tout, le reste s'efface — il ne demeure que
+   * Démarrer / Pause, le verrou, et de quoi sortir.
+   *
+   * C'est un état de vue, pas une préférence : on n'ouvre pas l'app en mode table trois
+   * jours plus tard sans se souvenir pourquoi elle n'a plus de boutons.
+   */
+  readonly tableMode = signal(false);
+
+  /** Étape assez courte pour que les dernières secondes se comptent une à une. */
+  private readonly shortStep = computed(() => this.dialUnit() === 'seconds');
+
   readonly modeName = computed(() => {
     if (this.inExtra()) return this.i18n.t('mode.extra');
     const session = this.session();
@@ -117,11 +167,19 @@ export class SessionService {
     return this.i18n.t(this.finished() ? 'state.finished' : 'state.ready');
   });
 
-  /** « Cycle n/4 » pendant une session de travail, si l'enchaînement est actif. */
+  /**
+   * « Cycle n/4 » pendant une session de travail, ou « Tour 2 sur 8 » dans une routine
+   * répétée : c'est la même place à l'écran, et la même question — où en suis-je dans
+   * ce qui se répète ?
+   */
   readonly cycleLabel = computed<string | null>(() => {
+    const routine = this.activeRoutine();
+    if (routine) {
+      const total = routineRounds(routine);
+      return total > 1 ? this.i18n.t('routine.round', { n: this.routineRound(), total }) : null;
+    }
     const kind = this.session()?.kind ?? this.selectedPreset().kind;
-    // Une routine a sa propre suite d'étapes : le cycle pomodoro ne la décrit pas
-    if (this.activeRoutine() || !this.prefs.autoChain() || kind !== 'focus') return null;
+    if (!this.prefs.autoChain() || kind !== 'focus') return null;
     return this.i18n.t('cycle', { n: (this.focusRounds() % LONG_BREAK_EVERY) + 1, total: LONG_BREAK_EVERY });
   });
 
@@ -135,35 +193,100 @@ export class SessionService {
   /** Vrai pendant un changement de temps manuel (doigt, curseur, reset) : pas de son de palier. */
   private manualChange = false;
 
+  /**
+   * Paliers de la session en cours, calculés sur la durée annoncée — celle qui a été
+   * réglée au départ, et non le temps restant : un réglage au doigt en cours de route ne
+   * déplace pas les paliers déjà franchis.
+   *
+   * Vide pendant la prolongation : ces cinq minutes sont un rabiot pour terminer, pas une
+   * session à jalonner. C'est aussi ce que faisaient déjà les notifications.
+   */
+  private readonly milestones = computed<Milestone[]>(() =>
+    this.inExtra() ? [] : milestonesFor(this.session()?.plannedSeconds ?? this.durationSeconds())
+  );
+
+  /**
+   * Rappels à confier au système : un par routine et par jour coché. Le libellé est
+   * calculé ici parce qu'il dépend de la langue, que le système ne connaît pas.
+   */
+  private readonly reminders = computed<Reminder[]>(() =>
+    this.routineService.routines().flatMap(routine => {
+      const reminder = routine.reminder;
+      if (!reminder) return [];
+      // Le pictogramme d'abord : il dit laquelle des routines c'est, sans lire
+      const name = `${routine.icon} ${this.routineName(routine)}`;
+      const title = this.i18n.t('notif.reminderTitle', { name });
+      const body = this.i18n.t('routine.summary', {
+        n: routine.steps.length,
+        m: Math.round(routineSeconds(routine) / 60)
+      });
+      return reminder.days.map(day => ({
+        routineId: routine.id,
+        title,
+        body,
+        hour: reminder.hour,
+        minute: reminder.minute,
+        day
+      }));
+    })
+  );
+
   constructor() {
     this.durationSeconds.set(this.selectedPreset().seconds);
     this.sound.enabled = this.prefs.sound();
     this.haptics.enabled = this.prefs.haptics();
+    // Les canaux portent un rang, pas un nombre de minutes : le même timbre sert à
+    // 45 minutes restantes sur une heure de travail et à 6 minutes sur un Pomodoro
     this.notifications.setup({
-      milestone45: this.i18n.t('notif.channel.milestone', { m: 45 }),
-      milestone30: this.i18n.t('notif.channel.milestone', { m: 30 }),
-      milestone15: this.i18n.t('notif.channel.milestone', { m: 15 }),
+      milestone45: this.i18n.t('notif.channel.milestone', { n: 1 }),
+      milestone30: this.i18n.t('notif.channel.milestone', { n: 2 }),
+      milestone15: this.i18n.t('notif.channel.milestone', { n: 3 }),
       end: this.i18n.t('notif.channel.end')
     });
 
     this.timer.timeLeft$.subscribe(t => {
       this.checkMilestones(this.timeLeft(), t);
+      this.checkCountdown(this.timeLeft(), t);
       this.speakRemaining(this.timeLeft(), t);
       this.timeLeft.set(t);
     });
     this.timer.finished$.subscribe(lateBy => this.onFinished(lateBy));
     this.timer.isRunning$.subscribe(running => {
       this.isRunning.set(running);
-      this.keepAwake.set(running && this.prefs.keepAwake());
+      this.keepAwake.set(this.tableMode() || (running && this.prefs.keepAwake()));
       this.syncWidget();
     });
 
-    // Stats du jour, objectif ou langue modifiés : le widget se met à jour
+    // Stats du jour, objectif, langue, thème ou durée réglée : le widget se met à jour.
+    // La durée, pas le temps restant : suivre le décompte réécrirait l'état chaque seconde.
     effect(() => {
       this.history.today();
       this.history.dailyGoal();
       this.i18n.lang();
+      this.prefs.darkMode();
+      this.durationSeconds();
       untracked(() => this.syncWidget());
+    });
+
+    /**
+     * Les rappels vivent dans le système, qui ne sait pas qu'une routine a changé de nom,
+     * d'heure, ni que le son a été coupé : ils sont reprogrammés à chaque fois que l'un
+     * de ces trois éléments change — et une première fois au démarrage.
+     */
+    effect(() => {
+      const reminders = this.reminders();
+      const withSound = this.prefs.sound();
+      untracked(() => this.notifications.scheduleReminders(reminders, withSound));
+    });
+
+    /**
+     * Rappel touché : la routine est armée sur le cadran, prête à démarrer, mais rien ne
+     * part tout seul. Un décompte qui se lance sans qu'on l'ait touché est une source
+     * d'anxiété — le rappel propose, il n'impose pas.
+     */
+    this.notifications.reminderTapped$.subscribe(routineId => {
+      const routine = this.routineService.byId(routineId);
+      if (routine) this.startRoutine(routine);
     });
 
     // Téléphone verrouillé / app en arrière-plan : notifications locales ; au retour, on les annule
@@ -220,6 +343,17 @@ export class SessionService {
     this.prefs.setLocked(!this.locked());
   }
 
+  /**
+   * Entre ou sort du mode table. L'écran y reste allumé quoi qu'en dise le réglage : un
+   * minuteur posé sur une table qui s'éteint au bout d'une minute ne sert à rien. En
+   * sortant, on rend la main au réglage — et au décompte, s'il tourne.
+   */
+  setTableMode(on: boolean): void {
+    this.tableMode.set(on);
+    this.keepAwake.set(on || (this.isRunning() && this.prefs.keepAwake()));
+    this.announce(this.i18n.t(on ? 'table.entered' : 'table.left'));
+  }
+
   reset(): void {
     if (this.locked()) return;
     this.resetTimer();
@@ -253,6 +387,7 @@ export class SessionService {
    */
   startRoutine(routine: Routine): void {
     this.activeRoutine.set(routine);
+    this.routineRound.set(1);
     writePref('routine', routine.id);
     // Comme choisir un mode, le geste vient du panneau : le verrou ne s'y oppose pas
     this.armStep(0);
@@ -287,8 +422,31 @@ export class SessionService {
       n: index + 1,
       total: routine.steps.length,
       name: this.presetName(step),
-      m: Math.round(step.seconds / 60)
+      d: this.durationLabel(step.seconds)
     });
+  }
+
+  /**
+   * « 20 secondes », « 15 minutes » : chaque durée se dit dans son unité, au singulier
+   * quand il le faut. Une étape d'effort se compte en secondes, un petit-déjeuner non.
+   */
+  durationLabel(seconds: number): string {
+    const { value, unit } = durationParts(seconds);
+    const key = unit === 'seconds'
+      ? (value === 1 ? 'unit.second' : 'unit.seconds')
+      : (value === 1 ? 'unit.minute' : 'unit.minutes');
+    return `${value} ${this.i18n.t(key)}`;
+  }
+
+  /** « 1 minute », « 26 minutes » : le cadran se règle en minutes, le pluriel suit le nombre. */
+  minutesLabel(minutes: number): string {
+    return `${minutes} ${this.i18n.t(minutes === 1 ? 'unit.minute' : 'unit.minutes')}`;
+  }
+
+  /** La même durée, en abrégé, pour les pastilles où la place manque : « 20 s », « 15 min ». */
+  shortDuration(seconds: number): string {
+    const { value, unit } = durationParts(seconds);
+    return `${value} ${unit === 'seconds' ? 's' : 'min'}`;
   }
 
   /** Charge une étape sur le cadran, à l'arrêt, et la dit. */
@@ -305,13 +463,14 @@ export class SessionService {
   private leaveRoutine(): void {
     this.activeRoutine.set(null);
     this.routineIndex.set(0);
+    this.routineRound.set(1);
     this.routineDone.set(false);
     writePref('routine', '');
   }
 
   /** Règle le temps affiché (cadran, curseur, clavier) ; arrondi et borné à 0-60 minutes. */
   setMinutes(minutes: number): void {
-    if (this.locked()) return;
+    if (this.settingLocked()) return;
     const clamped = Math.max(0, Math.min(MAX_MINUTES, Math.round(minutes)));
     const seconds = clamped * 60;
     const current = Math.ceil(this.displaySeconds() / 60);
@@ -343,19 +502,19 @@ export class SessionService {
    * dont le lecteur d'écran lit déjà `aria-valuetext`.
    */
   stepMinutes(delta: number, speak = false): void {
-    if (this.locked()) return;
+    if (this.settingLocked()) return;
     // Un décompte tombe rarement sur une minute ronde : on part de l'entier situé du bon côté
     const from = delta < 0 ? Math.ceil(this.displayMinutes()) : Math.floor(this.displayMinutes());
     const minutes = Math.max(MIN_MINUTES, Math.min(MAX_MINUTES, from + delta));
     this.setMinutes(minutes);
     if (speak) {
-      this.announce(`${minutes} ${this.i18n.t('unit.minutes')}`);
+      this.announce(this.minutesLabel(minutes));
     }
   }
 
   /** Vrai si un pas dans ce sens changerait encore la durée (boutons − / + désactivés aux bornes). */
   canStep(delta: number): boolean {
-    if (this.locked()) return false;
+    if (this.settingLocked()) return false;
     const minutes = this.displayMinutes();
     return delta < 0 ? minutes > MIN_MINUTES : minutes < MAX_MINUTES;
   }
@@ -377,6 +536,8 @@ export class SessionService {
     this.activeRoutine.set(routine);
     const index = Math.min(this.routineIndex(), routine.steps.length - 1);
     this.routineIndex.set(index);
+    // Les tours ont pu être réduits pendant l'édition : on ne reste pas au tour 8 sur 3
+    this.routineRound.set(Math.min(this.routineRound(), routineRounds(routine)));
     if (!this.session()) {
       this.durationSeconds.set(routine.steps[index].seconds);
     }
@@ -488,6 +649,21 @@ export class SessionService {
     if (completed && s.kind === 'longBreak') this.focusRounds.set(0);
   }
 
+  /**
+   * Ce qui suit une étape dans une routine : l'étape suivante de la liste, ou la première
+   * du tour d'après. Rien quand le dernier tour vient de se terminer.
+   */
+  private stepAfter(
+    routine: Routine,
+    index: number,
+    round: number
+  ): { step: RoutineStep; index: number; round: number } | undefined {
+    const next = index + 1;
+    if (next < routine.steps.length) return { step: routine.steps[next], index: next, round };
+    if (round >= routineRounds(routine)) return undefined;
+    return { step: routine.steps[0], index: 0, round: round + 1 };
+  }
+
   /** Mode suivant dans le cycle travail → pause (longue toutes les N sessions) → travail. */
   private nextInChain(kind: PresetKind, roundsAfter: number): Preset | undefined {
     if (kind === 'focus') {
@@ -497,20 +673,51 @@ export class SessionService {
     return this.presetService.byId(this.lastFocusPresetId) ?? this.presetService.firstOfKind('focus');
   }
 
-  /** Son de palier quand le décompte passe sous 45, 30 ou 15 minutes restantes. */
+  /** Alerte de palier quand le décompte passe sous l'un des paliers de la session. */
   private checkMilestones(previous: number, current: number): void {
     // Uniquement un décompte normal : pas un réglage au doigt, au curseur ni un reset
     if (!this.isRunning() || this.dragging() || this.manualChange) return;
-    for (const m of MILESTONES) {
-      const at = m * 60;
+    for (const { minutes, tone } of this.milestones()) {
+      const at = minutes * 60;
       if (previous > at && current <= at) {
         // Palier franchi depuis longtemps (retour d'arrière-plan) : déjà notifié
         if (at - current <= LATE_ALERT_SECONDS) {
-          this.sound.milestone(m);
-          this.haptics.play(`milestone${m}`);
+          this.sound.milestone(tone);
+          this.haptics.play(`milestone${tone}`);
           this.showCue('milestone');
-          this.announce(this.i18n.t('notif.milestoneTitle', { m }));
+          this.announce(this.milestoneText(minutes));
         }
+        return;
+      }
+    }
+  }
+
+  /**
+   * Dernières secondes d'une étape courte : un tic, une impulsion et un éclat par seconde,
+   * et la suite annoncée un peu avant.
+   *
+   * Un effort de vingt secondes ne reçoit aucun palier — ils se calculent en minutes, et
+   * le premier tomberait après le carillon. Ce décompte est ce qui permet de finir son
+   * effort sans regarder l'écran, et de savoir ce qui vient sans l'avoir lu.
+   */
+  private checkCountdown(previous: number, current: number): void {
+    if (!this.shortStep() || !this.isRunning() || this.dragging() || this.manualChange) return;
+
+    // La suite d'abord : elle demande une phrase, qui doit être finie avant les tics
+    const routine = this.activeRoutine();
+    if (routine && previous > NEXT_ANNOUNCE_SECONDS && current <= NEXT_ANNOUNCE_SECONDS) {
+      const next = this.stepAfter(routine, this.routineIndex(), this.routineRound())?.step;
+      if (next) this.say(this.i18n.t('speech.next', { name: this.presetName(next) }));
+      return;
+    }
+
+    for (let at = COUNTDOWN_FROM; at >= 1; at--) {
+      if (previous > at && current <= at) {
+        this.sound.tick();
+        this.haptics.play('tick');
+        this.showCue('milestone');
+        // La voix ne dit qu'un chiffre : à une seconde d'intervalle, une phrase serait coupée
+        if (this.prefs.speech() !== 'off') this.say(String(at));
         return;
       }
     }
@@ -549,22 +756,29 @@ export class SessionService {
     this.endSession(true, lateBy);
 
     // Une routine s'enchaîne d'elle-même : c'est sa définition, pas l'option « enchaîner »
+    const ahead = routine ? this.stepAfter(routine, this.routineIndex(), this.routineRound()) : undefined;
     const next = routine
-      ? routine.steps[this.routineIndex() + 1]
+      ? ahead?.step
       : this.prefs.autoChain()
         ? this.nextInChain(kind, this.focusRounds())
         : undefined;
     if (next && next.seconds - lateBy > 0) {
-      if (routine) {
-        this.routineIndex.update(i => i + 1);
-      } else {
+      // Un tour qui recommence se dit : sans cela, la bande repart à zéro sans raison visible
+      const newRound = !!ahead && ahead.round !== this.routineRound();
+      if (routine && ahead) {
+        this.routineIndex.set(ahead.index);
+        this.routineRound.set(ahead.round);
+      } else if (!routine) {
         this.setSelectedPreset(next);
       }
       this.durationSeconds.set(next.seconds);
       this.startSession(next, next.seconds - lateBy, lateBy);
-      this.announce(this.i18n.t('state.running') + ', ' + this.presetName(next));
+      const name = newRound
+        ? `${this.cycleLabel()}, ${this.presetName(next)}`
+        : this.presetName(next);
+      this.announce(this.i18n.t('state.running') + ', ' + name);
       if (fresh) {
-        this.sayEnd(this.i18n.t('notif.nextBody', { name: this.presetName(next) }));
+        this.sayEnd(this.i18n.t('notif.nextBody', { name }));
       }
       return;
     }
@@ -589,23 +803,21 @@ export class SessionService {
     const kind = this.session()?.kind ?? this.selectedPreset().kind;
     const alerts: Alert[] = [];
 
-    if (!this.inExtra()) {
-      for (const m of MILESTONES) {
-        alerts.push({
-          id: 100 + m,
-          at: endAt - m * 60_000,
-          title: t('notif.milestoneTitle', { m }),
-          body: t('notif.milestoneBody'),
-          sound: `milestone${m}`
-        });
-      }
+    for (const { minutes, tone } of this.milestones()) {
+      alerts.push({
+        id: 100 + minutes,
+        at: endAt - minutes * 60_000,
+        title: this.milestoneText(minutes),
+        body: t('notif.milestoneBody'),
+        sound: `milestone${tone}`
+      });
     }
 
     const routine = this.activeRoutine();
     const willExtend = this.prefs.autoExtra() && !this.inExtra() && kind === 'focus' && !routine;
     const roundsAfter = kind === 'focus' ? this.focusRounds() + 1 : this.focusRounds();
     const next = routine
-      ? routine.steps[this.routineIndex() + 1]
+      ? this.stepAfter(routine, this.routineIndex(), this.routineRound())?.step
       : this.prefs.autoChain()
         ? this.nextInChain(kind, roundsAfter)
         : undefined;
@@ -637,12 +849,16 @@ export class SessionService {
     this.notifications.schedule(alerts, this.prefs.sound());
   }
 
-  /** Transmet au widget l'état affiché (mode, fin du décompte, objectif du jour). */
+  /**
+   * Transmet l'état affiché (mode, fin du décompte, objectif du jour) aux deux surfaces qui
+   * le montrent hors de l'app : le widget de l'écran d'accueil, et le décompte permanent de
+   * l'écran verrouillé. Même état, deux endroits — d'où un seul objet, construit une fois.
+   */
   private syncWidget(): void {
     const endAt = this.timer.endTime;
     const state = endAt !== null ? 'running' : this.isPaused() ? 'paused' : 'idle';
     const t = (key: I18nKey) => this.i18n.t(key);
-    this.widget.update({
+    const snapshot: WidgetState = {
       dayStart: this.history.dayStart(),
       focusMinutes: this.history.today().focusMinutes,
       goalMinutes: this.history.dailyGoal(),
@@ -651,17 +867,23 @@ export class SessionService {
         name: this.modeName(),
         color: this.session()?.color ?? this.selectedPreset().color,
         endAt: endAt ?? undefined,
-        remainingSeconds: state === 'paused' ? Math.round(this.timeLeft()) : undefined
+        remainingSeconds: state === 'paused' ? Math.round(this.timeLeft()) : undefined,
+        dialUnit: this.dialUnit(),
+        dialSeconds: Math.round(this.displaySeconds())
       },
       labels: {
         today: t('stats.focus'),
         goalReached: t('stats.goalReached'),
         paused: t('state.paused'),
         ready: this.stateLabel(),
-        finished: t('state.finished')
+        finished: t('state.finished'),
+        secShort: t('unit.secShort')
       },
-      rtl: this.i18n.dir() === 'rtl'
-    });
+      rtl: this.i18n.dir() === 'rtl',
+      dark: this.prefs.darkMode()
+    };
+    this.widget.update(snapshot);
+    this.live.update(snapshot);
   }
 
   /**
@@ -695,13 +917,19 @@ export class SessionService {
     const at = Math.ceil(current / 60) * 60;
     const minutes = at / 60;
     if (minutes < 1 || previous <= at) return;
-    if (mode === 'milestones' && !(MILESTONES as readonly number[]).includes(minutes)) return;
+    if (mode === 'milestones' && !this.milestones().some(m => m.minutes === minutes)) return;
 
-    this.say(
-      minutes === 1
-        ? this.i18n.t('speech.oneMinute')
-        : this.i18n.t('notif.milestoneTitle', { m: minutes })
-    );
+    this.say(this.milestoneText(minutes));
+  }
+
+  /**
+   * « Plus qu'une minute » plutôt que « Plus que 1 minutes » : le dernier palier d'une
+   * session courte tombe à une minute de la fin, c'est le cas le plus fréquent.
+   */
+  private milestoneText(minutes: number): string {
+    return minutes === 1
+      ? this.i18n.t('speech.oneMinute')
+      : this.i18n.t('notif.milestoneTitle', { m: minutes });
   }
 
   /** « Temps écoulé », suivi le cas échéant de ce qui prend la suite. */

@@ -16,15 +16,17 @@ pour le natif, [Build mobile](MOBILE.md).
 - [3. Modèle de données et persistance](#3-modèle-de-données-et-persistance)
 - [4. Services du domaine](#4-services-du-domaine)
 - [5. Rendu du cadran](#5-rendu-du-cadran)
-- [6. Sons](#6-sons)
-- [7. Intégration native](#7-intégration-native)
-- [8. Internationalisation](#8-internationalisation)
-- [9. Thème et styles](#9-thème-et-styles)
-- [10. Accessibilité technique](#10-accessibilité-technique)
-- [11. Build, exécution et intégration continue](#11-build-exécution-et-intégration-continue)
-- [12. Qualité et tests](#12-qualité-et-tests)
-- [13. Sécurité](#13-sécurité)
-- [14. Contraintes, limites et évolutions](#14-contraintes-limites-et-évolutions)
+- [6. Tutoriel d'accueil](#6-tutoriel-daccueil)
+- [7. Paliers](#7-paliers)
+- [8. Sons](#8-sons)
+- [9. Intégration native](#9-intégration-native)
+- [10. Internationalisation](#10-internationalisation)
+- [11. Thème et styles](#11-thème-et-styles)
+- [12. Accessibilité technique](#12-accessibilité-technique)
+- [13. Build, exécution et intégration continue](#13-build-exécution-et-intégration-continue)
+- [14. Qualité et tests](#14-qualité-et-tests)
+- [15. Sécurité](#15-sécurité)
+- [16. Contraintes, limites et évolutions](#16-contraintes-limites-et-évolutions)
 
 ---
 
@@ -40,7 +42,7 @@ pour le natif, [Build mobile](MOBILE.md).
 | Styles | Tailwind CSS + PostCSS | 4 / 8 | Utilitaires, jetons de thème |
 | Natif | Capacitor | 8 | Pont web ↔ iOS / Android |
 | Widget iOS | Swift, SwiftUI, WidgetKit | iOS 17+ | Widget d'écran d'accueil |
-| Tests unitaires | Karma + Jasmine | 6 / 7 | Tests unitaires |
+| Tests unitaires | Karma + Jasmine | 6 / 7 | Outillage en place, **aucune spécification écrite à ce jour** |
 | Tests d'accessibilité | Playwright + axe-core | 1.63 / 4.13 | Non-régression RGAA / WCAG |
 | Exécution | Node.js | ^24.15.0 (`engines`, `.nvmrc`) | Outillage et scripts |
 
@@ -98,11 +100,13 @@ features/accessibility/  Page de déclaration d'accessibilité et ses textes
 | ---- | ------ | ----- |
 | `Preset` | `id`, `name`, `nameKey?`, `seconds`, `color`, `kind` | `kind` ∈ `focus` \| `break` \| `longBreak` ; `name` vide pour un mode par défaut, dont le libellé vient de `nameKey` (traduit) |
 | `RoutineStep` | `id`, `name`, `nameKey?`, `icon`, `seconds`, `color`, `kind` | Un `Preset` plus un pictogramme : une étape se démarre et s'enregistre exactement comme un mode (`kind` ∈ `focus` \| `break`) |
-| `Routine` | `id`, `name`, `nameKey?`, `icon`, `steps` | Suite ordonnée de 1 à 10 étapes (RG-16) |
+| `Routine` | `id`, `name`, `nameKey?`, `icon`, `steps`, `rounds?`, `workout?`, `reminder?` | Suite ordonnée de 1 à 10 étapes (RG-16), jouée `rounds` fois (1 à 20) ; `workout` fait passer la page en mode sport |
+| `RoutineReminder` | `hour`, `minute`, `days` | `days` en ISO 8601 (1 = lundi … 7 = dimanche), jamais vide (RG-20) |
 | `Session` | `name`, `color`, `kind`, `plannedSeconds`, `activeSeconds`, `startedAt`, `endedAt`, `completed` | Nom et couleur figés à l'enregistrement (RG-9) |
 | `ActiveSession` | `name`, `color`, `kind`, `plannedSeconds`, `startedAt`, `activeMs`, `runningSince` | `runningSince` à `null` en pause ; `activeMs` cumule le temps décompté avant la reprise courante |
 | `DayStat` | `date`, `focusMinutes` | Une barre de l'histogramme hebdomadaire |
-| `Alert` | `id`, `at`, `title`, `body`, `sound` | Notification locale à programmer |
+| `Alert` | `id`, `at`, `title`, `body`, `sound` | Notification locale ponctuelle, programmée au passage en arrière-plan |
+| `Reminder` | `routineId`, `title`, `body`, `hour`, `minute`, `day` | Rappel hebdomadaire d'une routine : un par jour coché |
 | `WidgetState` | `dayStart`, `focusMinutes`, `goalMinutes`, `timer{…}`, `labels{…}`, `rtl` | Contrat partagé avec `PomodoroWidget.swift` |
 
 ### 3.2 Constantes du domaine
@@ -111,7 +115,9 @@ features/accessibility/  Page de déclaration d'accessibilité et ses textes
 | --------- | ------ | ----------------- |
 | `MAX_MINUTES` | 60 | RG-1 |
 | `EXTRA_SECONDS` | 300 | RG-2 |
-| `MILESTONES` | `[45, 30, 15]` | RG-4 |
+| `MILESTONES` | `[45, 30, 15]` — les trois timbres, et les paliers d'une longue session | RG-4 |
+| `LONG_SESSION_MINUTES` | 40 | RG-4 |
+| `FINAL_WARNING_MINUTES` | 1 | RG-4 |
 | `LATE_ALERT_SECONDS` | 90 | RG-15 |
 | `LONG_BREAK_EVERY` | 4 | RG-3 |
 | `MAX_SESSIONS` | 500 | RG-7 |
@@ -120,8 +126,14 @@ features/accessibility/  Page de déclaration d'accessibilité et ses textes
 | `PRESET_COLORS` | 10 teintes de l'anneau | EF-MOD-3 |
 | `DEFAULT_PRESETS` | Pomodoro 25, Pause 5, Pause longue 15, Focus 15 | EF-MOD-1 |
 | `STEP_ICONS` | 32 pictogrammes (quotidien, école, travail) | EF-ROU-2 |
+| `TUTORIAL_SLIDES` | 5 vues (pictogramme, titre, texte, couleur) | EF-TUT-1 |
 | `MAX_STEPS` | 10 | RG-16 |
-| `DEFAULT_ROUTINES` | Routine du matin (4 étapes), Devoirs (4 étapes) | EF-ROU-3 |
+| `STEP_DURATIONS` | 5 → 55 s par pas de 5, puis 1 → 60 min par pas de 1 | EF-ROU-16 |
+| `MAX_ROUNDS` | 20 | EF-ROU-17 |
+| `SECONDS_DIAL_BELOW` | 60 | EF-ROU-20 |
+| `COUNTDOWN_FROM` | 3 | EF-ROU-21 |
+| `NEXT_ANNOUNCE_SECONDS` | 5 | EF-ROU-22 |
+| `DEFAULT_ROUTINES` | Routine du matin (4 étapes), Tabata (2 étapes × 8 tours), Devoirs (4 étapes) | EF-ROU-3 |
 
 ### 3.3 Persistance
 
@@ -142,6 +154,7 @@ la session (RG-14).
 | `keep-awake` | Écran allumé | `'on'` \| `'off'` (défaut : on) |
 | `dial-lock` | Verrou du cadran | `'on'` \| `'off'` (défaut : off) |
 | `speech` | Annonce vocale | `'off'` \| `'milestones'` \| `'minutes'` (défaut : off) |
+| `tutorial-seen` | Tutoriel d'accueil déjà vu | `'on'` \| `'off'` (défaut : off — il se montre au premier lancement) |
 | `lang` | Langue | code de langue ou `'auto'` |
 | `preset` | Mode sélectionné | identifiant |
 | `presets` | Modes | JSON `Preset[]` |
@@ -155,7 +168,9 @@ relus sont filtrés (identifiant chaîne, durée positive, couleur chaîne) et, 
 subsiste, les modes par défaut sont restaurés. Un JSON illisible retombe sur la valeur par défaut.
 L'objectif relu est borné et arrondi. Les routines relues sont filtrées de la même façon, étape
 par étape ; une liste vide est une liste vide (l'utilisateur a supprimé ses routines), alors
-qu'une clé absente rend les routines par défaut.
+qu'une clé absente rend les routines par défaut. Un rappel illisible (heure hors bornes, jours
+inconnus, champ absent d'une version précédente) est écarté sans emporter la routine, qui se
+lance très bien à la main.
 
 ---
 
@@ -225,11 +240,116 @@ redemande le maintien d'écran.
 - **Gestes** : événements *pointer* (`pointerdown` / `pointermove` / `pointerup` /
   `pointercancel`), un seul jeu de gestionnaires pour la souris, le tactile et le stylet.
 - **Clavier** : ← / → (±1 min), Page↑ / Page↓ (±5 min), Début / Fin (0 / 60 min).
-- Le SVG est `aria-hidden` ; c'est son conteneur qui porte la sémantique (voir §10).
+- Le SVG est `aria-hidden` ; c'est son conteneur qui porte la sémantique (voir §12).
+
+### 5.1 Graduation en secondes
+
+Le cadran projette une valeur de 0 à 60 sur un cercle. Rien n'y oblige à ce que cette valeur
+soit des minutes : quand la durée réglée descend sous `SECONDS_DIAL_BELOW`, `SessionService`
+alimente la même géométrie en **secondes**. Les douze segments valent alors 5 s, et les chiffres
+de la face — 0, 5, 10… — restent justes sans changer, puisqu'ils valent pour les deux unités.
+
+Sans cela, un effort de 20 s couvre deux degrés de disque : l'application perd exactement ce
+qu'elle promet, voir le temps. Avec, le disque part au tiers du cadran et se vide sous les yeux.
+
+Deux garde-fous :
+
+- l'unité suit la **durée réglée** et non le temps restant, sinon un Pomodoro basculerait en
+  secondes dans sa dernière minute (RG-27) ;
+- le **réglage** est neutralisé tant que la graduation est en secondes : glissement, flèches et
+  boutons − / + travaillent en minutes et donneraient une durée sans rapport avec l'affichage
+  (RG-26). Démarrer et mettre en pause restent possibles — c'est le verrou, lui, qui les retire,
+  et l'attribut porté est `aria-readonly`, non `aria-disabled`.
+
+Une pastille « sec » sous le bouton central dit l'unité : sans elle, un cadran réglé sur 20
+secondes se lit 20 minutes.
+
+### 5.2 Mode sport
+
+Une routine marquée `workout` pose la classe `sport` sur la scène, et y publie la couleur de
+l'étape en cours (`--sport-c`). Porté par la routine plutôt que par un réglage global : une
+séance s'arme et se quitte, un réglage se rallume et s'oublie.
+
+Le fond de la scène est alors **teinté** de cette couleur (18 % en haut, 30 % en bas) au lieu
+d'être remplacé : le clair reste clair et le sombre reste sombre, si bien que tout ce qui s'y
+écrit garde le contraste qu'il avait. Une couleur pleine aurait obligé à revérifier chaque
+texte de l'application dans dix teintes.
+
+Une exception mesurée : le gris secondaire tombait à **2,82:1** sur le fond teinté (pire cas
+sur les dix couleurs de la palette, thème clair, bas du dégradé). `.stage.sport` redéfinit donc
+`--muted` sur `--muted-strong`, ce qui remonte le pire cas à 5,0:1 et couvre d'un coup tout ce
+qui s'écrit sur la scène — l'état sous les boutons, le compteur de tours, le titre de la routine.
+
+Le chrono et le nom de l'étape s'agrandissent par `:host-context(.sport)` : la classe vit sur
+la page, hors du composant, et un sélecteur descendant ordinaire ne correspondrait pas sous
+l'encapsulation Angular.
 
 ---
 
-## 6. Sons
+## 6. Tutoriel d'accueil
+
+`features/timer/tutorial/` : cinq vues plein écran montrées une fois, à la première ouverture,
+pilotées par la préférence `tutorial-seen`. La page du minuteur les affiche tant qu'elle est fausse ; *Revoir
+le tutoriel* la remet à faux et ferme le panneau, ce qui rouvre le tutoriel.
+
+Les contraintes qui ont dessiné le composant :
+
+- **Aucune avance automatique** (WCAG 2.2.2) : rien ne bouge sans un geste. Un carrousel qui
+  défile seul dépossède de son rythme qui lit lentement.
+- **Trois entrées équivalentes** : glissement horizontal, boutons (Précédent / Suivant, points),
+  flèches du clavier. Le glissement n'est jamais le seul moyen (WCAG 2.5.1).
+- **Le focus part sur *Suivant* et y reste** d'une vue à l'autre : on traverse le tutoriel en
+  répétant la même touche. Une région `aria-live` dit « Étape 2 sur 5 : Régler la durée » —
+  le rang et le titre seulement, le texte se lisant sur place.
+- **Les quatre vues hors écran sont `inert` et `aria-hidden`** : elles restent dans le document
+  pour le glissement, mais ni la tabulation ni le lecteur d'écran n'y entrent.
+- **Le reste de la page est `inert`** tant que le tutoriel est là, comme pour le panneau de
+  réglages : sans cela la tabulation sortirait d'une modale qui se déclare `aria-modal`.
+- **Les points font 44 px de cible** pour un point de 10 px visible (WCAG 2.5.8).
+- **Plein écran plutôt qu'une carte** : au premier lancement, rien derrière ne mérite d'être
+  regardé, et la surface entière laisse la place à un pictogramme assez grand pour porter
+  l'idée sans le texte. La colonne de lecture reste à 420 px, centrée, sur un grand écran.
+  Les tailles suivent la hauteur (`clamp(…vh…)`) et la vue défile au lieu d'être rognée quand
+  le téléphone est couché (`align-items: safe center`).
+- `prefers-reduced-motion` supprime le glissement : les vues se remplacent.
+- En arabe, `flex` inverse déjà l'ordre des vues ; le décalage est inversé par
+  `:host-context([dir='rtl'])` — et non `[dir='rtl'] .track`, que l'encapsulation Angular
+  empêcherait de correspondre, l'attribut vivant sur `<html>`.
+
+## 7. Paliers
+
+`core/helpers/milestones.ts` calcule, à partir de la durée d'une session, la liste des paliers
+— minutes restantes et timbre emprunté.
+
+Des paliers fixes à 45 / 30 / 15 ne préviennent que les longues sessions : un Pomodoro de 25 min
+ne reçoit que celui des 15 minutes, et une étape de routine de 10 min aucun. Au-delà de
+`LONG_SESSION_MINUTES`, les trois paliers connus sont donc conservés tels quels ; en dessous, ils
+se déduisent de la durée : **la moitié, le dernier quart, puis une minute avant la fin**.
+
+| Durée | Paliers (minutes restantes) |
+| ----- | --------------------------- |
+| 60 min | 45, 30, 15 |
+| 25 min | 13, 6, 1 |
+| 10 min | 5, 3, 1 |
+| 2 min | 1 |
+| 1 min | aucun |
+| 20 s | aucun |
+
+Une étape d'entraînement de quelques secondes ne reçoit donc aucun palier : le premier tomberait
+après le carillon. C'est voulu — un décompte « 3, 2, 1 » à la seconde est un autre signal, qui
+reste à écrire.
+
+Le timbre (son, motif de vibration, canal de notification) vient du **rang** et jamais du nombre
+de minutes : le dernier palier porte toujours le plus insistant. Un palier arrondi au même nombre
+de minutes qu'un autre est fusionné, et aucun ne tombe sur la durée totale elle-même.
+
+`SessionService` expose la liste sous forme de `computed`, calculée sur la durée annoncée de la
+session — un réglage au doigt en cours de route ne déplace donc pas les paliers déjà franchis —,
+et vide pendant la prolongation « +5 min », qui est un rabiot et non une session à jalonner.
+
+---
+
+## 8. Sons
 
 `core/helpers/sound-patterns.ts` définit les quatre motifs (`milestone45`, `milestone30`,
 `milestone15`, `end`) sous forme de notes — fréquence, décalage, durée, gain, forme d'onde — avec
@@ -244,16 +364,69 @@ Ce fichier unique sert **deux consommateurs** :
 C'est la raison pour laquelle il n'importe rien : il doit rester exécutable hors bundle. Les sons
 de l'application et ceux des notifications sont ainsi identiques par construction.
 
+### 8.1 Mise à niveau
+
+Les gains écrits dans les motifs sont relatifs : ils règlent l'équilibre entre les notes d'un même
+motif, pas son volume. Celui-ci vient de `level(pattern)`, qui **mesure la crête du signal rendu**
+et la porte à `PEAK_TARGET` (0,89, soit −1 dBFS). Mesurer plutôt que calculer est nécessaire :
+les notes se chevauchent et s'additionnent, si bien qu'un gain posé à la main laisse le motif soit
+écrêté, soit très en dessous. Le facteur sert des deux côtés — gain maître en Web Audio, échelle
+des échantillons dans le WAV — et il est mémoïsé, le calcul valant un rendu complet.
+
+Deux conséquences voulues :
+
+- **tous les motifs sortent à la même crête**, alors qu'ils s'étalaient auparavant sur 17 dB
+  (le carillon de fin couvrait les paliers, et le palier des 15 min était le plus discret des
+  quatre — le contraire de son rôle) ;
+- **un son d'alerte doit sortir fort**, parce que l'appareil ne fait que réduire ce qu'on lui
+  donne. Un fichier rendu à mi-échelle arrive irrémédiablement discret, notamment sur Android
+  où le volume des notifications est un réglage à part.
+
+L'enveloppe décroît vers un niveau **relatif** à la crête de la note (−48 dB au bout de `dur`).
+Un plancher absolu plongeait d'autant plus vite que la note partait bas : une note douce n'était
+qu'un claquement, et ce qui ne résonne pas ne s'entend pas.
+
+Aucun limiteur ne ferme la chaîne Web Audio. La mise à niveau est mesurée sur un rendu où les
+oscillateurs partent en phase, ce que Web Audio ne garantit pas : la crête réelle y monte jusqu'à
+−0,5 dB au lieu de −1, ce que la marge de `PEAK_TARGET` absorbe. Un `DynamicsCompressorNode`,
+mesuré à l'occasion, coûtait 3,9 dB au tic — trop bref pour échapper à son attaque — pour ne rien
+protéger.
+
 ---
 
-## 7. Intégration native
+## 9. Intégration native
 
-### 7.1 Notifications locales
+### 9.1 Notifications locales
 
 | Plateforme | Mise en œuvre |
 | ---------- | ------------- |
 | iOS | L'application écrit elle-même les WAV dans `Library/Sounds` au lancement, via `@capacitor/filesystem` |
 | Android | `make sounds` copie les WAV dans `android/app/src/main/res/raw` ; l'application crée un canal de notification par son |
+
+⚠️ **Un canal Android est immuable.** Son son est fixé à sa création : le recréer ne le change
+pas. Un canal né d'un build fait **avant** `make sounds` pointe vers une ressource `raw`
+absente et reste muet pour toujours sur cette installation — la notification s'affiche, sans
+un bruit. D'où `CHANNEL_VERSION` dans `notification.service.ts` : les identifiants portent
+`_v<n>`, et l'incrémenter crée des canaux neufs en supprimant les précédents (`deleteChannel`),
+pour ne pas laisser deux fois les mêmes intitulés dans les réglages du téléphone.
+
+Ce qui est figé mérite d'être précis, sous peine de bumper pour rien : le canal retient une
+**URI**, `android.resource://<package>/raw/<nom>` (voir `SoundResolver` côté plugin), un renvoi
+par nom résolu à la lecture.
+
+| Ce qui change | Bump de `CHANNEL_VERSION` ? |
+| ------------- | --------------------------- |
+| Le **contenu** d'un WAV (niveau, timbre, motif) | Non — réinstaller l'APK suffit, l'URI désigne toujours la même ressource |
+| Le **nom** d'un fichier, ou le son associé à un canal | Oui |
+| L'**importance** ou la vibration d'un canal | Oui |
+| Un canal créé alors que la ressource `raw` manquait | Oui — il est muet à vie |
+
+**Deux flux audio, deux volumes.** Le canal est créé avec `USAGE_NOTIFICATION` et
+`CONTENT_TYPE_SONIFICATION` : les notifications suivent donc le volume **notifications** d'Android,
+tandis que les sons joués par l'application au premier plan passent par Web Audio, donc par le
+volume **multimédia**. Les deux curseurs sont indépendants, et l'application ne choisit ni l'un
+ni l'autre. C'est la première chose à écarter devant un rapport de son trop faible — la seconde
+étant le niveau des motifs eux-mêmes (§ 8.1).
 
 Les alertes (paliers, fin, fin de prolongation, fin de la session enchaînée) sont programmées au
 passage en arrière-plan et annulées au retour. Pendant une routine, c'est l'étape suivante qui
@@ -261,27 +434,133 @@ nomme la notification de fin (« Place à : Petit-déjeuner »), et aucune prolo
 programmée (RG-17). Sur Android 12+, les alarmes exactes peuvent
 requérir `SCHEDULE_EXACT_ALARM` dans `AndroidManifest.xml`. Aucun effet dans le navigateur.
 
-### 7.2 Widget iOS
+**Trois durées de vie cohabitent**, et la distinction est vitale :
+
+| | Alertes de session | Rappels de routine | Notification de test |
+| --- | --- | --- | --- |
+| Ids | < `REMINDER_ID_BASE` (1000) | ≥ 1000 | `TEST_ID` (2000) |
+| Programmation | au passage en arrière-plan | à chaque changement de routine, de langue ou du réglage *Son* | à la demande, depuis les réglages |
+| Annulation | **toutes**, à chaque retour au premier plan | jamais, sauf reprogrammation en bloc | jamais : ni le retour au premier plan ni la réécriture des rappels ne l'atteignent (RG-30) |
+| Forme | `schedule.at`, ponctuelle | `schedule.on` (façon cron : jour, heure), hebdomadaire | `schedule.at`, à `TEST_DELAY_SECONDS` (5 s) |
+
+`cancelPending()` filtre donc sur cette borne : sans ce filtre, le premier retour au premier plan
+effacerait tous les rappels (RG-22). Les jours sont convertis d'ISO 8601 vers la numérotation de
+Capacitor, qui compte à partir du dimanche. Android replace les rappels après un redémarrage
+(`LocalNotificationRestoreReceiver`), iOS les garde dans le centre de notifications.
+
+L'appui sur un rappel est reçu par `localNotificationActionPerformed` : `extra.routineId` remonte
+jusqu'à `SessionService`, qui **arme** la routine sans la démarrer (RG-21).
+
+### 9.2 Notification de test et alarmes exactes
+
+Autorisation, canal, son, affichage écran verrouillé : la chaîne ne se vérifie pas autrement
+qu'en la parcourant. `sendTest()` programme donc une notification à cinq secondes — le délai
+est le test lui-même, il laisse le temps de verrouiller l'écran. Le résultat rendu à l'appelant
+(`TestResult`) distingue ce qui s'est passé : `scheduled`, `inexact` (programmée, mais l'appareil
+ne garantit pas l'heure), `denied`, `unsupported` (navigateur : `Capacitor.isNativePlatform()`
+est faux, il n'y a rien à tester) et `failed`. L'onglet *Réglages* affiche cette issue dans une
+région `aria-live="polite"`, à côté du bouton.
+
+`openExactAlarmSettings()` ouvre l'écran système « Alarmes et rappels » via
+`changeExactNotificationSetting()`. Android seulement : avant Android 12 la permission n'existe
+pas et le plugin répond « accordé » sans rien ouvrir, ailleurs l'appel lèverait — d'où
+`unsupported`, qui ne ment pas sur la raison. À savoir : passer d'accordé à refusé depuis cet
+écran fait **redémarrer l'application** et efface les alarmes exactes déjà programmées ; c'est
+le système qui l'impose. Au retour, le test reste à refaire : c'est lui qui juge, pas la
+permission.
+
+### 9.3 Décompte permanent hors de l'app
+
+Le widget attend qu'on aille le voir ; celui-ci se pose sur l'écran verrouillé. Une seule
+méthode côté web — `LiveStatusService.update()` — reçoit **le même état que le widget**, au
+même moment, et chaque plateforme en fait ce qu'elle sait faire.
+
+| | Android | iOS |
+| --- | --- | --- |
+| Forme | Notification permanente (`LiveStatusPlugin.java`, id 3000) | Live Activity (ActivityKit, iOS 16.2+) |
+| Secondes | `setUsesChronometer` + `setChronometerCountDown` (API 24) | `Text(timerInterval:)` |
+| Cadran | absent : une notification n'a pas d'image vivante | `DialFace`, **figé entre deux mises à jour** |
+| Canal / réglage | canal `ongoing_v1`, importance basse, sans son ni vibration | `NSSupportsLiveActivities` dans `Info.plist` |
+
+**Elle informe, elle n'alerte pas** : sans cela, le décompte permanent couvrirait les paliers,
+qui eux doivent s'entendre. D'où un canal muet sur Android et `setOnlyAlertOnce(true)`, qui
+empêche chaque réécriture de rejouer l'arrivée de la notification.
+
+Côté iOS, `PomodoroActivity.swift` appartient aux **deux** cibles — l'app qui demande
+l'activité et l'extension qui la dessine : ActivityKit apparie les deux bouts par le type, et
+deux copies dans deux modules ne s'apparieraient pas. Le cadran, lui, ne se redessine qu'aux
+mises à jour poussées par l'app : une Live Activity ne s'anime pas seule, et la réveiller à la
+minute demanderait un serveur de notifications push. Le chiffre, lui, court tout seul.
+
+### 9.4 Widgets d'écran d'accueil
 
 - Extension `PomodoroWidget` (SwiftUI, WidgetKit, iOS 17+).
 - Transport : plugin Capacitor **local** `WidgetBridge` (`ios/App/App/WidgetBridgePlugin.swift`),
   enregistré par `MainViewController`, qui écrit l'état JSON dans l'App Group
   `group.com.maximejolivet.pomodorotdah`.
 - Le widget décompte seul entre deux mises à jour ; l'application ne pousse un état qu'aux
-  changements (démarrage, pause, fin, arrière-plan, objectif, langue) et seulement si le JSON diffère.
+  changements (démarrage, pause, fin, arrière-plan, objectif, langue, thème, durée réglée)
+  et seulement si le JSON diffère.
 - Le contrat de données est le type `WidgetState` côté TypeScript et `WidgetState` côté Swift :
-  **toute évolution doit être faite des deux côtés**.
+  **toute évolution doit être faite des deux côtés**. Côté Swift, les champs ajoutés après coup
+  (`dialUnit`, `dialSeconds`, `secShort`, `dark`) sont optionnels : un état écrit par une version
+  plus ancienne se décode encore.
 - Sur appareil, l'équipe de signature doit être choisie pour les cibles **App** et
   **PomodoroWidget** afin que Xcode crée l'App Group.
 
-### 7.3 Identité de l'application
+**Le widget montre le cadran, pas un résumé du cadran.** L'énumération `Dial` de
+`PomodoroWidget.swift` porte les constantes de `dial-geometry.ts` — repère 420 × 420, `CX`/`CY`,
+rayons, douze couleurs de segment, sens anti-horaire depuis 0 — et un `Canvas` les dessine à
+l'échelle du widget : anneau, voile du mode en `multiply` sur l'anneau, plateau central, douze
+séparateurs, trait de bord, languette, bouton nacré, et la pastille d'unité quand la graduation
+compte des secondes. Les jetons de `src/theme/` sont recopiés dans `Palette` (clair et sombre) :
+le widget suit le **thème choisi dans l'app** (`dark`), pas celui du système.
+
+| Famille | Composition |
+| --- | --- |
+| `systemSmall` | Le cadran, et sous lui la pastille de lecture : point de couleur, temps, nom du mode |
+| `systemMedium` | Le cadran à gauche ; à droite le mode, le temps en grand dans la couleur du mode, et l'objectif du jour |
+
+**Android** (`android/app/src/main/java/.../`, en Java : le module `app` n'a pas le plugin
+Kotlin, et le widget ne valait pas de toucher au Gradle) tient le même dessin avec d'autres
+contraintes. Un widget ne sait pas exécuter de vue à lui : `DialBitmap` peint le cadran dans un
+`Bitmap` — troisième port de la même géométrie — que `RemoteViews` affiche. La largeur du widget
+choisit la disposition (`widget_pomodoro` sous 220 dp, `widget_pomodoro_wide` au-dessus), faute
+de `RemoteViews` multi-tailles avant l'API 31.
+
+| | iOS | Android |
+| --- | --- | --- |
+| Dessin | SwiftUI `Canvas` | `Canvas` sur un `Bitmap` (320 px au plus : il voyage par IPC) |
+| Secondes | `Text(timerInterval:)` | `Chronometer` en mode compte à rebours (API 24) |
+| Graduation | une entrée de timeline par minute | une alarme `AlarmManager` par minute |
+| Transport | App Group + `WidgetCenter` | `SharedPreferences` + `AppWidgetManager` (même processus) |
+
+**Deux horloges, et c'est ce qui rend le widget tenable pour la batterie** : le chronomètre
+égrène les secondes sans que rien ne le réveille, et l'alarme ne redessine le cadran qu'au
+changement de graduation — une minute, ou cinq secondes sur un cadran gradué en secondes.
+Le décompte arrêté, l'alarme est annulée : un cadran figé n'a aucune raison de réveiller le
+téléphone. `updatePeriodMillis` vaut donc **0** : le système ne réveille rien de lui-même.
+
+Sur Android 12+, l'alarme exacte dépend d'« Alarmes et rappels » ; refusée, le widget retombe
+sur une alarme ordinaire et retarde un peu, il ne s'arrête pas. Avant Android 12 — donc sur
+Android 9 — la question ne se pose pas : l'alarme exacte est accordée d'office.
+
+Le disque se vide tout seul : la timeline pose une entrée par **graduation franchie** — une par
+minute, ou une par seconde sur un cadran gradué en secondes — plus la fin du décompte et minuit,
+58 marches au plus. `.contentMarginsDisabled()` rend au cadran la marge que le système réserve.
+Le cadran est `accessibilityHidden` : c'est une image du temps, et la pastille dit la même chose
+en toutes lettres.
+
+### 9.5 Identité de l'application
 
 `appId` : `com.maximejolivet.pomodorotdah` · `appName` : Pomodoro Accessibilité · `webDir` : `www`.
-L'icône iOS est générée depuis `resources/app-icon.svg` par `make icon`.
+Icônes et écrans de lancement des deux plateformes sont générés par `make icons`
+(`scripts/generate-icons.ts`, rendu par Chromium) depuis `resources/app-icon.svg` et
+`resources/app-icon-foreground.svg` — voir [MOBILE.md](MOBILE.md).
 
 ---
 
-## 8. Internationalisation
+## 10. Internationalisation
 
 - Un dictionnaire par langue dans `core/i18n/locales/` : `fr`, `en`, `es`, `de`, `it`, `pt`, `ar`.
 - Les clés sont **typées d'après le français** (`type I18nKey = keyof typeof fr`) : une clé
@@ -296,7 +575,7 @@ L'icône iOS est générée depuis `resources/app-icon.svg` par `make icon`.
 
 ---
 
-## 9. Thème et styles
+## 11. Thème et styles
 
 | Fichier | Contenu |
 | ------- | ------- |
@@ -311,7 +590,7 @@ garantit l'homogénéité des contrastes (ENF-MNT-2).
 
 ---
 
-## 10. Accessibilité technique
+## 12. Accessibilité technique
 
 | Exigence | Mise en œuvre |
 | -------- | ------------- |
@@ -335,15 +614,15 @@ cahier des charges fonctionnel).
 
 ---
 
-## 11. Build, exécution et intégration continue
+## 13. Build, exécution et intégration continue
 
-### 11.1 Commandes
+### 13.1 Commandes
 
 Le `Makefile` est le point d'entrée (`make` seul affiche l'aide) : `install`, `dev`, `build`,
 `watch`, `test`, `sync`, `sounds`, `icon`, `ios`, `android`, `open-ios`, `open-android`, `clean`.
 Les scripts npm correspondants sont `start`, `build`, `watch`, `test`, `test:a11y`.
 
-### 11.2 Build web
+### 13.2 Build web
 
 - Builder `@angular-devkit/build-angular:application`, sortie `dist/pomodoro-tdah`.
 - Production : hachage des noms de fichiers, budgets **500 ko / 1 Mo** pour le bundle initial et
@@ -351,13 +630,13 @@ Les scripts npm correspondants sont `start`, `build`, `watch`, `test`, `test:a11
 - Développement : optimisation désactivée, *source maps*.
 - Les fichiers de `public/` sont copiés tels quels (favicons, icône Apple).
 
-### 11.3 Chaîne mobile
+### 13.3 Chaîne mobile
 
 `make sync` : build → copie de `dist/pomodoro-tdah/browser` dans `www/` → `npx cap sync` →
 `make sounds` (génération des WAV et copie dans `res/raw` si le dossier Android existe).
 `make open-ios` / `make open-android` enchaînent `sync` puis l'ouverture de l'IDE natif.
 
-### 11.4 Intégration continue
+### 13.4 Intégration continue
 
 Workflow GitHub Actions `.github/workflows/a11y.yml`, déclenché sur les poussées vers `main` et
 sur chaque demande de fusion, avec deux jobs sur `ubuntu-latest` :
@@ -368,7 +647,7 @@ sur chaque demande de fusion, avec deux jobs sur `ubuntu-latest` :
 
 La version de Node vient de `.nvmrc` ; le cache npm est activé.
 
-### 11.5 Déploiement
+### 13.5 Déploiement
 
 Le build web est un ensemble de fichiers statiques : n'importe quel hébergement statique convient,
 sans variable d'environnement ni service annexe. Les versions mobiles sont produites depuis Xcode
@@ -377,18 +656,18 @@ maintenue.
 
 ---
 
-## 12. Qualité et tests
+## 14. Qualité et tests
 
 | Niveau | Outil | Portée |
 | ------ | ----- | ------ |
-| Unitaire | Karma + Jasmine (`make test`) | Logique du domaine : géométrie du cadran, helpers de temps, services |
+| Unitaire | Karma + Jasmine (`make test`) | **Rien pour l'instant** : `src/` ne contient aucun `.spec.ts`, et `make test` échoue donc sur `TS18003`. La logique du domaine — géométrie du cadran, helpers de temps, services — n'est couverte que de bout en bout, par la suite d'accessibilité |
 | Accessibilité | Playwright + axe-core (`npm run test:a11y`) | Parcours réels, clavier, focus, contrastes |
 
 Configuration Playwright : dossier `tests/`, projet Chromium en **420 × 900** (cadrage mobile),
 serveur de développement démarré automatiquement sur `http://localhost:4200`, exécution
 parallèle, une reprise en CI, trace à la première reprise, `forbidOnly` en CI.
 
-La suite `tests/a11y.spec.ts` (44 tests) analyse avec les jeux de règles `wcag2a`, `wcag2aa`,
+La suite `tests/a11y.spec.ts` (80 tests) analyse avec les jeux de règles `wcag2a`, `wcag2aa`,
 `wcag21a`, `wcag21aa` et `best-practice`, en **thème clair et en thème sombre**, sur l'accueil,
 sur le panneau de réglages ouvert et sur les éditeurs de mode et de routine. Les comportements
 qui dépendent du temps (annonce vocale, vibration, alerte visuelle, enchaînement des étapes
@@ -401,7 +680,7 @@ sémantique.
 
 ---
 
-## 13. Sécurité
+## 15. Sécurité
 
 - **Surface d'attaque réduite** : aucun serveur, aucune requête sortante, aucune authentification,
   aucune donnée quittant l'appareil.
@@ -415,9 +694,9 @@ sémantique.
 
 ---
 
-## 14. Contraintes, limites et évolutions
+## 16. Contraintes, limites et évolutions
 
-### 14.1 Limites assumées
+### 16.1 Limites assumées
 
 | Limite | Raison |
 | ------ | ------ |
@@ -428,7 +707,7 @@ sémantique.
 | Pas de tests avec lecteur d'écran réel | Vérification automatique et revue de code seulement ; écart publié dans la déclaration |
 | Tests d'accessibilité sur Chromium seul | Un seul moteur en CI |
 
-### 14.2 Points de vigilance
+### 16.2 Points de vigilance
 
 - Toute nouvelle couleur doit passer par les jetons de thème et être vérifiée en clair **et** en sombre.
 - Tout nouveau texte doit exister dans les sept dictionnaires, sous peine d'erreur de compilation.
@@ -436,7 +715,7 @@ sémantique.
   quoi le comportement diffère selon que l'application est au premier plan ou non.
 - Tout nouvel état de session doit être porté par `SessionService`, jamais par un composant de page.
 
-### 14.3 Évolutions envisageables
+### 16.3 Évolutions envisageables
 
 Export et import des données · widget Android · audit manuel complet avec lecteur d'écran et
 agrandissement à 200 % · mesure du contraste des éléments non textuels sur le rendu · extension

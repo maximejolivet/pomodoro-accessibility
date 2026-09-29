@@ -1,4 +1,9 @@
-<main class="stage">
+<main
+  class="stage"
+  [class.sport]="session.sportMode()"
+  [class.table]="session.tableMode()"
+  [style.--sport-c]="session.selectedPreset().color"
+>
   <h1 class="sr-only">Pomodoro Accessibilité</h1>
   <!-- Zone d'annonces vocales pour lecteurs d'écran -->
   <div aria-live="polite" aria-atomic="true" class="sr-only" id="a11y-announcements">{{ session.announcement() }}</div>
@@ -16,7 +21,25 @@
 
 <!-- Derrière la modale, tout devient inerte : sinon la tabulation en sort,
        alors que le panneau se déclare aria-modal -->
-  <div class="stage-content" [attr.inert]="showSheet ? '' : null">
+  <div class="stage-content" [attr.inert]="showSheet || showTutorial() ? '' : null">
+    <!--
+      Sortie du mode table : premier dans l'ordre de tabulation, discrète mais nommée en
+      toutes lettres — un mode sans porte de sortie visible est un piège.
+    -->
+    <button
+      *ngIf="session.tableMode()"
+      type="button"
+      class="table-exit"
+      (click)="leaveTable()"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9 9 4 4m0 0v5m0-5h5" />
+        <path d="m15 9 5-5m0 0v5m0-5h-5" />
+        <path d="m9 15-5 5m0 0v-5m0 5h5" />
+        <path d="m15 15 5 5m0 0v-5m0 5h-5" />
+      </svg>
+      {{ i18n.t('table.exit') }}
+    </button>
     <!-- Reste affiché jusqu'à la prochaine action : une alerte qui passe se rate. -->
     <p class="end-banner" *ngIf="showEndBanner()" [style.--c]="session.selectedPreset().color">
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -37,9 +60,16 @@
       [attr.title]="i18n.t('action.accessibilityInfo')"
     >
       <span class="accessibility-icon" aria-hidden="true">♿</span>
-      <span class="accessibility-label">{{ i18n.t('action.accessibilityShort') }}</span>
+      <!--
+        Le RGAA demande que l'état de conformité soit mentionné à côté du lien, et non
+        seulement dans la déclaration : « partiellement conforme » se lit donc ici.
+      -->
+      <span class="accessibility-label">{{ i18n.t('action.accessibilityMention') }}</span>
     </a>
   </div>
 
   <app-settings-sheet [open]="showSheet" (closed)="onSheetClosed()" />
+
+  <!-- Au premier lancement seulement : cinq vues qui disent ce que fait l'application -->
+  <app-tutorial *ngIf="showTutorial()" (closed)="onTutorialClosed()" />
 </main>

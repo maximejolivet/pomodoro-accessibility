@@ -27,6 +27,7 @@ On voit le temps qui reste au lieu de le lire.
 <img src="docs/screenshot.png" alt="Pomodoro Accessibilité en mode clair" width="300">
 &nbsp;&nbsp;
 <img src="docs/screenshot-dark.png" alt="Pomodoro Accessibilité en mode sombre" width="300">
+<img src="docs/screenshot-widget.png" alt="Le widget sur l'écran d'accueil, en thème clair et sombre" width="620">
 
 </div>
 
@@ -51,10 +52,12 @@ coup d'œil, on sait s'il reste beaucoup ou peu de temps, sans lire ni calculer.
 Ce repère concret aide particulièrement les personnes **TDAH, autistes ou neurodivergentes** :
 
 - 🧭 **Rendre le temps concret** : une durée abstraite devient une surface qui diminue.
-- 🔄 **Faciliter les transitions** : les sons à 45, 30 et 15 min puis le carillon de fin
-  préviennent en douceur qu'un changement d'activité approche.
+- 🔄 **Faciliter les transitions** : trois paliers annoncés avant la fin, calculés sur la durée
+  choisie, puis le carillon : on sait qu'un changement d'activité approche.
 - 🌱 **Favoriser l'autonomie** : on gère soi-même son temps de travail ou de pause, sans
   qu'un adulte ou un collègue ait à le rappeler.
+- ⏰ **Ne pas dépendre d'y penser** : une routine peut se rappeler d'elle-même, à l'heure et
+  les jours choisis — ne pas remarquer qu'il est l'heure est justement la difficulté.
 - 🏠 **Au quotidien** : devoirs, routines du matin, temps d'écran, séances de travail en
   Pomodoro, à la maison comme en classe ou au bureau.
 
@@ -94,8 +97,8 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
 
 - 🎯 **Sessions de concentration** : découper une tâche en blocs Pomodoro avec des pauses, sans
   dépendre du regard d'un collègue ou d'un manager.
-- 🔄 **Enchaîner les tâches** : les paliers à 45, 30 et 15 min aident à conclure et à changer de
-  sujet sans coupure brutale.
+- 🔄 **Enchaîner les tâches** : trois paliers avant la fin, y compris sur une session courte,
+  aident à conclure et à changer de sujet sans coupure brutale.
 - 🤝 **Réunions et entretiens** : garder une durée visible pour tous, qui rassure et cadre l'échange.
 - 🎧 **Bureau ou télétravail** : vibration et notifications discrètes, sons désactivables en
   open space.
@@ -115,18 +118,27 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
 | ➖➕ **Boutons − et +**            | Une minute par appui, sans glisser : pour les mains qui tremblent, un seul doigt ou un contacteur                      |
 | 🔒 **Verrou du cadran**          | Un appui et le cadran ne répond plus : une paume posée ne peut plus changer la durée ni effacer la session            |
 | 🎯 **Modes personnalisables**    | Pomodoro, Pause, Pause longue, Focus TDAH… ou tes propres modes : nom, durée (1-60 min), couleur, travail ou pause     |
+| 👋 **Tutoriel d'accueil**        | Cinq vues au premier lancement : voir le temps, le régler, le lancer, les routines, les alertes             |
 | 🧩 **Routines en pictogrammes**  | Une suite d'étapes qui s'enchaînent — s'habiller, petit-déjeuner, dents, cartable — chacune avec son image et sa durée |
+| 🔁 **Tours et secondes**         | Une étape dure de 5 s à 60 min, une routine se rejoue jusqu'à 20 fois : « effort 20 s, repos 10 s » × 8, c'est un Tabata |
+| 💪 **Cadran en secondes**        | Sous la minute, la graduation passe en secondes — un effort de 20 s se vide sous les yeux au lieu d'être un filet   |
+| 3️⃣ **Décompte des 3 dernières**  | Un tic, une impulsion et un éclat par seconde, et la suite annoncée avant la fin : finir son effort sans regarder   |
+| 🎨 **Mode sport**                | Une routine marquée *entraînement* teinte toute la page de la couleur de l'étape — rouge à l'effort, vert au repos |
+| ⏰ **Rappel de routine**         | Une heure, des jours : la notification arrive à l'heure dite et ouvre la routine, prête à démarrer                      |
+| 🧪 **Test de notification**      | Un bouton programme une notification à cinq secondes : le temps de verrouiller l'écran, et de savoir avant d'en avoir besoin si l'appareil prévient |
 | 🔁 **Enchaînement automatique**  | Travail → pause → travail, avec une pause longue tous les 4 cycles (désactivable)                                      |
 | 📊 **Historique & statistiques** | Temps de focus du jour, sessions terminées, série de jours, graphique des 7 derniers jours                             |
 | 🏁 **Objectif quotidien**        | Un nombre de minutes de focus à viser chaque jour (10-300 min), avec une barre de progression                          |
-| 🔔 **Sons de palier**            | Un son différent à 45, 30 et 15 min restantes, puis un carillon à la fin                                               |
+| 🔔 **Sons de palier**            | Trois paliers avant la fin, calculés sur la durée réglée, chacun son son, puis un carillon                              |
 | 💡 **Alerte visuelle**           | Un éclat coloré aux paliers et à la fin, doux ou franc, pour qui n'entend pas ou a coupé le son                        |
 | 🗣️ **Annonce vocale**            | Le temps restant dit à voix haute, aux paliers ou à chaque minute, pour écouter sans regarder (désactivé par défaut)   |
 | ⏱️ **+5 min automatique**        | À 0, cinq minutes de plus pour terminer ce qui est en cours (désactivable)                                             |
-| 📳 **Vibration codée**           | Un motif différent par palier — 1 impulsion à 45, 2 à 30, 3 brèves à 15, 3 longues à la fin (désactivable)             |
+| 📳 **Vibration codée**           | Un motif différent par palier — 1 impulsion au premier, 2 au deuxième, 3 brèves au dernier, 3 longues à la fin (désactivable) |
 | 📲 **Notifications**             | Alertes même téléphone verrouillé ou app en arrière-plan, avec les mêmes sons que l'app                                |
 | 🔆 **Écran toujours allumé**     | L'écran ne s'éteint pas pendant le décompte (désactivable)                                                             |
-| 🧩 **Widget iPhone**             | Le décompte en cours ou l'objectif du jour, directement sur l'écran d'accueil                                          |
+| 🧩 **Widget iPhone et Android**  | Le cadran lui-même sur l'écran d'accueil : le disque s'y vide minute par minute, avec le temps et l'objectif du jour   |
+| ⏱️ **Décompte sur l'écran verrouillé** | Une notification muette sur Android, une Live Activity sur iPhone : le temps restant sans déverrouiller |
+| 🍽️ **Mode table**                | Le cadran en grand, tout le reste effacé : le téléphone posé debout devient le minuteur de la table ou de la classe |
 | 🌍 **7 langues**                 | Français, anglais, espagnol, allemand, italien, portugais, arabe (lu de droite à gauche)                               |
 | 🌗 **Mode sombre**               | Suit le réglage de l'appareil, puis modifiable dans ⚙︎                                                                  |
 | 🔇 **Son on/off**                | Coupure complète des sons, choix mémorisé                                                                              |
@@ -145,9 +157,12 @@ verrouille : au retour, tout est à jour.
 | ↺                          | Remettre à zéro                                                              |
 | ⚙︎ → **Modes**              | Choisir, créer, modifier ou supprimer un mode                                |
 | ⚙︎ → **Modes** → *Routines* | Lancer une routine, en créer une, réordonner ses étapes                      |
+| ⚙︎ → **Modes** → ✎ → *Tours* | Rejouer la suite d'étapes : huit tours pour un Tabata                       |
+| ⚙︎ → **Modes** → ✎ → *Rappel* | Régler l'heure et les jours où la routine vient se rappeler à toi          |
 | **Toucher** une étape      | Aller directement à cette étape de la routine ; ✕ pour quitter la routine    |
 | ⚙︎ → **Stats**              | Voir son objectif du jour, ses statistiques et l'historique des sessions     |
 | ⚙︎ → **Réglages**           | Mode sombre, sons, vibration, alerte visuelle, annonce vocale, +5 min, enchaînement, écran allumé, objectif, langue |
+| ⚙︎ → **Réglages** → *Revoir le tutoriel* | Rejouer les cinq vues d'accueil                                 |
 
 <p align="center">
   <img src="docs/screenshot-routine.png" alt="Routine du matin en cours, avec la bande de ses quatre étapes" width="260">
@@ -164,10 +179,23 @@ Ils vont du plus discret au plus insistant à mesure que la fin approche, et on 
 
 | Moment               | Son                                                 | Vibration                        |
 | -------------------- | --------------------------------------------------- | -------------------------------- |
-| **45 min** restantes | 1 note douce et ronde                               | 1 impulsion longue               |
-| **30 min**           | 2 notes montantes, un peu plus claires              | 2 impulsions                     |
-| **15 min**           | 3 notes rapides, façon « bip »                      | 3 impulsions brèves              |
+| **1ᵉʳ palier**        | 1 note douce et ronde                               | 1 impulsion longue               |
+| **2ᵉ palier**         | 2 notes montantes, un peu plus claires              | 2 impulsions                     |
+| **Dernier palier**   | 3 notes rapides, façon « bip »                      | 3 impulsions brèves              |
 | **0**                | Un carillon joué 3 fois                             | 3 impulsions longues             |
+
+Les paliers tombent à 45, 30 et 15 min restantes sur une session de plus de 40 min. En dessous,
+ils se calculent sur la durée choisie — la moitié, le dernier quart, puis 1 min avant la fin —
+sinon un Pomodoro de 25 min ne serait prévenu qu'une fois, et une étape de routine de 10 min
+jamais.
+
+Les quatre sortent au même volume, près du maximum : ce qui monte d'un palier au suivant, c'est
+le motif et le timbre, pas le niveau. Un premier palier discret serait un palier manqué.
+
+⚠️ **Sur Android, deux curseurs de volume entrent en jeu** : les sons joués par l'application
+suivent le volume **multimédia**, ceux des notifications (écran verrouillé, app en arrière-plan)
+suivent le volume **notifications**. Si les sons paraissent faibles pendant une session, c'est le
+multimédia qu'il faut monter — le système choisit lui-même le curseur, l'app n'y peut rien.
 
 La vibration suit le même rythme que le son : elle prévient sans rien montrer ni faire
 entendre — en réunion, en cours, en open space — et reste le seul canal d'alerte pour une
@@ -199,14 +227,20 @@ L'application est pensée pour être utilisable par tout le monde :
   remise à zéro. Démarrer / Pause reste actif : une pause involontaire se rattrape, une remise à
   zéro involontaire fait perdre la session.
 
-Une page dédiée détaille tout cela, avec la déclaration d'accessibilité RGAA 4.1 (état de
-conformité, contenus non accessibles, contact et voies de recours) : lien **♿ Accessibilité**
-en bas à droite de l'application.
+Une page dédiée détaille tout cela, avec la déclaration d'accessibilité RGAA 4.1 au plan du
+décret n° 2019-768 (engagement, état de conformité, résultats des tests, contenus non
+accessibles, établissement de la déclaration, contact et voies de recours) : lien
+**♿ Accessibilité** en bas à droite de l'application. L'état annoncé est **partiellement
+conforme**, sans taux de conformité : aucun audit n'a été mené par un tiers, et un pourcentage
+auto-attribué tromperait. La déclaration est publiée volontairement — l'application n'entre pas
+dans le champ de l'article 47 de la loi n° 2005-102.
 
-Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue quarante-quatre
+Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue soixante-douze
 contrôles (axe-core sur toutes les vues, en clair, en sombre et en arabe ; réglage du cadran au
 clavier et aux boutons − / + ; annonce vocale, motifs de vibration et alerte visuelle vérifiés sur
-un décompte simulé ; verrou du cadran ; enchaînement des étapes d'une routine, sa bande et son
+un décompte simulé, paliers d'une session courte comprise ; cadran en secondes, décompte des
+trois dernières et enchaînement des tours ; tutoriel d'accueil au clavier, en arabe et sans
+fuite du focus ; verrou du cadran ; enchaînement des étapes d'une routine, sa bande et son
 éditeur ; taille des cibles ; piège à focus de la modale ; pas de défilement horizontal à 320 px),
 et la CI les relance à chaque push.
 
@@ -222,7 +256,6 @@ et la CI les relance à chaque push.
 ![Capacitor](https://img.shields.io/badge/Capacitor-8-119EFF?logo=capacitor&logoColor=white)
 ![Swift](https://img.shields.io/badge/Swift-widget_iOS-F05138?logo=swift&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&logoColor=white)
-![Karma](https://img.shields.io/badge/Karma-6-56C5A8)
 ![Jasmine](https://img.shields.io/badge/Jasmine-7-8A4182?logo=jasmine&logoColor=white)
 
 ![SwiftUI](https://img.shields.io/badge/SwiftUI-widget-0D96F6?logo=swift&logoColor=white)

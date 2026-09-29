@@ -24,6 +24,20 @@
 
         </activity>
 
+        <!-- Widget d'écran d'accueil : le cadran de l'app, redessiné par le pont et par l'alarme. -->
+        <receiver
+            android:name=".PomodoroWidgetProvider"
+            android:label="@string/widget_label"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.maximejolivet.pomodorotdah.WIDGET_TICK" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/pomodoro_widget_info" />
+        </receiver>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

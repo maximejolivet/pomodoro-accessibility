@@ -1,0 +1,68 @@
+<section
+  #dialog
+  class="tutorial"
+  tabindex="-1"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="tutorial-title"
+  [style.--c]="slides[index()].color"
+  (keydown.arrowRight)="onArrowRight()"
+  (keydown.arrowLeft)="onArrowLeft()"
+>
+  <h2 class="sr-only" id="tutorial-title">{{ i18n.t('tutorial.title') }}</h2>
+
+  <!-- Le rang et le titre à chaque changement de vue ; le texte, lui, se lit sur place -->
+  <p class="sr-only" aria-live="polite" aria-atomic="true">{{ liveLabel() }}</p>
+
+  <!-- La colonne de contenu reste à la largeur du reste de l'app, au milieu d'un écran
+       qui peut être large : un texte de 34 caractères étiré sur 1400 px ne se lit pas -->
+  <div class="tutorial-inner">
+    <button type="button" class="tutorial-skip" (click)="close()">{{ i18n.t('tutorial.skip') }}</button>
+
+    <!--
+      Les cinq vues sont dans le document, décalées d'un bloc à l'autre. Celles qui ne sont
+      pas à l'écran sont `inert` et `aria-hidden` : ni la tabulation ni le lecteur d'écran
+      n'y entrent, alors qu'elles restent là pour le glissement.
+    -->
+    <div class="viewport" (pointerdown)="onSwipeStart($event)" (pointerup)="onSwipeEnd($event)">
+      <div class="track" [style.--i]="index()">
+        <article
+          *ngFor="let slide of slides; let i = index"
+          class="slide"
+          [attr.inert]="i === index() ? null : ''"
+          [attr.aria-hidden]="i === index() ? null : 'true'"
+          [style.--c]="slide.color"
+        >
+          <span class="slide-icon" aria-hidden="true">{{ slide.icon }}</span>
+          <h3 class="slide-title">{{ i18n.t(slide.titleKey) }}</h3>
+          <p class="slide-text">{{ i18n.t(slide.textKey) }}</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="dots" role="group" [attr.aria-label]="i18n.t('tutorial.title')">
+      <button
+        *ngFor="let slide of slides; let i = index"
+        type="button"
+        class="dot"
+        [class.active]="i === index()"
+        [attr.aria-pressed]="i === index()"
+        [attr.aria-label]="i18n.t('tutorial.goTo', { n: i + 1 })"
+        [style.--c]="slide.color"
+        (click)="goTo(i)"
+      ></button>
+    </div>
+
+    <div class="tutorial-actions">
+      <button
+        type="button"
+        class="btn3d btn-text btn-neutral"
+        [attr.aria-disabled]="index() === 0"
+        (click)="previous()"
+      >{{ i18n.t('tutorial.previous') }}</button>
+      <button #nextButton type="button" class="btn3d btn-text" (click)="next()">
+        {{ i18n.t(isLast() ? 'tutorial.done' : 'tutorial.next') }}
+      </button>
+    </div>
+  </div>
+</section>

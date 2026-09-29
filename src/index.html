@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" class="booting">
 <head>
   <meta charset="utf-8">
   <title>Pomodoro Accessibilité</title>
@@ -10,8 +10,63 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/x-icon" href="favicon.ico" sizes="48x48">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!--
+    Voile d'amorçage. L'écran de lancement du système est une image fixe — Android ne sait
+    pas l'animer avant la version 12, et Apple l'interdit — donc c'est ici, dès la première
+    ligne de HTML, que le cadran se met à tourner : sur le même noir que l'image native, sans
+    une couture. Ce style est en ligne parce qu'il doit s'appliquer avant tout téléchargement.
+  -->
+  <style>
+    .booting, .booting body { background: #000; }
+    #boot {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: grid;
+      place-items: center;
+      background: #000;
+      transition: opacity 0.25s ease;
+    }
+    #boot.done { opacity: 0; pointer-events: none; }
+    .boot-ring {
+      transform-origin: 32px 31px;
+      animation: boot-spin 1.8s linear infinite;
+    }
+    @keyframes boot-spin { to { transform: rotate(360deg); } }
+    /* Le cadran se fige pour qui demande moins de mouvement : il reste un logo, pas un moulin. */
+    @media (prefers-reduced-motion: reduce) {
+      .boot-ring { animation: none; }
+      #boot { transition: none; }
+    }
+  </style>
 </head>
 <body>
+  <!-- Décoratif : les lecteurs d'écran n'ont rien à y lire, et l'app le retire une fois prête. -->
+  <div id="boot" aria-hidden="true">
+    <svg viewBox="9.5 8.5 45 45" width="132" height="132" focusable="false">
+      <!-- La face ne tourne pas : c'est l'anneau qui tourne autour d'elle, comme le disque
+           tourne autour du bouton. Elle raccorde aussi le voile à l'image de lancement, qui
+           montre le cadran entier. -->
+      <circle cx="32" cy="31" r="22.5" fill="#fbfbf8"/>
+      <g class="boot-ring">
+        <path fill="#d63f4f" d="M32.00 9.80A21.20 21.20 0 0 0 21.40 12.64L24.79 18.52A14.42 14.42 0 0 1 32.00 16.58Z"/>
+        <path fill="#e5593a" d="M21.40 12.64A21.20 21.20 0 0 0 13.64 20.40L19.52 23.79A14.42 14.42 0 0 1 24.79 18.52Z"/>
+        <path fill="#ef7d2d" d="M13.64 20.40A21.20 21.20 0 0 0 10.80 31.00L17.58 31.00A14.42 14.42 0 0 1 19.52 23.79Z"/>
+        <path fill="#f3a52b" d="M10.80 31.00A21.20 21.20 0 0 0 13.64 41.60L19.52 38.21A14.42 14.42 0 0 1 17.58 31.00Z"/>
+        <path fill="#f0c52f" d="M13.64 41.60A21.20 21.20 0 0 0 21.40 49.36L24.79 43.48A14.42 14.42 0 0 1 19.52 38.21Z"/>
+        <path fill="#c3cd36" d="M21.40 49.36A21.20 21.20 0 0 0 32.00 52.20L32.00 45.42A14.42 14.42 0 0 1 24.79 43.48Z"/>
+        <path fill="#56b27b" d="M32.00 52.20A21.20 21.20 0 0 0 42.60 49.36L39.21 43.48A14.42 14.42 0 0 1 32.00 45.42Z"/>
+        <path fill="#5d9fb6" d="M42.60 49.36A21.20 21.20 0 0 0 50.36 41.60L44.48 38.21A14.42 14.42 0 0 1 39.21 43.48Z"/>
+        <path fill="#5d6db3" d="M50.36 41.60A21.20 21.20 0 0 0 53.20 31.00L46.42 31.00A14.42 14.42 0 0 1 44.48 38.21Z"/>
+        <path fill="#5a55a3" d="M53.20 31.00A21.20 21.20 0 0 0 50.36 20.40L44.48 23.79A14.42 14.42 0 0 1 46.42 31.00Z"/>
+        <path fill="#6c4b9c" d="M50.36 20.40A21.20 21.20 0 0 0 42.60 12.64L39.21 18.52A14.42 14.42 0 0 1 44.48 23.79Z"/>
+        <path fill="#b24f97" d="M42.60 12.64A21.20 21.20 0 0 0 32.00 9.80L32.00 16.58A14.42 14.42 0 0 1 39.21 18.52Z"/>
+      </g>
+      <circle cx="32" cy="31" r="4.38" fill="#1d282d"/>
+      <circle cx="32" cy="31" r="3.67" fill="#b3d4dd"/>
+      <ellipse cx="31" cy="29.7" rx="1.5" ry=".9" fill="#fff" opacity=".55"/>
+    </svg>
+  </div>
   <app-root></app-root>
 </body>
 </html>

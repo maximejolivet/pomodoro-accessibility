@@ -12,13 +12,17 @@
         type="button"
         class="btn3d routine"
         [class.active]="activeRoutineId() === r.id"
-        [attr.aria-label]="i18n.t('routine.start', { name: routineName(r) })"
+        [attr.aria-label]="startLabel(r)"
         (click)="start(r)"
       >
         <span class="routine-badge" aria-hidden="true">{{ r.icon }}</span>
         <span class="routine-text">
           <span class="routine-name">{{ routineName(r) }}</span>
-          <span class="routine-summary">{{ summary(r) }}</span>
+          <span class="routine-summary">
+          {{ summary(r) }}
+          <!-- Le rappel se voit sur la carte ; l'`aria-label` du bouton le dit aussi -->
+          <span class="routine-bell" *ngIf="r.reminder">⏰ {{ clockTime(r.reminder) }}</span>
+        </span>
         </span>
         <!-- Les pictogrammes de la suite : on voit la routine entière sans la lire -->
         <span class="routine-preview" aria-hidden="true">
@@ -69,6 +73,53 @@
       </div>
     </div>
 
+    <!--
+      Le rappel fait venir l'outil à l'heure dite. Sans lui, une routine ne sert qu'à qui
+      a pensé à ouvrir l'app à 7 h 30 — c'est-à-dire à qui en avait le moins besoin.
+    -->
+    <div class="field reminder">
+      <label class="reminder-switch">
+        <span class="reminder-text">
+          {{ i18n.t('routine.reminder') }}
+          <small>{{ i18n.t('routine.reminderHint') }}</small>
+        </span>
+        <input
+          type="checkbox"
+          role="switch"
+          class="switch"
+          name="reminder-on"
+          [checked]="d.reminder.enabled"
+          (change)="toggleReminder(d, $any($event.target).checked)"
+        />
+      </label>
+
+      <ng-container *ngIf="d.reminder.enabled">
+        <label class="reminder-time">
+          <span>{{ i18n.t('routine.reminderTime') }}</span>
+          <input type="time" name="reminder-time" required [(ngModel)]="d.reminder.time" />
+        </label>
+
+        <div class="reminder-field">
+          <span id="reminder-days">{{ i18n.t('routine.reminderDays') }}</span>
+          <!-- Une lettre sur le bouton, le nom du jour pour les lecteurs d'écran : « L » et
+               « M » ne se distinguent pas à l'oreille (WCAG 1.3.1) -->
+          <div class="days" role="group" aria-labelledby="reminder-days">
+            <button
+              *ngFor="let w of weekdays()"
+              type="button"
+              class="day"
+              [class.active]="d.reminder.days.includes(w.iso)"
+              [attr.aria-pressed]="d.reminder.days.includes(w.iso)"
+              [attr.aria-label]="w.long"
+              (click)="toggleDay(d, w.iso)"
+            >{{ w.short }}</button>
+          </div>
+        </div>
+
+        <p class="reminder-web" *ngIf="!isNative">{{ i18n.t('routine.reminderWeb') }}</p>
+      </ng-container>
+    </div>
+
     <div class="field">
       <span>{{ i18n.t('routine.steps') }}</span>
       <ol class="step-list">
@@ -86,7 +137,7 @@
               <span class="step-emoji" aria-hidden="true">{{ s.icon }}</span>
               <span class="step-text" aria-hidden="true">
                 <span class="step-name">{{ stepName(s) }}</span>
-                <span class="step-min">{{ s.minutes }} min</span>
+                <span class="step-min">{{ shortDuration(s.seconds) }}</span>
               </span>
               <svg class="step-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
             </button>
@@ -131,20 +182,23 @@
               />
             </label>
 
+            <!-- Un seul curseur pour 5 s comme pour 60 min : un pas donne la durée suivante
+                 qui a un sens, 5 s en bas de l'échelle, 1 min en haut -->
             <label class="duration">
               <span class="duration-head">
                 <span>{{ i18n.t('settings.duration') }}</span>
-                <strong>{{ s.minutes }} min</strong>
+                <strong>{{ shortDuration(s.seconds) }}</strong>
               </span>
               <input
                 type="range"
-                [name]="'step-minutes-' + s.id"
-                [min]="minMinutes"
-                [max]="maxMinutes"
+                [name]="'step-duration-' + s.id"
+                min="0"
+                [max]="lastDuration"
                 step="1"
-                [(ngModel)]="s.minutes"
-                [attr.aria-valuetext]="s.minutes + ' ' + i18n.t('unit.minutes')"
-                [style.--pct]="(s.minutes - minMinutes) / (maxMinutes - minMinutes) * 100 + '%'"
+                [ngModel]="durationIndex(s)"
+                (ngModelChange)="setDurationIndex(s, $event)"
+                [attr.aria-valuetext]="durationLabel(s.seconds)"
+                [style.--pct]="durationIndex(s) / lastDuration * 100 + '%'"
               />
             </label>
 
@@ -207,6 +261,37 @@
         {{ i18n.t('routine.stepAdd') }}
       </button>
     </div>
+
+    <!-- Une séance s'arme et se quitte : le mode sport suit la routine, pas un réglage
+         global qu'on rallume et qu'on oublie -->
+    <label class="reminder-switch workout">
+      <span class="reminder-text">
+        {{ i18n.t('routine.workout') }}
+        <small>{{ i18n.t('routine.workoutHint') }}</small>
+      </span>
+      <input type="checkbox" role="switch" class="switch" name="workout" [(ngModel)]="d.workout" />
+    </label>
+
+    <!-- Rejouer la suite d'étapes : deux étapes et huit tours se lisent, seize étapes non -->
+    <label class="duration rounds">
+      <span class="duration-head">
+        <span class="rounds-text">
+          {{ i18n.t('routine.rounds') }}
+          <small>{{ i18n.t('routine.roundsHint') }}</small>
+        </span>
+        <strong>×{{ d.rounds }}</strong>
+      </span>
+      <input
+        type="range"
+        name="routine-rounds"
+        min="1"
+        [max]="maxRounds"
+        step="1"
+        [(ngModel)]="d.rounds"
+        [attr.aria-valuetext]="roundsLabel(d.rounds)"
+        [style.--pct]="(d.rounds - 1) / (maxRounds - 1) * 100 + '%'"
+      />
+    </label>
 
     <div class="editor-actions">
       <button *ngIf="!d.isNew" type="button" class="link-btn danger" (click)="remove()">

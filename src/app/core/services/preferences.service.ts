@@ -32,6 +32,12 @@ export class PreferencesService {
    */
   readonly speech = signal<SpeechMode>(readOption('speech', SPEECH_MODES, 'off'));
 
+  /**
+   * Tutoriel d'accueil déjà vu. Faux tant que rien n'est écrit : il se montre au premier
+   * lancement, une seule fois, et se revoit à la demande depuis les réglages.
+   */
+  readonly tutorialSeen = signal(readFlag('tutorial-seen', false));
+
   setDarkMode(on: boolean): void {
     this.darkMode.set(on);
     writePref('theme', on ? 'dark' : 'light');
@@ -80,6 +86,11 @@ export class PreferencesService {
   setSpeech(mode: SpeechMode): void {
     this.speech.set(mode);
     writePref('speech', mode);
+  }
+
+  setTutorialSeen(seen: boolean): void {
+    this.tutorialSeen.set(seen);
+    writeFlag('tutorial-seen', seen);
   }
 
   private static initialDarkMode(): boolean {

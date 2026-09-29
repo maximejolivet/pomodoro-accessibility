@@ -56,3 +56,22 @@
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+/*
+ * Mode table : Démarrer / Pause reste, le reste s'en va. Remettre à zéro et les réglages
+ * ne se touchent pas à deux mètres, et une remise à zéro involontaire coûte la session.
+ */
+:host-context(.table) .btn-round {
+  display: none;
+}
+
+/*
+ * En mode table la scène se resserre (8 px au lieu de 28) : la remontée de 18 px qui colle
+ * l'état au lecteur le ferait alors passer dessous. Il redescend, et grossit pour se lire
+ * d'aussi loin que le chrono.
+ */
+:host-context(.table) .state {
+  margin-top: 2px;
+  font-size: 18px;
+  font-weight: 700;
+}

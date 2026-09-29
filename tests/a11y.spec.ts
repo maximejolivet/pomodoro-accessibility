@@ -14,6 +14,38 @@ async function openSheet(page: Page) {
   await expect(page.locator('.sheet.open')).toBeVisible();
 }
 
+/** Règle le cadran au clavier : Home remet à zéro, PageDown avance de 5 min, → de 1 min. */
+async function setMinutes(page: Page, minutes: number) {
+  await page.locator('.face').focus();
+  await page.keyboard.press('Home');
+  for (let i = 0; i < Math.floor(minutes / 5); i++) await page.keyboard.press('PageDown');
+  for (let i = 0; i < minutes % 5; i++) await page.keyboard.press('ArrowRight');
+  await expect(page.locator('.readout-time')).toHaveText(`${String(minutes).padStart(2, '0')}:00`);
+}
+
+/**
+ * Le tutoriel d'accueil se montre au premier lancement, donc dans chaque test : sans ce
+ * drapeau, il couvrirait l'application partout ailleurs. Les tests qui le visent le
+ * retirent avec `showTutorial`.
+ */
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('pomodoro-tdah.tutorial-seen', 'on'));
+});
+
+/**
+ * Remet l'application dans l'état d'un premier lancement. Le drapeau n'est retiré qu'au
+ * tout premier chargement de l'onglet : un script d'initialisation rejoue à chaque
+ * navigation, et le tutoriel reviendrait après un rechargement censé prouver le contraire.
+ */
+async function showTutorial(page: Page, lang = 'fr') {
+  await page.addInitScript(l => {
+    localStorage.setItem('pomodoro-tdah.lang', l);
+    if (sessionStorage.getItem('first-load')) return;
+    sessionStorage.setItem('first-load', 'done');
+    localStorage.removeItem('pomodoro-tdah.tutorial-seen');
+  }, lang);
+}
+
 async function violations(page: Page) {
   const { violations } = await new AxeBuilder({ page }).withTags(WCAG).analyze();
   return violations.map(v => `${v.id} (${v.impact}) × ${v.nodes.length} — ${v.nodes[0].failureSummary}`);
@@ -336,16 +368,12 @@ test.describe('annonce vocale', () => {
     }, mode);
   }
 
-  /** Lance un décompte de deux minutes, horloge simulée : le test ne dure pas deux minutes. */
-  async function startTwoMinutes(page: Page) {
+  /** Règle puis lance un décompte, horloge simulée : le test ne dure pas le temps réglé. */
+  async function startCountdown(page: Page, minutes: number) {
     await page.clock.install();
     await page.goto('/');
     await ready(page);
-    await page.locator('.face').focus();
-    await page.keyboard.press('Home');
-    await page.keyboard.press('ArrowRight');
-    await page.keyboard.press('ArrowRight');
-    await expect(page.locator('.readout-time')).toHaveText('02:00');
+    await setMinutes(page, minutes);
     await page.getByRole('button', { name: /démarrer/i }).click();
   }
 
@@ -404,7 +432,7 @@ test.describe('annonce vocale', () => {
 
   test('le décompte dit chaque minute, puis la fin et ce qui suit', async ({ page }) => {
     await captureSpeech(page, 'minutes');
-    await startTwoMinutes(page);
+    await startCountdown(page, 2);
     // Rien au démarrage : la durée réglée vient d'être lue, la répéter n'apporte rien
     expect(await spoken(page)).toEqual([]);
 
@@ -419,15 +447,31 @@ test.describe('annonce vocale', () => {
     ]);
   });
 
-  test('en mode Paliers, les minutes ordinaires restent silencieuses', async ({ page }) => {
+  test('en mode Paliers, seuls les paliers de la session se disent', async ({ page }) => {
+    // Six minutes d'horloge simulée, six cents ticks : le décompte est bavard
+    test.setTimeout(90_000);
     await captureSpeech(page, 'milestones');
-    await startTwoMinutes(page);
+    await startCountdown(page, 6);
+
+    // Une minute ordinaire ne dit rien : c'est ce qui distingue « Paliers » de « Chaque minute »
     await page.clock.runFor(61_000);
-    expect(await spoken(page), 'la minute 1 n\'est pas un palier').toEqual([]);
+    expect(await spoken(page), 'la 5e minute n\'est pas un palier').toEqual([]);
+
+    // Les paliers, eux, sont calculés sur la durée réglée : la moitié, le dernier quart,
+    // puis la dernière minute. Des paliers fixes à 45 / 30 / 15 ne préviendraient jamais
+    // une session de six minutes — ni une étape de routine.
+    await page.clock.runFor(2 * 60_000);
+    await page.clock.runFor(60_000);
+    await page.clock.runFor(60_000);
+    expect((await spoken(page)).map(s => s.text)).toEqual([
+      'Plus que 3 minutes',
+      'Plus que 2 minutes',
+      "Plus qu'une minute"
+    ]);
 
     // La fin, elle, se dit dans tous les modes
     await page.clock.runFor(61_000);
-    expect(await spoken(page)).toEqual([{ text: 'Temps écoulé. +5 min pour terminer.', lang: 'fr' }]);
+    expect((await spoken(page)).at(-1)?.text).toBe('Temps écoulé. +5 min pour terminer.');
   });
 });
 
@@ -456,10 +500,7 @@ test.describe('vibration', () => {
     await page.goto('/');
     await ready(page);
 
-    await page.locator('.face').focus();
-    await page.keyboard.press('Home');
-    await page.keyboard.press('ArrowRight');
-    await expect(page.locator('.readout-time')).toHaveText('01:00');
+    await setMinutes(page, 1);
     // Le pas de réglage se confirme par une impulsion légère, distincte des motifs.
     // Le module natif est chargé à la demande : on attend qu'il réponde plutôt que de le supposer.
     await expect.poll(() => vibrations(page)).toHaveLength(2);
@@ -471,23 +512,33 @@ test.describe('vibration', () => {
   });
 
   test('chaque palier a son propre motif, reconnaissable sans voir ni entendre', async ({ page }) => {
+    // Six minutes d'horloge simulée, six cents ticks : le décompte est bavard
+    test.setTimeout(90_000);
     await captureVibration(page);
     await page.clock.install();
     await page.goto('/');
     await ready(page);
 
-    // 16 min : le décompte ne franchira que le palier des 15 minutes
-    await page.locator('.face').focus();
-    await page.keyboard.press('Home');
-    for (let i = 0; i < 3; i++) await page.keyboard.press('PageDown');
-    await page.keyboard.press('ArrowRight');
-    await expect(page.locator('.readout-time')).toHaveText('16:00');
-
+    // 6 min : les paliers tombent à 3, 2 et 1 minute restantes — une session courte est
+    // prévenue elle aussi, ce que des paliers fixes à 45 / 30 / 15 ne faisaient pas
+    await setMinutes(page, 6);
     await page.getByRole('button', { name: /démarrer/i }).click();
     await page.evaluate(() => ((window as any).__vibrations.length = 0));
-    await page.clock.runFor(63_000);
-    // Trois impulsions brèves, là où la fin en donne trois longues : le rythme fait la différence
-    expect(await vibrations(page)).toEqual([120, 120, 180]);
+
+    // Une impulsion longue et posée pour le premier palier
+    await page.clock.runFor(3 * 60_000 + 3_000);
+    expect(await vibrations(page), 'palier 1 (3 min restantes)').toEqual([320]);
+
+    // Deux impulsions pour le deuxième
+    await page.clock.runFor(60_000);
+    expect((await vibrations(page)).slice(1), 'palier 2 (2 min restantes)').toEqual([200, 200]);
+
+    // Trois brèves pour le dernier, là où la fin en donne trois longues : le rythme fait la différence
+    await page.clock.runFor(60_000);
+    expect((await vibrations(page)).slice(3), 'palier 3 (1 min restante)').toEqual([120, 120, 180]);
+
+    await page.clock.runFor(61_000);
+    expect((await vibrations(page)).slice(6), 'fin').toEqual([500, 500, 500]);
   });
 
   test("l'interrupteur coupe toute vibration, et son état est annoncé", async ({ page }) => {
@@ -661,7 +712,7 @@ test.describe('routines', () => {
     ]
   };
 
-  async function seed(page: Page, spoken = false) {
+  async function seed(page: Page, spoken = false, reminder?: { hour: number; minute: number; days: number[] }) {
     await page.addInitScript(
       ([routine, capture]) => {
         localStorage.setItem('pomodoro-tdah.lang', 'fr');
@@ -675,7 +726,7 @@ test.describe('routines', () => {
           };
         }
       },
-      [JSON.stringify([ROUTINE]), spoken] as const
+      [JSON.stringify([{ ...ROUTINE, reminder }]), spoken] as const
     );
   }
 
@@ -690,9 +741,9 @@ test.describe('routines', () => {
     await expect(page.locator('.routine-title')).toContainText('Matin');
     await expect(chips(page)).toHaveCount(3);
     // L'état est dit, pas seulement montré par la couleur et la coche (WCAG 1.4.1)
-    await expect(chips(page).first()).toHaveAccessibleName('Étape 1 sur 3 : Habillage, 1 minutes, en cours');
+    await expect(chips(page).first()).toHaveAccessibleName('Étape 1 sur 3 : Habillage, 1 minute, en cours');
     await expect(chips(page).first()).toHaveAttribute('aria-current', 'step');
-    await expect(chips(page).nth(1)).toHaveAccessibleName('Étape 2 sur 3 : Repas, 1 minutes');
+    await expect(chips(page).nth(1)).toHaveAccessibleName('Étape 2 sur 3 : Repas, 1 minute');
     expect(await violations(page)).toEqual([]);
   });
 
@@ -788,6 +839,78 @@ test.describe('routines', () => {
     }
   });
 
+  test('le rappel se règle au clavier, et part avec la routine', async ({ page }) => {
+    await seed(page);
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+    await page.getByRole('button', { name: 'Modifier la routine Matin' }).click();
+
+    const reminder = page.getByRole('switch', { name: /Rappel/ });
+    await expect(reminder).not.toBeChecked();
+    await reminder.focus();
+    await page.keyboard.press(' ');
+    await expect(reminder).toBeChecked();
+
+    // Allumer coche la semaine entière : un rappel sans jour ne partirait jamais
+    const days = page.getByRole('group', { name: 'Jours' }).getByRole('button');
+    await expect(days).toHaveCount(7);
+    for (const day of await days.all()) await expect(day).toHaveAttribute('aria-pressed', 'true');
+
+    // « L » et « M » ne se distinguent pas à l'oreille : chaque jour porte son nom (WCAG 1.3.1)
+    await expect(days.first()).toHaveAccessibleName('lundi');
+    await expect(days.last()).toHaveAccessibleName('dimanche');
+
+    // Et les cibles restent atteignables (WCAG 2.5.8)
+    for (const target of [days.first(), page.locator('input[type="time"]')]) {
+      const box = await target.boundingBox();
+      expect(box!.height).toBeGreaterThanOrEqual(44);
+    }
+
+    // Le week-end décoché, le rappel ne part que les jours d'école
+    await days.nth(5).click();
+    await days.nth(6).click();
+    await expect(days.nth(5)).toHaveAttribute('aria-pressed', 'false');
+    await page.getByRole('button', { name: 'Enregistrer' }).click();
+
+    const saved = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('pomodoro-tdah.routines') ?? '[]')
+    );
+    expect(saved[0].reminder).toEqual({ hour: 8, minute: 0, days: [1, 2, 3, 4, 5] });
+  });
+
+  test('un rappel éteint ne laisse rien derrière lui', async ({ page }) => {
+    await seed(page, false, { hour: 7, minute: 30, days: [1, 2, 3, 4, 5] });
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+
+    await page.getByRole('button', { name: 'Modifier la routine Matin' }).click();
+    await expect(page.getByRole('switch', { name: /Rappel/ })).toBeChecked();
+    await page.getByRole('switch', { name: /Rappel/ }).click();
+    await expect(page.getByRole('group', { name: 'Jours' })).toHaveCount(0);
+    await page.getByRole('button', { name: 'Enregistrer' }).click();
+
+    const saved = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('pomodoro-tdah.routines') ?? '[]')
+    );
+    expect(saved[0].reminder).toBeUndefined();
+  });
+
+  test('la carte dit son rappel, et pas seulement en pastille', async ({ page }) => {
+    await seed(page, false, { hour: 7, minute: 30, days: [1, 2, 3, 4, 5] });
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+
+    // L'`aria-label` remplace tout le contenu du bouton : sans lui, ⏰ 07:30 ne serait vu
+    // que des voyants (WCAG 1.1.1)
+    await expect(page.getByRole('button', { name: /Lancer Matin/ })).toHaveAccessibleName(
+      'Lancer Matin, rappel à 07:30'
+    );
+    await expect(page.locator('.routine-bell')).toHaveText('⏰ 07:30');
+  });
+
   test('l’éditeur de routine se tient, étape dépliée comprise', async ({ page }) => {
     await seed(page);
     await page.goto('/');
@@ -805,9 +928,617 @@ test.describe('routines', () => {
     await expect(step).toHaveAttribute('aria-expanded', 'true');
     expect(await violations(page), 'étape dépliée').toEqual([]);
 
+    await page.getByRole('switch', { name: /Rappel/ }).click();
+    await expect(page.getByRole('group', { name: 'Jours' })).toBeVisible();
+    expect(await violations(page), 'rappel allumé').toEqual([]);
+
     // Réordonner, puis enregistrer : la bande suit aussitôt
     await page.getByRole('button', { name: 'Descendre Habillage' }).click();
     await page.getByRole('button', { name: 'Enregistrer' }).click();
     await expect(chips(page).first()).toHaveAccessibleName(/Repas/);
+  });
+});
+
+test.describe("tutoriel d'accueil", () => {
+  const dialog = (page: Page) => page.getByRole('dialog', { name: 'Bienvenue' });
+  const next = (page: Page) => page.getByRole('button', { name: 'Suivant' });
+  const previous = (page: Page) => page.getByRole('button', { name: 'Précédent' });
+  const dots = (page: Page) => page.getByRole('group', { name: 'Bienvenue' }).getByRole('button');
+
+  /**
+   * Attend que la bande ait fini de glisser. Sans cette attente, axe-core mesure la vue
+   * pendant le glissement : elle dépasse alors de la fenêtre, qui la rogne, et plus rien
+   * ne se trouve derrière son texte — le contraste est calculé contre le blanc du canevas
+   * et le thème sombre paraît illisible.
+   */
+  async function settled(page: Page) {
+    await page.waitForFunction(() => {
+      const slide = document.querySelector('.tutorial .slide:not([inert])');
+      const viewport = document.querySelector('.tutorial .viewport');
+      if (!slide || !viewport) return false;
+      return Math.abs(slide.getBoundingClientRect().left - viewport.getBoundingClientRect().left) < 1;
+    });
+  }
+
+  async function open(page: Page, lang = 'fr') {
+    await showTutorial(page, lang);
+    await page.goto('/');
+    await ready(page);
+    await expect(page.locator('.tutorial')).toBeVisible();
+  }
+
+  for (const theme of ['light', 'dark'] as const) {
+    test(`axe-core n'y trouve rien, thème ${theme}`, async ({ page }) => {
+      // Le thème est posé avant le premier rendu : un rechargement ferait du lancement
+      // suivant un lancement ordinaire, sans tutoriel
+      await page.addInitScript(t => localStorage.setItem('pomodoro-tdah.theme', t), theme);
+      await open(page);
+      await expect(dialog(page)).toBeVisible();
+      expect(await violations(page), 'première vue').toEqual([]);
+
+      await next(page).click();
+      await next(page).click();
+      await settled(page);
+      expect(await violations(page), 'troisième vue').toEqual([]);
+    });
+  }
+
+  test('en arabe, les vues défilent dans le bon sens', async ({ page }) => {
+    await open(page, 'ar');
+    await expect(page.getByRole('dialog', { name: 'أهلًا بك' })).toBeVisible();
+    // La deuxième vue doit être lisible : un décalage pris à l'envers laisserait le vide
+    await page.getByRole('button', { name: 'التالي' }).click();
+    await expect(page.locator('.slide:not([inert]) .slide-title')).toHaveText('ضبط المدة');
+    expect(await violations(page)).toEqual([]);
+  });
+
+  test('il se traverse au clavier, sans jamais quitter la modale', async ({ page }) => {
+    await open(page);
+
+    // Le focus part sur « Suivant » et y reste : on traverse en répétant la même touche
+    await expect(next(page)).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(next(page)).toBeFocused();
+    await expect(page.locator('.slide:not([inert]) .slide-title')).toHaveText('Régler la durée');
+
+    // Les flèches avancent et reculent
+    await page.keyboard.press('ArrowRight');
+    await expect(page.locator('.slide:not([inert]) .slide-title')).toHaveText('Démarrer, faire une pause');
+    await page.keyboard.press('ArrowLeft');
+    await expect(page.locator('.slide:not([inert]) .slide-title')).toHaveText('Régler la durée');
+
+    // Derrière, la page est inerte : la tabulation ne peut pas en sortir (WCAG 2.1.2)
+    await expect(page.locator('.stage-content')).toHaveAttribute('inert', '');
+    for (let i = 0; i < 12; i++) await page.keyboard.press('Tab');
+    expect(await page.evaluate(() => !!document.activeElement?.closest('.tutorial'))).toBe(true);
+  });
+
+  test('la dernière vue termine, et le focus revient sur Démarrer', async ({ page }) => {
+    await open(page);
+    for (let i = 0; i < 4; i++) await next(page).click();
+
+    // Sur la dernière, le bouton dit que c'est fini plutôt que « Suivant »
+    const done = page.getByRole('button', { name: "C'est parti" });
+    await expect(done).toBeVisible();
+    await done.click();
+
+    await expect(dialog(page)).toHaveCount(0);
+    await expect(page.getByRole('button', { name: /démarrer/i })).toBeFocused();
+    await expect(page.locator('.stage-content')).not.toHaveAttribute('inert', '');
+  });
+
+  test('seules les vues à l’écran sont lues, et les points y mènent', async ({ page }) => {
+    await open(page);
+
+    // Quatre vues sur cinq sont hors du champ : ni la tabulation ni le lecteur d'écran
+    await expect(page.locator('.slide[aria-hidden="true"]')).toHaveCount(4);
+    await expect(page.locator('.slide:not([aria-hidden])')).toHaveCount(1);
+
+    const points = dots(page);
+    await expect(points).toHaveCount(5);
+    await expect(points.first()).toHaveAccessibleName("Aller à l'étape 1");
+    await expect(points.first()).toHaveAttribute('aria-pressed', 'true');
+
+    // Les cibles se visent, même d'une main qui tremble (WCAG 2.5.8)
+    for (const target of [points.first(), next(page), previous(page)]) {
+      const box = await target.boundingBox();
+      expect(box!.height, await target.getAttribute('aria-label') ?? '').toBeGreaterThanOrEqual(44);
+    }
+
+    // Et chaque point mène directement à sa vue
+    await points.nth(4).click();
+    await expect(points.nth(4)).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('.slide:not([inert]) .slide-title')).toHaveText('Être prévenu à ta façon');
+  });
+
+  test('« Passer » le referme, et il ne revient pas tout seul', async ({ page }) => {
+    await open(page);
+    await page.getByRole('button', { name: 'Passer' }).click();
+    await expect(dialog(page)).toHaveCount(0);
+    expect(await page.evaluate(() => localStorage.getItem('pomodoro-tdah.tutorial-seen'))).toBe('on');
+
+    // Au lancement suivant, le minuteur est là tout de suite
+    await page.reload();
+    await ready(page);
+    await expect(dialog(page)).toHaveCount(0);
+  });
+
+  test('Échap le passe aussi, où que soit le focus', async ({ page }) => {
+    await open(page);
+    await page.keyboard.press('Escape');
+    await expect(dialog(page)).toHaveCount(0);
+  });
+
+  test('il se revoit depuis les réglages', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('pomodoro-tdah.lang', 'fr'));
+    await page.goto('/');
+    await ready(page);
+    await expect(dialog(page)).toHaveCount(0);
+
+    await openSheet(page);
+    await page.locator('.tabs button:nth-child(3)').click();
+    await page.getByRole('button', { name: 'Revoir le tutoriel' }).click();
+
+    // Le panneau cède la place : deux modales à la fois ne s'entendraient pas
+    await expect(page.locator('.sheet.open')).toHaveCount(0);
+    await expect(dialog(page)).toBeVisible();
+    await expect(next(page)).toBeFocused();
+  });
+});
+
+test.describe('secondes et tours', () => {
+  /**
+   * Un Tabata : deux étapes de cinq secondes, jouées deux fois. Cinq secondes plutôt que
+   * vingt pour que l'horloge simulée n'ait pas mille ticks à jouer — la règle testée est
+   * l'enchaînement des tours, pas la durée.
+   */
+  const TABATA = {
+    id: 'tabata',
+    name: 'Tabata',
+    icon: '💪',
+    rounds: 2,
+    steps: [
+      { id: 'work', name: 'Effort', icon: '🏃', seconds: 5, color: '#d63f4f', kind: 'focus' },
+      { id: 'rest', name: 'Repos', icon: '🧘', seconds: 5, color: '#56b27b', kind: 'break' }
+    ]
+  };
+
+  async function seedTabata(page: Page) {
+    await page.addInitScript(routine => {
+      localStorage.setItem('pomodoro-tdah.lang', 'fr');
+      localStorage.setItem('pomodoro-tdah.routines', routine as string);
+      localStorage.setItem('pomodoro-tdah.routine', 'tabata');
+    }, JSON.stringify([TABATA]));
+  }
+
+  const chips = (page: Page) => page.locator('.step-chip');
+
+  test('une étape peut durer quelques secondes, et le dire', async ({ page }) => {
+    await seedTabata(page);
+    await page.goto('/');
+    await ready(page);
+
+    // Le cadran et la bande comptent en secondes, sans arrondir à la minute
+    await expect(page.locator('.readout-time')).toHaveText('00:05');
+    await expect(chips(page).first()).toHaveAccessibleName('Étape 1 sur 2 : Effort, 5 secondes, en cours');
+    await expect(chips(page).first().locator('.step-time')).toHaveText('5 s');
+  });
+
+  test('la durée se règle au clavier, d’une seconde à une heure', async ({ page }) => {
+    await seedTabata(page);
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+    await page.getByRole('button', { name: 'Modifier la routine Tabata' }).click();
+    await page.getByRole('button', { name: 'Modifier Effort' }).click();
+
+    // Dans le panneau : le cadran porte lui aussi le nom « Durée »
+    const duration = page.locator('.sheet').getByRole('slider', { name: /Durée/ });
+    await duration.focus();
+    // Le pas vaut 5 s en bas de l'échelle : c'est là que se règlent les exercices
+    await page.keyboard.press('Home');
+    await expect(duration).toHaveAttribute('aria-valuetext', '5 secondes');
+    await page.keyboard.press('ArrowRight');
+    await expect(duration).toHaveAttribute('aria-valuetext', '10 secondes');
+
+    // Et une minute au-delà : une routine ne se règle pas à la seconde près
+    await page.keyboard.press('End');
+    await expect(duration).toHaveAttribute('aria-valuetext', '60 minutes');
+    await page.keyboard.press('ArrowLeft');
+    await expect(duration).toHaveAttribute('aria-valuetext', '59 minutes');
+
+    for (let i = 0; i < 59; i++) await page.keyboard.press('ArrowLeft');
+    await expect(duration).toHaveAttribute('aria-valuetext', '55 secondes');
+
+    await page.getByRole('button', { name: 'Enregistrer' }).click();
+    const saved = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('pomodoro-tdah.routines') ?? '[]')
+    );
+    expect(saved[0].steps[0].seconds).toBe(55);
+  });
+
+  test('les tours se règlent, et le panneau reste valide pour axe-core', async ({ page }) => {
+    await seedTabata(page);
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+    await page.getByRole('button', { name: 'Modifier la routine Tabata' }).click();
+
+    const rounds = page.locator('.sheet').getByRole('slider', { name: /Tours/ });
+    await expect(rounds).toHaveAttribute('aria-valuetext', '2 fois');
+    await rounds.focus();
+    // « Une seule fois » plutôt que « 1 fois » : le nombre nu ne dirait pas de quoi il parle
+    await page.keyboard.press('Home');
+    await expect(rounds).toHaveAttribute('aria-valuetext', 'Une seule fois');
+    for (let i = 0; i < 7; i++) await page.keyboard.press('ArrowRight');
+    await expect(rounds).toHaveAttribute('aria-valuetext', '8 fois');
+    expect(await violations(page)).toEqual([]);
+
+    await page.getByRole('button', { name: 'Enregistrer' }).click();
+    const saved = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('pomodoro-tdah.routines') ?? '[]')
+    );
+    expect(saved[0].rounds).toBe(8);
+    // La carte annonce le temps total, tours compris, et le nombre de tours
+    await expect(page.getByRole('button', { name: /Lancer Tabata/ })).toContainText('×8');
+  });
+
+  test('la routine rejoue ses étapes, et dit à quel tour elle en est', async ({ page }) => {
+    await seedTabata(page);
+    await page.clock.install();
+    await page.goto('/');
+    await ready(page);
+
+    // Les pastilles comptent les tours de la routine, pas les cycles pomodoro
+    await expect(page.locator('.cycle')).toHaveText(/Tour 1 sur 2/);
+    await expect(page.locator('.cycle-dot')).toHaveCount(2);
+
+    await page.getByRole('button', { name: /démarrer/i }).click();
+    await page.clock.runFor(5_100);
+    await expect(page.locator('.readout-mode')).toHaveText('Repos');
+    await expect(page.locator('.cycle')).toHaveText(/Tour 1 sur 2/);
+
+    // Fin du premier tour : la bande repart à la première étape, et le tour est annoncé
+    await page.clock.runFor(5_100);
+    await expect(page.locator('.readout-mode')).toHaveText('Effort');
+    await expect(page.locator('.cycle')).toHaveText(/Tour 2 sur 2/);
+    await expect(chips(page).first()).toHaveAttribute('aria-current', 'step');
+    await expect(page.locator('#a11y-announcements')).toContainText('Tour 2 sur 2');
+
+    // Le dernier tour fini, la routine est terminée : elle ne repart pas à l'infini
+    await page.clock.runFor(10_200);
+    await expect(page.locator('.step-chip.done')).toHaveCount(2);
+    await expect(page.locator('#a11y-announcements')).toHaveText('Routine terminée : Tabata');
+  });
+});
+
+test.describe('mode sport', () => {
+  /** L'entraînement livré avec l'app : 20 s d'effort, 10 s de repos, huit tours. */
+  async function armTabata(page: Page) {
+    await page.addInitScript(() => {
+      localStorage.setItem('pomodoro-tdah.lang', 'fr');
+      localStorage.setItem('pomodoro-tdah.routine', 'tabata');
+    });
+  }
+
+  const dial = (page: Page) => page.locator('.face');
+
+  test('le cadran passe en secondes sous la minute, et le dit', async ({ page }) => {
+    await armTabata(page);
+    await page.goto('/');
+    await ready(page);
+
+    // Vingt secondes sur une graduation d'une heure ne se verraient pas : ce sont
+    // maintenant des secondes, et une pastille le dit pour qui lit 20 comme 20 minutes
+    await expect(dial(page)).toHaveAttribute('aria-valuetext', '20 secondes');
+    await expect(dial(page)).toHaveAttribute('aria-valuenow', '20');
+    await expect(page.locator('.unit')).toHaveText('sec');
+    expect(await violations(page), 'thème clair').toEqual([]);
+
+    await page.evaluate(() => localStorage.setItem('pomodoro-tdah.theme', 'dark'));
+    await page.reload();
+    await ready(page);
+    await expect(page.locator('.unit')).toHaveText('sec');
+    expect(await violations(page), 'thème sombre').toEqual([]);
+
+    // Et le disque couvre vraiment un tiers du cadran, là où 20 s n'en étaient qu'un filet
+    const veil = await page.locator('.disk-veil').boundingBox();
+    const face = await page.locator('.dial').boundingBox();
+    expect(veil!.width / face!.width, 'largeur du disque').toBeGreaterThan(0.3);
+  });
+
+  test('en secondes, le cadran ne se règle plus mais démarre toujours', async ({ page }) => {
+    await armTabata(page);
+    await page.goto('/');
+    await ready(page);
+
+    // Le réglage travaille en minutes : il donnerait une durée sans rapport avec l'affichage
+    await expect(dial(page)).toHaveAttribute('aria-readonly', 'true');
+    await expect(page.locator('.step').first()).toHaveAttribute('aria-disabled', 'true');
+    await expect(page.locator('.step').last()).toHaveAttribute('aria-disabled', 'true');
+
+    await dial(page).focus();
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('PageDown');
+    await expect(page.locator('.readout-time')).toHaveText('00:20');
+
+    // Mais l'appui sur le cadran démarre : c'est le verrou, lui, qui le retire
+    await dial(page).click();
+    await expect(page.getByRole('button', { name: /pause/i })).toBeVisible();
+  });
+
+  test('un mode ordinaire garde la graduation en minutes', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('pomodoro-tdah.lang', 'fr'));
+    await page.goto('/');
+    await ready(page);
+
+    await expect(dial(page)).toHaveAttribute('aria-valuetext', '25 minutes');
+    await expect(dial(page)).not.toHaveAttribute('aria-readonly', 'true');
+    await expect(page.locator('.unit')).toHaveCount(0);
+  });
+
+  test('les trois dernières secondes se comptent, et la suite est annoncée', async ({ page }) => {
+    await armTabata(page);
+    await page.addInitScript(() => {
+      localStorage.setItem('pomodoro-tdah.speech', 'milestones');
+      (window as any).__spoken = [];
+      (window as any).__vibrations = [];
+      SpeechSynthesis.prototype.speak = function (u: SpeechSynthesisUtterance) {
+        (window as any).__spoken.push(u.text);
+      };
+      Object.defineProperty(navigator, 'vibrate', {
+        value: (pattern: number | number[]) => {
+          (window as any).__vibrations.push(Array.isArray(pattern) ? pattern[0] : pattern);
+          return true;
+        }
+      });
+    });
+    await page.clock.install();
+    await page.goto('/');
+    await ready(page);
+    await page.getByRole('button', { name: /démarrer/i }).click();
+    await page.evaluate(() => ((window as any).__vibrations.length = 0));
+
+    // À cinq secondes de la fin, la suite est dite : on prépare le geste sans lire l'écran
+    await page.clock.runFor(15_100);
+    expect(await page.evaluate(() => (window as any).__spoken as string[])).toEqual(['Ensuite : Repos']);
+
+    // Puis une impulsion sèche par seconde, et le chiffre
+    await page.clock.runFor(2_000);
+    expect(await page.evaluate(() => (window as any).__vibrations as number[])).toEqual([60]);
+    await page.clock.runFor(2_000);
+    expect(await page.evaluate(() => (window as any).__vibrations as number[])).toEqual([60, 60, 60]);
+    expect(await page.evaluate(() => (window as any).__spoken as string[])).toEqual([
+      'Ensuite : Repos', '3', '2', '1'
+    ]);
+
+    // La fin enchaîne sur le repos, avec son motif à elle
+    await page.clock.runFor(3_000);
+    await expect(page.locator('.readout-mode')).toHaveText('Repos');
+    expect((await page.evaluate(() => (window as any).__vibrations as number[])).slice(3))
+      .toEqual([500, 500, 500]);
+  });
+
+  for (const theme of ['light', 'dark'] as const) {
+    test(`la carte de la routine chargée reste lisible, thème ${theme}`, async ({ page }) => {
+      await armTabata(page);
+      await page.addInitScript(t => localStorage.setItem('pomodoro-tdah.theme', t), theme);
+      await page.goto('/');
+      await ready(page);
+      await openSheet(page);
+
+      // La carte de la routine en cours n'était jusqu'ici jamais passée sous axe-core :
+      // aucun test n'ouvrait le panneau avec une routine chargée
+      await expect(page.locator('.routine.active')).toBeVisible();
+      expect(await violations(page)).toEqual([]);
+    });
+  }
+
+  test('une étape longue ne déclenche aucun décompte', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('pomodoro-tdah.lang', 'fr');
+      (window as any).__vibrations = [];
+      Object.defineProperty(navigator, 'vibrate', {
+        value: (pattern: number | number[]) => {
+          (window as any).__vibrations.push(Array.isArray(pattern) ? pattern[0] : pattern);
+          return true;
+        }
+      });
+    });
+    await page.clock.install();
+    await page.goto('/');
+    await ready(page);
+    await setMinutes(page, 1);
+    await page.getByRole('button', { name: /démarrer/i }).click();
+    await page.evaluate(() => ((window as any).__vibrations.length = 0));
+
+    // Une minute reste une minute : aucun tic, seulement le motif de fin
+    await page.clock.runFor(63_000);
+    expect(await page.evaluate(() => (window as any).__vibrations as number[])).toEqual([500, 500, 500]);
+  });
+});
+
+test.describe('mode sport (design)', () => {
+  /** Une routine marquée « entraînement » : c'est elle qui fait passer la page en sport. */
+  async function armWorkout(page: Page, workout = true) {
+    await page.addInitScript(on => {
+      localStorage.setItem('pomodoro-tdah.lang', 'fr');
+      localStorage.setItem('pomodoro-tdah.routine', 'tabata');
+      if (!on) {
+        const routines = JSON.parse(localStorage.getItem('pomodoro-tdah.routines') ?? 'null') ?? [];
+        localStorage.setItem('pomodoro-tdah.routines', JSON.stringify(routines));
+      }
+    }, workout);
+  }
+
+  test('la page prend la couleur de l’étape, et la rend au changement de phase', async ({ page }) => {
+    await armWorkout(page);
+    await page.clock.install();
+    await page.goto('/');
+    await ready(page);
+
+    const stage = page.locator('.stage');
+    const tint = () => stage.evaluate(el => ({
+      color: getComputedStyle(el).getPropertyValue('--sport-c').trim(),
+      background: getComputedStyle(el).backgroundImage
+    }));
+
+    await expect(stage).toHaveClass(/sport/);
+    const effort = await tint();
+    expect(effort.color, 'la teinte de l’effort').toBe('#d63f4f');
+
+    // Au repos, toute la page change de couleur : on sait où l'on en est sans lire
+    await page.getByRole('button', { name: /démarrer/i }).click();
+    await page.clock.runFor(21_000);
+    await expect(page.locator('.readout-mode')).toHaveText('Repos');
+    const repos = await tint();
+    expect(repos.color).toBe('#56b27b');
+    expect(repos.background, 'le fond a repeint').not.toEqual(effort.background);
+  });
+
+  test('une routine ordinaire laisse la page intacte', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem('pomodoro-tdah.lang', 'fr');
+      localStorage.setItem('pomodoro-tdah.routine', 'morning');
+    });
+    await page.goto('/');
+    await ready(page);
+
+    await expect(page.locator('.routine-title')).toContainText('Routine du matin');
+    await expect(page.locator('.stage')).not.toHaveClass(/sport/);
+  });
+
+  for (const theme of ['light', 'dark'] as const) {
+    test(`le fond teinté ne casse aucun contraste, thème ${theme}`, async ({ page }) => {
+      await armWorkout(page);
+      await page.addInitScript(t => localStorage.setItem('pomodoro-tdah.theme', t), theme);
+      await page.goto('/');
+      await ready(page);
+
+      // Le gris secondaire tombait à 2,82:1 sur le fond teinté : c'est ce que ce contrôle garde
+      await expect(page.locator('.stage')).toHaveClass(/sport/);
+      expect(await violations(page)).toEqual([]);
+    });
+  }
+
+  test('l’interrupteur « Entraînement » se règle et s’enregistre', async ({ page }) => {
+    await armWorkout(page);
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+    await page.getByRole('button', { name: 'Modifier la routine Tabata' }).click();
+
+    const workout = page.getByRole('switch', { name: /Entraînement/ });
+    await expect(workout).toBeChecked();
+    await workout.click();
+    await page.getByRole('button', { name: 'Enregistrer' }).click();
+
+    // Décoché, la page revient à son fond ordinaire sans recharger
+    await expect(page.locator('.stage')).not.toHaveClass(/sport/);
+    const saved = await page.evaluate(() =>
+      JSON.parse(localStorage.getItem('pomodoro-tdah.routines') ?? '[]')
+    );
+    expect(saved.find((r: { id: string }) => r.id === 'tabata').workout).toBe(false);
+  });
+});
+
+/**
+ * Mode table : le téléphone posé debout devient le minuteur visuel de la pièce. Ce qui
+ * s'efface doit s'effacer vraiment (et non seulement à l'œil), ce qui reste doit rester
+ * atteignable au clavier, et la porte de sortie doit se voir et s'ouvrir — un mode sans
+ * sortie visible est un piège, surtout pour qui ne sait pas comment il y est entré.
+ */
+test.describe('mode table', () => {
+  async function enterTable(page: Page, lang = 'fr') {
+    await page.addInitScript(l => localStorage.setItem('pomodoro-tdah.lang', l), lang);
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+    await page.locator('.tabs button:nth-child(3)').click();
+    await page.getByRole('button', { name: /^Mode table$/ }).last().click();
+    await expect(page.locator('.stage.table')).toBeVisible();
+  }
+
+  test('le cadran prend la place, les commandes secondaires s’effacent', async ({ page }) => {
+    await enterTable(page);
+
+    // Le panneau s'est fermé de lui-même : rien ne doit rester entre le cadran et la pièce
+    await expect(page.locator('.sheet.open')).toHaveCount(0);
+    await expect(page.getByRole('button', { name: /remettre à zéro/i })).toBeHidden();
+    await expect(page.getByRole('button', { name: /^Réglages$/ })).toBeHidden();
+    await expect(page.getByRole('button', { name: /moins|plus/i }).first()).toBeHidden();
+
+    // Démarrer reste : un minuteur qu'on ne peut plus lancer ne sert à rien
+    await expect(page.getByRole('button', { name: /démarrer/i })).toBeVisible();
+    await expect(page.locator('.accessibility-link')).toBeHidden();
+  });
+
+  test('le chrono se lit de loin', async ({ page }) => {
+    await page.goto('/');
+    await ready(page);
+    const before = await page.locator('.readout-time').evaluate(
+      el => parseFloat(getComputedStyle(el).fontSize)
+    );
+    await enterTable(page);
+    const after = await page.locator('.readout-time').evaluate(
+      el => parseFloat(getComputedStyle(el).fontSize)
+    );
+    expect(after, 'le temps grossit en mode table').toBeGreaterThan(before * 1.4);
+  });
+
+  test('la sortie se voit, s’atteint au clavier et rend la page entière', async ({ page }) => {
+    await enterTable(page);
+
+    const exit = page.getByRole('button', { name: 'Quitter le mode table' });
+    await expect(exit).toBeVisible();
+    // Cible d'au moins 44 px (WCAG 2.5.8) : on en sort avec un doigt, pas avec une pointe
+    const box = await exit.boundingBox();
+    expect(box!.height).toBeGreaterThanOrEqual(44);
+
+    await exit.focus();
+    await expect(exit).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(page.locator('.stage.table')).toHaveCount(0);
+    await expect(page.getByRole('button', { name: /^Réglages$/ })).toBeVisible();
+  });
+
+  test('Échap quitte le mode table', async ({ page }) => {
+    await enterTable(page);
+    await page.keyboard.press('Escape');
+    await expect(page.locator('.stage.table')).toHaveCount(0);
+  });
+
+  for (const theme of ['light', 'dark'] as const) {
+    test(`aucune violation en mode table, thème ${theme}`, async ({ page }) => {
+      await page.addInitScript(t => localStorage.setItem('pomodoro-tdah.theme', t), theme);
+      await enterTable(page);
+      expect(await violations(page)).toEqual([]);
+    });
+  }
+});
+
+/**
+ * Voile d'amorçage : il tient l'écran entre l'image de lancement du système et la première
+ * image de l'app. Deux choses comptent — qu'il s'en aille, sinon il ne reste qu'un écran
+ * noir dont personne ne sait rien ; et qu'il se fige pour qui demande moins de mouvement.
+ */
+test.describe('voile d’amorçage', () => {
+  test('il s’efface une fois l’application prête', async ({ page }) => {
+    await page.goto('/');
+    await ready(page);
+    await expect(page.locator('#boot')).toHaveCount(0);
+    await expect(page.locator('html')).not.toHaveClass(/booting/);
+  });
+
+  test('le cadran se fige sous prefers-reduced-motion', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    // Avant que l'app ne l'ait retiré, l'anneau ne doit porter aucune animation
+    const animation = await page.evaluate(() => {
+      const ring = document.querySelector('.boot-ring');
+      return ring ? getComputedStyle(ring).animationName : 'absent';
+    });
+    expect(['none', 'absent']).toContain(animation);
+    await ready(page);
   });
 });
