@@ -27,6 +27,7 @@ You see the time that's left instead of reading it.
 <img src="docs/screenshot.png" alt="Pomodoro Accessibilité in light mode" width="300">
 &nbsp;&nbsp;
 <img src="docs/screenshot-dark.png" alt="Pomodoro Accessibilité in dark mode" width="300">
+<img src="docs/screenshot-widget.png" alt="The widget on the home screen, in light and dark themes" width="620">
 
 </div>
 
@@ -125,6 +126,7 @@ visual timer is a simple, discreet and free tool at that level.
 | 3️⃣ **Last three counted down**   | A tick, a pulse and a flash each second, and what comes next announced before the end |
 | 🎨 **Workout mode**              | A routine marked *workout* tints the whole page with the step's colour — red for work, green for rest |
 | ⏰ **Routine reminder**          | A time, some days: the notification arrives when it should and opens the routine, ready to start                               |
+| 🧪 **Notification test**         | A button schedules a notification five seconds out: time enough to lock the screen, and to know the device warns you before you need it |
 | 🔁 **Automatic chaining**        | Work → break → work, with a long break every 4 cycles (can be turned off)                                              |
 | 📊 **History & statistics**      | Focus time today, completed sessions, day streak, chart of the last 7 days                                             |
 | 🏁 **Daily goal**                | A number of focus minutes to aim for each day (10-300 min), with a progress bar                                        |
@@ -135,7 +137,9 @@ visual timer is a simple, discreet and free tool at that level.
 | 📳 **Coded vibration**           | A different pattern per milestone — 1 pulse on the first, 2 on the second, 3 short on the last, 3 long at the end (can be turned off) |
 | 📲 **Notifications**             | Alerts even with a locked phone or the app in the background, with the same sounds as the app                          |
 | 🔆 **Screen always on**          | The screen doesn't turn off during the countdown (can be turned off)                                                   |
-| 🧩 **iPhone widget**             | The running countdown or today's goal, right on your home screen                                                       |
+| 🧩 **iPhone and Android widget** | The dial itself on your home screen: the disk empties minute by minute, with the time left and today's goal            |
+| ⏱️ **Countdown on the lock screen** | A silent notification on Android, a Live Activity on iPhone: the time left without unlocking |
+| 🍽️ **Table mode**                | The dial writ large, everything else cleared away: a phone stood on a desk becomes the timer for the table or the classroom |
 | 🌍 **7 languages**               | French, English, Spanish, German, Italian, Portuguese, Arabic (read right to left)                                     |
 | 🌗 **Dark mode**                 | Follows your device setting, then adjustable in ⚙︎                                                                      |
 | 🔇 **Sound on/off**              | Mute everything, and the choice is remembered                                                                          |
@@ -213,9 +217,13 @@ The app is designed to be usable by everyone:
 - 🔒 **Against accidental touches**: the lock neutralizes the dial, the − / + buttons and the reset.
   Start / Pause stays live: an accidental pause costs nothing, an accidental reset loses the session.
 
-A dedicated page covers all of this, including the RGAA 4.1 accessibility statement
-(conformance status, non-accessible content, contact and remedies): see the
-**♿ Accessibility** link at the bottom right of the app.
+A dedicated page covers all of this, including the RGAA 4.1 accessibility statement laid out as
+French decree no. 2019-768 requires (commitment, conformance status, test results, non-accessible
+content, how the statement was drawn up, contact and remedies): see the **♿ Accessibility** link
+at the bottom right of the app. The status is **partially conformant**, with no conformance
+score: no third party has audited the app, and a self-awarded percentage would mislead. The
+statement is published voluntarily — the app falls outside the scope of article 47 of French law
+no. 2005-102.
 
 These guarantees are checked on every change: `npm run test:a11y` replays seventy-two checks
 (axe-core on every view, in light, dark and Arabic; control of the dial by keyboard and by the
@@ -237,7 +245,6 @@ sizes; the modal focus trap; no horizontal scrolling at 320 px), and CI runs the
 ![Capacitor](https://img.shields.io/badge/Capacitor-8-119EFF?logo=capacitor&logoColor=white)
 ![Swift](https://img.shields.io/badge/Swift-widget_iOS-F05138?logo=swift&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&logoColor=white)
-![Karma](https://img.shields.io/badge/Karma-6-56C5A8)
 ![Jasmine](https://img.shields.io/badge/Jasmine-7-8A4182?logo=jasmine&logoColor=white)
 
 ![SwiftUI](https://img.shields.io/badge/SwiftUI-widget-0D96F6?logo=swift&logoColor=white)

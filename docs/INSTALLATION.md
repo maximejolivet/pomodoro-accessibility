@@ -21,7 +21,7 @@ Lancer `make` seul affiche l'aide.
 | `make dev`                            | Serveur de dev avec rechargement à chaud                        |
 | `make build`                          | Build de production                                             |
 | `make watch`                          | Build de dev en continu                                         |
-| `make test`                           | Tests unitaires (Karma / Jasmine)                               |
+| `make test`                           | Tests unitaires (Karma / Jasmine) — aucune spécification à ce jour |
 | `make test-a11y`                      | Tests d'accessibilité (axe-core + clavier, via Playwright)      |
 | `make sync`                           | Build, copie dans `www/`, `npx cap sync`, puis `make sounds`    |
 | `make sounds`                         | Génère les sons de notification (WAV) et les copie dans Android |

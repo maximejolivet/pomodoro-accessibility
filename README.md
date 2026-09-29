@@ -27,6 +27,7 @@ On voit le temps qui reste au lieu de le lire.
 <img src="docs/screenshot.png" alt="Pomodoro Accessibilité en mode clair" width="300">
 &nbsp;&nbsp;
 <img src="docs/screenshot-dark.png" alt="Pomodoro Accessibilité en mode sombre" width="300">
+<img src="docs/screenshot-widget.png" alt="Le widget sur l'écran d'accueil, en thème clair et sombre" width="620">
 
 </div>
 
@@ -124,6 +125,7 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
 | 3️⃣ **Décompte des 3 dernières**  | Un tic, une impulsion et un éclat par seconde, et la suite annoncée avant la fin : finir son effort sans regarder   |
 | 🎨 **Mode sport**                | Une routine marquée *entraînement* teinte toute la page de la couleur de l'étape — rouge à l'effort, vert au repos |
 | ⏰ **Rappel de routine**         | Une heure, des jours : la notification arrive à l'heure dite et ouvre la routine, prête à démarrer                      |
+| 🧪 **Test de notification**      | Un bouton programme une notification à cinq secondes : le temps de verrouiller l'écran, et de savoir avant d'en avoir besoin si l'appareil prévient |
 | 🔁 **Enchaînement automatique**  | Travail → pause → travail, avec une pause longue tous les 4 cycles (désactivable)                                      |
 | 📊 **Historique & statistiques** | Temps de focus du jour, sessions terminées, série de jours, graphique des 7 derniers jours                             |
 | 🏁 **Objectif quotidien**        | Un nombre de minutes de focus à viser chaque jour (10-300 min), avec une barre de progression                          |
@@ -134,7 +136,9 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
 | 📳 **Vibration codée**           | Un motif différent par palier — 1 impulsion au premier, 2 au deuxième, 3 brèves au dernier, 3 longues à la fin (désactivable) |
 | 📲 **Notifications**             | Alertes même téléphone verrouillé ou app en arrière-plan, avec les mêmes sons que l'app                                |
 | 🔆 **Écran toujours allumé**     | L'écran ne s'éteint pas pendant le décompte (désactivable)                                                             |
-| 🧩 **Widget iPhone**             | Le décompte en cours ou l'objectif du jour, directement sur l'écran d'accueil                                          |
+| 🧩 **Widget iPhone et Android**  | Le cadran lui-même sur l'écran d'accueil : le disque s'y vide minute par minute, avec le temps et l'objectif du jour   |
+| ⏱️ **Décompte sur l'écran verrouillé** | Une notification muette sur Android, une Live Activity sur iPhone : le temps restant sans déverrouiller |
+| 🍽️ **Mode table**                | Le cadran en grand, tout le reste effacé : le téléphone posé debout devient le minuteur de la table ou de la classe |
 | 🌍 **7 langues**                 | Français, anglais, espagnol, allemand, italien, portugais, arabe (lu de droite à gauche)                               |
 | 🌗 **Mode sombre**               | Suit le réglage de l'appareil, puis modifiable dans ⚙︎                                                                  |
 | 🔇 **Son on/off**                | Coupure complète des sons, choix mémorisé                                                                              |
@@ -215,9 +219,13 @@ L'application est pensée pour être utilisable par tout le monde :
   remise à zéro. Démarrer / Pause reste actif : une pause involontaire se rattrape, une remise à
   zéro involontaire fait perdre la session.
 
-Une page dédiée détaille tout cela, avec la déclaration d'accessibilité RGAA 4.1 (état de
-conformité, contenus non accessibles, contact et voies de recours) : lien **♿ Accessibilité**
-en bas à droite de l'application.
+Une page dédiée détaille tout cela, avec la déclaration d'accessibilité RGAA 4.1 au plan du
+décret n° 2019-768 (engagement, état de conformité, résultats des tests, contenus non
+accessibles, établissement de la déclaration, contact et voies de recours) : lien
+**♿ Accessibilité** en bas à droite de l'application. L'état annoncé est **partiellement
+conforme**, sans taux de conformité : aucun audit n'a été mené par un tiers, et un pourcentage
+auto-attribué tromperait. La déclaration est publiée volontairement — l'application n'entre pas
+dans le champ de l'article 47 de la loi n° 2005-102.
 
 Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue soixante-douze
 contrôles (axe-core sur toutes les vues, en clair, en sombre et en arabe ; réglage du cadran au
@@ -240,7 +248,6 @@ et la CI les relance à chaque push.
 ![Capacitor](https://img.shields.io/badge/Capacitor-8-119EFF?logo=capacitor&logoColor=white)
 ![Swift](https://img.shields.io/badge/Swift-widget_iOS-F05138?logo=swift&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&logoColor=white)
-![Karma](https://img.shields.io/badge/Karma-6-56C5A8)
 ![Jasmine](https://img.shields.io/badge/Jasmine-7-8A4182?logo=jasmine&logoColor=white)
 
 ![SwiftUI](https://img.shields.io/badge/SwiftUI-widget-0D96F6?logo=swift&logoColor=white)

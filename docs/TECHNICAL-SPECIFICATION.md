@@ -42,7 +42,7 @@ pour le natif, [Build mobile](MOBILE.md).
 | Styles | Tailwind CSS + PostCSS | 4 / 8 | Utilitaires, jetons de thème |
 | Natif | Capacitor | 8 | Pont web ↔ iOS / Android |
 | Widget iOS | Swift, SwiftUI, WidgetKit | iOS 17+ | Widget d'écran d'accueil |
-| Tests unitaires | Karma + Jasmine | 6 / 7 | Tests unitaires |
+| Tests unitaires | Karma + Jasmine | 6 / 7 | Outillage en place, **aucune spécification écrite à ce jour** |
 | Tests d'accessibilité | Playwright + axe-core | 1.63 / 4.13 | Non-régression RGAA / WCAG |
 | Exécution | Node.js | ^24.15.0 (`engines`, `.nvmrc`) | Outillage et scripts |
 
@@ -375,20 +375,27 @@ de l'application et ceux des notifications sont ainsi identiques par constructio
 | iOS | L'application écrit elle-même les WAV dans `Library/Sounds` au lancement, via `@capacitor/filesystem` |
 | Android | `make sounds` copie les WAV dans `android/app/src/main/res/raw` ; l'application crée un canal de notification par son |
 
+⚠️ **Un canal Android est immuable.** Son son est fixé à sa création : le recréer ne le change
+pas. Un canal né d'un build fait **avant** `make sounds` pointe vers une ressource `raw`
+absente et reste muet pour toujours sur cette installation — la notification s'affiche, sans
+un bruit. D'où `CHANNEL_VERSION` dans `notification.service.ts` : les identifiants portent
+`_v<n>`, et changer le son d'un canal veut dire **incrémenter cette version**, ce qui en crée
+de nouveaux et supprime les précédents (`deleteChannel`).
+
 Les alertes (paliers, fin, fin de prolongation, fin de la session enchaînée) sont programmées au
 passage en arrière-plan et annulées au retour. Pendant une routine, c'est l'étape suivante qui
 nomme la notification de fin (« Place à : Petit-déjeuner »), et aucune prolongation n'est
 programmée (RG-17). Sur Android 12+, les alarmes exactes peuvent
 requérir `SCHEDULE_EXACT_ALARM` dans `AndroidManifest.xml`. Aucun effet dans le navigateur.
 
-**Deux durées de vie cohabitent**, et la distinction est vitale :
+**Trois durées de vie cohabitent**, et la distinction est vitale :
 
-| | Alertes de session | Rappels de routine |
-| --- | --- | --- |
-| Ids | < `REMINDER_ID_BASE` (1000) | ≥ 1000 |
-| Programmation | au passage en arrière-plan | à chaque changement de routine, de langue ou du réglage *Son* |
-| Annulation | **toutes**, à chaque retour au premier plan | jamais, sauf reprogrammation en bloc |
-| Forme | `schedule.at`, ponctuelle | `schedule.on` (façon cron : jour, heure), hebdomadaire |
+| | Alertes de session | Rappels de routine | Notification de test |
+| --- | --- | --- | --- |
+| Ids | < `REMINDER_ID_BASE` (1000) | ≥ 1000 | `TEST_ID` (2000) |
+| Programmation | au passage en arrière-plan | à chaque changement de routine, de langue ou du réglage *Son* | à la demande, depuis les réglages |
+| Annulation | **toutes**, à chaque retour au premier plan | jamais, sauf reprogrammation en bloc | jamais : ni le retour au premier plan ni la réécriture des rappels ne l'atteignent (RG-30) |
+| Forme | `schedule.at`, ponctuelle | `schedule.on` (façon cron : jour, heure), hebdomadaire | `schedule.at`, à `TEST_DELAY_SECONDS` (5 s) |
 
 `cancelPending()` filtre donc sur cette borne : sans ce filtre, le premier retour au premier plan
 effacerait tous les rappels (RG-22). Les jours sont convertis d'ISO 8601 vers la numérotation de
@@ -398,23 +405,112 @@ Capacitor, qui compte à partir du dimanche. Android replace les rappels après 
 L'appui sur un rappel est reçu par `localNotificationActionPerformed` : `extra.routineId` remonte
 jusqu'à `SessionService`, qui **arme** la routine sans la démarrer (RG-21).
 
-### 9.2 Widget iOS
+### 9.2 Notification de test et alarmes exactes
+
+Autorisation, canal, son, affichage écran verrouillé : la chaîne ne se vérifie pas autrement
+qu'en la parcourant. `sendTest()` programme donc une notification à cinq secondes — le délai
+est le test lui-même, il laisse le temps de verrouiller l'écran. Le résultat rendu à l'appelant
+(`TestResult`) distingue ce qui s'est passé : `scheduled`, `inexact` (programmée, mais l'appareil
+ne garantit pas l'heure), `denied`, `unsupported` (navigateur : `Capacitor.isNativePlatform()`
+est faux, il n'y a rien à tester) et `failed`. L'onglet *Réglages* affiche cette issue dans une
+région `aria-live="polite"`, à côté du bouton.
+
+`openExactAlarmSettings()` ouvre l'écran système « Alarmes et rappels » via
+`changeExactNotificationSetting()`. Android seulement : avant Android 12 la permission n'existe
+pas et le plugin répond « accordé » sans rien ouvrir, ailleurs l'appel lèverait — d'où
+`unsupported`, qui ne ment pas sur la raison. À savoir : passer d'accordé à refusé depuis cet
+écran fait **redémarrer l'application** et efface les alarmes exactes déjà programmées ; c'est
+le système qui l'impose. Au retour, le test reste à refaire : c'est lui qui juge, pas la
+permission.
+
+### 9.3 Décompte permanent hors de l'app
+
+Le widget attend qu'on aille le voir ; celui-ci se pose sur l'écran verrouillé. Une seule
+méthode côté web — `LiveStatusService.update()` — reçoit **le même état que le widget**, au
+même moment, et chaque plateforme en fait ce qu'elle sait faire.
+
+| | Android | iOS |
+| --- | --- | --- |
+| Forme | Notification permanente (`LiveStatusPlugin.java`, id 3000) | Live Activity (ActivityKit, iOS 16.2+) |
+| Secondes | `setUsesChronometer` + `setChronometerCountDown` (API 24) | `Text(timerInterval:)` |
+| Cadran | absent : une notification n'a pas d'image vivante | `DialFace`, **figé entre deux mises à jour** |
+| Canal / réglage | canal `ongoing_v1`, importance basse, sans son ni vibration | `NSSupportsLiveActivities` dans `Info.plist` |
+
+**Elle informe, elle n'alerte pas** : sans cela, le décompte permanent couvrirait les paliers,
+qui eux doivent s'entendre. D'où un canal muet sur Android et `setOnlyAlertOnce(true)`, qui
+empêche chaque réécriture de rejouer l'arrivée de la notification.
+
+Côté iOS, `PomodoroActivity.swift` appartient aux **deux** cibles — l'app qui demande
+l'activité et l'extension qui la dessine : ActivityKit apparie les deux bouts par le type, et
+deux copies dans deux modules ne s'apparieraient pas. Le cadran, lui, ne se redessine qu'aux
+mises à jour poussées par l'app : une Live Activity ne s'anime pas seule, et la réveiller à la
+minute demanderait un serveur de notifications push. Le chiffre, lui, court tout seul.
+
+### 9.4 Widgets d'écran d'accueil
 
 - Extension `PomodoroWidget` (SwiftUI, WidgetKit, iOS 17+).
 - Transport : plugin Capacitor **local** `WidgetBridge` (`ios/App/App/WidgetBridgePlugin.swift`),
   enregistré par `MainViewController`, qui écrit l'état JSON dans l'App Group
   `group.com.maximejolivet.pomodorotdah`.
 - Le widget décompte seul entre deux mises à jour ; l'application ne pousse un état qu'aux
-  changements (démarrage, pause, fin, arrière-plan, objectif, langue) et seulement si le JSON diffère.
+  changements (démarrage, pause, fin, arrière-plan, objectif, langue, thème, durée réglée)
+  et seulement si le JSON diffère.
 - Le contrat de données est le type `WidgetState` côté TypeScript et `WidgetState` côté Swift :
-  **toute évolution doit être faite des deux côtés**.
+  **toute évolution doit être faite des deux côtés**. Côté Swift, les champs ajoutés après coup
+  (`dialUnit`, `dialSeconds`, `secShort`, `dark`) sont optionnels : un état écrit par une version
+  plus ancienne se décode encore.
 - Sur appareil, l'équipe de signature doit être choisie pour les cibles **App** et
   **PomodoroWidget** afin que Xcode crée l'App Group.
 
-### 9.3 Identité de l'application
+**Le widget montre le cadran, pas un résumé du cadran.** L'énumération `Dial` de
+`PomodoroWidget.swift` porte les constantes de `dial-geometry.ts` — repère 420 × 420, `CX`/`CY`,
+rayons, douze couleurs de segment, sens anti-horaire depuis 0 — et un `Canvas` les dessine à
+l'échelle du widget : anneau, voile du mode en `multiply` sur l'anneau, plateau central, douze
+séparateurs, trait de bord, languette, bouton nacré, et la pastille d'unité quand la graduation
+compte des secondes. Les jetons de `src/theme/` sont recopiés dans `Palette` (clair et sombre) :
+le widget suit le **thème choisi dans l'app** (`dark`), pas celui du système.
+
+| Famille | Composition |
+| --- | --- |
+| `systemSmall` | Le cadran, et sous lui la pastille de lecture : point de couleur, temps, nom du mode |
+| `systemMedium` | Le cadran à gauche ; à droite le mode, le temps en grand dans la couleur du mode, et l'objectif du jour |
+
+**Android** (`android/app/src/main/java/.../`, en Java : le module `app` n'a pas le plugin
+Kotlin, et le widget ne valait pas de toucher au Gradle) tient le même dessin avec d'autres
+contraintes. Un widget ne sait pas exécuter de vue à lui : `DialBitmap` peint le cadran dans un
+`Bitmap` — troisième port de la même géométrie — que `RemoteViews` affiche. La largeur du widget
+choisit la disposition (`widget_pomodoro` sous 220 dp, `widget_pomodoro_wide` au-dessus), faute
+de `RemoteViews` multi-tailles avant l'API 31.
+
+| | iOS | Android |
+| --- | --- | --- |
+| Dessin | SwiftUI `Canvas` | `Canvas` sur un `Bitmap` (320 px au plus : il voyage par IPC) |
+| Secondes | `Text(timerInterval:)` | `Chronometer` en mode compte à rebours (API 24) |
+| Graduation | une entrée de timeline par minute | une alarme `AlarmManager` par minute |
+| Transport | App Group + `WidgetCenter` | `SharedPreferences` + `AppWidgetManager` (même processus) |
+
+**Deux horloges, et c'est ce qui rend le widget tenable pour la batterie** : le chronomètre
+égrène les secondes sans que rien ne le réveille, et l'alarme ne redessine le cadran qu'au
+changement de graduation — une minute, ou cinq secondes sur un cadran gradué en secondes.
+Le décompte arrêté, l'alarme est annulée : un cadran figé n'a aucune raison de réveiller le
+téléphone. `updatePeriodMillis` vaut donc **0** : le système ne réveille rien de lui-même.
+
+Sur Android 12+, l'alarme exacte dépend d'« Alarmes et rappels » ; refusée, le widget retombe
+sur une alarme ordinaire et retarde un peu, il ne s'arrête pas. Avant Android 12 — donc sur
+Android 9 — la question ne se pose pas : l'alarme exacte est accordée d'office.
+
+Le disque se vide tout seul : la timeline pose une entrée par **graduation franchie** — une par
+minute, ou une par seconde sur un cadran gradué en secondes — plus la fin du décompte et minuit,
+58 marches au plus. `.contentMarginsDisabled()` rend au cadran la marge que le système réserve.
+Le cadran est `accessibilityHidden` : c'est une image du temps, et la pastille dit la même chose
+en toutes lettres.
+
+### 9.5 Identité de l'application
 
 `appId` : `com.maximejolivet.pomodorotdah` · `appName` : Pomodoro Accessibilité · `webDir` : `www`.
-L'icône iOS est générée depuis `resources/app-icon.svg` par `make icon`.
+Icônes et écrans de lancement des deux plateformes sont générés par `make icons`
+(`scripts/generate-icons.ts`, rendu par Chromium) depuis `resources/app-icon.svg` et
+`resources/app-icon-foreground.svg` — voir [MOBILE.md](MOBILE.md).
 
 ---
 
@@ -518,14 +614,14 @@ maintenue.
 
 | Niveau | Outil | Portée |
 | ------ | ----- | ------ |
-| Unitaire | Karma + Jasmine (`make test`) | Logique du domaine : géométrie du cadran, helpers de temps, services |
+| Unitaire | Karma + Jasmine (`make test`) | **Rien pour l'instant** : `src/` ne contient aucun `.spec.ts`, et `make test` échoue donc sur `TS18003`. La logique du domaine — géométrie du cadran, helpers de temps, services — n'est couverte que de bout en bout, par la suite d'accessibilité |
 | Accessibilité | Playwright + axe-core (`npm run test:a11y`) | Parcours réels, clavier, focus, contrastes |
 
 Configuration Playwright : dossier `tests/`, projet Chromium en **420 × 900** (cadrage mobile),
 serveur de développement démarré automatiquement sur `http://localhost:4200`, exécution
 parallèle, une reprise en CI, trace à la première reprise, `forbidOnly` en CI.
 
-La suite `tests/a11y.spec.ts` (44 tests) analyse avec les jeux de règles `wcag2a`, `wcag2aa`,
+La suite `tests/a11y.spec.ts` (78 tests) analyse avec les jeux de règles `wcag2a`, `wcag2aa`,
 `wcag21a`, `wcag21aa` et `best-practice`, en **thème clair et en thème sombre**, sur l'accueil,
 sur le panneau de réglages ouvert et sur les éditeurs de mode et de routine. Les comportements
 qui dépendent du temps (annonce vocale, vibration, alerte visuelle, enchaînement des étapes

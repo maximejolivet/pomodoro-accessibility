@@ -179,6 +179,17 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-TUT-5 | Le tutoriel se passe d'un appui sur *Passer* ou sur Échap, et ne se remontre plus de lui-même.                                   | M    |
 | EF-TUT-6 | Il se rejoue à la demande depuis ⚙︎ → Réglages → *Revoir le tutoriel*.                                                           | S    |
 
+### 4.4b Mode table (`EF-TAB`)
+
+| Réf.     | Exigence                                                                                                                      | Prio |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------- | ---- |
+| EF-TAB-1 | Un mode table affiche le cadran en grand : le téléphone posé debout sert de minuteur visuel à une table ou à une classe.      | S    |
+| EF-TAB-2 | Tout ce qui ne se lit pas à deux mètres s'efface : réglages, remise à zéro, boutons − / +, pastille d'accessibilité.          | S    |
+| EF-TAB-3 | Démarrer / Pause et le verrou du cadran restent : un minuteur qu'on ne peut plus lancer ne sert à rien.                       | M    |
+| EF-TAB-4 | En paysage, le cadran se met à gauche et le temps à droite : empilés, ni l'un ni l'autre ne tiendrait.                        | S    |
+| EF-TAB-5 | La sortie est visible, nommée en toutes lettres, atteignable au clavier, et Échap en sort aussi.                              | M    |
+| EF-TAB-6 | L'écran reste allumé tant que dure le mode table, quel que soit le réglage — un minuteur de table qui s'éteint ne sert à rien. | M    |
+
 ### 4.5 Enchaînement et prolongation (`EF-CHA`)
 
 | Réf.     | Exigence                                                                                     | Prio |
@@ -206,6 +217,12 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-ALE-12 | Le signal visuel bat à 0,6 Hz au plus, se fige sous `prefers-reduced-motion`, n'intercepte aucun clic et n'est pas exposé aux lecteurs d'écran.    | M    |
 | EF-ALE-13 | À la fin, un bandeau « Temps écoulé » reste affiché jusqu'à la prochaine action : une alerte qui passe se rate.                                    | S    |
 | EF-ALE-10 | Le motif se reconnaît d'abord au nombre d'impulsions et à leur rythme : la durée demandée est respectée sur Android et sur iPhone à Taptic Engine, mais un appareil iOS plus ancien retombe sur une vibration système de longueur fixe. | S    |
+| EF-ALE-14 | Depuis les réglages, une notification de test se programme à cinq secondes : le délai est le sujet même du test, il laisse le temps de verrouiller l'écran, et c'est écran verrouillé qu'on veut savoir si l'appareil prévient. | S    |
+| EF-ALE-15 | Le test dit à la même place ce qu'il est advenu, dans une région live : programmée, programmée sans alarme exacte, notifications refusées, indisponible hors de l'application installée, ou échouée. | M    |
+| EF-ALE-16 | Un lien mène à l'écran système « Alarmes et rappels » (Android 12+) ; ailleurs, il annonce que cet écran n'existe pas plutôt que de faire croire à un refus. | S    |
+| EF-ALE-17 | Pendant une session, un décompte permanent se pose hors de l'application — notification muette sur Android, Live Activity sur iOS — et donne le temps restant sans déverrouiller. | S    |
+| EF-ALE-18 | Ce décompte n'alerte jamais : ni son, ni vibration, ni pastille. Il informe, et laisse les paliers se faire entendre. | M    |
+| EF-ALE-19 | Il disparaît dès que le décompte s'arrête, et l'appui dessus ouvre l'application sans rien démarrer. | M    |
 
 ### 4.7 Historique, statistiques et objectif (`EF-HIS`)
 
@@ -252,8 +269,10 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | Réf.     | Exigence                                                                                                     | Prio |
 | -------- | ------------------------------------------------------------------------------------------------------------ | ---- |
 | EF-NAT-1 | L'écran ne s'éteint pas pendant le décompte lorsque l'option est active.                                     | S    |
-| EF-NAT-2 | Un widget d'écran d'accueil iOS affiche le décompte en cours ou l'objectif du jour.                          | C    |
-| EF-NAT-3 | Le widget continue de décompter seul entre deux mises à jour de l'application.                               | C    |
+| EF-NAT-2 | Un widget d'écran d'accueil, sur iOS et sur Android, reprend le cadran de l'application — anneau de couleurs, disque du mode, bouton central — avec le temps et l'objectif du jour. | C    |
+| EF-NAT-5 | Le widget suit le thème choisi dans l'application, clair ou sombre, et non celui du système.                  | C    |
+| EF-NAT-6 | Toucher le widget ouvre l'application, sans rien démarrer : il montre, il ne commande pas.                    | C    |
+| EF-NAT-3 | Le widget continue de décompter seul entre deux mises à jour de l'application, et son disque se vide graduation par graduation. | C    |
 | EF-NAT-4 | Le widget est mis à jour aux changements : démarrage, pause, fin, passage en arrière-plan, objectif, langue. | C    |
 
 ### 4.11 Page d'accessibilité (`EF-A11`)
@@ -261,9 +280,12 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | Réf.     | Exigence                                                                                                                                               | Prio |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- |
 | EF-A11-1 | Un lien « ♿ Accessibilité » est accessible depuis le minuteur.                                                                                         | M    |
-| EF-A11-2 | La page publie la déclaration d'accessibilité : standards visés, environnement et outils de test, contenus non accessibles, contact, voies de recours. | M    |
+| EF-A11-2 | La page publie la déclaration d'accessibilité dans le plan du décret n° 2019-768 : engagement, état de conformité, résultats des tests, contenus non accessibles (non-conformités, dérogations pour charge disproportionnée, contenus non soumis), établissement de la déclaration, contact, voies de recours. | M    |
 | EF-A11-3 | La page est traduite dans les sept langues.                                                                                                            | M    |
 | EF-A11-4 | Une session en cours continue, se termine et s'enregistre pendant la consultation de cette page.                                                       | M    |
+| EF-A11-5 | La page dit que la déclaration est volontaire : l'application n'entre pas dans le champ de l'article 47, et laisser croire à une obligation serait faux. | M    |
+| EF-A11-6 | Aucun taux de conformité n'est annoncé tant qu'aucun audit n'a été mené par un tiers : un pourcentage auto-attribué tromperait sur ce qui a été vérifié. | M    |
+| EF-A11-7 | L'établissement de la déclaration nomme la date, les technologies, l'environnement de test, les outils et les pages évaluées, et dit qu'aucune technologie d'assistance n'a été utilisée. | M    |
 
 ---
 
@@ -300,6 +322,7 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | RG-27 | L'unité du cadran suit la **durée réglée**, jamais le temps restant : un Pomodoro ne bascule pas en secondes dans sa dernière minute.                                    |
 | RG-28 | Le mode sport **teinte** le fond du thème (18 à 30 %) au lieu de le remplacer : clair reste clair, sombre reste sombre, et les textes gardent leur contraste. |
 | RG-29 | Sur ce fond teinté, le gris secondaire passe au gris fort : mesuré sur les dix couleurs de la palette, il tombait à 2,82:1 (WCAG 1.4.3).                     |
+| RG-30 | La notification de test vit au-dessus des deux autres bornes d'identifiant : ni le retour au premier plan, qui annule les alertes de session, ni la réécriture en bloc des rappels ne l'effacent — elle doit arriver, c'est tout son objet. |
 | RG-23 | Le tutoriel se montre tant qu'il n'a pas été vu. Passé, terminé ou revu, il ne se remontre plus de lui-même — seul *Revoir le tutoriel* le rouvre.                      |
 | RG-24 | Le tutoriel n'avance jamais seul, et le panneau de réglages se ferme avant qu'il ne s'ouvre : deux modales à la fois ne s'entendraient pas.                             |
 
