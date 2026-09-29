@@ -272,6 +272,8 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 | EF-NAT-2 | Un widget d'écran d'accueil, sur iOS et sur Android, reprend le cadran de l'application — anneau de couleurs, disque du mode, bouton central — avec le temps et l'objectif du jour. | C    |
 | EF-NAT-5 | Le widget suit le thème choisi dans l'application, clair ou sombre, et non celui du système.                  | C    |
 | EF-NAT-6 | Toucher le widget ouvre l'application, sans rien démarrer : il montre, il ne commande pas.                    | C    |
+| EF-NAT-7 | L'application ouvre sur un fond noir où le cadran tourne, jusqu'à ce qu'elle soit prête — puis le voile s'efface. | S    |
+| EF-NAT-8 | Le cadran de l'ouverture se fige sous `prefers-reduced-motion`, et le voile s'efface quoi qu'il arrive, même si le démarrage échoue. | M    |
 | EF-NAT-3 | Le widget continue de décompter seul entre deux mises à jour de l'application, et son disque se vide graduation par graduation. | C    |
 | EF-NAT-4 | Le widget est mis à jour aux changements : démarrage, pause, fin, passage en arrière-plan, objectif, langue. | C    |
 

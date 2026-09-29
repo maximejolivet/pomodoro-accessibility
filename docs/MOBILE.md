@@ -119,3 +119,20 @@ affiche l'app, donc les dégradés et le `mix-blend-mode` du cadran sortent iden
 Le dessin de l'avant-plan tient dans un disque de 63 unités sur les 108 de la toile, donc à
 l'intérieur des 66 unités sûres : aucun masque de lanceur, si serré soit-il, ne mord sur
 l'anneau. À vérifier si l'on retouche le SVG.
+
+### L'ouverture, en trois temps
+
+Le fond est **noir** partout : il vaut pour les deux thèmes, et il n'envoie aucun éclair blanc
+à qui ouvre l'app dans le noir.
+
+1. **L'écran de lancement du système** — une image fixe. Android ne sait pas l'animer avant la
+   version 12, et Apple l'interdit : c'est le cadran posé sur le noir, rien de plus.
+2. **Le voile d'amorçage** (`src/index.html`) — dès la première ligne de HTML, sur le même
+   noir, l'anneau du cadran se met à tourner autour de sa face. Style et SVG en ligne : il
+   s'affiche avant tout téléchargement. `main.ts` le retire une fois l'app prête, y compris
+   **si le démarrage échoue** — un voile resté en place laisserait un écran noir muet.
+3. **L'application**, qui reprend son propre thème.
+
+Sous `prefers-reduced-motion`, l'anneau se fige et le fondu disparaît : il reste un logo, pas
+un moulin. Sur Android 12 et au-delà, le système impose son propre écran ; `values-v31/styles.xml`
+lui donne le même noir et la même icône, pour que toutes les versions ouvrent pareil.
