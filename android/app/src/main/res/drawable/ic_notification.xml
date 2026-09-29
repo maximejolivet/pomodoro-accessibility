@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Icône de la barre d'état. Android n'en garde que la silhouette : tout doit être opaque ou
+  transparent, sans couleur ni dégradé, sinon on obtient un carré blanc. C'est le cadran
+  réduit à ce qui le fait reconnaître — un anneau et le secteur qui se vide.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="#FFFFFF">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M12,2.5A9.5,9.5 0 1,0 12,21.5A9.5,9.5 0 1,0 12,2.5ZM12,4.5A7.5,7.5 0 1,1 12,19.5A7.5,7.5 0 1,1 12,4.5Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M12,12L12,5.2A6.8,6.8 0 0,0 7.4,7.1Z" />
+</vector>

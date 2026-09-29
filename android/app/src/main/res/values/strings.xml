@@ -4,4 +4,9 @@
     <string name="title_activity_main">Pomodoro Accessibilité</string>
     <string name="package_name">com.maximejolivet.pomodorotdah</string>
     <string name="custom_url_scheme">com.maximejolivet.pomodorotdah</string>
+    <string name="widget_label">Pomodoro Accessibilité</string>
+    <string name="widget_description">Le cadran du minuteur et l\'objectif de focus du jour.</string>
+    <string name="widget_dial_desc">Cadran du minuteur</string>
+    <string name="ongoing_channel">Décompte en cours</string>
+    <string name="ongoing_channel_description">La notification muette qui montre le temps restant, écran verrouillé.</string>
 </resources>
