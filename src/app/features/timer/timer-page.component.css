@@ -216,3 +216,76 @@
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+/*
+ * Mode table : le téléphone posé debout sur un bureau devient le minuteur visuel de la
+ * pièce. Le cadran prend toute la place qu'on peut lui donner, et tout ce qui ne se lit
+ * pas à deux mètres s'efface — les boutons de réglage, la pastille d'accessibilité, les
+ * commandes − / +. Il reste Démarrer / Pause, le temps en grand, et la porte de sortie.
+ */
+.stage.table {
+  gap: 8px;
+  padding: 8px 12px 16px;
+  justify-content: center;
+}
+
+.stage.table .accessibility-link {
+  display: none;
+}
+
+/*
+ * La sortie : posée en haut à droite, hors du chemin du regard, mais c'est une cible de
+ * 44 px nommée en toutes lettres (WCAG 2.5.8) — pas une croix devinée dans un coin.
+ */
+.table-exit {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--surface-edge);
+  border-radius: 999px;
+  background: var(--surface-hi);
+  color: var(--muted-strong);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.table-exit svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.table-exit:focus-visible {
+  outline: 3px solid var(--bar);
+  outline-offset: 3px;
+}
+
+.stage.table {
+  position: relative;
+}
+
+/*
+ * Posé en paysage — l'orientation naturelle d'un téléphone calé sur une table — le cadran
+ * se met à gauche et le temps à droite : empilés, ils ne tiendraient ni l'un ni l'autre.
+ */
+@media (orientation: landscape) {
+  .stage.table {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    gap: 0 24px;
+    padding: 8px 16px;
+  }
+}

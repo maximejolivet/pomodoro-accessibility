@@ -945,6 +945,21 @@ test.describe("tutoriel d'accueil", () => {
   const previous = (page: Page) => page.getByRole('button', { name: 'Précédent' });
   const dots = (page: Page) => page.getByRole('group', { name: 'Bienvenue' }).getByRole('button');
 
+  /**
+   * Attend que la bande ait fini de glisser. Sans cette attente, axe-core mesure la vue
+   * pendant le glissement : elle dépasse alors de la fenêtre, qui la rogne, et plus rien
+   * ne se trouve derrière son texte — le contraste est calculé contre le blanc du canevas
+   * et le thème sombre paraît illisible.
+   */
+  async function settled(page: Page) {
+    await page.waitForFunction(() => {
+      const slide = document.querySelector('.tutorial .slide:not([inert])');
+      const viewport = document.querySelector('.tutorial .viewport');
+      if (!slide || !viewport) return false;
+      return Math.abs(slide.getBoundingClientRect().left - viewport.getBoundingClientRect().left) < 1;
+    });
+  }
+
   async function open(page: Page, lang = 'fr') {
     await showTutorial(page, lang);
     await page.goto('/');
@@ -963,6 +978,7 @@ test.describe("tutoriel d'accueil", () => {
 
       await next(page).click();
       await next(page).click();
+      await settled(page);
       expect(await violations(page), 'troisième vue').toEqual([]);
     });
   }
@@ -1424,4 +1440,79 @@ test.describe('mode sport (design)', () => {
     );
     expect(saved.find((r: { id: string }) => r.id === 'tabata').workout).toBe(false);
   });
+});
+
+/**
+ * Mode table : le téléphone posé debout devient le minuteur visuel de la pièce. Ce qui
+ * s'efface doit s'effacer vraiment (et non seulement à l'œil), ce qui reste doit rester
+ * atteignable au clavier, et la porte de sortie doit se voir et s'ouvrir — un mode sans
+ * sortie visible est un piège, surtout pour qui ne sait pas comment il y est entré.
+ */
+test.describe('mode table', () => {
+  async function enterTable(page: Page, lang = 'fr') {
+    await page.addInitScript(l => localStorage.setItem('pomodoro-tdah.lang', l), lang);
+    await page.goto('/');
+    await ready(page);
+    await openSheet(page);
+    await page.locator('.tabs button:nth-child(3)').click();
+    await page.getByRole('button', { name: /^Mode table$/ }).last().click();
+    await expect(page.locator('.stage.table')).toBeVisible();
+  }
+
+  test('le cadran prend la place, les commandes secondaires s’effacent', async ({ page }) => {
+    await enterTable(page);
+
+    // Le panneau s'est fermé de lui-même : rien ne doit rester entre le cadran et la pièce
+    await expect(page.locator('.sheet.open')).toHaveCount(0);
+    await expect(page.getByRole('button', { name: /remettre à zéro/i })).toBeHidden();
+    await expect(page.getByRole('button', { name: /^Réglages$/ })).toBeHidden();
+    await expect(page.getByRole('button', { name: /moins|plus/i }).first()).toBeHidden();
+
+    // Démarrer reste : un minuteur qu'on ne peut plus lancer ne sert à rien
+    await expect(page.getByRole('button', { name: /démarrer/i })).toBeVisible();
+    await expect(page.locator('.accessibility-link')).toBeHidden();
+  });
+
+  test('le chrono se lit de loin', async ({ page }) => {
+    await page.goto('/');
+    await ready(page);
+    const before = await page.locator('.readout-time').evaluate(
+      el => parseFloat(getComputedStyle(el).fontSize)
+    );
+    await enterTable(page);
+    const after = await page.locator('.readout-time').evaluate(
+      el => parseFloat(getComputedStyle(el).fontSize)
+    );
+    expect(after, 'le temps grossit en mode table').toBeGreaterThan(before * 1.4);
+  });
+
+  test('la sortie se voit, s’atteint au clavier et rend la page entière', async ({ page }) => {
+    await enterTable(page);
+
+    const exit = page.getByRole('button', { name: 'Quitter le mode table' });
+    await expect(exit).toBeVisible();
+    // Cible d'au moins 44 px (WCAG 2.5.8) : on en sort avec un doigt, pas avec une pointe
+    const box = await exit.boundingBox();
+    expect(box!.height).toBeGreaterThanOrEqual(44);
+
+    await exit.focus();
+    await expect(exit).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(page.locator('.stage.table')).toHaveCount(0);
+    await expect(page.getByRole('button', { name: /^Réglages$/ })).toBeVisible();
+  });
+
+  test('Échap quitte le mode table', async ({ page }) => {
+    await enterTable(page);
+    await page.keyboard.press('Escape');
+    await expect(page.locator('.stage.table')).toHaveCount(0);
+  });
+
+  for (const theme of ['light', 'dark'] as const) {
+    test(`aucune violation en mode table, thème ${theme}`, async ({ page }) => {
+      await page.addInitScript(t => localStorage.setItem('pomodoro-tdah.theme', t), theme);
+      await enterTable(page);
+      expect(await violations(page)).toEqual([]);
+    });
+  }
 });

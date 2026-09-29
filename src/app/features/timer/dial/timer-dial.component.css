@@ -238,3 +238,21 @@
     width: min(calc(100vw - 32px), 560px, calc(100dvh - 330px - var(--pill-band) + 40px));
   }
 }
+
+/*
+ * Mode table : le cadran prend ce que les commandes effacées lui laissent. En paysage, il
+ * se cale sur la hauteur — c'est elle qui manque — et laisse la largeur au chrono.
+ */
+:host-context(.table) .tilt-zone {
+  padding: 4px 0 30px;
+}
+
+:host-context(.table) .device {
+  width: min(calc(100vw - 24px), calc(100dvh - 210px));
+}
+
+@media (orientation: landscape) {
+  :host-context(.table) .device {
+    width: min(calc(100dvh - 52px), calc(100vw - 340px));
+  }
+}

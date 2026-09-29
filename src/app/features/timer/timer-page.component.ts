@@ -1,4 +1,4 @@
-import { Component, ViewChild, computed, inject } from '@angular/core';
+import { Component, HostListener, ViewChild, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { I18nService } from '../../core/i18n/i18n.service';
@@ -66,6 +66,21 @@ export class TimerPageComponent {
     if (this.showTutorial()) return;
     // La page ne sort de `inert` qu'au rendu : un focus immédiat serait ignoré
     setTimeout(() => this.controls?.focusSettingsButton());
+  }
+
+  /** Sortie du mode table par le bouton. */
+  leaveTable(): void {
+    this.session.setTableMode(false);
+  }
+
+  /**
+   * Échap sort du mode table, comme il ferme une modale — mais pas quand une vraie modale
+   * est ouverte : elle a la priorité, c'est elle qu'on veut fermer d'abord.
+   */
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.showSheet || this.showTutorial()) return;
+    if (this.session.tableMode()) this.session.setTableMode(false);
   }
 
   /** Vu, passé ou revu : dans les trois cas il ne se remontrera pas tout seul. */
