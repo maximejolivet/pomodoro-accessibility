@@ -81,12 +81,14 @@ export class SoundService {
       gain.gain.exponentialRampToValueAtTime(v.gain * ENVELOPE.decay, start + v.dur);
       osc.connect(gain).connect(master);
       osc.start(start);
-      osc.stop(start + v.dur + 0.05);
+      const stopTime = start + v.dur + 0.05;
+      osc.stop(stopTime);
       this.activeOscillators.push(osc);
-      // Nettoyer après la fin
+      // Nettoyer après l'arrêt
       setTimeout(() => {
-        this.activeOscillators = this.activeOscillators.filter(o => o !== osc);
-      }, (v.dur + 0.05 + 0.02) * 1000);
+        const idx = this.activeOscillators.indexOf(osc);
+        if (idx >= 0) this.activeOscillators.splice(idx, 1);
+      }, (v.dur + 0.1) * 1000 + 50);
     }
   }
 
