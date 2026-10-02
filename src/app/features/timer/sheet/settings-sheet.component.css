@@ -27,7 +27,7 @@
   left: 50%;
   bottom: 0;
   z-index: 11;
-  width: min(100%, 480px);
+  width: 100%;
   padding: 10px 16px calc(24px + env(safe-area-inset-bottom));
   border-radius: 28px 28px 0 0;
   background: linear-gradient(180deg, var(--surface-hi), var(--surface-lo));
