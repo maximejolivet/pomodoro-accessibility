@@ -36,7 +36,6 @@ export class TutorialComponent {
 
   private readonly dialog = viewChild<ElementRef<HTMLElement>>('dialog');
   private readonly nextButton = viewChild<ElementRef<HTMLButtonElement>>('nextButton');
-  private readonly hostElement = inject(ElementRef);
   private swipeFrom: { x: number; id: number } | null = null;
 
   readonly isLast = computed(() => this.index() === this.slides.length - 1);
@@ -53,21 +52,6 @@ export class TutorialComponent {
       title: this.i18n.t(this.slides[this.index()].titleKey)
     })
   );
-
-  constructor() {
-    // Le focus se porte sur le slide courant à chaque changement de vue, mettant l'accent
-    // sur le contenu du tutoriel plutôt que sur l'action suivante.
-    effect(() => {
-      this.index();
-      untracked(() => {
-        setTimeout(() => {
-          const slides = this.hostElement.nativeElement.querySelectorAll('.slide');
-          const currentSlide = slides[this.index()] as HTMLElement | undefined;
-          (currentSlide ?? this.dialog()?.nativeElement)?.focus();
-        });
-      });
-    });
-  }
 
   title(key: I18nKey): string {
     return this.i18n.t(key);
