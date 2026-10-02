@@ -46,7 +46,6 @@ export class SettingsSheetComponent {
           });
         } else {
           this.modesTab()?.reset();
-          this.statsTab()?.reset();
         }
       });
     });
@@ -70,7 +69,6 @@ export class SettingsSheetComponent {
 
   setTab(tab: SheetTab): void {
     this.modesTab()?.reset();
-    this.statsTab()?.reset();
     this.tab = tab;
   }
 
