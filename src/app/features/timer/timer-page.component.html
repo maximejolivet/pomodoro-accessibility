@@ -58,13 +58,10 @@
       routerLink="/accessibility"
       class="accessibility-link"
       [attr.title]="i18n.t('action.accessibilityInfo')"
+      [attr.aria-label]="i18n.t('action.accessibilityShort')"
     >
-      <span class="accessibility-icon" aria-hidden="true">♿</span>
-      <!--
-        Le RGAA demande que l'état de conformité soit mentionné à côté du lien, et non
-        seulement dans la déclaration : « partiellement conforme » se lit donc ici.
-      -->
-      <span class="accessibility-label">{{ i18n.t('action.accessibilityMention') }}</span>
+      <app-icon class="accessibility-icon" name="accessibility" aria-hidden="true"></app-icon>
+      <span class="accessibility-label">{{ i18n.t('action.accessibilityShort') }}</span>
     </a>
   </div>
 

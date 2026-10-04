@@ -197,3 +197,24 @@
   justify-content: space-between;
   gap: 12px;
 }
+
+/* OpenDyslexic setting : mise en évidence spéciale */
+.opendyslexic-setting {
+  border: 1.5px solid var(--bar);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--bar) 8%, var(--surface-hi)), color-mix(in srgb, var(--bar) 5%, var(--surface-lo)));
+}
+
+.opendyslexic-setting .setting-label app-icon {
+  font-size: 24px;
+}
+
+.opendyslexic-setting .setting-label svg {
+  width: 26px;
+  height: 26px;
+  stroke: var(--bar);
+  fill: var(--bar);
+}
+
+.opendyslexic-switch:checked {
+  --switch-on: var(--bar);
+}

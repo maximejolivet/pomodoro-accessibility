@@ -131,7 +131,7 @@ export const fr = {
   'routine.workout': 'Entraînement',
   'routine.workoutHint': "La page prend la couleur de l'étape, et le chrono grossit",
   'routine.rounds': 'Tours',
-  'routine.roundsHint': "Rejouer la suite d'étapes : huit tours pour un Tabata",
+  'routine.roundsHint': "Rejouer la suite d'étapes plusieurs fois, pour un entraînement ou un travail fractionné",
   'routine.roundsOnce': 'Une seule fois',
   'routine.roundsTimes': '{n} fois',
   'routine.round': 'Tour {n} sur {total}',

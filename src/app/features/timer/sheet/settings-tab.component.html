@@ -51,13 +51,13 @@
     </span>
     <input type="checkbox" role="switch" class="switch" [checked]="prefs.keepAwake()" (change)="session.setKeepAwake($any($event.target).checked)" [attr.aria-label]="i18n.t('settings.keepAwake')" />
   </label>
-  <label class="setting">
+  <label class="setting opendyslexic-setting">
     <span class="setting-label">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><text x="3" y="18" font-size="16" font-weight="bold">a</text></svg>
+      <app-icon name="opendyslexic" aria-hidden="true"></app-icon>
       OpenDyslexic
       <small style="display: block; font-size: 0.85em; color: var(--text-secondary);">Dyslexie-friendly</small>
     </span>
-    <input type="checkbox" role="switch" class="switch" [checked]="prefs.opendyslexic()" (change)="prefs.setOpendyslexic($any($event.target).checked)" aria-label="OpenDyslexic font" />
+    <input type="checkbox" role="switch" class="switch opendyslexic-switch" [checked]="prefs.opendyslexic()" (change)="prefs.setOpendyslexic($any($event.target).checked)" aria-label="OpenDyslexic font" />
   </label>
 </div>
 

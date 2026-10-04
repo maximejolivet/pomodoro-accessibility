@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { PreferencesService } from '../../core/services/preferences.service';
 import { SessionService } from '../../core/services/session.service';
+import { IconComponent } from '../../shared/components/icon/icon.component';
 import { TimerControlsComponent } from './controls/timer-controls.component';
 import { TimerDialComponent } from './dial/timer-dial.component';
 import { TimerReadoutComponent } from './readout/timer-readout.component';
@@ -22,6 +23,7 @@ import { TutorialComponent } from './tutorial/tutorial.component';
   imports: [
     CommonModule,
     RouterModule,
+    IconComponent,
     TimerDialComponent,
     TimerReadoutComponent,
     RoutineStripComponent,

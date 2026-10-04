@@ -602,8 +602,21 @@
   content: "←";
 }
 
-:host-context([dir='rtl']) .back-arrow {
+.back-arrow {
+  width: 1.2em;
+  height: 1.2em;
   display: inline-block;
+  stroke: currentColor;
+}
+
+.kbd-arrow {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  stroke: currentColor;
+}
+
+:host-context([dir='rtl']) .back-arrow {
   transform: scaleX(-1);
 }
 

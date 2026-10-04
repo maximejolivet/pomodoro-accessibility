@@ -6,12 +6,13 @@ import { LANGUAGES, LangChoice } from '../../../core/i18n/i18n.model';
 import { PreferencesService } from '../../../core/services/preferences.service';
 import { SessionService } from '../../../core/services/session.service';
 import { SoundService } from '../../../core/services/sound.service';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
 
 /** Onglet « Réglages » : thème, son, langue, tutoriel, mode table. */
 @Component({
   selector: 'app-settings-tab',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, IconComponent],
   templateUrl: './settings-tab.component.html',
   styleUrl: './settings-tab.component.css'
 })
