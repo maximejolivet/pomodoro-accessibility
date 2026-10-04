@@ -1,16 +1,17 @@
 import type { Routine } from '../models/routine.model';
+import type { IconName } from '../services/icons.service';
 
 /**
- * Pictogrammes proposés dans l'éditeur d'étape. Des emoji plutôt qu'une banque
- * d'images : ils sont déjà sur l'appareil (rien à télécharger, rien à mettre à jour),
- * ils suivent la langue du lecteur d'écran, et ils restent nets à n'importe quelle
- * taille. Le choix couvre le quotidien, l'école et le travail, dans cet ordre.
+ * Pictogrammes proposés dans l'éditeur d'étape. Icônes SVG professionnelles
+ * de Material Design (Iconify) qui fonctionnent à n'importe quelle taille,
+ * sont maintenues automatiquement, et offrent une cohérence visuelle.
+ * Le choix couvre le quotidien, l'école et le travail, dans cet ordre.
  */
-export const STEP_ICONS = [
-  '🌅', '🛏️', '🚿', '🪥', '👕', '🥣', '🍽️', '🧃',
-  '🎒', '🧥', '🚌', '💊', '🧹', '🧺', '🛒', '🐕',
-  '📖', '✏️', '📚', '🔢', '🎨', '🎵', '🧰', '🧠',
-  '💻', '📧', '📞', '🗂️', '🏃', '🧘', '🧸', '🌙'
+export const STEP_ICONS: readonly IconName[] = [
+  'sunrise', 'bed', 'shower', 'toothbrush', 'shirt', 'fork', 'cup', 'backpack',
+  'jacket', 'bus', 'medicine', 'cleaning', 'laundry', 'shopping', 'dog', 'book',
+  'pencil', 'bookshelf', 'calculator', 'art', 'music', 'wrench', 'brain', 'computer',
+  'email', 'phone', 'folder', 'run', 'yoga', 'gym', 'moon', 'clock'
 ];
 
 /**

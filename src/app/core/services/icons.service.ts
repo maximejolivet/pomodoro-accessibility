@@ -5,10 +5,11 @@ import { firstValueFrom } from 'rxjs';
 
 export type IconName =
   // Routine icons
-  | 'sunrise' | 'shirt' | 'breakfast' | 'toothbrush'
+  | 'sunrise' | 'shirt' | 'breakfast' | 'toothbrush' | 'fork' | 'cup'
   | 'running' | 'meditation' | 'gym' | 'bed' | 'shower' | 'backpack' | 'jacket' | 'bus'
   | 'medicine' | 'cleaning' | 'laundry' | 'shopping' | 'dog' | 'book' | 'pencil' | 'calculator'
-  | 'art' | 'music' | 'tools' | 'computer' | 'email' | 'phone' | 'files' | 'moon'
+  | 'art' | 'music' | 'tools' | 'wrench' | 'computer' | 'email' | 'phone' | 'folder' | 'files' | 'moon'
+  | 'bookshelf' | 'yoga' | 'clock' | 'run'
   // Accessibility icons
   | 'blind' | 'keyboard' | 'search' | 'hearing' | 'vibration' | 'brain' | 'font' | 'image'
   // UI icons
@@ -24,6 +25,8 @@ const ICON_MAP: Record<IconName, string> = {
   'shirt': 'mdi:shirt',
   'breakfast': 'mdi:bowl-mix',
   'toothbrush': 'mdi:tooth',
+  'fork': 'mdi:fork',
+  'cup': 'mdi:cup',
   'running': 'mdi:run-fast',
   'meditation': 'mdi:meditation',
   'gym': 'mdi:dumbbell',
@@ -43,11 +46,17 @@ const ICON_MAP: Record<IconName, string> = {
   'art': 'mdi:palette',
   'music': 'mdi:music',
   'tools': 'mdi:toolbox',
+  'wrench': 'mdi:wrench',
   'computer': 'mdi:laptop',
   'email': 'mdi:email',
   'phone': 'mdi:phone',
+  'folder': 'mdi:folder',
   'files': 'mdi:folder-multiple',
   'moon': 'mdi:moon-waning-crescent',
+  'bookshelf': 'mdi:bookshelf',
+  'yoga': 'mdi:yoga',
+  'clock': 'mdi:clock-outline',
+  'run': 'mdi:run',
   // Accessibility icons
   'blind': 'mdi:eye-off',
   'keyboard': 'mdi:keyboard',
