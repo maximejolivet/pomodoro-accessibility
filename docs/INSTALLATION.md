@@ -15,20 +15,20 @@ make dev       # http://localhost:4200
 
 Lancer `make` seul affiche l'aide.
 
-| Commande                              | Rôle                                                            |
-| ------------------------------------- | --------------------------------------------------------------- |
-| `make install`                        | Installe les dépendances                                        |
-| `make dev`                            | Serveur de dev avec rechargement à chaud                        |
-| `make build`                          | Build de production                                             |
-| `make watch`                          | Build de dev en continu                                         |
-| `make test`                           | Tests unitaires (Karma / Jasmine) — aucune spécification à ce jour |
-| `make test-a11y`                      | Tests d'accessibilité (axe-core + clavier, via Playwright)      |
-| `make sync`                           | Build, copie dans `www/`, `npx cap sync`, puis `make sounds`    |
-| `make sounds`                         | Génère les sons de notification (WAV, crête à −1 dBFS) et les copie dans `res/raw` |
-| `make icons`                          | Génère icônes et écrans de lancement (iOS, Android, web) depuis `resources/*.svg` |
-| `make ios` / `make android`           | Ajoute la plateforme native (une seule fois)                    |
-| `make open-ios` / `make open-android` | Sync puis ouvre Xcode / Android Studio                          |
-| `make clean`                          | Supprime `dist/`, `www/` et le cache Angular                    |
+| Commande | Rôle |
+| --- | --- |
+| `make install` | Installe les dépendances |
+| `make dev` | Serveur de dev avec rechargement à chaud |
+| `make build` | Build de production |
+| `make watch` | Build de dev en continu |
+| `make test` | Tests unitaires (Karma / Jasmine) — aucune spécification à ce jour |
+| `make test-a11y` | Tests d'accessibilité (axe-core + clavier, via Playwright) |
+| `make sync` | Build, copie dans `www/`, `npx cap sync`, puis `make sounds` |
+| `make sounds` | Génère les sons de notification (WAV, crête à −1 dBFS) et les copie dans `res/raw` |
+| `make icons` | Génère icônes et écrans de lancement (iOS, Android, web) depuis `resources/*.svg` |
+| `make ios` / `make android` | Ajoute la plateforme native (une seule fois) |
+| `make open-ios` / `make open-android` | Sync puis ouvre Xcode / Android Studio |
+| `make clean` | Supprime `dist/`, `www/` et le cache Angular |
 
 La première exécution de `make test-a11y` demande le navigateur de test :
 `npx playwright install chromium`. Les mêmes tests tournent en CI à chaque push

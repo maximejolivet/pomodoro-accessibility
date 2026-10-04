@@ -26,6 +26,14 @@
   font-weight: 600;
   color: var(--ink);
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.setting:focus-within {
+  box-shadow:
+    inset 0 2px 0 var(--surface-hi),
+    0 4px 0 var(--bar),
+    0 8px 14px rgba(25, 55, 65, 0.12);
 }
 
 .setting-label {
@@ -66,11 +74,25 @@
   padding: 10px 0;
   font-size: 17px;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.sound-chip:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.sound-chip:focus-visible {
+  outline: 2px solid var(--bar);
+  outline-offset: 2px;
 }
 
 .sound-chip:disabled {
   opacity: 0.4;
-  cursor: default;
+  cursor: not-allowed;
   transform: none;
 }
 
@@ -95,11 +117,23 @@
 /* Cibles de 44 px (WCAG 2.5.5) : trois choix seulement, la place ne manque pas. */
 .segmented.choice button {
   min-height: 44px;
+  transition: all 0.2s ease;
+}
+
+.segmented.choice button:focus-visible {
+  outline: 2px solid var(--bar);
+  outline-offset: 2px;
+}
+
+.segmented.choice button:hover:not(.active) {
+  opacity: 0.8;
 }
 
 .setting-text {
   display: grid;
   gap: 2px;
+  color: var(--ink);
+  font-size: 15px;
 }
 
 .setting-text small {

@@ -1,7 +1,7 @@
 <section class="routine" *ngIf="routine() as r" [attr.aria-label]="i18n.t('routine.section')">
   <header class="routine-head">
     <h2 class="routine-title">
-      <span class="routine-icon" aria-hidden="true">{{ r.icon }}</span>
+      <app-icon class="routine-icon" [name]="iconsService.getIconFromEmoji(r.icon)" aria-hidden="true"></app-icon>
       {{ routineLabel() }}
     </h2>
     <button
@@ -28,7 +28,7 @@
         [attr.aria-label]="label(i)"
         (click)="goTo(i)"
       >
-        <span class="step-icon" aria-hidden="true">{{ step.icon }}</span>
+        <app-icon class="step-icon" [name]="iconsService.getIconFromEmoji(step.icon)" aria-hidden="true"></app-icon>
         <span class="step-text" aria-hidden="true">
           <span class="step-name">{{ stepName(step) }}</span>
           <span class="step-time">{{ shortDuration(step) }}</span>

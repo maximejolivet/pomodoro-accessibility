@@ -11,6 +11,7 @@ import {
 @Injectable({ providedIn: 'root' })
 export class SoundService {
   private ctx: AudioContext | null = null;
+  private activeOscillators: OscillatorNode[] = [];
   enabled = true;
 
   /** À appeler depuis un geste utilisateur (tap) pour autoriser l'audio, surtout sur iOS. */
@@ -19,6 +20,20 @@ export class SoundService {
     if (ctx && ctx.state === 'suspended') {
       ctx.resume().catch(() => {});
     }
+  }
+
+  /** Arrête tous les sons en cours. */
+  stop(): void {
+    const ctx = this.context();
+    if (!ctx) return;
+    for (const osc of this.activeOscillators) {
+      try {
+        osc.stop(ctx.currentTime);
+      } catch {
+        // Oscillateur déjà arrêté
+      }
+    }
+    this.activeOscillators = [];
   }
 
   /** Timbre de palier : le premier (doux), le deuxième (montant) ou le dernier (insistant). */
@@ -66,7 +81,14 @@ export class SoundService {
       gain.gain.exponentialRampToValueAtTime(v.gain * ENVELOPE.decay, start + v.dur);
       osc.connect(gain).connect(master);
       osc.start(start);
-      osc.stop(start + v.dur + 0.05);
+      const stopTime = start + v.dur + 0.05;
+      osc.stop(stopTime);
+      this.activeOscillators.push(osc);
+      // Nettoyer après l'arrêt
+      setTimeout(() => {
+        const idx = this.activeOscillators.indexOf(osc);
+        if (idx >= 0) this.activeOscillators.splice(idx, 1);
+      }, (v.dur + 0.1) * 1000 + 50);
     }
   }
 

@@ -15,7 +15,7 @@
         [attr.aria-label]="startLabel(r)"
         (click)="start(r)"
       >
-        <span class="routine-badge" aria-hidden="true">{{ r.icon }}</span>
+        <app-icon class="routine-badge" [name]="iconsService.getIconFromEmoji(r.icon)" aria-hidden="true"></app-icon>
         <span class="routine-text">
           <span class="routine-name">{{ routineName(r) }}</span>
           <span class="routine-summary">
@@ -26,7 +26,7 @@
         </span>
         <!-- Les pictogrammes de la suite : on voit la routine entière sans la lire -->
         <span class="routine-preview" aria-hidden="true">
-          <span *ngFor="let s of r.steps">{{ s.icon }}</span>
+          <app-icon *ngFor="let s of r.steps" [name]="iconsService.getIconFromEmoji(s.icon)"></app-icon>
         </span>
       </button>
       <button
@@ -69,7 +69,7 @@
           [class.active]="d.icon === ic"
           [attr.aria-pressed]="d.icon === ic"
           (click)="d.icon = ic"
-        >{{ ic }}</button>
+        ><app-icon [name]="ic" aria-hidden="true"></app-icon></button>
       </div>
     </div>
 
@@ -134,7 +134,7 @@
               (click)="toggleStep(s.id)"
             >
               <span class="step-rank" aria-hidden="true">{{ i + 1 }}</span>
-              <span class="step-emoji" aria-hidden="true">{{ s.icon }}</span>
+              <app-icon class="step-emoji" [name]="iconsService.getIconFromEmoji(s.icon)" aria-hidden="true"></app-icon>
               <span class="step-text" aria-hidden="true">
                 <span class="step-name">{{ stepName(s) }}</span>
                 <span class="step-min">{{ shortDuration(s.seconds) }}</span>
@@ -212,7 +212,7 @@
                   [class.active]="s.icon === ic"
                   [attr.aria-pressed]="s.icon === ic"
                   (click)="s.icon = ic"
-                >{{ ic }}</button>
+                ><app-icon [name]="ic" aria-hidden="true"></app-icon></button>
               </div>
             </div>
 

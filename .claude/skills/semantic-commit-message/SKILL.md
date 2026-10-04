@@ -1,6 +1,6 @@
 ---
 name: semantic-commit-message
-description: Write git commit messages in the semantic (Conventional Commits) format `type(scope): emoji description` instead of free-form prose. Use whenever the user asks to commit, or to write or review a commit message, in this Pomodoro Accessibilité repo.
+description: "Write git commit messages in semantic (Conventional Commits) format with type, scope, and emoji. Use for all commits in this Pomodoro TDAH repo."
 ---
 
 Write every commit subject as `type(scope): emoji description`.

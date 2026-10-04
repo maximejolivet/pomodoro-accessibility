@@ -8,15 +8,14 @@ import { SessionService } from '../../../core/services/session.service';
 import type { SheetTab } from '../timer.model';
 import { ModesTabComponent } from './modes-tab.component';
 import { SettingsTabComponent } from './settings-tab.component';
-import { StatsTabComponent } from './stats-tab.component';
 
-const TABS: SheetTab[] = ['modes', 'stats', 'settings'];
+const TABS: SheetTab[] = ['modes', 'settings'];
 
 /** Panneau coulissant modal : onglets Modes / Stats / Réglages. */
 @Component({
   selector: 'app-settings-sheet',
   standalone: true,
-  imports: [CommonModule, ModesTabComponent, StatsTabComponent, SettingsTabComponent],
+  imports: [CommonModule, ModesTabComponent, SettingsTabComponent],
   templateUrl: './settings-sheet.component.html',
   styleUrl: './settings-sheet.component.css'
 })
@@ -33,7 +32,6 @@ export class SettingsSheetComponent {
   private readonly dialog = viewChild<ElementRef<HTMLElement>>('dialog');
   private readonly tabButtons = viewChildren<ElementRef<HTMLButtonElement>>('tabButton');
   private readonly modesTab = viewChild(ModesTabComponent);
-  private readonly statsTab = viewChild(StatsTabComponent);
 
   constructor() {
     effect(() => {
@@ -48,7 +46,6 @@ export class SettingsSheetComponent {
           });
         } else {
           this.modesTab()?.reset();
-          this.statsTab()?.reset();
         }
       });
     });
@@ -72,7 +69,6 @@ export class SettingsSheetComponent {
 
   setTab(tab: SheetTab): void {
     this.modesTab()?.reset();
-    this.statsTab()?.reset();
     this.tab = tab;
   }
 

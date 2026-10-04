@@ -22,11 +22,18 @@
   align-items: center;
   justify-content: center;
   gap: 28px;
-  padding: 32px 16px 40px;
   background:
     radial-gradient(ellipse at 50% 30%, var(--bg-glow) 0%, transparent 60%),
     linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
   overflow-x: hidden;
+}
+
+.stage-content {
+  display: contents;
+}
+
+.stage-content > * {
+  padding: 32px 16px 40px;
 }
 
 /*
@@ -274,6 +281,7 @@
 
 .stage.table {
   position: relative;
+  background: #0A0A0A !important;
 }
 
 /*
