@@ -33,7 +33,7 @@ const ICON_MAP: Record<IconName, string> = {
   'bed': 'mdi:bed',
   'shower': 'mdi:shower-head',
   'backpack': 'mdi:bag-personal-outline',
-  'jacket': 'mdi:vest',
+  'jacket': 'mdi:hanger',
   'bus': 'mdi:bus-side',
   'medicine': 'mdi:pill',
   'cleaning': 'mdi:broom',
