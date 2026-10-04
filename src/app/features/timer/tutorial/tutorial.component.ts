@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import type { I18nKey } from '../../../core/i18n/i18n.model';
 import { TUTORIAL_SLIDES } from '../../../core/constants/tutorial.constants';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
 
 /** Distance minimale d'un glissement pour changer de vue, en pixels. */
 const SWIPE_PX = 50;
@@ -21,7 +22,7 @@ const SWIPE_PX = 50;
 @Component({
   selector: 'app-tutorial',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, IconComponent],
   templateUrl: './tutorial.component.html',
   styleUrl: './tutorial.component.css'
 })

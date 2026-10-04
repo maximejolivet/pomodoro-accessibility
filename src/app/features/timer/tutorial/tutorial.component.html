@@ -34,7 +34,7 @@
           [attr.aria-hidden]="i === index() ? null : 'true'"
           [style.--c]="slide.color"
         >
-          <span class="slide-icon" aria-hidden="true">{{ slide.icon }}</span>
+          <app-icon class="slide-icon" [name]="slide.icon" aria-hidden="true"></app-icon>
           <h3 class="slide-title">{{ i18n.t(slide.titleKey) }}</h3>
           <p class="slide-text">{{ i18n.t(slide.textKey) }}</p>
         </article>
