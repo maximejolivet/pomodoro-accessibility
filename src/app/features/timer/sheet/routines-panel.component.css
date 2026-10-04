@@ -535,6 +535,16 @@
   text-shadow: none;
 }
 
+.confirm-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.confirm-actions .link-btn {
+  margin: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .step-chevron {
     transition: none;

@@ -44,11 +44,21 @@
       {{ i18n.t('routine.new') }}
     </button>
 
-    <button type="button" class="link-btn" [class.danger]="confirming() === 'restore'" (click)="restoreDefaults()">
-      <span aria-live="polite" aria-atomic="true">
-        {{ confirming() === 'restore' ? i18n.t('preset.confirm') : i18n.t('routine.restore') }}
-      </span>
-    </button>
+    <ng-container *ngIf="confirming() === 'restore'; else restoreBtn">
+      <div class="confirm-actions">
+        <button type="button" class="link-btn" (click)="confirming.set(null)">
+          {{ i18n.t('preset.cancel') }}
+        </button>
+        <button type="button" class="link-btn danger" (click)="restoreDefaults()">
+          {{ i18n.t('preset.confirm') }}
+        </button>
+      </div>
+    </ng-container>
+    <ng-template #restoreBtn>
+      <button type="button" class="link-btn" (click)="confirming.set('restore')">
+        {{ i18n.t('routine.restore') }}
+      </button>
+    </ng-template>
   </section>
 </ng-container>
 
