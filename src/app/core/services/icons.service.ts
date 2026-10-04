@@ -90,6 +90,83 @@ const ICON_MAP: Record<IconName, string> = {
   'back': 'mdi:arrow-left'
 };
 
+// Color map for icons by thematic category
+export const ICON_COLOR_MAP: Record<IconName, string> = {
+  // Morning/Night routine - warm & cool tones
+  'sunrise': '#f3a52b', // orange
+  'moon': '#8b6fd6', // purple
+  'clock': '#5aa9c4', // light blue
+  // Sleep & clothing - cool tones
+  'bed': '#5aa9c4', // light blue
+  'shirt': '#a67c52', // brown
+  'jacket': '#8b7355', // dark brown
+  'laundry': '#56b27b', // green
+  // Hygiene - turquoise
+  'shower': '#5aa9c4', // light blue
+  'toothbrush': '#5aa9c4', // light blue
+  'cleaning': '#5aa9c4', // light blue
+  // Food & drink - orange/brown
+  'breakfast': '#f3a52b', // orange
+  'fork': '#d4a574', // tan
+  'cup': '#d4a574', // tan
+  // Transport & work prep - blue
+  'bus': '#5aa9c4', // light blue
+  'backpack': '#5aa9c4', // light blue
+  // Health & fitness - red/green
+  'medicine': '#d63f4f', // red
+  'run': '#56b27b', // green
+  'yoga': '#56b27b', // green
+  'gym': '#d63f4f', // red
+  // Work & study - purple/blue
+  'book': '#8b6fd6', // purple
+  'bookshelf': '#8b6fd6', // purple
+  'pencil': '#8b6fd6', // purple
+  'calculator': '#8b6fd6', // purple
+  'brain': '#8b6fd6', // purple
+  'computer': '#5aa9c4', // light blue
+  'email': '#5aa9c4', // light blue
+  'phone': '#5aa9c4', // light blue
+  'folder': '#5aa9c4', // light blue
+  'files': '#5aa9c4', // light blue
+  // Leisure & hobbies - pink/multicolor
+  'dog': '#d4a574', // tan
+  'art': '#e91e63', // pink
+  'music': '#e91e63', // pink
+  'tools': '#a67c52', // brown
+  'wrench': '#a67c52', // brown
+  'shopping': '#56b27b', // green
+  // Accessibility & UI icons - default gray
+  'blind': '#666666',
+  'keyboard': '#666666',
+  'search': '#666666',
+  'hearing': '#666666',
+  'vibration': '#666666',
+  'font': '#666666',
+  'image': '#666666',
+  'play': '#666666',
+  'pause': '#666666',
+  'reset': '#666666',
+  'lock': '#666666',
+  'unlock': '#666666',
+  'edit': '#666666',
+  'delete': '#d63f4f',
+  'add': '#56b27b',
+  'close': '#666666',
+  'settings': '#666666',
+  'theme-light': '#f3a52b',
+  'theme-dark': '#8b6fd6',
+  'language': '#666666',
+  'help': '#666666',
+  'check': '#56b27b',
+  'warning': '#f3a52b',
+  'error': '#d63f4f',
+  'info': '#5aa9c4',
+  'menu': '#666666',
+  'back': '#666666',
+  'running': '#56b27b',
+  'meditation': '#56b27b'
+};
+
 // Emoji to IconName mapping for backward compatibility
 export const EMOJI_TO_ICON_MAP: Record<string, IconName> = {
   '🌅': 'sunrise',
@@ -193,5 +270,9 @@ export class IconsService {
 
   getIconFromEmoji(emoji: string): IconName {
     return EMOJI_TO_ICON_MAP[emoji] || 'info';
+  }
+
+  getColor(name: IconName): string {
+    return ICON_COLOR_MAP[name] || '#666666';
   }
 }
