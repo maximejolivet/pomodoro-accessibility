@@ -24,37 +24,56 @@ export interface SoundPattern {
 
 export type SoundId = 'milestone45' | 'milestone30' | 'milestone15' | 'end';
 
-const endArpeggio: Note[] = [];
-for (let rep = 0; rep < 3; rep++) {
-  [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
-    endArpeggio.push({ freq, at: rep * 1.1 + i * 0.14, dur: 1.6, gain: 0.45, wave: 'sine' });
-  });
-}
+// Nouvelle fin : mélodie longue et majestueuse (Do-Mi-Sol-Do en crescendo)
+const endMelody: Note[] = [
+  // Phrase 1: Do-Mi-Sol-Do (doux, fondation)
+  { freq: 261.63, at: 0.0, dur: 0.5, gain: 0.35, wave: 'sine' },
+  { freq: 329.63, at: 0.55, dur: 0.5, gain: 0.35, wave: 'sine' },
+  { freq: 392.0, at: 1.1, dur: 0.7, gain: 0.38, wave: 'sine' },
+  { freq: 523.25, at: 1.9, dur: 1.0, gain: 0.4, wave: 'sine' },
+
+  // Phrase 2: Arpège montant Do-Mi-Sol-Do-Mi-Sol (plus fort, plus rapide)
+  { freq: 261.63, at: 3.1, dur: 0.3, gain: 0.38, wave: 'triangle' },
+  { freq: 329.63, at: 3.45, dur: 0.3, gain: 0.38, wave: 'triangle' },
+  { freq: 392.0, at: 3.8, dur: 0.3, gain: 0.4, wave: 'triangle' },
+  { freq: 523.25, at: 4.15, dur: 0.3, gain: 0.4, wave: 'triangle' },
+  { freq: 659.25, at: 4.5, dur: 0.3, gain: 0.42, wave: 'triangle' },
+  { freq: 783.99, at: 4.85, dur: 0.4, gain: 0.42, wave: 'triangle' },
+
+  // Phrase 3: Do aigu prolongé (climax)
+  { freq: 523.25, at: 5.35, dur: 1.5, gain: 0.45, wave: 'sine' },
+
+  // Phrase 4: Resolution Sol-Mi-Do (retour au calme, satisfaction)
+  { freq: 392.0, at: 7.0, dur: 0.6, gain: 0.4, wave: 'sine' },
+  { freq: 329.63, at: 7.7, dur: 0.6, gain: 0.38, wave: 'sine' },
+  { freq: 261.63, at: 8.4, dur: 1.2, gain: 0.4, wave: 'sine' }
+];
 
 export const SOUND_PATTERNS: Record<SoundId, SoundPattern> = {
-  // 45 min : une note douce et grave
+  // 45 min : bip grave et chaud (approche, pas urgent)
   milestone45: {
-    notes: [{ freq: 523.25, at: 0, dur: 1.4, gain: 0.35, wave: 'sine' }]
+    notes: [
+      { freq: 440, at: 0, dur: 0.3, gain: 0.38, wave: 'sine' },
+      { freq: 440, at: 0.35, dur: 0.3, gain: 0.35, wave: 'sine' }
+    ]
   },
-  // 30 min : deux notes montantes, timbre plus clair
+  // 30 min : deux bips montants (moyen urgent)
   milestone30: {
     notes: [
-      { freq: 587.33, at: 0, dur: 0.9, gain: 0.35, wave: 'triangle' },
-      { freq: 880, at: 0.28, dur: 1.2, gain: 0.35, wave: 'triangle' }
+      { freq: 600, at: 0, dur: 0.25, gain: 0.4, wave: 'sine' },
+      { freq: 800, at: 0.3, dur: 0.35, gain: 0.42, wave: 'sine' }
     ]
   },
-  // 15 min : trois notes rapides, plus insistantes. L'onde carrée porte plus d'énergie qu'une
-  // sinusoïde à crête égale : à la mise à niveau, ce motif sort perçu un peu plus fort que
-  // les autres — c'est le dernier palier, celui qu'il faut le moins manquer.
+  // 15 min : trois bips aigus rapides (très urgent!) - tonalité carrée pour plus d'impact
   milestone15: {
     notes: [
-      { freq: 659.25, at: 0, dur: 0.5, gain: 0.3, wave: 'square' },
-      { freq: 783.99, at: 0.16, dur: 0.5, gain: 0.3, wave: 'square' },
-      { freq: 987.77, at: 0.32, dur: 1.0, gain: 0.3, wave: 'square' }
+      { freq: 900, at: 0, dur: 0.2, gain: 0.38, wave: 'square' },
+      { freq: 1000, at: 0.25, dur: 0.2, gain: 0.38, wave: 'square' },
+      { freq: 1100, at: 0.5, dur: 0.3, gain: 0.4, wave: 'square' }
     ]
   },
-  // Fin : carillon en arpège répété trois fois
-  end: { notes: endArpeggio, bell: true }
+  // Fin : mélodie agréable Do-Mi-Sol-Do (accord majeur optimiste)
+  end: { notes: endMelody }
 };
 
 /**

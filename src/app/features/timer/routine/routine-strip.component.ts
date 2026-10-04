@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import type { Routine, RoutineStep } from '../../../core/models/routine.model';
 import { SessionService } from '../../../core/services/session.service';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
+import { IconsService } from '../../../core/services/icons.service';
 
 /**
  * Bande des étapes de la routine en cours : ce qui est fait, ce qui se joue, ce qui
@@ -15,13 +17,14 @@ import { SessionService } from '../../../core/services/session.service';
 @Component({
   selector: 'app-routine-strip',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, IconComponent],
   templateUrl: './routine-strip.component.html',
   styleUrl: './routine-strip.component.css'
 })
 export class RoutineStripComponent {
   readonly session = inject(SessionService);
   readonly i18n = inject(I18nService);
+  readonly iconsService = inject(IconsService);
 
   readonly routine = this.session.activeRoutine;
   readonly locked = this.session.locked;

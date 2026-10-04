@@ -12,6 +12,8 @@ import type { Routine, RoutineReminder, RoutineStep } from '../../../core/models
 import { WEEKDAYS, routineRounds, routineTotalSeconds } from '../../../core/models/routine.model';
 import { RoutineService } from '../../../core/services/routine.service';
 import { SessionService } from '../../../core/services/session.service';
+import { IconsService } from '../../../core/services/icons.service';
+import { IconComponent } from '../../../shared/components/icon/icon.component';
 import type { RoutineDraft, RoutineReminderDraft, RoutineStepDraft } from '../timer.model';
 
 /**
@@ -23,7 +25,7 @@ import type { RoutineDraft, RoutineReminderDraft, RoutineStepDraft } from '../ti
 @Component({
   selector: 'app-routines-panel',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, IconComponent],
   templateUrl: './routines-panel.component.html',
   styleUrl: './routines-panel.component.css'
 })
@@ -32,6 +34,7 @@ export class RoutinesPanelComponent {
   private readonly session = inject(SessionService);
   readonly routineService = inject(RoutineService);
   readonly i18n = inject(I18nService);
+  readonly iconsService = inject(IconsService);
 
   /** Prévient l'onglet : pendant l'édition, il cache les modes. */
   @Output() readonly editing = new EventEmitter<boolean>();

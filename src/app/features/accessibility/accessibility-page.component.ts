@@ -3,21 +3,16 @@ import { CommonModule } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { I18nService } from '../../core/i18n/i18n.service';
+import type { IconName } from '../../core/services/icons.service';
+import { IconComponent } from '../../shared/components/icon/icon.component';
 import { A11Y_TEXTS, DECLARATION_DATE } from './accessibility.i18n';
 
-/**
- * Un pictogramme par profil, dans l'ordre de `profiles`. Ils vivaient en tableau anonyme
- * dans le gabarit, et avaient dérivé : six images pour huit profils, si bien que « Dyslexie »
- * et « Personnes qui ne lisent pas » n'en avaient aucune, et que « Sourds et malentendants »
- * héritait du dormeur. Ils sont décoratifs — le texte dit tout — mais ils ne doivent pas
- * contredire ce qu'ils accompagnent.
- */
-const PROFILE_ICONS = ['🦯', '⌨️', '🔍', '🦻', '📳', '🧠', '🔤', '🖼️'];
+const PROFILE_ICONS: IconName[] = ['blind', 'keyboard', 'search', 'hearing', 'vibration', 'brain', 'font', 'image'];
 
 @Component({
   selector: 'app-accessibility-page',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, IconComponent],
   templateUrl: './accessibility-page.component.html',
   styleUrls: ['./accessibility-page.component.css']
 })

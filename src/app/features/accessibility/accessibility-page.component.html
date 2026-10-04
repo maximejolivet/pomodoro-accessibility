@@ -14,7 +14,7 @@
       <h2 id="modes-title" class="modes-title">{{ s().modesTitle }}</h2>
 
       <article class="mode mode-keyboard" aria-labelledby="mode-keyboard-title">
-        <div class="mode-icon" aria-hidden="true">💻</div>
+        <app-icon class="mode-icon" name="computer" aria-hidden="true"></app-icon>
         <h3 id="mode-keyboard-title">{{ s().kbdTitle }}</h3>
         <p>{{ s().kbdIntro }}</p>
         <ul class="mode-list">
@@ -31,7 +31,7 @@
       </article>
 
       <article class="mode mode-screen-reader" aria-labelledby="mode-sr-title">
-        <div class="mode-icon" aria-hidden="true">🔊</div>
+        <app-icon class="mode-icon" name="help" aria-hidden="true"></app-icon>
         <h3 id="mode-sr-title">{{ s().srTitle }}</h3>
         <p>{{ s().srIntro }}</p>
         <ul class="mode-list">
@@ -40,7 +40,7 @@
       </article>
 
       <article class="mode mode-visual" aria-labelledby="mode-visual-title">
-        <div class="mode-icon" aria-hidden="true">👁</div>
+        <app-icon class="mode-icon" name="image" aria-hidden="true"></app-icon>
         <h3 id="mode-visual-title">{{ s().visualTitle }}</h3>
         <p>{{ s().visualIntro }}</p>
         <ul class="mode-list">
@@ -49,7 +49,7 @@
       </article>
 
       <article class="mode mode-structure" aria-labelledby="mode-structure-title">
-        <div class="mode-icon" aria-hidden="true">🏗</div>
+        <app-icon class="mode-icon" name="menu" aria-hidden="true"></app-icon>
         <h3 id="mode-structure-title">{{ s().structureTitle }}</h3>
         <p>{{ s().structureIntro }}</p>
         <ul class="mode-list">
@@ -58,7 +58,7 @@
       </article>
 
       <article class="mode mode-comfort" aria-labelledby="mode-comfort-title">
-        <div class="mode-icon" aria-hidden="true">💚</div>
+        <app-icon class="mode-icon" name="check" aria-hidden="true"></app-icon>
         <h3 id="mode-comfort-title">{{ s().comfortTitle }}</h3>
         <p>{{ s().comfortIntro }}</p>
         <ul class="mode-list">
@@ -71,7 +71,7 @@
       <h2 id="profiles-title">{{ s().profilesTitle }}</h2>
       <ul class="profiles-timeline">
         <li class="profile-item" *ngFor="let p of s().profiles; let i = index">
-          <span class="profile-marker" aria-hidden="true">{{ profileIcons[i] }}</span>
+          <app-icon class="profile-marker" [name]="profileIcons[i]" aria-hidden="true"></app-icon>
           <div class="profile-info">
             <strong>{{ p.title }}</strong>
             <p>{{ p.text }}</p>

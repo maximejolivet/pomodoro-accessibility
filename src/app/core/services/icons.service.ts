@@ -254,10 +254,8 @@ export class IconsService {
       const url = `https://api.iconify.design/${iconifyName}.svg?download=false`;
       const response = await firstValueFrom(this.http.get(url, { responseType: 'text' }));
 
-      // Ensure SVG has proper attributes for styling
-      const svg = response
-        .replace(/<svg/, '<svg width="1em" height="1em" style="color: currentColor"')
-        .replace(/viewBox=""/, 'viewBox="0 0 24 24"');
+      // Add style attribute for proper color inheritance
+      const svg = response.replace(/<svg/, '<svg style="color: currentColor"');
 
       const safeHtml = this.sanitizer.bypassSecurityTrustHtml(svg);
       this.cache.set(name, safeHtml);
