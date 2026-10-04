@@ -5,19 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pomodoro Accessibilité - Brag Video</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      width: 100%;
-      height: 100%;
-      background: #000;
-      overflow: hidden;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
     :root {
       --bumper: #a6ccd6;
       --face: #fbfbf8;
@@ -26,14 +15,7 @@
       --bg-bottom: #d9e0e2;
       --bar: #8b6fd6;
     }
-
-    #root {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-
+    #root { position: relative; width: 100%; height: 100%; }
     .clip {
       position: absolute;
       width: 100%;
@@ -41,225 +23,70 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      opacity: 0;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      padding: 0;
     }
-
-    /* Scene 1: Hook */
-    #scene-hook {
-      background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
-      font-size: 4rem;
-      font-weight: 500;
-      color: var(--ink);
-      text-align: center;
-      padding: 60px;
-      line-height: 1.2;
-    }
-
-    /* Scene 2: Reveal */
-    #scene-reveal {
-      background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
-      align-items: center;
-      justify-content: center;
-    }
-
-    .timer-display {
-      width: 500px;
-      height: 500px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.5), transparent),
-                  conic-gradient(var(--bumper) 0deg 270deg, #f0f0f0 270deg);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-      color: var(--ink);
-      font-weight: bold;
-    }
-
-    /* Scene 3: Features */
-    #scene-features {
-      background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
-      padding: 40px;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .feature-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 30px;
-      max-width: 1200px;
-      width: 100%;
-    }
-
-    .feature-card {
-      background: rgba(255,255,255,0.8);
-      padding: 30px;
-      border-radius: 16px;
-      text-align: center;
-      backdrop-filter: blur(10px);
-    }
-
-    .feature-card h3 {
-      color: var(--ink);
-      font-size: 1.5rem;
-      margin-bottom: 15px;
-      font-weight: 600;
-    }
-
-    .feature-card p {
-      color: #666;
-      font-size: 1rem;
-      line-height: 1.5;
-    }
-
-    /* Scene 4: Scope */
-    #scene-scope {
-      background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
-      padding: 40px;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .scope-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 30px;
-      max-width: 1200px;
-      width: 100%;
-    }
-
-    .scope-item {
-      text-align: center;
-    }
-
-    .scope-emoji {
-      font-size: 3rem;
-      margin-bottom: 15px;
-    }
-
-    .scope-item p {
-      color: var(--ink);
-      font-size: 1.3rem;
-      font-weight: 500;
-    }
-
-    /* Scene 5: Outro */
-    #scene-outro {
-      background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .outro-title {
-      font-size: 3.5rem;
-      font-weight: bold;
-      color: var(--ink);
-    }
-
-    .outro-subtitle {
-      font-size: 1.8rem;
-      color: var(--bar);
-      font-weight: 500;
-    }
-
-    .outro-footer {
-      font-size: 1.2rem;
-      color: #666;
-      margin-top: 10px;
-    }
-
-    audio {
-      display: none;
-    }
-
-    @keyframes fadeInOut {
-      0% { opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { opacity: 0; }
-    }
+    
+    #hook { background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom)); }
+    #hook-text { font-size: 4rem; font-weight: 500; color: var(--ink); text-align: center; padding: 60px; }
+    
+    #reveal { background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom)); }
+    #timer { width: 500px; height: 500px; border-radius: 50%; background: conic-gradient(var(--bumper) 0deg 270deg, #f0f0f0 270deg); box-shadow: 0 10px 40px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--ink); font-weight: bold; }
+    
+    #features { background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom)); flex-wrap: wrap; }
+    .card { background: rgba(255,255,255,0.8); padding: 30px; margin: 15px; border-radius: 16px; text-align: center; width: 350px; }
+    .card h3 { color: var(--ink); font-size: 1.5rem; margin-bottom: 15px; }
+    .card p { color: #666; font-size: 1rem; }
+    
+    #scope { background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom)); flex-wrap: wrap; }
+    .scope-item { text-align: center; margin: 30px; }
+    .scope-emoji { font-size: 3rem; margin-bottom: 15px; }
+    .scope-label { color: var(--ink); font-size: 1.3rem; font-weight: 500; }
+    
+    #outro { background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom)); flex-direction: column; gap: 20px; }
+    #outro > * { text-align: center; }
+    .outro-title { font-size: 3.5rem; font-weight: bold; color: var(--ink); }
+    .outro-subtitle { font-size: 1.8rem; color: var(--bar); font-weight: 500; }
+    .outro-footer { font-size: 1.2rem; color: #666; }
+    
+    audio { display: none; }
   </style>
 </head>
 <body>
-  <div id="root" data-composition-id="pomodoro-brag" data-width="1920" data-height="1080">
-
-    <!-- Scene 1: Hook (0-2.5s) -->
-    <div id="scene-hook" class="clip" data-start="0" data-duration="2.5">
-      <div>Time doesn't feel like time.</div>
+  <div id="root" data-composition-id="pomodoro-brag" data-width="1920" data-height="1080" data-duration="18">
+    
+    <div id="hook" class="clip" data-start="0" data-duration="2.5">
+      <div id="hook-text">Time doesn't feel like time.</div>
     </div>
-
-    <!-- Scene 2: Reveal (2.5-5.5s) -->
-    <div id="scene-reveal" class="clip" data-start="2.5" data-duration="3">
-      <div class="timer-display">25</div>
+    
+    <div id="reveal" class="clip" data-start="2.5" data-duration="3">
+      <div id="timer">25</div>
     </div>
-
-    <!-- Scene 3: Features (5.5-11s) -->
-    <div id="scene-features" class="clip" data-start="5.5" data-duration="5.5">
-      <div class="feature-grid">
-        <div class="feature-card">
-          <h3>Modes</h3>
-          <p>Create your own. Pomodoro. Breaks. Focus sessions.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Routines</h3>
-          <p>Chain timed steps together. Morning routine. Tabata.</p>
-        </div>
-        <div class="feature-card">
-          <h3>Stats</h3>
-          <p>Track your focus time. See your streak.</p>
-        </div>
-      </div>
+    
+    <div id="features" class="clip" data-start="5.5" data-duration="5.5">
+      <div class="card"><h3>Modes</h3><p>Create your own. Pomodoro. Breaks.</p></div>
+      <div class="card"><h3>Routines</h3><p>Chain timed steps together.</p></div>
+      <div class="card"><h3>Stats</h3><p>Track your focus time.</p></div>
     </div>
-
-    <!-- Scene 4: Scope (11-16s) -->
-    <div id="scene-scope" class="clip" data-start="11" data-duration="5">
-      <div class="scope-grid">
-        <div class="scope-item">
-          <div class="scope-emoji">🌓</div>
-          <p>Light & Dark Mode</p>
-        </div>
-        <div class="scope-item">
-          <div class="scope-emoji">📱</div>
-          <p>Phone, Tablet, Web</p>
-        </div>
-        <div class="scope-item">
-          <div class="scope-emoji">🏠</div>
-          <p>Home Screen Widget</p>
-        </div>
-      </div>
+    
+    <div id="scope" class="clip" data-start="11" data-duration="5">
+      <div class="scope-item"><div class="scope-emoji">🌓</div><div class="scope-label">Light & Dark</div></div>
+      <div class="scope-item"><div class="scope-emoji">📱</div><div class="scope-label">All Devices</div></div>
+      <div class="scope-item"><div class="scope-emoji">🏠</div><div class="scope-label">Home Screen</div></div>
     </div>
-
-    <!-- Scene 5: Outro (16-18s) -->
-    <div id="scene-outro" class="clip" data-start="16" data-duration="2">
+    
+    <div id="outro" class="clip" data-start="16" data-duration="2">
       <div class="outro-title">Pomodoro Accessibilité</div>
       <div class="outro-subtitle">For neurodivergent minds.</div>
       <div class="outro-footer">Available on iOS, Android, Web.</div>
     </div>
   </div>
-
-  <!-- Audio tracks -->
+  
   <audio id="music" data-start="0" data-duration="18" data-volume="0.8" src="assets/music/happy-beats-business-moves-vol-11-by-ende-dot-app.mp3"></audio>
   <audio id="voiceover" data-start="0" data-track-index="2" data-volume="1" src="assets/voiceover.wav"></audio>
-
+  
   <script>
-    // Register timeline for Hyperframes
     window.__timelines = window.__timelines || {};
-    window.__timelines['pomodoro-brag'] = {
-      duration: 18,
-      clips: [
-        { id: 'scene-hook', start: 0, duration: 2.5 },
-        { id: 'scene-reveal', start: 2.5, duration: 3 },
-        { id: 'scene-features', start: 5.5, duration: 5.5 },
-        { id: 'scene-scope', start: 11, duration: 5 },
-        { id: 'scene-outro', start: 16, duration: 2 }
-      ]
-    };
-
-    // Hyperframes will manage timeline and animations
+    window.__timelines['pomodoro-brag'] = { duration: 18 };
   </script>
 </body>
 </html>

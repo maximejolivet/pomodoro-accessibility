@@ -191,9 +191,17 @@
   background: rgba(74, 144, 226, 0.03);
 }
 
+.mode-keyboard .mode-icon {
+  color: #4a90e2;
+}
+
 .mode-screen-reader {
   border-inline-start-color: #8b6fd6;
   background: rgba(139, 111, 214, 0.03);
+}
+
+.mode-screen-reader .mode-icon {
+  color: #8b6fd6;
 }
 
 .mode-visual {
@@ -201,14 +209,26 @@
   background: rgba(201, 122, 106, 0.03);
 }
 
+.mode-visual .mode-icon {
+  color: #c97a6a;
+}
+
 .mode-structure {
   border-inline-start-color: #2ab67d;
   background: rgba(42, 182, 125, 0.03);
 }
 
+.mode-structure .mode-icon {
+  color: #2ab67d;
+}
+
 .mode-comfort {
   border-inline-start-color: #e85d8a;
   background: rgba(232, 93, 138, 0.03);
+}
+
+.mode-comfort .mode-icon {
+  color: #e85d8a;
 }
 
 /* PROFILES TIMELINE */
@@ -606,14 +626,16 @@
   width: 1.2em;
   height: 1.2em;
   display: inline-block;
-  stroke: currentColor;
+  stroke: var(--link);
+  color: var(--link);
 }
 
 .kbd-arrow {
   width: 1em;
   height: 1em;
   display: inline-block;
-  stroke: currentColor;
+  stroke: var(--primary);
+  color: var(--primary);
 }
 
 :host-context([dir='rtl']) .back-arrow {

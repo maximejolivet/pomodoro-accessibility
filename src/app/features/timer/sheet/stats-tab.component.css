@@ -246,3 +246,21 @@
   /* --muted ne donne que 4,37:1 sur ce fond */
   color: var(--muted-strong);
 }
+
+/* SVG icon colors */
+.goal-reached svg {
+  width: 1em;
+  height: 1em;
+  display: inline;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.session svg {
+  width: 1em;
+  height: 1em;
+  display: inline;
+  margin-right: 4px;
+  vertical-align: middle;
+  color: inherit;
+}

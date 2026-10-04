@@ -29,7 +29,7 @@
   >
     <span class="goal-bar" [style.width.%]="history.goalProgress() * 100"></span>
   </div>
-  <p class="goal-reached" *ngIf="history.goalProgress() >= 1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg> {{ i18n.t('stats.goalReached') }}</p>
+  <p class="goal-reached" *ngIf="history.goalProgress() >= 1"><svg viewBox="0 0 24 24" aria-hidden="true" style="color: #1a7a42;"><path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg> {{ i18n.t('stats.goalReached') }}</p>
 </div>
 
 <figure class="week">
@@ -79,8 +79,8 @@
     <span class="session-side">
       <strong>{{ formatTime(s.activeSeconds) }}</strong>
       <small [class.muted]="!s.completed">
-        <svg *ngIf="s.completed" viewBox="0 0 24 24" aria-hidden="true" style="width: 1em; height: 1em; display: inline; margin-right: 4px;"><path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
-        <svg *ngIf="!s.completed" viewBox="0 0 24 24" aria-hidden="true" style="width: 1em; height: 1em; display: inline; margin-right: 4px;"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        <svg *ngIf="s.completed" viewBox="0 0 24 24" aria-hidden="true" style="width: 1em; height: 1em; display: inline; margin-right: 4px; color: #1a7a42;"><path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        <svg *ngIf="!s.completed" viewBox="0 0 24 24" aria-hidden="true" style="width: 1em; height: 1em; display: inline; margin-right: 4px; color: #999999;"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
         {{ s.completed ? i18n.t('stats.completed') : i18n.t('stats.interrupted') }}
       </small>
     </span>
