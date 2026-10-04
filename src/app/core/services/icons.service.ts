@@ -22,9 +22,9 @@ export type IconName =
 const ICON_MAP: Record<IconName, string> = {
   // Routine icons
   'sunrise': 'mdi:sunrise',
-  'shirt': 'mdi:shirt',
+  'shirt': 'mdi:tshirt-crew',
   'breakfast': 'mdi:bowl-mix',
-  'toothbrush': 'mdi:tooth',
+  'toothbrush': 'mdi:tooth-outline',
   'fork': 'mdi:silverware-fork-knife',
   'cup': 'mdi:coffee',
   'running': 'mdi:run-fast',
@@ -33,7 +33,7 @@ const ICON_MAP: Record<IconName, string> = {
   'bed': 'mdi:bed',
   'shower': 'mdi:shower',
   'backpack': 'mdi:backpack',
-  'jacket': 'mdi:jacket',
+  'jacket': 'mdi:leather-jacket',
   'bus': 'mdi:bus',
   'medicine': 'mdi:pill',
   'cleaning': 'mdi:broom',
