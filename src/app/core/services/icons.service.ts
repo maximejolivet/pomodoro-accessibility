@@ -64,7 +64,7 @@ const ICON_MAP: Record<IconName, string> = {
   'hearing': 'mdi:ear-hearing',
   'vibration': 'mdi:vibrate',
   'brain': 'mdi:brain',
-  'font': 'mdi:format-text',
+  'font': 'mdi:alphabetical',
   'image': 'mdi:image',
   // UI icons
   'play': 'mdi:play',
