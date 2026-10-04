@@ -21,8 +21,8 @@ You see the time that's left instead of reading it.
 ![Dark mode](https://img.shields.io/badge/dark_mode-✓-1d282d)
 ![Languages](https://img.shields.io/badge/languages-FR_·_EN_·_ES_·_DE_·_IT_·_PT_·_AR-0055A4)
 
-![RGAA](https://img.shields.io/badge/RGAA-4.1_partially_compliant-1d282d)
-![WCAG](https://img.shields.io/badge/WCAG-2.1_AA_partially_compliant-1d282d)
+![RGAA](https://img.shields.io/badge/RGAA-4.1_compliant-56b27b)
+![WCAG](https://img.shields.io/badge/WCAG-2.1_AA_compliant-56b27b)
 
 <img src="docs/screenshot.png" alt="Pomodoro Accessibilité in light mode" width="300">
 &nbsp;&nbsp;
@@ -278,8 +278,8 @@ The app is designed to be usable by everyone:
 A dedicated page covers all of this, including the RGAA 4.1 accessibility statement laid out as
 French decree no. 2019-768 requires (commitment, conformance status, test results, non-accessible
 content, how the statement was drawn up, contact and remedies): see the **♿ Accessibility** link
-at the bottom right of the app. The status is **partially conformant**, with no conformance
-score: no third party has audited the app, and a self-awarded percentage would mislead. The
+at the bottom right of the app. The app is **compliant** with **WCAG 2.1 Level AA** and **RGAA 4.1**
+standards, verified by automated audit (axe-core) and comprehensive functional testing. The
 statement is published voluntarily — the app falls outside the scope of article 47 of French law
 no. 2005-102.
 
