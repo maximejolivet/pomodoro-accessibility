@@ -124,7 +124,7 @@ export const fr = {
   'routine.stepUntitled': 'Étape sans nom',
   'routine.counted': 'Compter dans le focus du jour',
   'routine.countedHint': "À laisser éteint pour se laver les dents, à allumer pour réviser",
-  'routine.restore': 'Rétablir les routines par défaut',
+  'routine.restore': 'Supprimer toutes les routines',
   'routine.tabata': 'Tabata',
   'routine.tabata.work': 'Effort',
   'routine.tabata.rest': 'Repos',

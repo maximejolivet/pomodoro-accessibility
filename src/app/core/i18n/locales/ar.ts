@@ -125,7 +125,7 @@ export const ar: Dictionary = {
   'routine.stepUntitled': 'خطوة بلا اسم',
   'routine.counted': 'احتسابها ضمن تركيز اليوم',
   'routine.countedHint': 'مطفأ لتنظيف الأسنان، مشغّل للمراجعة',
-  'routine.restore': 'استعادة الروتينات الافتراضية',
+  'routine.restore': 'حذف جميع الروتينات',
   'routine.tabata': 'تاباتا',
   'routine.tabata.work': 'مجهود',
   'routine.tabata.rest': 'راحة',

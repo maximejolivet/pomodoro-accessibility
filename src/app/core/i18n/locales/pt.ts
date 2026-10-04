@@ -125,7 +125,7 @@ export const pt: Dictionary = {
   'routine.stepUntitled': 'Etapa sem nome',
   'routine.counted': 'Contar no foco de hoje',
   'routine.countedHint': 'Desligado para lavar os dentes, ligado para estudar',
-  'routine.restore': 'Repor as rotinas predefinidas',
+  'routine.restore': 'Deletar todas as rotinas',
   'routine.tabata': 'Tabata',
   'routine.tabata.work': 'Esforço',
   'routine.tabata.rest': 'Descanso',
