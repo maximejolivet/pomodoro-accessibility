@@ -1,12 +1,10 @@
 <ng-container *ngIf="!draft(); else editor">
+  <h2 class="section-head">
+    <span>{{ i18n.t('routine.section') }}</span>
+    <small>{{ i18n.t('routine.sectionHint') }}</small>
+  </h2>
+
   <section class="routines">
-    <h2 class="section-head">
-      <span>{{ i18n.t('routine.section') }}</span>
-      <small>{{ i18n.t('routine.sectionHint') }}</small>
-    </h2>
-
-    <p class="routines-empty" *ngIf="!routineService.routines().length">{{ i18n.t('routine.empty') }}</p>
-
     <div class="routine-cell" *ngFor="let r of routineService.routines()" [style.--c]="r.steps[0].color">
       <button
         type="button"
@@ -21,7 +19,7 @@
           <span class="routine-summary">
           {{ summary(r) }}
           <!-- Le rappel se voit sur la carte ; l'`aria-label` du bouton le dit aussi -->
-          <span class="routine-bell" *ngIf="r.reminder">⏰ {{ clockTime(r.reminder) }}</span>
+          <span class="routine-bell" *ngIf="r.reminder"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 1 0-12 0c0 6-2 7-2 7h16s-2-1-2-7" fill="none" stroke="var(--c)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /><path d="M13.7 20a2 2 0 0 1-3.4 0" fill="none" stroke="var(--c)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg> {{ clockTime(r.reminder) }}</span>
         </span>
         </span>
         <!-- Les pictogrammes de la suite : on voit la routine entière sans la lire -->
@@ -44,11 +42,6 @@
       {{ i18n.t('routine.new') }}
     </button>
 
-    <button type="button" class="link-btn" [class.danger]="confirming() === 'restore'" (click)="restoreDefaults()">
-      <span aria-live="polite" aria-atomic="true">
-        {{ confirming() === 'restore' ? i18n.t('preset.confirm') : i18n.t('routine.restore') }}
-      </span>
-    </button>
   </section>
 </ng-container>
 
@@ -266,7 +259,7 @@
          global qu'on rallume et qu'on oublie -->
     <label class="reminder-switch workout">
       <span class="reminder-text">
-        {{ i18n.t('routine.workout') }}
+        <strong>{{ i18n.t('routine.workout') }}</strong>
         <small>{{ i18n.t('routine.workoutHint') }}</small>
       </span>
       <input type="checkbox" role="switch" class="switch" name="workout" [(ngModel)]="d.workout" />
@@ -276,7 +269,7 @@
     <label class="duration rounds">
       <span class="duration-head">
         <span class="rounds-text">
-          {{ i18n.t('routine.rounds') }}
+          <strong>{{ i18n.t('routine.rounds') }}</strong>
           <small>{{ i18n.t('routine.roundsHint') }}</small>
         </span>
         <strong>×{{ d.rounds }}</strong>

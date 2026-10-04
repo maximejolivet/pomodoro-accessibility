@@ -11,7 +11,7 @@ export type IconName =
   | 'art' | 'music' | 'tools' | 'wrench' | 'computer' | 'email' | 'phone' | 'folder' | 'files' | 'moon'
   | 'bookshelf' | 'yoga' | 'clock' | 'run'
   // Accessibility icons
-  | 'blind' | 'keyboard' | 'search' | 'hearing' | 'vibration' | 'brain' | 'font' | 'image'
+  | 'blind' | 'keyboard' | 'search' | 'hearing' | 'vibration' | 'brain' | 'font' | 'image' | 'accessibility' | 'opendyslexic'
   // UI icons
   | 'play' | 'pause' | 'reset' | 'lock' | 'unlock' | 'edit' | 'delete' | 'add' | 'close'
   | 'settings' | 'theme-light' | 'theme-dark' | 'language' | 'help'
@@ -66,6 +66,8 @@ const ICON_MAP: Record<IconName, string> = {
   'brain': 'mdi:brain',
   'font': 'mdi:format-text',
   'image': 'mdi:image',
+  'accessibility': 'mdi:wheelchair',
+  'opendyslexic': 'ph:text-aa-fill',
   // UI icons
   'play': 'mdi:play',
   'pause': 'mdi:pause',
@@ -143,6 +145,8 @@ export const ICON_COLOR_MAP: Record<IconName, string> = {
   'vibration': '#666666',
   'font': '#666666',
   'image': '#666666',
+  'accessibility': '#5b3fb0',
+  'opendyslexic': '#5b3fb0',
   'play': '#666666',
   'pause': '#666666',
   'reset': '#666666',

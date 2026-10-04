@@ -370,17 +370,6 @@
   outline-offset: 3px;
 }
 
-.rounds-text {
-  display: flex;
-  flex-direction: column;
-}
-
-.rounds-text small {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--muted);
-}
-
 /* ---------- Rappel ---------- */
 
 .reminder {
@@ -403,6 +392,19 @@
 }
 
 .reminder-text small {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.rounds-text {
+  display: flex;
+  flex-direction: column;
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.rounds-text small {
   font-size: 12px;
   font-weight: 500;
   color: var(--muted);
@@ -533,6 +535,16 @@
   --c-dark: var(--neutral-edge);
   color: var(--muted-strong);
   text-shadow: none;
+}
+
+.confirm-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.confirm-actions .link-btn {
+  margin: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

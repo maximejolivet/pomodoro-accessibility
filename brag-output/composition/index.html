@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomodoro Accessibilité - Brag Video</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; background: #000; overflow: hidden; }
+    :root {
+      --bumper: #a6ccd6;
+      --face: #fbfbf8;
+      --ink: #2f3336;
+      --bg-top: #f1f3f2;
+      --bg-bottom: #d9e0e2;
+      --bar: #8b6fd6;
+    }
+    #root { position: relative; width: 100%; height: 100%; }
+    .clip {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    
+    #hook { background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom)); }
+    #hook-text { font-size: 4rem; font-weight: 500; color: var(--ink); text-align: center; padding: 60px; }
+    
+    #reveal { background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom)); }
+    #timer { width: 500px; height: 500px; border-radius: 50%; background: conic-gradient(var(--bumper) 0deg 270deg, #f0f0f0 270deg); box-shadow: 0 10px 40px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--ink); font-weight: bold; }
+    
+    #features { background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom)); flex-wrap: wrap; }
+    .card { background: rgba(255,255,255,0.8); padding: 30px; margin: 15px; border-radius: 16px; text-align: center; width: 350px; }
+    .card h3 { color: var(--ink); font-size: 1.5rem; margin-bottom: 15px; }
+    .card p { color: #666; font-size: 1rem; }
+    
+    #scope { background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom)); flex-wrap: wrap; }
+    .scope-item { text-align: center; margin: 30px; }
+    .scope-emoji { font-size: 3rem; margin-bottom: 15px; }
+    .scope-label { color: var(--ink); font-size: 1.3rem; font-weight: 500; }
+    
+    #outro { background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom)); flex-direction: column; gap: 20px; }
+    #outro > * { text-align: center; }
+    .outro-title { font-size: 3.5rem; font-weight: bold; color: var(--ink); }
+    .outro-subtitle { font-size: 1.8rem; color: var(--bar); font-weight: 500; }
+    .outro-footer { font-size: 1.2rem; color: #666; }
+    
+    audio { display: none; }
+  </style>
+</head>
+<body>
+  <div id="root" data-composition-id="pomodoro-brag" data-width="1920" data-height="1080" data-duration="18">
+    
+    <div id="hook" class="clip" data-start="0" data-duration="2.5">
+      <div id="hook-text">Time doesn't feel like time.</div>
+    </div>
+    
+    <div id="reveal" class="clip" data-start="2.5" data-duration="3">
+      <div id="timer">25</div>
+    </div>
+    
+    <div id="features" class="clip" data-start="5.5" data-duration="5.5">
+      <div class="card"><h3>Modes</h3><p>Create your own. Pomodoro. Breaks.</p></div>
+      <div class="card"><h3>Routines</h3><p>Chain timed steps together.</p></div>
+      <div class="card"><h3>Stats</h3><p>Track your focus time.</p></div>
+    </div>
+    
+    <div id="scope" class="clip" data-start="11" data-duration="5">
+      <div class="scope-item"><div class="scope-emoji">🌓</div><div class="scope-label">Light & Dark</div></div>
+      <div class="scope-item"><div class="scope-emoji">📱</div><div class="scope-label">All Devices</div></div>
+      <div class="scope-item"><div class="scope-emoji">🏠</div><div class="scope-label">Home Screen</div></div>
+    </div>
+    
+    <div id="outro" class="clip" data-start="16" data-duration="2">
+      <div class="outro-title">Pomodoro Accessibilité</div>
+      <div class="outro-subtitle">For neurodivergent minds.</div>
+      <div class="outro-footer">Available on iOS, Android, Web.</div>
+    </div>
+  </div>
+  
+  <audio id="music" data-start="0" data-duration="18" data-volume="0.8" src="assets/music/happy-beats-business-moves-vol-11-by-ende-dot-app.mp3"></audio>
+  <audio id="voiceover" data-start="0" data-track-index="2" data-volume="1" src="assets/voiceover.wav"></audio>
+  
+  <script>
+    window.__timelines = window.__timelines || {};
+    window.__timelines['pomodoro-brag'] = { duration: 18 };
+  </script>
+</body>
+</html>

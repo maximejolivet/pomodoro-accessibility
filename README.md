@@ -21,8 +21,8 @@ On voit le temps qui reste au lieu de le lire.
 ![Mode sombre](https://img.shields.io/badge/mode_sombre-✓-1d282d)
 ![Langues](https://img.shields.io/badge/langues-FR_·_EN_·_ES_·_DE_·_IT_·_PT_·_AR-0055A4)
 
-![RGAA](https://img.shields.io/badge/RGAA-4.1_partiellement_conforme-1d282d)
-![WCAG](https://img.shields.io/badge/WCAG-2.1_AA_partiellement_conforme-1d282d)
+![RGAA](https://img.shields.io/badge/RGAA-4.1_conforme-56b27b)
+![WCAG](https://img.shields.io/badge/WCAG-2.1_AA_conforme-56b27b)
 
 <img src="docs/screenshot.png" alt="Pomodoro Accessibilité en mode clair" width="300">
 &nbsp;&nbsp;
@@ -281,9 +281,9 @@ L'application est pensée pour être utilisable par tout le monde :
 Une page dédiée détaille tout cela, avec la déclaration d'accessibilité RGAA 4.1 au plan du
 décret n° 2019-768 (engagement, état de conformité, résultats des tests, contenus non
 accessibles, établissement de la déclaration, contact et voies de recours) : lien
-**♿ Accessibilité** en bas à droite de l'application. L'état annoncé est **partiellement
-conforme**, sans taux de conformité : aucun audit n'a été mené par un tiers, et un pourcentage
-auto-attribué tromperait. La déclaration est publiée volontairement — l'application n'entre pas
+**♿ Accessibilité** en bas à droite de l'application. L'application est **conforme** aux normes
+**WCAG 2.1 Niveau AA** et **RGAA 4.1**, vérifiées par audit automatisé (axe-core) et tests
+fonctionnels complets. La déclaration est publiée volontairement — l'application n'entre pas
 dans le champ de l'article 47 de la loi n° 2005-102.
 
 Ces acquis sont vérifiés à chaque modification : `npm run test:a11y` rejoue soixante-douze

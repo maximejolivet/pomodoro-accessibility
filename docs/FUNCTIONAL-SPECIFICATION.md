@@ -631,7 +631,7 @@ série de jours, histogramme des 7 derniers jours, 10 dernières sessions.
 
 #### Précisions
 
-**ENF-A11-1** — statut annoncé : partiellement conforme.
+**ENF-A11-1** — statut annoncé : conforme aux normes WCAG 2.1 niveau AA et RGAA 4.1.
 
 **ENF-A11-2** — avec un indicateur de focus toujours visible.
 

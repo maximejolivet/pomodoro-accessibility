@@ -125,7 +125,7 @@ export const de: Dictionary = {
   'routine.stepUntitled': 'Schritt ohne Namen',
   'routine.counted': 'Zur heutigen Fokuszeit zählen',
   'routine.countedHint': 'Aus beim Zähneputzen, an beim Lernen',
-  'routine.restore': 'Standardroutinen wiederherstellen',
+  'routine.restore': 'Alle Routinen löschen',
   'routine.tabata': 'Tabata',
   'routine.tabata.work': 'Belastung',
   'routine.tabata.rest': 'Pause',

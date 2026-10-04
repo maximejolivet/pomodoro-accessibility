@@ -48,11 +48,6 @@
     </button>
   </div>
 
-  <button type="button" class="link-btn" [class.danger]="confirming() === 'restore'" (click)="restorePresets()">
-    <span aria-live="polite" aria-atomic="true">
-      {{ confirming() === 'restore' ? i18n.t('preset.confirm') : i18n.t('preset.restore') }}
-    </span>
-  </button>
   </ng-container>
 
   <!-- Les routines : une suite d'étapes, là où un mode n'est qu'une durée. -->

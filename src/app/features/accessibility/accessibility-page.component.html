@@ -1,6 +1,6 @@
 <main class="accessibility-page">
   <header class="accessibility-header">
-    <a routerLink="/" class="back-link"><span class="back-arrow" aria-hidden="true">←</span><span class="back-label">{{ s().back }}</span></a>
+    <a routerLink="/" class="back-link"><svg class="back-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg><span class="back-label">{{ s().back }}</span></a>
     <h1 #pageTitle tabindex="-1">{{ s().h1 }}</h1>
   </header>
 
@@ -20,8 +20,8 @@
         <ul class="mode-list">
           <li><kbd>Tab</kbd> {{ s().kbdTab }}</li>
           <li>
-            <kbd><span class="sr-only">{{ s().kbdArrowLeft }}</span><span aria-hidden="true">←</span></kbd>
-            <kbd><span class="sr-only">{{ s().kbdArrowRight }}</span><span aria-hidden="true">→</span></kbd>
+            <kbd><span class="sr-only">{{ s().kbdArrowLeft }}</span><svg viewBox="0 0 24 24" aria-hidden="true" class="kbd-arrow"><path d="M19 12H5M12 19l-7-7 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg></kbd>
+            <kbd><span class="sr-only">{{ s().kbdArrowRight }}</span><svg viewBox="0 0 24 24" aria-hidden="true" class="kbd-arrow"><path d="M5 12h14M12 19l7-7-7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg></kbd>
             {{ s().kbdArrows }}
           </li>
           <li><kbd>PageUp</kbd> <kbd>PageDown</kbd> {{ s().kbdPages }}</li>
