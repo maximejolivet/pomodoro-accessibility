@@ -53,9 +53,9 @@ const ICON_MAP: Record<IconName, string> = {
   'folder': 'mdi:folder',
   'files': 'mdi:folder-multiple',
   'moon': 'mdi:moon-waning-crescent',
-  'bookshelf': 'mdi:bookshelf',
-  'yoga': 'mdi:yoga',
-  'clock': 'mdi:clock-outline',
+  'bookshelf': 'mdi:library-shelves',
+  'yoga': 'mdi:lotus',
+  'clock': 'mdi:clock',
   'run': 'mdi:run',
   // Accessibility icons
   'blind': 'mdi:eye-off',
