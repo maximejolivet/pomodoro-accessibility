@@ -1,37 +1,39 @@
-# Installation et commandes
+# Installation and commands
 
-[← Retour au README](../README.md)
+🇬🇧 English · [🇫🇷 Français](INSTALLATION.FR.md)
 
-**Prérequis :** Node.js 24.15+ (voir `.nvmrc`) · npm 10+ · Xcode (iOS) · Android Studio (Android)
+[← Back to the README](../README.md)
+
+**Prerequisites:** Node.js 24.15+ (see `.nvmrc`) · npm 10+ · Xcode (iOS) · Android Studio (Android)
 
 ```bash
-git clone <url-du-repo> pomodoro-tdah
+git clone <repo-url> pomodoro-tdah
 cd pomodoro-tdah
 make install   # npm install
 make dev       # http://localhost:4200
 ```
 
-## Commandes `make`
+## `make` commands
 
-Lancer `make` seul affiche l'aide.
+Running `make` on its own shows the help.
 
-| Commande | Rôle |
+| Command | Role |
 | --- | --- |
-| `make install` | Installe les dépendances |
-| `make dev` | Serveur de dev avec rechargement à chaud |
-| `make build` | Build de production |
-| `make watch` | Build de dev en continu |
-| `make test` | Tests unitaires (Karma / Jasmine) — aucune spécification à ce jour |
-| `make test-a11y` | Tests d'accessibilité (axe-core + clavier, via Playwright) |
-| `make sync` | Build, copie dans `www/`, `npx cap sync`, puis `make sounds` |
-| `make sounds` | Génère les sons de notification (WAV, crête à −1 dBFS) et les copie dans `res/raw` |
-| `make icons` | Génère icônes et écrans de lancement (iOS, Android, web) depuis `resources/*.svg` |
-| `make ios` / `make android` | Ajoute la plateforme native (une seule fois) |
-| `make open-ios` / `make open-android` | Sync puis ouvre Xcode / Android Studio |
-| `make clean` | Supprime `dist/`, `www/` et le cache Angular |
+| `make install` | Installs the dependencies |
+| `make dev` | Dev server with hot reload |
+| `make build` | Production build |
+| `make watch` | Continuous dev build |
+| `make test` | Unit tests (Karma / Jasmine) — no specs to date |
+| `make test-a11y` | Accessibility tests (axe-core + keyboard, via Playwright) |
+| `make sync` | Build, copy into `www/`, `npx cap sync`, then `make sounds` |
+| `make sounds` | Generates the notification sounds (WAV, peak at −1 dBFS) and copies them into `res/raw` |
+| `make icons` | Generates icons and launch screens (iOS, Android, web) from `resources/*.svg` |
+| `make ios` / `make android` | Adds the native platform (once only) |
+| `make open-ios` / `make open-android` | Syncs, then opens Xcode / Android Studio |
+| `make clean` | Removes `dist/`, `www/` and the Angular cache |
 
-La première exécution de `make test-a11y` demande le navigateur de test :
-`npx playwright install chromium`. Les mêmes tests tournent en CI à chaque push
+The first run of `make test-a11y` requires the test browser:
+`npx playwright install chromium`. The same tests run in CI on every push
 (`.github/workflows/a11y.yml`).
 
 ## Technologies

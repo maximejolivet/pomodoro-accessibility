@@ -1,172 +1,173 @@
 # Architecture
 
-[← Retour au README](../README.md) · [Cahier des charges technique](TECHNICAL-SPECIFICATION.md)
+🇬🇧 English · [🇫🇷 Français](ARCHITECTURE.FR.md)
+
+[← Back to the README](../README.md) · [Technical specification](TECHNICAL-SPECIFICATION.md)
 
 ```
 src/
-├── index.html                  # Métadonnées, favicons
-├── styles.css                  # Imports du thème, Tailwind, utilitaires globaux
+├── index.html                  # Metadata, favicons
+├── styles.css                  # Theme imports, Tailwind, global utilities
 ├── theme/
-│   ├── tokens.css              # Jetons de couleur (thème clair), posés sur <app-root>
-│   ├── dark.css                # Redéfinition des jetons en thème sombre
-│   └── controls.css            # Primitives partagées (bouton relief, curseur, segmenté, interrupteur)
+│   ├── tokens.css              # Colour tokens (light theme), set on <app-root>
+│   ├── dark.css                # Token overrides for the dark theme
+│   └── controls.css            # Shared primitives (relief button, slider, segmented control, switch)
 └── app/
-    ├── app.component.*         # Coquille : applique le thème + <router-outlet>
-    ├── app.config.ts           # Providers (routeur)
-    ├── app.routes.ts           # Routes, chargées à la demande (loadComponent)
-    ├── core/                   # Ce qui ne dépend d'aucune page
-    │   ├── constants/          # timer · history · preset · routine · tutorial (règles et réglages du domaine)
+    ├── app.component.*         # Shell: applies the theme + <router-outlet>
+    ├── app.config.ts           # Providers (router)
+    ├── app.routes.ts           # Routes, loaded on demand (loadComponent)
+    ├── core/                   # What does not depend on any page
+    │   ├── constants/          # timer · history · preset · routine · tutorial (domain rules and settings)
     │   ├── models/             # preset · routine · session · alert · widget-state
     │   ├── helpers/            # storage.ts · time.ts
-    │   │                     #   milestones.ts     paliers d'une session
-    │   │                     #   sound-patterns.ts motifs, mise à niveau, WAV
-    │   │                     #   haptic-patterns.ts motifs de vibration
+    │   │                     #   milestones.ts     session milestones
+    │   │                     #   sound-patterns.ts sound patterns, levelling, WAV
+    │   │                     #   haptic-patterns.ts vibration patterns
     │   ├── i18n/
-    │   │   ├── i18n.service.ts # Langue courante, sens d'écriture, traduction
-    │   │   ├── i18n.model.ts   # Clés typées, liste des langues, langues RTL
-    │   │   └── locales/        # Un dictionnaire par langue (fr en es de it pt ar)
+    │   │   ├── i18n.service.ts # Current language, writing direction, translation
+    │   │   ├── i18n.model.ts   # Typed keys, language list, RTL languages
+    │   │   └── locales/        # One dictionary per language (fr en es de it pt ar)
     │   └── services/
-    │       ├── timer.service.ts        # Décompte basé sur l'heure de fin (RxJS)
-    │       ├── session.service.ts      # Session en cours, enchaînement, sons, notifications, widget
-    │       ├── preferences.service.ts  # Préférences persistées, en signaux
-    │       ├── preset.service.ts       # Modes personnalisables
-    │       ├── routine.service.ts      # Routines : suites d'étapes enchaînées
-    │       ├── history.service.ts      # Historique des sessions et statistiques
-    │       ├── sound.service.ts        # Lecture des sons (Web Audio), au niveau mesuré dans les motifs
-    │       ├── speech.service.ts       # Temps restant dit à voix haute (Web Speech)
-    │       ├── haptics.service.ts      # Motifs de vibration par palier (Capacitor Haptics)
-    │       ├── notification.service.ts # Notifications locales Capacitor + sons natifs + rappels hebdomadaires
-    │       ├── keep-awake.service.ts   # Écran toujours allumé
-    │       └── widget.service.ts       # État transmis au widget iOS
-    └── features/               # Une page par dossier
+    │       ├── timer.service.ts        # Countdown based on the end time (RxJS)
+    │       ├── session.service.ts      # Current session, chaining, sounds, notifications, widget
+    │       ├── preferences.service.ts  # Persisted preferences, as signals
+    │       ├── preset.service.ts       # Customisable modes
+    │       ├── routine.service.ts      # Routines: chained sequences of steps
+    │       ├── history.service.ts      # Session history and statistics
+    │       ├── sound.service.ts        # Sound playback (Web Audio), at the level measured in the patterns
+    │       ├── speech.service.ts       # Remaining time read aloud (Web Speech)
+    │       ├── haptics.service.ts      # Vibration patterns per milestone (Capacitor Haptics)
+    │       ├── notification.service.ts # Capacitor local notifications + native sounds + weekly reminders
+    │       ├── keep-awake.service.ts   # Screen kept on
+    │       └── widget.service.ts       # State sent to the iOS widget
+    └── features/               # One page per folder
         ├── timer/
-        │   ├── timer-page.component.*  # Assemble les blocs ci-dessous
-        │   ├── dial/                   # Boîtier 3D, cadran SVG, réglage au doigt et au clavier
-        │   ├── readout/                # Temps, mode, état, cycle, boutons − / +
-        │   ├── routine/                # Bande des étapes de la routine en cours
-        │   ├── controls/               # Remise à zéro, démarrage / pause, réglages
-        │   ├── sheet/                  # Panneau coulissant + onglets Modes / Stats / Réglages
-        │   │                           #   (l'onglet Modes contient la section Routines et son éditeur)
-        │   ├── tutorial/               # Tutoriel d'accueil : cinq vues, au premier lancement
-        │   ├── dial-geometry.ts        # Chemins SVG du cadran (fonctions pures)
-        │   └── timer.model.ts          # Onglets du panneau, mode et routine en cours d'édition
+        │   ├── timer-page.component.*  # Assembles the blocks below
+        │   ├── dial/                   # 3D case, SVG dial, adjustment by touch and keyboard
+        │   ├── readout/                # Time, mode, state, cycle, − / + buttons
+        │   ├── routine/                # Strip of the steps of the current routine
+        │   ├── controls/               # Reset, start / pause, settings
+        │   ├── sheet/                  # Sliding panel + Modes / Settings tabs
+        │   │                           #   (the Modes tab holds the Routines section and its editor)
+        │   ├── tutorial/               # Welcome tutorial: five views, on first launch
+        │   ├── dial-geometry.ts        # SVG paths of the dial (pure functions)
+        │   └── timer.model.ts          # Panel tabs, mode and routine being edited
         └── accessibility/
-            ├── accessibility-page.component.*  # Page d'accessibilité (route /accessibility)
-            └── accessibility.i18n.ts           # Ses textes, par langue
+            ├── accessibility-page.component.*  # Accessibility page (route /accessibility)
+            └── accessibility.i18n.ts           # Its texts, per language
 tests/
-└── a11y.spec.ts                # Non-régression d'accessibilité (npm run test:a11y)
-playwright.config.ts            # Démarre l'app et joue les tests sur Chromium
-.github/workflows/a11y.yml      # Build de production + tests d'accessibilité à chaque push
+└── a11y.spec.ts                # Accessibility regression tests (npm run test:a11y)
+playwright.config.ts            # Starts the app and runs the tests on Chromium
+.github/workflows/a11y.yml      # Production build + accessibility tests on every push
 scripts/
-└── generate-sounds.ts          # WAV des notifications (make sounds — les copie aussi dans res/raw)
-resources/sounds/               # WAV générés, crête à −1 dBFS
-resources/app-icon.svg          # Icônes et écrans de lancement, iOS · Android · web (make icons)
-resources/app-icon-foreground.svg  # Calque avant de l'icône adaptative Android
+└── generate-sounds.ts          # Notification WAV files (make sounds — also copies them into res/raw)
+resources/sounds/               # Generated WAV files, peak at −1 dBFS
+resources/app-icon.svg          # Icons and launch screens, iOS · Android · web (make icons)
+resources/app-icon-foreground.svg  # Foreground layer of the Android adaptive icon
 ios/App/
-├── App/WidgetBridgePlugin.swift  # Plugin local : état → App Group → widget
-├── App/MainViewController.swift  # Enregistre les plugins locaux
-└── PomodoroWidget/               # Extension WidgetKit (SwiftUI)
+├── App/WidgetBridgePlugin.swift  # Local plugin: state → App Group → widget
+├── App/MainViewController.swift  # Registers the local plugins
+└── PomodoroWidget/               # WidgetKit extension (SwiftUI)
 public/
 ├── favicon.svg · favicon.ico · apple-touch-icon.png
 docs/
-└── documentation et captures d'écran
+└── documentation and screenshots
 ```
 
-## Points clés
+## Key points
 
 ### Structure
 
-La coquille (`app.component.*`) ne porte que le thème et le routeur. Chaque page vit dans
-`features/`, tout ce qu'elles partagent dans `core/`. Les deux pages sont chargées à la demande,
-donc la page d'accessibilité ne pèse pas sur le démarrage.
+The shell (`app.component.*`) holds only the theme and the router. Each page lives in
+`features/`, and everything they share lives in `core/`. Both pages are loaded on demand, so the
+accessibility page does not weigh on startup.
 
-**Pas de `shared/`, `guards/`, `interceptors/`, `pipes/` ni `environments/`** : rien à y mettre
-aujourd'hui. Ces dossiers se créeront le jour où un deuxième usage apparaîtra.
+**No `shared/`, `guards/`, `interceptors/`, `pipes/` or `environments/` folders**: there is nothing
+to put in them today. These folders will be created on the day a second use appears.
 
-### Composants
+### Components
 
-La page du minuteur n'assemble que des blocs — `dial`, `readout`, `controls`, `sheet` — chacun
-avec son gabarit et son style.
+The timer page only assembles blocks — `dial`, `readout`, `controls`, `sheet` — each with its own
+template and style.
 
-Ils lisent l'état dans les services plutôt que par une cascade d'entrées. Seul ce qui est local
-circule en entrées / sorties : panneau ouvert, brouillon de mode, geste en cours.
+They read the state from the services rather than through a cascade of inputs. Only what is local
+flows through inputs / outputs: open panel, mode draft, gesture in progress.
 
-### État de session dans un service, pas dans la page
+### Session state in a service, not in the page
 
-Les pages sont détruites à chaque navigation. `SessionService` (racine) porte donc la session en
-cours, l'enchaînement, les sons, les notifications et le widget ; la page du minuteur n'en est
-qu'une vue.
+Pages are destroyed on every navigation. `SessionService` (root) therefore holds the current
+session, the chaining, the sounds, the notifications and the widget; the timer page is only a view.
 
-Conséquence voulue : une session continue, se termine et s'enregistre pendant la lecture de la
-page d'accessibilité.
+Intended consequence: a session keeps running, ends and is recorded while the accessibility page is
+being read.
 
-### Cadran
+### Dial
 
-SVG unique (viewBox 420 × 420), avec des chemins calculés en TypeScript. Le disque est dessiné en
-deux couches : un voile en `mix-blend-mode: multiply` sur l'anneau, et un plateau plein au centre.
+A single SVG (viewBox 420 × 420), with paths computed in TypeScript. The disc is drawn in two
+layers: a veil with `mix-blend-mode: multiply` on the ring, and a solid plate at the centre.
 
-### Décompte
+### Countdown
 
-Calculé à partir de l'heure de fin réelle, donc juste même en arrière-plan.
+Computed from the real end time, so it stays correct even in the background.
 
-### Sons définis une fois, joués de deux façons
+### Sounds defined once, played in two ways
 
-`core/helpers/sound-patterns.ts` décrit les motifs en notes et n'importe **rien**, parce qu'il est
-exécuté à la fois dans le bundle et par Node :
+`core/helpers/sound-patterns.ts` describes the patterns as notes and imports **nothing**, because it
+runs both in the bundle and under Node:
 
-- l'application les synthétise en Web Audio ;
-- `scripts/generate-sounds.ts` les rend en WAV pour les notifications natives.
+- the app synthesises them with Web Audio;
+- `scripts/generate-sounds.ts` renders them as WAV files for the native notifications.
 
-Les deux sont donc identiques par construction, et un son ajouté d'un côté ne peut pas manquer de
-l'autre.
+Both are therefore identical by construction, and a sound added on one side cannot be missing on the
+other.
 
-**Le volume n'est pas écrit dans les motifs** : les gains des notes n'y règlent que leur équilibre
-entre elles. C'est `level(pattern)` qui mesure la crête du signal rendu et la porte à −1 dBFS, du
-même facteur des deux côtés.
+**The volume is not written into the patterns**: the note gains only set the balance between the
+notes. `level(pattern)` measures the peak of the rendered signal and brings it to −1 dBFS, with the
+same factor on both sides.
 
-Mesurer plutôt que calculer est nécessaire : les notes se chevauchent et s'additionnent, si bien
-qu'un gain posé à la main laisse le motif soit écrêté, soit très en dessous. Un son d'alerte doit
-sortir fort, parce que l'appareil ne fait que *réduire* ce qu'on lui donne — et sur Android, le
-volume des notifications est un curseur à part de celui du média.
+Measuring rather than calculating is necessary: the notes overlap and add up, so a hand-set gain
+leaves the pattern either clipped or far too quiet. An alert sound must come out loud, because the
+device only ever *reduces* what it is given — and on Android, the notification volume is a slider
+separate from the media volume.
 
-### Une routine est une suite de modes
+### A routine is a sequence of modes
 
-Chaque étape a la forme d'un `Preset` — nom, durée, couleur, nature — plus un pictogramme.
+Each step has the shape of a `Preset` — name, duration, colour, nature — plus an icon.
 
-`SessionService.selectedPreset` renvoie l'étape en cours quand une routine est chargée, si bien
-que le cadran, l'historique, les notifications et le widget n'ont aucune notion de routine à
-gérer. Seuls l'enchaînement et la bande en ont une.
+`SessionService.selectedPreset` returns the current step when a routine is loaded, so the dial, the
+history, the notifications and the widget have no concept of routines to handle. Only the chaining
+and the strip have one.
 
-### Thèmes
+### Themes
 
-Toutes les couleurs sont des variables CSS dans `src/theme/`, posées sur `<app-root>` et
-redéfinies sous `app-root.dark`, donc héritées par les pages.
+All colours are CSS variables in `src/theme/`, set on `<app-root>` and overridden under
+`app-root.dark`, so the pages inherit them.
 
-### Traductions
+### Translations
 
-Un dictionnaire par langue dans `core/i18n/locales/`, typé à partir du français : une clé
-manquante dans une autre langue est une **erreur de compilation**.
+One dictionary per language in `core/i18n/locales/`, typed from French: a key missing in another
+language is a **compile-time error**.
 
-Ajouter une langue, c'est ajouter un fichier dans `locales/`, puis une entrée dans `Lang`,
-`DICTIONARIES` et `LANGUAGES` — et dans `RTL_LANGS` si elle s'écrit de droite à gauche. Le CSS
-utilise des propriétés logiques (`inset-inline-*`, `start` / `end`).
+Adding a language means adding a file in `locales/`, then an entry in `Lang`, `DICTIONARIES` and
+`LANGUAGES` — and in `RTL_LANGS` if it is written right to left. The CSS uses logical properties
+(`inset-inline-*`, `start` / `end`).
 
-### Persistance
+### Persistence
 
-Préférences, modes, routines et historique sont enregistrés dans `localStorage`, l'historique
-gardant les 500 dernières sessions.
+Preferences, modes, routines and history are saved in `localStorage`; the history keeps the last
+500 sessions.
 
-### Accessibilité testée en continu
+### Accessibility tested continuously
 
-`npm run test:a11y` lance l'application et vérifie soixante-douze points :
+`npm run test:a11y` starts the application and checks seventy-two points:
 
-- **axe-core** sur l'accueil, le panneau (trois onglets), l'éditeur de mode, l'éditeur de routine
-  et la page d'accessibilité — en thème clair et sombre, et en arabe ;
-- le réglage du cadran **au clavier** ;
-- l'enchaînement des étapes d'une routine, et sa bande ;
-- le **piège à focus** de la modale, Échap, et le retour du focus ;
-- l'absence de défilement horizontal à **320 px** ;
-- l'espacement du texte (WCAG 1.4.12) ;
-- le contraste des interrupteurs, mesuré sur les **pixels rendus** (WCAG 1.4.11).
+- **axe-core** on the home page, the panel (three tabs), the mode editor, the routine editor and the
+  accessibility page — in light and dark themes, and in Arabic;
+- adjusting the dial **with the keyboard**;
+- the chaining of the steps of a routine, and its strip;
+- the **focus trap** of the modal, Escape, and the return of focus;
+- no horizontal scrolling at **320 px**;
+- text spacing (WCAG 1.4.12);
+- the contrast of the switches, measured on the **rendered pixels** (WCAG 1.4.11).
 
-La CI les rejoue à chaque push.
+The CI runs them again on every push.

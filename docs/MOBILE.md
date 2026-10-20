@@ -1,171 +1,168 @@
-# Build mobile (iOS / Android)
+# Mobile build (iOS / Android)
 
-[← Retour au README](../README.md)
+🇬🇧 English · [🇫🇷 Français](MOBILE.FR.md)
+
+[← Back to the README](../README.md)
 
 ```bash
-make ios          # première fois seulement
+make ios          # first time only
 make open-ios     # build + sync + Xcode
 
-make android      # première fois seulement
+make android      # first time only
 make open-android # build + sync + Android Studio
 ```
 
-## Notifications locales
+## Local notifications
 
-L'autorisation est demandée au premier démarrage du minuteur, et au premier rappel réglé.
-Les alertes (paliers, fin, fin de prolongation, fin de la session enchaînée) sont programmées
-quand l'app passe en arrière-plan et annulées au retour, là où les sons de l'app prennent le
-relais.
+Permission is requested the first time the timer starts, and the first time a reminder is set.
+Alerts (milestones, end, end of extension, end of the chained session) are scheduled when the app
+goes to the background and cancelled on return, where the app's sounds take over.
 
-### Rappels de routine
+### Routine reminders
 
-Une routine peut porter une heure et des jours (⚙︎ → Modes → *Routines* → crayon → *Rappel*).
-Ils suivent une autre vie que les alertes de session :
+A routine can carry a time and days (⚙︎ → Modes → *Routines* → pencil → *Reminder*).
+They follow a different life from session alerts:
 
-- ils se programment en `schedule.on` (façon cron : un jour, une heure), donc se répètent
-  chaque semaine sans que l'app ait à s'exécuter ;
-- leurs identifiants partent de 1000, ce qui les met **hors de portée** de l'annulation faite
-  à chaque retour au premier plan — sans cela, ouvrir l'app une fois effacerait les rappels ;
-- Android les replace après un redémarrage de l'appareil, iOS les garde dans le centre de
-  notifications ;
-- l'appui ouvre l'app avec la routine armée sur le cadran : rien ne démarre tout seul.
+- they are scheduled as `schedule.on` (cron-like: a day, a time), so they repeat each week without
+  the app having to run;
+- their identifiers start at 1000, which puts them **out of reach** of the cancellation done on
+  every return to the foreground — without this, opening the app once would erase the reminders;
+- Android re-schedules them after a device restart, iOS keeps them in the notification centre;
+- tapping opens the app with the routine armed on the dial: nothing starts on its own.
 
-Ils empruntent le carillon de fin, faute de son propre à ce jour.
+They borrow the end chime, as they have no sound of their own yet.
 
-### Sons des notifications
+### Notification sounds
 
-Ils sont générés à partir des mêmes motifs que l'app (`src/app/core/helpers/sound-patterns.ts`) :
+They are generated from the same patterns as the app (`src/app/core/helpers/sound-patterns.ts`):
 
-- **iOS** : l'app écrit elle-même les WAV dans `Library/Sounds` au lancement, rien à faire ;
-- **Android** : `make sounds` (appelé par `make sync`) copie les WAV dans
-  `android/app/src/main/res/raw`, et l'app crée un canal de notification par son.
+- **iOS**: the app writes the WAV files into `Library/Sounds` itself at launch; nothing to do;
+- **Android**: `make sounds` (called by `make sync`) copies the WAV files into
+  `android/app/src/main/res/raw`, and the app creates a notification channel per sound.
 
-Les WAV sortent à une crête de −1 dBFS, la même pour les quatre. C'est volontaire et c'est le
-niveau attendu d'un son d'alerte : l'appareil ne fait que **réduire** ce qu'on lui donne, donc un
-fichier rendu à mi-échelle arrive irrémédiablement discret, quel que soit le volume réglé. Voir
-[§ 8.1 du cahier des charges technique](TECHNICAL-SPECIFICATION.md#81-mise-à-niveau).
+The WAV files peak at −1 dBFS, the same for all four. This is deliberate and it is the expected
+level for an alert sound: the device only **reduces** what it is given, so a file rendered at
+half scale arrives irremediably quiet, whatever the volume setting. See
+[§ 8.1 of the technical specification](TECHNICAL-SPECIFICATION.md#81-level-up).
 
-### Deux volumes à ne pas confondre
+### Two volumes not to confuse
 
-Un son de l'app et un son de notification ne passent pas par le même curseur, et c'est la première
-chose à vérifier quand « les sons ne sont pas forts » :
+An app sound and a notification sound do not go through the same slider, and this is the first thing
+to check when "the sounds are not loud":
 
-| Ce qui joue | Flux Android | Réglage |
+| What plays | Android stream | Setting |
 | --- | --- | --- |
-| Les sons de l'app, au premier plan (Web Audio) | média | Volume **multimédia** |
-| Les notifications, app en arrière-plan ou écran verrouillé | notification (`USAGE_NOTIFICATION`) | Volume **notifications** |
+| The app's sounds, in the foreground (Web Audio) | media | **Media** volume |
+| Notifications, app in the background or locked screen | notification (`USAGE_NOTIFICATION`) | **Notification** volume |
 
-Un multimédia à 20 % garde donc les paliers discrets pendant une session, même si les
-notifications, elles, sonnent fort. L'app n'y peut rien : c'est le système qui choisit le flux
-d'un son, pas elle.
+Media at 20 % therefore keeps the milestones quiet during a session, even if notifications ring
+loudly. The app cannot change this: the system chooses the stream of a sound, not the app.
 
-### Canaux Android : ce qui est immuable et ce qui ne l'est pas
+### Android channels: what is immutable and what is not
 
-Un canal de notification est **immuable** après sa création : le recréer ne change ni son
-importance ni son son. D'où `CHANNEL_VERSION` dans `notification.service.ts`, qu'il faut
-incrémenter pour repartir de canaux neufs (les précédents sont alors supprimés, sinon
-l'utilisateur verrait deux fois les mêmes intitulés dans les réglages du téléphone).
+A notification channel is **immutable** once created: recreating it changes neither its importance
+nor its sound. Hence `CHANNEL_VERSION` in `notification.service.ts`, which must be incremented to
+start again with new channels (the previous ones are then deleted, otherwise the user would see the
+same names twice in the phone's settings).
 
-Ce qui est figé est l'URI, `android.resource://<package>/raw/<nom>` — un renvoi par **nom**,
-résolu à la lecture. **Remplacer le contenu d'un WAV ne demande donc aucun bump** : il suffit de
-réinstaller l'APK. Ce qui en demande un, c'est renommer un fichier, changer le son associé à un
-canal, ou toucher à son importance.
+What is fixed is the URI, `android.resource://<package>/raw/<name>` — a reference by **name**,
+resolved at playback. **Replacing the content of a WAV file therefore requires no bump**: reinstalling
+the APK is enough. What does require one is renaming a file, changing the sound attached to a
+channel, or touching its importance.
 
-### Alarmes exactes et test d'une notification
+### Exact alarms and testing a notification
 
-Sur Android 12+, les alarmes exactes peuvent nécessiter la permission
-`SCHEDULE_EXACT_ALARM` dans `AndroidManifest.xml`. L'app n'attend pas la fin d'une session pour
-le dire : ⚙︎ → *Réglages* → **Tester une notification** en programme une à cinq secondes — le
-temps de verrouiller l'écran — et nomme ce qui manque le cas échéant (autorisation refusée,
-alarme exacte absente). Le lien **Autoriser les alarmes exactes** ouvre l'écran système
-« Alarmes et rappels » ; sur iOS et dans le navigateur, il annonce que cet écran n'existe pas.
+On Android 12+, exact alarms may require the `SCHEDULE_EXACT_ALARM` permission in
+`AndroidManifest.xml`. The app does not wait for the end of a session to tell you: ⚙︎ → *Settings* →
+**Test a notification** schedules one in one to five seconds — enough time to lock the screen — and
+names what is missing if necessary (permission refused, exact alarm absent). The **Allow exact
+alarms** link opens the system screen "Alarms & reminders"; on iOS and in the browser, it says that
+this screen does not exist.
 
-⚠️ Passer d'accordé à refusé depuis cet écran fait **redémarrer l'application** et efface les
-alarmes exactes déjà programmées : c'est le système Android qui l'impose, pas l'app.
+⚠️ Switching from granted to refused on this screen **restarts the application** and erases the exact
+alarms already scheduled: this is imposed by Android, not by the app.
 
-## Décompte permanent
+## Persistent countdown
 
-Pendant une session, le temps restant se pose hors de l'app :
+During a session, the remaining time appears outside the app:
 
-- **Android** — une notification permanente et muette, dont le chronomètre s'égrène tout
-  seul. Canal `ongoing_v1`, importance basse : elle ne doit jamais couvrir les paliers. Elle
-  marche depuis Android 7 (le compte à rebours du chronomètre date de l'API 24) ; avant, elle
-  affiche le temps restant figé.
-- **iOS** — une Live Activity, écran verrouillé et Dynamic Island, à partir d'**iOS 16.2**.
-  Elle exige `NSSupportsLiveActivities` dans `App/Info.plist` (déjà posé) et que l'utilisateur
-  n'ait pas coupé les activités en direct dans les réglages du système.
+- **Android** — a permanent, silent notification whose chronometer ticks on its own. Channel
+  `ongoing_v1`, low importance: it must never cover the milestones. It works from Android 7 (the
+  chronometer countdown dates from API 24); before that, it shows the remaining time frozen.
+- **iOS** — a Live Activity, on the lock screen and in the Dynamic Island, from **iOS 16.2**.
+  It requires `NSSupportsLiveActivities` in `App/Info.plist` (already set) and that the user has not
+  turned off live activities in the system settings.
 
-⚠️ Sur iOS, le cadran d'une Live Activity est **figé entre deux mises à jour** : seul le
-chiffre court tout seul. L'animer demanderait un serveur de notifications push, que cette app
-n'a pas — et n'aura pas, elle ne parle à personne.
+⚠️ On iOS, the dial of a Live Activity is **frozen between two updates**: only the number ticks on
+its own. Animating it would require a push notification server, which this app does not have — and
+will not have, as it does not talk to anyone.
 
-## Widgets d'écran d'accueil
+## Home screen widgets
 
 ### iOS
 
-L'extension `PomodoroWidget` (SwiftUI, iOS 17+) lit l'état écrit par l'app dans l'App Group
-`group.com.maximejolivet.pomodorotdah` (plugin local `WidgetBridge`, enregistré par
+The `PomodoroWidget` extension (SwiftUI, iOS 17+) reads the state written by the app in the App Group
+`group.com.maximejolivet.pomodorotdah` (local plugin `WidgetBridge`, registered by
 `MainViewController`).
 
-Sur un appareil, choisir son équipe dans *Signing & Capabilities* pour les cibles **App** et
-**PomodoroWidget** : Xcode crée alors l'App Group. Le décompte du widget avance seul ; l'app
-ne le met à jour qu'aux changements (démarrage, pause, fin, passage en arrière-plan,
-objectif, langue, thème, durée réglée).
+On a device, choose your team in *Signing & Capabilities* for the **App** and **PomodoroWidget**
+targets: Xcode then creates the App Group. The widget's countdown advances on its own; the app only
+updates it on changes (start, pause, end, going to the background, goal, language, theme, duration
+set).
 
-Le widget affiche **le cadran de l'app**, redessiné en SwiftUI à partir des mêmes constantes
-que `src/app/features/timer/dial-geometry.ts` et des mêmes couleurs que `src/theme/` : le disque
-s'y vide graduation par graduation, sans réveiller l'app. Toucher à la géométrie ou à la palette
-d'un côté demande donc le même geste de l'autre.
+The widget shows **the app's dial**, redrawn in SwiftUI from the same constants as
+`src/app/features/timer/dial-geometry.ts` and the same colours as `src/theme/`: the disc empties there
+graduation by graduation, without waking the app. Changing the geometry or the palette on one side
+therefore requires the same change on the other.
 
 ### Android
 
-Rien à configurer : le widget est un `AppWidgetProvider` du module `app`, déclaré dans le
-manifeste, disponible dès l'installation (appui long sur l'écran d'accueil → Widgets). Le cadran
-y est peint dans un bitmap par `DialBitmap.java`, à partir des mêmes constantes ; deux
-dispositions selon la largeur posée, 2×2 et 4×2.
+Nothing to configure: the widget is an `AppWidgetProvider` of the `app` module, declared in the
+manifest, available as soon as the app is installed (long press on the home screen → Widgets). The
+dial is painted there into a bitmap by `DialBitmap.java`, from the same constants; two layouts depending
+on the size chosen, 2×2 and 4×2.
 
-L'état passe par `WidgetBridgePlugin.java`, jumeau du plugin Swift, enregistré dans
-`MainActivity`. Le décompte avance seul (`Chronometer`), le disque se vide sur une alarme à la
-minute, annulée dès que le décompte s'arrête.
+State passes through `WidgetBridgePlugin.java`, the twin of the Swift plugin, registered in
+`MainActivity`. The countdown advances on its own (`Chronometer`), and the disc empties on a per-minute
+alarm, cancelled as soon as the countdown stops.
 
-## Icônes et écrans de lancement
+## Icons and launch screens
 
-Deux SVG, une commande :
+Two SVG files, one command:
 
-- `resources/app-icon.svg` — l'icône entière, boîtier compris, plein cadre : c'est le système
-  qui arrondit les coins (iOS) ;
-- `resources/app-icon-foreground.svg` — le cadran seul, sans boîtier, sur fond transparent. Il
-  sert à l'icône adaptative d'Android, dont le fond est une couleur (`ic_launcher_background`,
-  le bleu du boîtier) et la forme est découpée par le lanceur, et aux écrans de lancement.
+- `resources/app-icon.svg` — the whole icon, case included, full bleed: the system rounds the corners
+  (iOS);
+- `resources/app-icon-foreground.svg` — the dial alone, without the case, on a transparent background.
+  It is used for the Android adaptive icon, whose background is a colour (`ic_launcher_background`,
+  the blue of the case) and whose shape is cut out by the launcher, and for the launch screens.
 
-`make icons` produit tout d'un coup, en passant par Chromium — le même moteur que celui qui
-affiche l'app, donc les dégradés et le `mix-blend-mode` du cadran sortent identiques :
+`make icons` produces everything at once, by going through Chromium — the same engine that displays
+the app, so the gradients and the dial's `mix-blend-mode` come out identical:
 
-| Sortie | Détail |
+| Output | Detail |
 | --- | --- |
-| iOS, icône | `AppIcon-512@2x.png` (1024 px, sans canal alpha : l'App Store le refuse) |
-| iOS, lancement | `Splash.imageset`, 2732 × 2732 aux trois échelles |
-| Android, icônes | `ic_launcher`, `ic_launcher_round` et `ic_launcher_foreground` sur cinq densités |
-| Android, lancement | `splash.png`, portrait et paysage, sur cinq densités |
+| iOS, icon | `AppIcon-512@2x.png` (1024 px, no alpha channel: the App Store rejects it) |
+| iOS, launch | `Splash.imageset`, 2732 × 2732 at all three scales |
+| Android, icons | `ic_launcher`, `ic_launcher_round` and `ic_launcher_foreground` at five densities |
+| Android, launch | `splash.png`, portrait and landscape, at five densities |
 | Web | `public/apple-touch-icon.png` (180 px) |
 
-Le dessin de l'avant-plan tient dans un disque de 63 unités sur les 108 de la toile, donc à
-l'intérieur des 66 unités sûres : aucun masque de lanceur, si serré soit-il, ne mord sur
-l'anneau. À vérifier si l'on retouche le SVG.
+The foreground drawing fits in a 63-unit disc on the 108-unit canvas, so inside the 66 safe units: no
+launcher mask, however tight, bites into the ring. To be checked if the SVG is retouched.
 
-### L'ouverture, en trois temps
+### Opening, in three steps
 
-Le fond est **noir** partout : il vaut pour les deux thèmes, et il n'envoie aucun éclair blanc
-à qui ouvre l'app dans le noir.
+The background is **black** everywhere: it applies to both themes, and it does not flash white at
+anyone who opens the app in the dark.
 
-1. **L'écran de lancement du système** — une image fixe. Android ne sait pas l'animer avant la
-   version 12, et Apple l'interdit : c'est le cadran posé sur le noir, rien de plus.
-2. **Le voile d'amorçage** (`src/index.html`) — dès la première ligne de HTML, sur le même
-   noir, l'anneau du cadran se met à tourner autour de sa face. Style et SVG en ligne : il
-   s'affiche avant tout téléchargement. `main.ts` le retire une fois l'app prête, y compris
-   **si le démarrage échoue** — un voile resté en place laisserait un écran noir muet.
-3. **L'application**, qui reprend son propre thème.
+1. **The system launch screen** — a fixed image. Android cannot animate it before version 12, and
+   Apple forbids it: it is the dial set on black, nothing more.
+2. **The boot veil** (`src/index.html`) — from the very first line of HTML, on the same black, the
+   dial's ring starts turning around its face. Style and SVG are inline: it appears before any download.
+   `main.ts` removes it once the app is ready, including **if startup fails** — a veil left in place
+   would leave a silent black screen.
+3. **The application**, which takes over its own theme.
 
-Sous `prefers-reduced-motion`, l'anneau se fige et le fondu disparaît : il reste un logo, pas
-un moulin. Sur Android 12 et au-delà, le système impose son propre écran ; `values-v31/styles.xml`
-lui donne le même noir et la même icône, pour que toutes les versions ouvrent pareil.
+Under `prefers-reduced-motion`, the ring stops and the fade disappears: it remains a logo, not a
+windmill. On Android 12 and later, the system imposes its own screen; `values-v31/styles.xml` gives it
+the same black and the same icon, so that all versions open the same way.
