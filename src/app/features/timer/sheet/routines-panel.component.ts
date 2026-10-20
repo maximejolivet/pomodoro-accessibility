@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Capacitor } from '@capacitor/core';
 import { PRESET_COLORS } from '../../../core/constants/preset.constants';
+import { electronApi } from '../../../core/helpers/electron';
 import {
   DEFAULT_REMINDER_TIME, MAX_ROUNDS, MAX_STEPS, STEP_DURATIONS, STEP_ICONS
 } from '../../../core/constants/routine.constants';
@@ -56,7 +57,7 @@ export class RoutinesPanelComponent {
   readonly activeRoutineId = computed(() => this.session.activeRoutine()?.id ?? null);
 
   /** Hors iOS et Android, aucune notification ne part : le dire plutôt que le laisser croire. */
-  readonly isNative = Capacitor.isNativePlatform();
+  readonly isNative = Capacitor.isNativePlatform() || electronApi() !== null;
 
   /**
    * Les sept jours, lundi d'abord, nommés par le navigateur : une lettre sur le bouton,

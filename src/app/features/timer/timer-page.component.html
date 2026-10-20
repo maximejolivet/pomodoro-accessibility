@@ -49,10 +49,8 @@
       {{ i18n.t('notif.endTitle') }}
     </p>
 
-    <app-timer-dial />
-    <app-timer-readout />
+    <app-timer-dial (openSettings)="openSheet()" />
     <app-routine-strip />
-    <app-timer-controls (openSettings)="openSheet()" />
 
     <a
       routerLink="/accessibility"

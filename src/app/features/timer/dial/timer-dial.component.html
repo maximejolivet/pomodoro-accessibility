@@ -2,6 +2,16 @@
   <div class="case-shadow">
   <div class="device">
     <div class="bezel">
+      <!-- Trait au bord du cadran : il se remplit à mesure que le temps passe. -->
+      <svg class="progress" viewBox="0 0 100 100" aria-hidden="true">
+        <circle class="progress-track" cx="50" cy="50" r="48" />
+        <path
+          *ngFor="let arc of progressArcs; trackBy: trackArc"
+          class="progress-seg"
+          [attr.d]="arc.d"
+          [attr.stroke]="arc.color"
+        />
+      </svg>
       <button
         type="button"
         class="face"
@@ -82,12 +92,12 @@
           </g>
 
           <!-- Anneau de couleurs -->
-          <path *ngFor="let s of segments" [attr.d]="s.d" [attr.fill]="s.color" />
+          <path *ngFor="let s of segments; let i = index" [attr.d]="s.d" [attr.fill]="segmentFill(i)" />
 
           <!-- Disque : voile sur l'anneau puis plateau plein au centre -->
-          <path [attr.d]="diskOuterPath" [attr.fill]="selectedPreset.color" class="disk-veil" />
+          <path [attr.d]="diskOuterPath" [attr.fill]="tabColor" class="disk-veil" />
           <g>
-            <path [attr.d]="diskInnerPath" [attr.fill]="selectedPreset.color" />
+            <path [attr.d]="diskInnerPath" [attr.fill]="tabColor" />
           </g>
 
           <!-- Séparateurs blancs -->
@@ -112,7 +122,8 @@
             class="edge"
           />
           <g [attr.transform]="'translate(' + cx + ' ' + cy + ') rotate(' + edgeAngle + ')'">
-            <circle cx="0" cy="-180" r="30" class="disk-tab" [style.fill]="selectedPreset.color" />
+            <!-- Repère : haut carré, bas arrondi en demi-cercle -->
+            <path class="disk-tab" d="M -30 -210 L 30 -210 L 30 -180 A 30 30 0 0 1 -30 -180 Z" [style.fill]="tabColor" />
           </g>
 
           <!-- Chiffres -->
@@ -120,6 +131,7 @@
             *ngFor="let t of labels"
             [attr.x]="t.x" [attr.y]="t.y"
             class="label"
+            [class.on-tab]="isOnTab(t.text)"
           >{{ t.text }}</text>
 
           <!--
@@ -143,27 +155,35 @@
         </svg>
       </button>
     </div>
+    <!-- Durée sous le cadran, à l'intérieur du boîtier. -->
+    <div class="case-readout">
+      <app-timer-readout />
+    </div>
+    <!-- Commandes sous la durée, à l'intérieur du boîtier. -->
+    <div class="case-controls">
+      <app-timer-controls (openSettings)="openSettings.emit()" />
+    </div>
+    <!--
+      Verrou dans le coin bas du boîtier : hors du cadran qu'il protège, pour qu'on ne le touche
+      pas en le réglant. Icône seule, nommée pour les lecteurs d'écran et les infobulles.
+    -->
+    <button
+      type="button"
+      class="lock"
+      [class.on]="locked"
+      [attr.aria-label]="i18n.t(locked ? 'action.unlock' : 'action.lock')"
+      [attr.title]="i18n.t(locked ? 'action.unlock' : 'action.lock')"
+      [style.--c]="selectedPreset.color"
+      (click)="toggleLock()"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5" />
+        <path *ngIf="locked" d="M8 10.5V7a4 4 0 0 1 8 0v3.5" />
+        <path *ngIf="!locked" d="M8 10.5V7a4 4 0 0 1 7.6-1.7" />
+      </svg>
+    </button>
   </div>
   </div>
 
-  <!--
-    Verrou posé au bas du boîtier : hors du cadran qu'il protège, pour qu'on ne le touche
-    pas en le réglant. Icône seule, nommée pour les lecteurs d'écran et les infobulles.
-  -->
-  <button
-    type="button"
-    class="lock"
-    [class.on]="locked"
-    [attr.aria-label]="i18n.t(locked ? 'action.unlock' : 'action.lock')"
-    [attr.title]="i18n.t(locked ? 'action.unlock' : 'action.lock')"
-    [style.--c]="selectedPreset.color"
-    (click)="toggleLock()"
-  >
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5" />
-      <path *ngIf="locked" d="M8 10.5V7a4 4 0 0 1 8 0v3.5" />
-      <path *ngIf="!locked" d="M8 10.5V7a4 4 0 0 1 7.6-1.7" />
-    </svg>
-  </button>
 </div>
 <span id="dial-hint" class="sr-only">{{ i18n.t('action.dialHint') }}</span>

@@ -1,16 +1,17 @@
 /* Thème sombre : la classe est posée sur <app-root> par la coquille (PreferencesService). */
 app-root.dark {
-  --bumper-light: #56747f;
-  --bumper: #3b5661;
-  --bumper-dark: #2a3f47;
-  --bumper-edge: #1f3037;
-  --bumper-deep: #16242a;
-  --bezel-a: #4a6671;
-  --bezel-b: #334c56;
-  --bezel-c: #273c44;
-  --face-hi: #2a3036;
-  --face: #22272c;
-  --face-lo: #181b1f;
+  --bumper-light: #8a4a14;
+  --bumper: #6b3710;
+  --bumper-dark: #53280c;
+  --bumper-edge: #3e1d08;
+  --bumper-deep: #2e1505;
+  --bezel-a: #7a6228;
+  --bezel-b: #5e4a1c;
+  --bezel-c: #4a3914;
+  --face-hi: #2c2a3d;
+  --face: #24223a;
+  --face-lo: #1a1930;
+  --dial-numeral: #ece6ff;
   --sheen: 0.1;
   --ink: #e8ecee;
   --bg-top: #1b1f23;

@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, ElementRef, computed, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { I18nService } from '../../../core/i18n/i18n.service';
 import type { Routine, RoutineStep } from '../../../core/models/routine.model';
@@ -25,6 +25,26 @@ export class RoutineStripComponent {
   readonly session = inject(SessionService);
   readonly i18n = inject(I18nService);
   readonly iconsService = inject(IconsService);
+  private readonly host = inject(ElementRef<HTMLElement>);
+
+  constructor() {
+    // À chaque étape suivante, la bande défile jusqu'à l'étape en cours pour qu'elle reste visible.
+    effect(() => {
+      this.session.routineIndex();
+      setTimeout(() => this.centerCurrent());
+    });
+  }
+
+  private centerCurrent(): void {
+    const strip = (this.host.nativeElement as HTMLElement).querySelector<HTMLElement>('.steps');
+    const current = strip?.querySelector<HTMLElement>('li:has(.step-chip.current)');
+    if (!strip || !current) return;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    strip.scrollTo({
+      left: current.offsetLeft - strip.clientWidth / 2 + current.offsetWidth / 2,
+      behavior: reduce ? 'auto' : 'smooth'
+    });
+  }
 
   readonly routine = this.session.activeRoutine;
   readonly locked = this.session.locked;

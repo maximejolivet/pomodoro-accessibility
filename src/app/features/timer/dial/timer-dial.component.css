@@ -79,13 +79,22 @@
   --rx: 0deg;
   --ry: 0deg;
   /* Même relief que le bouton principal, en gris : arête foncée dessous. */
-  --c: #c4cace;
+  --c: #1d2b3a;
   --c-dark: color-mix(in srgb, var(--c) 84%, #000);
-  width: min(calc(100vw - 32px), 560px, calc(100dvh - 330px));
+  /* Hauteur = boîtier + durée + commandes : la largeur suit donc la hauteur disponible. */
+  --dw: min(calc(100vw - 32px), 560px, calc((100dvh - 200px) / 1.4));
+  width: var(--dw);
   min-width: 280px;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  padding: 4.2%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* Haut en demi-cercle, bas plat avec de légers coins, comme un réveil. */
+  /* Le haut est un vrai demi-cercle : son rayon vaut la moitié de la largeur. */
+  border-radius: calc(var(--dw) / 2) calc(var(--dw) / 2) 6% 6%;
+  /* Le bas garde la place de la durée et des commandes, à l'intérieur du boîtier. */
+  padding: 4.2% 4.2% 3%;
+  /* Les marges de la base se calculent sur la largeur du boîtier (unités cqw). */
+  container-type: inline-size;
   background: linear-gradient(180deg, color-mix(in srgb, var(--c) 80%, #fff), var(--c));
   box-shadow:
     inset 0 2px 0 rgba(255, 255, 255, 0.4),
@@ -96,13 +105,60 @@
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+/* Trait au bord du cadran, dans la marge du boîtier : il touche le cadran sans le recouvrir. */
+.progress {
+  position: absolute;
+  z-index: 2;
+  left: 1.45%;
+  top: 1.45%;
+  width: 97.1%;
+  height: 97.1%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.progress circle,
+.progress-seg {
+  fill: none;
+  stroke-width: 2.2;
+}
+
+.progress-track {
+  stroke: var(--bg-line);
+  opacity: 0.6;
+}
+
 .bezel {
+  position: relative;
   width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  padding: 2.4%;
+  aspect-ratio: 1;
+  border-radius: 50% 50% 5% 5% / 50% 50% 5% 5%;
+  padding: 4.5%;
   background: var(--bezel-b);
   box-shadow: none;
+}
+
+/* La durée occupe le bas plat du boîtier, sous le cadran. */
+/* Sous le cadran, dans la base du boîtier : la base suit la taille de la durée et des commandes. */
+/* Pas de boîte propre : pilule et cycle sont rangés directement dans la colonne du boîtier. */
+.case-readout {
+  display: contents;
+}
+
+/* Verrou dans le coin bas droit du boîtier. */
+.device > .lock {
+  left: auto;
+  right: 6cqw;
+  bottom: 4cqw;
+  transform: none;
+}
+
+.case-controls {
+  order: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4cqw;
 }
 
 .face {
@@ -200,6 +256,20 @@
   fill: var(--tab);
 }
 
+/* Contour du repère : haut, gauche et droite seulement. */
+.tab-edge {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 3;
+  stroke-linecap: butt;
+}
+
+/* Le chiffre sous l'aiguille est écrit sur le rond coloré : plus gros et en gras pour le contraste. */
+.label.on-tab {
+  font-size: 24px;
+  font-weight: 700;
+}
+
 .label {
   font-size: 22px;
   font-weight: 600;
@@ -243,7 +313,8 @@
      * la soustraction ne peut plus suivre et seule la bande reste — inévitable
      * sur les écrans très courts.
      */
-    width: min(calc(100vw - 32px), 560px, calc(100dvh - 330px - var(--pill-band) + 40px));
+    --dw: min(calc(100vw - 32px), 560px, calc(100dvh - 330px - var(--pill-band) + 40px));
+    width: var(--dw);
   }
 }
 
@@ -251,9 +322,46 @@
  * Portrait (téléphone, fenêtre haute) : le cadran ne remplit plus la largeur, il laisse
  * des marges aux côtés et de la place au chrono et aux commandes.
  */
+/*
+ * Téléphone couché : le cadran se cale sur la hauteur, sinon les commandes sortent de
+ * l'écran. Le minimum de 280 px ne s'applique pas ici, il ne tient pas en paysage.
+ */
+/* Sur téléphone, le cadran n'a aucun padding autour : le verrou est dans le boîtier. */
+@media (max-width: 640px) {
+  .tilt-zone {
+    width: 98%;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .tilt-zone .case-shadow {
+    width: 95vw;
+    margin: 0 auto;
+  }
+
+  /* Le boîtier prend toute la largeur de la zone, sans être réduit par la hauteur. */
+  .tilt-zone .device {
+    --dw: 95vw;
+    width: var(--dw);
+    min-width: 0;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .tilt-zone {
+    padding-bottom: 12px;
+  }
+
+  .device {
+    min-width: 0;
+    width: calc((100dvh - 150px) / 1.5);
+  }
+}
+
 @media (orientation: portrait) {
   .device {
-    width: min(calc(100vw - 96px), 420px, calc(100dvh - 330px - var(--pill-band, 68px) + 40px));
+    --dw: min(calc(100vw - 96px), 420px, calc(100dvh - 330px - var(--pill-band, 68px) + 40px));
+    width: var(--dw);
   }
 }
 
@@ -266,11 +374,13 @@
 }
 
 :host-context(.table) .device {
-  width: min(calc(100vw - 24px), calc(100dvh - 210px));
+  --dw: min(calc(100vw - 24px), calc(100dvh - 210px));
+  width: var(--dw);
 }
 
 @media (orientation: landscape) {
   :host-context(.table) .device {
-    width: min(calc(100dvh - 52px), calc(100vw - 340px));
+    --dw: min(calc(100dvh - 52px), calc(100vw - 340px));
+    width: var(--dw);
   }
 }

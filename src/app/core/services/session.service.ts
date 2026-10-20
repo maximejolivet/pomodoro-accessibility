@@ -1,5 +1,4 @@
 import { Injectable, computed, effect, inject, signal, untracked } from '@angular/core';
-import { App } from '@capacitor/app';
 import { MIN_RECORDED_SECONDS } from '../constants/history.constants';
 import {
   COUNTDOWN_FROM, CUE_MS, EXTRA_SECONDS, LATE_ALERT_SECONDS, LONG_BREAK_EVERY, MAX_MINUTES,
@@ -21,6 +20,7 @@ import { HapticsService } from './haptics.service';
 import { HistoryService } from './history.service';
 import { KeepAwakeService } from './keep-awake.service';
 import { NotificationService } from './notification.service';
+import { AppStateService } from './app-state.service';
 import { PreferencesService } from './preferences.service';
 import { PresetService } from './preset.service';
 import { RoutineService } from './routine.service';
@@ -48,6 +48,7 @@ export class SessionService {
   private readonly haptics = inject(HapticsService);
   private readonly speech = inject(SpeechService);
   private readonly notifications = inject(NotificationService);
+  private readonly appState = inject(AppStateService);
   private readonly keepAwake = inject(KeepAwakeService);
   private readonly widget = inject(WidgetService);
   private readonly live = inject(LiveStatusService);
@@ -290,7 +291,7 @@ export class SessionService {
     });
 
     // Téléphone verrouillé / app en arrière-plan : notifications locales ; au retour, on les annule
-    App.addListener('appStateChange', ({ isActive }) => {
+    this.appState.isActive$.subscribe(isActive => {
       if (isActive) {
         this.notifications.cancelAll();
         this.keepAwake.refresh();

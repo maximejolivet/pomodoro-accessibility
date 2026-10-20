@@ -7,7 +7,8 @@ export const CX = 210;
 export const CY = 210;
 export const RING_OUTER = 150;
 export const RING_INNER = 102;
-export const DISK_R = 147;
+/* Le voile s'arrête avant le bord de l'anneau : une marge de couleur reste visible. */
+export const DISK_R = 138;
 export const LABEL_R = 180;
 /** Effet d'arrière-plan de 0 à 20, comme sur le Time Timer */
 export const BG_R = 205;
@@ -18,11 +19,14 @@ export const DIAL_TRANSFORM =
   `translate(${CX} ${CY}) scale(${DIAL_SCALE}) translate(${-CX} ${-CY})`;
 
 /**
- * Une couleur par quart d'heure : 0-15, 15-30, 30-45, 45-60. Quatre teintes calmes qui
- * ne changent pas à chaque minute, pour qu'une lecture ne demande aucun effort.
+ * Une couleur par tranche de 5 minutes, de 0-5 (corail) à 55-60 (rose). Teintes voilées,
+ * qui se suivent sans contraste brutal entre deux tranches voisines.
  */
-const QUARTER_COLORS = ['#e76f51', '#e9c46a', '#5fa8a0', '#6d4c8f'];
-export const SEGMENT_COLORS = QUARTER_COLORS.flatMap((c) => [c, c, c]);
+/** Arc-en-ciel pastel, du rouge (0-5 min) au rose (55-60 min). */
+export const SEGMENT_COLORS = [
+  '#f7b3b3', '#f8c9a6', '#f9e4a0', '#d7eca0', '#b5e6b5', '#a8e6d4',
+  '#a6dcea', '#b1cff5', '#c3c0f5', '#d4bff2', '#efbbe8', '#f5b8c8'
+];
 
 /** Point à un rayon donné, pour une valeur en minutes (sens anti-horaire depuis 0). */
 export function point(r: number, minutes: number): { x: number; y: number } {

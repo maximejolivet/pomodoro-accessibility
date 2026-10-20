@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
 import { LocalNotifications, LocalNotificationSchema } from '@capacitor/local-notifications';
 import { Subject } from 'rxjs';
+import { ElectronNotifications, electronApi } from '../helpers/electron';
 import { SOUND_FILES, SOUND_PATTERNS, SoundId, renderWav } from '../helpers/sound-patterns';
 import type { Alert, ChannelNames, Reminder } from '../models/alert.model';
 
@@ -72,8 +73,10 @@ function toBase64(bytes: Uint8Array): string {
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
   private readonly platform = Capacitor.getPlatform();
+  /** Pont vers le process principal d'Electron (macOS), `null` ailleurs. */
+  private readonly electron: ElectronNotifications | null = electronApi()?.notifications ?? null;
   /** Faux dans le navigateur : il n'y a alors ni notification à programmer, ni test à proposer. */
-  readonly available = Capacitor.isNativePlatform();
+  readonly available = Capacitor.isNativePlatform() || this.electron !== null;
   private permission: Promise<boolean> | null = null;
   /** Faux si les sons n'ont pas pu être installés : une notification sonore serait muette. */
   private soundsInstalled = true;
@@ -91,6 +94,7 @@ export class NotificationService {
   /** Prépare les sons (iOS) et les canaux (Android). À appeler une fois au démarrage. */
   setup(channelNames: ChannelNames): Promise<void> {
     if (!this.available) return Promise.resolve();
+    if (this.electron) return this.setupElectron(this.electron);
     this.listenToTaps();
     this.ready ??= (this.platform === 'ios' ? this.installIosSounds() : this.createAndroidChannels(channelNames))
       .catch(err => {
@@ -105,6 +109,8 @@ export class NotificationService {
   /** Demande l'autorisation (une seule fois), à appeler depuis un geste utilisateur. */
   ensurePermission(): Promise<boolean> {
     if (!this.available) return Promise.resolve(false);
+    // Electron n'a pas de demande d'autorisation : macOS la gère dans les Réglages système
+    if (this.electron) return Promise.resolve(true);
     this.permission ??= LocalNotifications.requestPermissions()
       .then(p => p.display === 'granted')
       .catch(() => false);
@@ -164,6 +170,7 @@ export class NotificationService {
   }
 
   private async doSchedule(alerts: Alert[], withSound: boolean): Promise<void> {
+    if (this.electron) return this.electron.schedule(alerts, withSound);
     if (!this.available || !(await this.ensurePermission())) return;
     await this.ready;
     await this.cancelPending();
@@ -186,6 +193,7 @@ export class NotificationService {
   }
 
   private async doScheduleReminders(reminders: Reminder[], withSound: boolean): Promise<void> {
+    if (this.electron) return this.electron.scheduleReminders(reminders, withSound);
     if (!this.available) return;
     // Un rappel n'a de sens que si l'appareil accepte de le montrer
     if (reminders.length && !(await this.ensurePermission())) return;
@@ -212,6 +220,7 @@ export class NotificationService {
   }
 
   private async doSendTest(title: string, body: string, withSound: boolean): Promise<TestResult> {
+    if (this.electron) return this.electron.test(title, body, withSound);
     if (!(await this.ensurePermission())) return 'denied';
     await this.ready;
     // Un test qui annonce « envoyée » alors que le son n'a pas pu être installé ferait
@@ -235,6 +244,19 @@ export class NotificationService {
   }
 
   /**
+   * Électron : l'appui sur un rappel arrive par le pont. Si l'app était fermée, le process
+   * principal garde l'appui en attente, à reprendre ici au démarrage.
+   */
+  private setupElectron(electron: ElectronNotifications): Promise<void> {
+    electron.onReminderTapped(routineId => this.reminderTapped.next(routineId));
+    return electron.takePendingTap()
+      .then(routineId => {
+        if (routineId) this.reminderTapped.next(routineId);
+      })
+      .catch(() => {});
+  }
+
+  /**
    * L'appui sur un rappel dit quelle routine armer. L'écoute est posée au démarrage, et
    * non à la première programmation : l'appui a lieu **avant** que l'app existe, et c'est
    * lui qui la lance. Les deux plateformes retiennent l'événement jusqu'à ce qu'un
@@ -252,6 +274,8 @@ export class NotificationService {
   /** `reminders` : les rappels de routine plutôt que les alertes d'une session. */
   private async cancelPending(reminders = false): Promise<void> {
     if (!this.available) return;
+    // Electron ne garde qu'un jeu d'alertes de session, remplacé à chaque programmation
+    if (this.electron) return this.electron.cancelAll();
     try {
       const { notifications } = await LocalNotifications.getPending();
       const mine = notifications.filter(n => n.id !== TEST_ID && (n.id >= REMINDER_ID_BASE) === reminders);

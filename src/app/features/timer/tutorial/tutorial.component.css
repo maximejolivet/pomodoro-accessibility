@@ -101,13 +101,32 @@
   display: grid;
   place-items: center;
   /* Aussi grand que l'écran le permet : plein sur un téléphone debout, réduit couché */
-  width: clamp(72px, 15vh, 132px);
-  height: clamp(72px, 15vh, 132px);
+  width: clamp(120px, 26vh, 216px);
+  height: clamp(120px, 26vh, 216px);
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--c) 45%, #fff), var(--c));
-  box-shadow: 0 5px 0 color-mix(in srgb, var(--c) 68%, #000), 0 10px 20px rgba(25, 55, 65, 0.2);
-  font-size: clamp(34px, 7vh, 64px);
+  box-shadow: 0 6px 0 color-mix(in srgb, var(--c) 68%, #000), 0 12px 24px rgba(25, 55, 65, 0.2);
+  /* Le pictogramme occupe la moitié du cercle : 1em = 50 % de la largeur ci-dessus */
+  font-size: clamp(60px, 13vh, 108px);
   line-height: 1;
+  color: #fff;
+}
+
+/*
+ * `app-icon` pose sa couleur de catégorie en style inline, qui l'emporte sur l'héritage :
+ * il faut donc `::ng-deep` et `!important` pour passer le pictogramme en blanc.
+ */
+.slide-icon ::ng-deep .icon {
+  color: #fff !important;
+}
+
+/*
+ * Le SVG Lucide porte `width="24"` en attribut et ne reçoit pas le style de `app-icon`
+ * (injecté en `innerHTML`, hors encapsulation) : sans cette règle, il reste à 24 px.
+ */
+.slide-icon ::ng-deep .icon svg {
+  width: 100%;
+  height: 100%;
 }
 
 .slide-title {
