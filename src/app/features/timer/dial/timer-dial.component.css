@@ -12,6 +12,24 @@
 }
 
 /*
+ * L'épaisseur du boîtier et son ombre suivent le nuage : un box-shadow serait découpé
+ * par le clip-path, donc elles passent par un filtre posé sur un conteneur autour du seul boîtier.
+ */
+.case-shadow {
+  filter: none;
+}
+
+.tick {
+  stroke: #b9b2a4;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.tick.major {
+  stroke-width: 3;
+}
+
+/*
  * Verrou du cadran : pour les mains qui tremblent et les paumes posées, un contact
  * involontaire ne peut plus changer la durée ni effacer la session en cours.
  * Cible de 44 px (WCAG 2.5.8), posée sous le boîtier plutôt que sur le cadran.
@@ -29,7 +47,7 @@
   border: 1px solid var(--surface-edge);
   border-radius: 50%;
   background: var(--surface-hi);
-  box-shadow: 0 2px 6px var(--band-shadow);
+  box-shadow: none;
   color: var(--muted);
   cursor: pointer;
   transform: translateX(-50%);
@@ -60,25 +78,20 @@
 .device {
   --rx: 0deg;
   --ry: 0deg;
+  /* Même relief que le bouton principal, en gris : arête foncée dessous. */
+  --c: #c4cace;
+  --c-dark: color-mix(in srgb, var(--c) 84%, #000);
   width: min(calc(100vw - 32px), 560px, calc(100dvh - 330px));
   min-width: 280px;
   aspect-ratio: 1;
-  border-radius: 22%;
+  border-radius: 50%;
   padding: 4.2%;
-  background:
-    linear-gradient(145deg, var(--bumper-light) 0%, var(--bumper) 45%, var(--bumper-dark) 100%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--c) 80%, #fff), var(--c));
   box-shadow:
-    inset 0 3px 2px rgba(255, 255, 255, 0.75),
-    inset 3px 0 3px rgba(255, 255, 255, 0.35),
-    inset 0 -5px 8px rgba(30, 70, 85, 0.3),
-    0 1px 0 var(--bumper-dark),
-    0 3px 0 var(--bumper-dark),
-    0 5px 0 var(--bumper-edge),
-    0 8px 0 var(--bumper-edge),
-    0 11px 0 var(--bumper-deep),
-    0 22px 28px rgba(25, 55, 65, 0.28),
-    0 44px 60px rgba(25, 55, 65, 0.22);
-  transform: rotateX(calc(8deg + var(--rx))) rotateY(var(--ry));
+    inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    0 6px 0 var(--c-dark),
+    0 12px 20px rgba(25, 55, 65, 0.22);
+  transform: none;
   transform-style: preserve-3d;
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -86,13 +99,10 @@
 .bezel {
   width: 100%;
   height: 100%;
-  border-radius: 19%;
+  border-radius: 50%;
   padding: 2.4%;
-  background: linear-gradient(160deg, var(--bezel-a), var(--bezel-b) 60%, var(--bezel-c));
-  box-shadow:
-    inset 0 -2px 3px rgba(255, 255, 255, 0.6),
-    inset 0 4px 8px rgba(30, 70, 85, 0.35),
-    0 1px 1px rgba(255, 255, 255, 0.6);
+  background: var(--bezel-b);
+  box-shadow: none;
 }
 
 .face {
@@ -102,11 +112,9 @@
   height: 100%;
   padding: 0;
   border: 0;
-  border-radius: 16%;
-  background: radial-gradient(circle at 40% 30%, var(--face-hi) 0%, var(--face) 50%, var(--face-lo) 100%);
-  box-shadow:
-    inset 0 3px 7px rgba(20, 40, 50, 0.22),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  background: var(--face);
+  box-shadow: none;
   cursor: pointer;
   overflow: hidden;
   -webkit-tap-highlight-color: transparent;
@@ -116,6 +124,7 @@
 }
 
 .face::after {
+  display: none;
   content: '';
   position: absolute;
   inset: 0;
@@ -189,13 +198,12 @@
 
 .disk-tab {
   fill: var(--tab);
-  filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.35));
 }
 
 .label {
-  font-size: 27px;
-  font-weight: 500;
-  fill: var(--ink);
+  font-size: 22px;
+  font-weight: 600;
+  fill: var(--dial-numeral);
   text-anchor: middle;
   dominant-baseline: central;
 }
@@ -236,6 +244,16 @@
      * sur les écrans très courts.
      */
     width: min(calc(100vw - 32px), 560px, calc(100dvh - 330px - var(--pill-band) + 40px));
+  }
+}
+
+/*
+ * Portrait (téléphone, fenêtre haute) : le cadran ne remplit plus la largeur, il laisse
+ * des marges aux côtés et de la place au chrono et aux commandes.
+ */
+@media (orientation: portrait) {
+  .device {
+    width: min(calc(100vw - 96px), 420px, calc(100dvh - 330px - var(--pill-band, 68px) + 40px));
   }
 }
 

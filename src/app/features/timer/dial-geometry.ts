@@ -3,27 +3,26 @@
  * pointeur → minutes. Fonctions pures, sans état ni dépendance à Angular.
  */
 
-export const CX = 217;
-export const CY = 218;
+export const CX = 210;
+export const CY = 210;
 export const RING_OUTER = 150;
 export const RING_INNER = 102;
 export const DISK_R = 147;
-export const LABEL_R = 181;
+export const LABEL_R = 180;
 /** Effet d'arrière-plan de 0 à 20, comme sur le Time Timer */
-export const BG_R = 212;
+export const BG_R = 205;
 export const BG_TO_MIN = 20;
-/** Le bout arrondi dépasse le 0 (valeur négative = côté 55) */
-const BG_CAP_PAST_ZERO_MIN = 1.8;
-/** Le cadran est réduit pour laisser la place à l'arc au-dessus des chiffres */
-const DIAL_SCALE = 0.91;
+/* Échelle pleine : les graduations touchent le bord du boîtier, sans anneau vide. */
+const DIAL_SCALE = 1;
 export const DIAL_TRANSFORM =
   `translate(${CX} ${CY}) scale(${DIAL_SCALE}) translate(${-CX} ${-CY})`;
 
-/** Couleurs des segments, de 0-5 min (rouge) à 55-60 min (magenta) */
-export const SEGMENT_COLORS = [
-  '#d63f4f', '#e5593a', '#ef7d2d', '#f3a52b', '#f0c52f', '#c3cd36',
-  '#56b27b', '#5d9fb6', '#5d6db3', '#5a55a3', '#6c4b9c', '#b24f97'
-];
+/**
+ * Une couleur par quart d'heure : 0-15, 15-30, 30-45, 45-60. Quatre teintes calmes qui
+ * ne changent pas à chaque minute, pour qu'une lecture ne demande aucun effort.
+ */
+const QUARTER_COLORS = ['#e76f51', '#e9c46a', '#5fa8a0', '#6d4c8f'];
+export const SEGMENT_COLORS = QUARTER_COLORS.flatMap((c) => [c, c, c]);
 
 /** Point à un rayon donné, pour une valeur en minutes (sens anti-horaire depuis 0). */
 export function point(r: number, minutes: number): { x: number; y: number } {
@@ -63,21 +62,16 @@ export function annulusPath(
     `L ${i1.x} ${i1.y} A ${inner} ${inner} 0 ${large} 1 ${i0.x} ${i0.y} Z`;
 }
 
-/** Minute où commence la partie droite de la bande, pour que son bout arrondi dépasse le 0. */
-const BG_CAP_MINUTES = (() => {
-  const capR = (BG_R - RING_OUTER) / 2;
-  const midR = (BG_R + RING_OUTER) / 2;
-  return (capR / midR) * (180 / Math.PI) / 6 - BG_CAP_PAST_ZERO_MIN;
-})();
+/** La bande part pile du 0 : son bout ne dépasse jamais le 0. */
+const BG_CAP_MINUTES = 0;
 
-/** Bande de 0 à 20 avec un bout arrondi côté 0 (remplie, ou seulement son contour). */
+/** Bande de 0 à 20, coupée net au 0 (remplie, ou seulement son contour). */
 function roundedBandPath(closed: boolean): string {
-  const capR = (BG_R - RING_OUTER) / 2;
   const m = BG_CAP_MINUTES;
   const inner = point(RING_OUTER, m);
   const outer = point(BG_R, m);
   const outerEnd = point(BG_R, BG_TO_MIN);
-  const contour = `M ${inner.x} ${inner.y} A ${capR} ${capR} 0 0 0 ${outer.x} ${outer.y} ` +
+  const contour = `M ${inner.x} ${inner.y} L ${outer.x} ${outer.y} ` +
     `A ${BG_R} ${BG_R} 0 0 0 ${outerEnd.x} ${outerEnd.y}`;
   if (!closed) return contour;
   const innerEnd = point(RING_OUTER, BG_TO_MIN);
@@ -101,6 +95,13 @@ export const DIAL_SEPARATORS = Array.from({ length: 12 }, (_, i) => {
 export const DIAL_LABELS = Array.from({ length: 12 }, (_, i) => {
   const p = point(LABEL_R, i * 5);
   return { text: String(i * 5), x: p.x, y: p.y };
+});
+
+/** 12 repères, un par 5 minutes : pas de graduation à chaque minute, pour moins de bruit. */
+export const DIAL_TICKS = Array.from({ length: 12 }, (_, i) => {
+  const a = point(192, i * 5);
+  const b = point(210, i * 5);
+  return { x1: a.x, y1: a.y, x2: b.x, y2: b.y, major: true };
 });
 
 export const BG_FILL_PATH = roundedBandPath(true);
