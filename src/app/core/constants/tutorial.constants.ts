@@ -20,9 +20,9 @@ export interface TutorialSlide {
  * qui ne lit pas encore, ou plus.
  */
 export const TUTORIAL_SLIDES: readonly TutorialSlide[] = [
-  { icon: 'info', titleKey: 'tutorial.1.title', textKey: 'tutorial.1.text', color: '#8b6fd6' },
-  { icon: 'play', titleKey: 'tutorial.2.title', textKey: 'tutorial.2.text', color: '#f3a52b' },
+  { icon: 'clock', titleKey: 'tutorial.1.title', textKey: 'tutorial.1.text', color: '#8b6fd6' },
+  { icon: 'edit', titleKey: 'tutorial.2.title', textKey: 'tutorial.2.text', color: '#f3a52b' },
   { icon: 'play', titleKey: 'tutorial.3.title', textKey: 'tutorial.3.text', color: '#56b27b' },
-  { icon: 'settings', titleKey: 'tutorial.4.title', textKey: 'tutorial.4.text', color: '#5aa9c4' },
-  { icon: 'warning', titleKey: 'tutorial.5.title', textKey: 'tutorial.5.text', color: '#d63f4f' }
+  { icon: 'sunrise', titleKey: 'tutorial.4.title', textKey: 'tutorial.4.text', color: '#5aa9c4' },
+  { icon: 'hearing', titleKey: 'tutorial.5.title', textKey: 'tutorial.5.text', color: '#d63f4f' }
 ];
