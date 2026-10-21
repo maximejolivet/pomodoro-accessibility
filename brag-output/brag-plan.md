@@ -10,15 +10,15 @@
 
 ### 1. What is the app?
 
-A visual timer for people with TDAH, autism, dyslexia, and other neurodivergent profiles. Instead of reading numbers, users watch a colored disk shrink to see how much time is left—making time concrete instead of abstract.
+A visual timer for people with TDAH, autism, dyslexia, and other neurodivergent profiles. Instead of reading numbers, users watch a colored disk shrink to see how much time is left-making time concrete instead of abstract.
 
 ### 2. What is the funniest or most impressive claim?
 
-"On voit le temps qui reste au lieu de le lire" (You see the time remaining instead of reading it). The insight is that for neurodivergent minds, a visual disk is far more intuitive than a digital clock or countdown—no reading, no calculation, no guessing.
+"On voit le temps qui reste au lieu de le lire" (You see the time remaining instead of reading it). The insight is that for neurodivergent minds, a visual disk is far more intuitive than a digital clock or countdown-no reading, no calculation, no guessing.
 
 ### 3. What is the visual hook?
 
-The timer dial itself: a calm, shrinking colored disk against a soft gradient background. The design is elegant and minimalist—accessible without looking medical or patronizing. The color palette is soft and approachable (dusty blue, cream, warm purples for accents).
+The timer dial itself: a calm, shrinking colored disk against a soft gradient background. The design is elegant and minimalist-accessible without looking medical or patronizing. The color palette is soft and approachable (dusty blue, cream, warm purples for accents).
 
 ### 4. What should be shown from the actual UI?
 
@@ -34,12 +34,12 @@ The timer dial itself: a calm, shrinking colored disk against a soft gradient ba
 
 ### 6. What tone fits best?
 
-**Tone preset:** `polished` — serious, elegant, premium product feel.  
+**Tone preset:** `polished` - serious, elegant, premium product feel.  
 **Creative direction:** "Quiet premium product film for accessible design." This is not a joke product. It's a carefully designed tool that solves a real problem with elegance. The narration should be thoughtful and human, not corporate.
 
 ### 7. What should the audio feel like?
 
-- **Music:** Warm, calm instrumental bed. Something like a subtle lo-fi or modern classical vibe—accessible and inviting without being precious. No upbeat energy; the product speaks quietly.
+- **Music:** Warm, calm instrumental bed. Something like a subtle lo-fi or modern classical vibe-accessible and inviting without being precious. No upbeat energy; the product speaks quietly.
 - **Narration:** Clear, conversational voice. Slightly slower pace, human delivery. The voice complements the visuals, doesn't repeat them.
 - **SFX:** Minimal. Consider one subtle tone-based sound when the timer disk appears or at a key reveal, but silence and music should dominate. Possibly the gentle "palier" tone from the app itself as an easter egg.
 
@@ -49,7 +49,7 @@ The timer dial itself: a calm, shrinking colored disk against a soft gradient ba
 
 ### 9. What's the user flow worth showing?
 
-Not a typical app flow—instead, the visual transformation:
+Not a typical app flow-instead, the visual transformation:
 - **Beat 1:** The problem: time is invisible and abstract for neurodivergent brains.
 - **Beat 2:** The solution: a shrinking disk makes time visible and concrete.
 - **Beat 3:** The depth: modes, routines, quiet alerts, accessibility features.
@@ -63,7 +63,7 @@ Not a typical app flow—instead, the visual transformation:
 
 **Visual:** Text on a soft gradient background: "Time doesn't feel like time."  
 **Voice:** "For many neurodivergent minds, an hour and ten minutes feel the same. Numbers don't help. Neither does watching the clock."  
-**Audio:** Music bed fades in—calm, thoughtful.  
+**Audio:** Music bed fades in-calm, thoughtful.  
 **SFX:** None.  
 **Duration:** 2.5s  
 **Transition:** Fade to next scene.
@@ -73,7 +73,7 @@ Not a typical app flow—instead, the visual transformation:
 ### Scene 2: Reveal – The Solution (2.5–5.5s)
 
 **Visual:** The timer page appears on a smartphone, showing the main timer dial in light theme. The colored disk is full. A hand/finger appears and starts the timer. The disk begins to shrink.  
-**Voice:** "Pomodoro Accessibilité shows you the time remaining as it shrinks. One glance—no reading, no math. Just time you can see."  
+**Voice:** "Pomodoro Accessibilité shows you the time remaining as it shrinks. One glance-no reading, no math. Just time you can see."  
 **Audio:** Music continues. Subtle tone when the timer starts (optional, very soft).  
 **SFX:** One gentle chime or tone as the disk appears (brief, ~0.3s).  
 **Duration:** 3s  
@@ -156,14 +156,14 @@ Not a typical app flow—instead, the visual transformation:
 
 ## Scene Duration Summary
 
-| Scene | Duration |
-|-------|----------|
-| Hook – The Problem | 2.5s |
-| Reveal – The Solution | 3s |
-| Features – Modes & Routines | 5.5s |
-| Accessibility & Scope | 5s |
-| Outro – The Promise | 2s |
-| **Total** | **18s** |
+| Scene                       | Duration |
+| --------------------------- | -------- |
+| Hook – The Problem          | 2.5s     |
+| Reveal – The Solution       | 3s       |
+| Features – Modes & Routines | 5.5s     |
+| Accessibility & Scope       | 5s       |
+| Outro – The Promise         | 2s       |
+| **Total**                   | **18s**  |
 
 ---
 
