@@ -2,7 +2,7 @@
 <!--
   Icône de la barre d'état. Android n'en garde que la silhouette : tout doit être opaque ou
   transparent, sans couleur ni dégradé, sinon on obtient un carré blanc. C'est le cadran
-  réduit à ce qui le fait reconnaître — un anneau et le secteur qui se vide.
+  réduit à ce qui le fait reconnaître - un anneau et le secteur qui se vide.
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"

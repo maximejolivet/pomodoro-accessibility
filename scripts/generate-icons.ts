@@ -17,7 +17,7 @@ const FOREGROUND = readFileSync(join(ROOT, 'resources/app-icon-foreground.svg'),
 /**
  * Fond de l'écran de lancement : noir. Il vaut pour les deux thèmes, il ne fait aucun éclair
  * blanc au réveil dans le noir, et c'est sur lui que le voile d'amorçage de l'app enchaîne
- * sans une couture — `index.html` ouvre sur le même noir.
+ * sans une couture - `index.html` ouvre sur le même noir.
  */
 const SPLASH_BG = '#000000';
 
@@ -98,7 +98,7 @@ async function main(): Promise<void> {
   }
 
   /**
-   * Écrans de lancement : le cadran seul, sans le boîtier de l'icône — son cadre carré ferait
+   * Écrans de lancement : le cadran seul, sans le boîtier de l'icône - son cadre carré ferait
    * une vignette posée au milieu de l'écran, là où le cadran se pose sur le fond de l'app.
    * L'avant-plan porte déjà sa marge (63 unités de dessin sur 108), d'où le facteur généreux.
    */
