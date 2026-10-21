@@ -60,7 +60,7 @@ tests/
 playwright.config.ts            # Démarre l'app et joue les tests sur Chromium
 .github/workflows/a11y.yml      # Build de production + tests d'accessibilité à chaque push
 scripts/
-└── generate-sounds.ts          # WAV des notifications (make sounds — les copie aussi dans res/raw)
+└── generate-sounds.ts          # WAV des notifications (make sounds - les copie aussi dans res/raw)
 resources/sounds/               # WAV générés, crête à −1 dBFS
 resources/app-icon.svg          # Icônes et écrans de lancement, iOS · Android · web (make icons)
 resources/app-icon-foreground.svg  # Calque avant de l'icône adaptative Android
@@ -87,7 +87,7 @@ aujourd'hui. Ces dossiers se créeront le jour où un deuxième usage apparaîtr
 
 ### Composants
 
-La page du minuteur n'assemble que des blocs — `dial`, `readout`, `controls`, `sheet` — chacun
+La page du minuteur n'assemble que des blocs - `dial`, `readout`, `controls`, `sheet` - chacun
 avec son gabarit et son style.
 
 Ils lisent l'état dans les services plutôt que par une cascade d'entrées. Seul ce qui est local
@@ -128,12 +128,12 @@ même facteur des deux côtés.
 
 Mesurer plutôt que calculer est nécessaire : les notes se chevauchent et s'additionnent, si bien
 qu'un gain posé à la main laisse le motif soit écrêté, soit très en dessous. Un son d'alerte doit
-sortir fort, parce que l'appareil ne fait que *réduire* ce qu'on lui donne — et sur Android, le
+sortir fort, parce que l'appareil ne fait que *réduire* ce qu'on lui donne - et sur Android, le
 volume des notifications est un curseur à part de celui du média.
 
 ### Une routine est une suite de modes
 
-Chaque étape a la forme d'un `Preset` — nom, durée, couleur, nature — plus un pictogramme.
+Chaque étape a la forme d'un `Preset` - nom, durée, couleur, nature - plus un pictogramme.
 
 `SessionService.selectedPreset` renvoie l'étape en cours quand une routine est chargée, si bien
 que le cadran, l'historique, les notifications et le widget n'ont aucune notion de routine à
@@ -150,7 +150,7 @@ Un dictionnaire par langue dans `core/i18n/locales/`, typé à partir du frança
 manquante dans une autre langue est une **erreur de compilation**.
 
 Ajouter une langue, c'est ajouter un fichier dans `locales/`, puis une entrée dans `Lang`,
-`DICTIONARIES` et `LANGUAGES` — et dans `RTL_LANGS` si elle s'écrit de droite à gauche. Le CSS
+`DICTIONARIES` et `LANGUAGES` - et dans `RTL_LANGS` si elle s'écrit de droite à gauche. Le CSS
 utilise des propriétés logiques (`inset-inline-*`, `start` / `end`).
 
 ### Persistance
@@ -163,7 +163,7 @@ gardant les 500 dernières sessions.
 `npm run test:a11y` lance l'application et vérifie soixante-douze points :
 
 - **axe-core** sur l'accueil, le panneau (trois onglets), l'éditeur de mode, l'éditeur de routine
-  et la page d'accessibilité — en thème clair et sombre, et en arabe ;
+  et la page d'accessibilité - en thème clair et sombre, et en arabe ;
 - le réglage du cadran **au clavier** ;
 - l'enchaînement des étapes d'une routine, et sa bande ;
 - le **piège à focus** de la modale, Échap, et le retour du focus ;

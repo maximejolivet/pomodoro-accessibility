@@ -4,7 +4,7 @@
 
 [← Retour au README](../README.FR.md) · [Cahier des charges fonctionnel](FUNCTIONAL-SPECIFICATION.FR.md)
 
-Version 1.1 — 26 septembre 2026 · Application **Pomodoro Accessibilité**
+Version 1.1 - 26 septembre 2026 · Application **Pomodoro Accessibilité**
 
 Ce document décrit *comment* les exigences du [cahier des charges
 fonctionnel](FUNCTIONAL-SPECIFICATION.FR.md) sont réalisées. Pour la carte des dossiers, voir
@@ -36,17 +36,17 @@ pour le natif, [Build mobile](MOBILE.FR.md).
 
 ### 1.1 Dépendances
 
-| Domaine | Choix | Version | Rôle |
-| --- | --- | --- | --- |
-| Framework | Angular (standalone, signaux) | 22 | Composants, routage, réactivité |
-| Langage | TypeScript | 6 | Typage strict du domaine |
-| Flux asynchrones | RxJS | 7.8 | Ticks du décompte |
-| Styles | Tailwind CSS + PostCSS | 4 / 8 | Utilitaires, jetons de thème |
-| Natif | Capacitor | 8 | Pont web ↔ iOS / Android |
-| Widget iOS | Swift, SwiftUI, WidgetKit | iOS 17+ | Widget d'écran d'accueil |
-| Tests unitaires | Karma + Jasmine | 6 / 7 | Outillage en place, **aucune spécification écrite à ce jour** |
-| Tests d'accessibilité | Playwright + axe-core | 1.63 / 4.13 | Non-régression RGAA / WCAG |
-| Exécution | Node.js | ^24.15.0 (`engines`, `.nvmrc`) | Outillage et scripts |
+| Domaine               | Choix                         | Version                        | Rôle                                                          |
+| --------------------- | ----------------------------- | ------------------------------ | ------------------------------------------------------------- |
+| Framework             | Angular (standalone, signaux) | 22                             | Composants, routage, réactivité                               |
+| Langage               | TypeScript                    | 6                              | Typage strict du domaine                                      |
+| Flux asynchrones      | RxJS                          | 7.8                            | Ticks du décompte                                             |
+| Styles                | Tailwind CSS + PostCSS        | 4 / 8                          | Utilitaires, jetons de thème                                  |
+| Natif                 | Capacitor                     | 8                              | Pont web ↔ iOS / Android                                      |
+| Widget iOS            | Swift, SwiftUI, WidgetKit     | iOS 17+                        | Widget d'écran d'accueil                                      |
+| Tests unitaires       | Karma + Jasmine               | 6 / 7                          | Outillage en place, **aucune spécification écrite à ce jour** |
+| Tests d'accessibilité | Playwright + axe-core         | 1.63 / 4.13                    | Non-régression RGAA / WCAG                                    |
+| Exécution             | Node.js                       | ^24.15.0 (`engines`, `.nvmrc`) | Outillage et scripts                                          |
 
 Plugins Capacitor : `@capacitor/app`, `@capacitor/local-notifications`, `@capacitor/haptics`,
 `@capacitor/filesystem`, `@capacitor-community/keep-awake`, plus le plugin local `WidgetBridge`.
@@ -108,70 +108,70 @@ Il est exécuté aussi bien par le navigateur que directement par Node.
 
 ### 3.1 Types du domaine
 
-| Type | Champs |
-| --- | --- |
-| `Preset` | `id`, `name`, `nameKey?`, `seconds`, `color`, `kind` |
-| `RoutineStep` | `id`, `name`, `nameKey?`, `icon`, `seconds`, `color`, `kind` |
-| `Routine` | `id`, `name`, `nameKey?`, `icon`, `steps`, `rounds?`, `workout?`, `reminder?` |
-| `RoutineReminder` | `hour`, `minute`, `days` |
-| `Session` | `name`, `color`, `kind`, `plannedSeconds`, `activeSeconds`, `startedAt`, `endedAt`, `completed` |
-| `ActiveSession` | `name`, `color`, `kind`, `plannedSeconds`, `startedAt`, `activeMs`, `runningSince` |
-| `DayStat` | `date`, `focusMinutes` |
-| `Alert` | `id`, `at`, `title`, `body`, `sound` |
-| `Reminder` | `routineId`, `title`, `body`, `hour`, `minute`, `day` |
-| `WidgetState` | `dayStart`, `focusMinutes`, `goalMinutes`, `timer{…}`, `labels{…}`, `rtl` |
+| Type              | Champs                                                                                          |
+| ----------------- | ----------------------------------------------------------------------------------------------- |
+| `Preset`          | `id`, `name`, `nameKey?`, `seconds`, `color`, `kind`                                            |
+| `RoutineStep`     | `id`, `name`, `nameKey?`, `icon`, `seconds`, `color`, `kind`                                    |
+| `Routine`         | `id`, `name`, `nameKey?`, `icon`, `steps`, `rounds?`, `workout?`, `reminder?`                   |
+| `RoutineReminder` | `hour`, `minute`, `days`                                                                        |
+| `Session`         | `name`, `color`, `kind`, `plannedSeconds`, `activeSeconds`, `startedAt`, `endedAt`, `completed` |
+| `ActiveSession`   | `name`, `color`, `kind`, `plannedSeconds`, `startedAt`, `activeMs`, `runningSince`              |
+| `DayStat`         | `date`, `focusMinutes`                                                                          |
+| `Alert`           | `id`, `at`, `title`, `body`, `sound`                                                            |
+| `Reminder`        | `routineId`, `title`, `body`, `hour`, `minute`, `day`                                           |
+| `WidgetState`     | `dayStart`, `focusMinutes`, `goalMinutes`, `timer{…}`, `labels{…}`, `rtl`                       |
 
 #### Précisions
 
-`Preset` — `kind` ∈ `focus` \| `break` \| `longBreak`. `name` est vide pour un mode par défaut,
+`Preset` - `kind` ∈ `focus` \| `break` \| `longBreak`. `name` est vide pour un mode par défaut,
 dont le libellé vient de `nameKey`, traduit.
 
-`RoutineStep` — un `Preset` plus un pictogramme : une étape se démarre et s'enregistre exactement
+`RoutineStep` - un `Preset` plus un pictogramme : une étape se démarre et s'enregistre exactement
 comme un mode (`kind` ∈ `focus` \| `break`).
 
-`Routine` — suite ordonnée de 1 à 10 étapes (RG-16), jouée `rounds` fois (1 à 20). `workout` fait
+`Routine` - suite ordonnée de 1 à 10 étapes (RG-16), jouée `rounds` fois (1 à 20). `workout` fait
 passer la page en mode sport.
 
-`RoutineReminder` — `days` en ISO 8601 (1 = lundi … 7 = dimanche), jamais vide (RG-20).
+`RoutineReminder` - `days` en ISO 8601 (1 = lundi … 7 = dimanche), jamais vide (RG-20).
 
-`Session` — nom et couleur figés à l'enregistrement (RG-9).
+`Session` - nom et couleur figés à l'enregistrement (RG-9).
 
-`ActiveSession` — `runningSince` vaut `null` en pause ; `activeMs` cumule le temps décompté avant
+`ActiveSession` - `runningSince` vaut `null` en pause ; `activeMs` cumule le temps décompté avant
 la reprise courante.
 
-`DayStat` — une barre de l'histogramme hebdomadaire.
+`DayStat` - une barre de l'histogramme hebdomadaire.
 
-`Alert` — notification locale ponctuelle, programmée au passage en arrière-plan.
+`Alert` - notification locale ponctuelle, programmée au passage en arrière-plan.
 
-`Reminder` — rappel hebdomadaire d'une routine : un par jour coché.
+`Reminder` - rappel hebdomadaire d'une routine : un par jour coché.
 
-`WidgetState` — contrat partagé avec `PomodoroWidget.swift`.
+`WidgetState` - contrat partagé avec `PomodoroWidget.swift`.
 
 ### 3.2 Constantes du domaine
 
-| Constante | Valeur | Exigence couverte |
-| --- | --- | --- |
-| `MAX_MINUTES` | 60 | RG-1 |
-| `EXTRA_SECONDS` | 300 | RG-2 |
-| `MILESTONES` | `[45, 30, 15]` — les trois timbres, et les paliers d'une longue session | RG-4 |
-| `LONG_SESSION_MINUTES` | 40 | RG-4 |
-| `FINAL_WARNING_MINUTES` | 1 | RG-4 |
-| `LATE_ALERT_SECONDS` | 90 | RG-15 |
-| `LONG_BREAK_EVERY` | 4 | RG-3 |
-| `MAX_SESSIONS` | 500 | RG-7 |
-| `MIN_RECORDED_SECONDS` | 60 | RG-6 |
-| `GOAL_MIN / MAX / STEP / DEFAULT_MINUTES` | 10 / 300 / 5 / 100 | RG-12 |
-| `PRESET_COLORS` | 10 teintes de l'anneau | EF-MOD-3 |
-| `DEFAULT_PRESETS` | Pomodoro 25, Pause 5, Pause longue 15, Focus 15 | EF-MOD-1 |
-| `STEP_ICONS` | 32 pictogrammes (quotidien, école, travail) | EF-ROU-2 |
-| `TUTORIAL_SLIDES` | 5 vues (pictogramme, titre, texte, couleur) | EF-TUT-1 |
-| `MAX_STEPS` | 10 | RG-16 |
-| `STEP_DURATIONS` | 5 → 55 s par pas de 5, puis 1 → 60 min par pas de 1 | EF-ROU-16 |
-| `MAX_ROUNDS` | 20 | EF-ROU-17 |
-| `SECONDS_DIAL_BELOW` | 60 | EF-ROU-20 |
-| `COUNTDOWN_FROM` | 3 | EF-ROU-21 |
-| `NEXT_ANNOUNCE_SECONDS` | 5 | EF-ROU-22 |
-| `DEFAULT_ROUTINES` | Routine du matin (4 étapes), Tabata (2 étapes × 8 tours), Devoirs (4 étapes) | EF-ROU-3 |
+| Constante                                 | Valeur                                                                       | Exigence couverte |
+| ----------------------------------------- | ---------------------------------------------------------------------------- | ----------------- |
+| `MAX_MINUTES`                             | 60                                                                           | RG-1              |
+| `EXTRA_SECONDS`                           | 300                                                                          | RG-2              |
+| `MILESTONES`                              | `[45, 30, 15]` - les trois timbres, et les paliers d'une longue session      | RG-4              |
+| `LONG_SESSION_MINUTES`                    | 40                                                                           | RG-4              |
+| `FINAL_WARNING_MINUTES`                   | 1                                                                            | RG-4              |
+| `LATE_ALERT_SECONDS`                      | 90                                                                           | RG-15             |
+| `LONG_BREAK_EVERY`                        | 4                                                                            | RG-3              |
+| `MAX_SESSIONS`                            | 500                                                                          | RG-7              |
+| `MIN_RECORDED_SECONDS`                    | 60                                                                           | RG-6              |
+| `GOAL_MIN / MAX / STEP / DEFAULT_MINUTES` | 10 / 300 / 5 / 100                                                           | RG-12             |
+| `PRESET_COLORS`                           | 10 teintes de l'anneau                                                       | EF-MOD-3          |
+| `DEFAULT_PRESETS`                         | Pomodoro 25, Pause 5, Pause longue 15, Focus 15                              | EF-MOD-1          |
+| `STEP_ICONS`                              | 32 pictogrammes (quotidien, école, travail)                                  | EF-ROU-2          |
+| `TUTORIAL_SLIDES`                         | 5 vues (pictogramme, titre, texte, couleur)                                  | EF-TUT-1          |
+| `MAX_STEPS`                               | 10                                                                           | RG-16             |
+| `STEP_DURATIONS`                          | 5 → 55 s par pas de 5, puis 1 → 60 min par pas de 1                          | EF-ROU-16         |
+| `MAX_ROUNDS`                              | 20                                                                           | EF-ROU-17         |
+| `SECONDS_DIAL_BELOW`                      | 60                                                                           | EF-ROU-20         |
+| `COUNTDOWN_FROM`                          | 3                                                                            | EF-ROU-21         |
+| `NEXT_ANNOUNCE_SECONDS`                   | 5                                                                            | EF-ROU-22         |
+| `DEFAULT_ROUTINES`                        | Routine du matin (4 étapes), Tabata (2 étapes × 8 tours), Devoirs (4 étapes) | EF-ROU-3          |
 
 ### 3.3 Persistance
 
@@ -180,26 +180,26 @@ Accès centralisé dans `core/helpers/storage.ts`. Toutes les clés sont préfix
 navigation privée ou stockage bloqué, l'application continue et les réglages ne valent que pour
 la session (RG-14).
 
-| Clé (préfixée) | Contenu | Format |
-| --- | --- | --- |
-| `theme` | Thème | `'dark'` \| `'light'` (absent ⇒ préférence système) |
-| `opendyslexic` | Police OpenDyslexic | `'on'` \| `'off'` (défaut : off) |
-| `sound` | Sons | `'on'` \| `'off'` (défaut : on) |
-| `haptics` | Vibration | `'on'` \| `'off'` (défaut : on) |
-| `visual-alert` | Alerte visuelle | `'off'` \| `'soft'` \| `'strong'` (défaut : soft) |
-| `auto-extra` | Prolongation +5 min | `'on'` \| `'off'` (défaut : on) |
-| `auto-chain` | Enchaînement automatique | `'on'` \| `'off'` (défaut : off) |
-| `keep-awake` | Écran allumé | `'on'` \| `'off'` (défaut : on) |
-| `dial-lock` | Verrou du cadran | `'on'` \| `'off'` (défaut : off) |
-| `speech` | Annonce vocale | `'off'` \| `'milestones'` \| `'minutes'` (défaut : off) |
-| `tutorial-seen` | Tutoriel d'accueil déjà vu | `'on'` \| `'off'` (défaut : off — il se montre au premier lancement) |
-| `lang` | Langue | code de langue ou `'auto'` |
-| `preset` | Mode sélectionné | identifiant |
-| `presets` | Modes | JSON `Preset[]` |
-| `routine` | Routine chargée | identifiant, vide si aucune (EF-ROU-10) |
-| `routines` | Routines | JSON `Routine[]`, liste vide possible |
-| `history` | Historique | JSON `Session[]`, 500 entrées max |
-| `daily-goal` | Objectif quotidien | minutes |
+| Clé (préfixée)  | Contenu                    | Format                                                               |
+| --------------- | -------------------------- | -------------------------------------------------------------------- |
+| `theme`         | Thème                      | `'dark'` \| `'light'` (absent ⇒ préférence système)                  |
+| `opendyslexic`  | Police OpenDyslexic        | `'on'` \| `'off'` (défaut : off)                                     |
+| `sound`         | Sons                       | `'on'` \| `'off'` (défaut : on)                                      |
+| `haptics`       | Vibration                  | `'on'` \| `'off'` (défaut : on)                                      |
+| `visual-alert`  | Alerte visuelle            | `'off'` \| `'soft'` \| `'strong'` (défaut : soft)                    |
+| `auto-extra`    | Prolongation +5 min        | `'on'` \| `'off'` (défaut : on)                                      |
+| `auto-chain`    | Enchaînement automatique   | `'on'` \| `'off'` (défaut : off)                                     |
+| `keep-awake`    | Écran allumé               | `'on'` \| `'off'` (défaut : on)                                      |
+| `dial-lock`     | Verrou du cadran           | `'on'` \| `'off'` (défaut : off)                                     |
+| `speech`        | Annonce vocale             | `'off'` \| `'milestones'` \| `'minutes'` (défaut : off)              |
+| `tutorial-seen` | Tutoriel d'accueil déjà vu | `'on'` \| `'off'` (défaut : off - il se montre au premier lancement) |
+| `lang`          | Langue                     | code de langue ou `'auto'`                                           |
+| `preset`        | Mode sélectionné           | identifiant                                                          |
+| `presets`       | Modes                      | JSON `Preset[]`                                                      |
+| `routine`       | Routine chargée            | identifiant, vide si aucune (EF-ROU-10)                              |
+| `routines`      | Routines                   | JSON `Routine[]`, liste vide possible                                |
+| `history`       | Historique                 | JSON `Session[]`, 500 entrées max                                    |
+| `daily-goal`    | Objectif quotidien         | minutes                                                              |
 
 **Migrations.** Il n'y a pas de numéro de schéma : les lectures sont défensives. Les modes
 relus sont filtrés (identifiant chaîne, durée positive, couleur chaîne) et, si rien de valide ne
@@ -216,24 +216,24 @@ lance très bien à la main.
 
 Tous fournis en racine (`providedIn: 'root'`).
 
-### 4.1 `TimerService` — décompte
+### 4.1 `TimerService` - décompte
 
 Le décompte est **calculé à partir de l'heure de fin réelle** (`endAt`), et non par
 décrémentation : à chaque tick, `timeLeft = (endAt − now) / 1000`. Un ralentissement des ticks
 par le navigateur ou un passage en arrière-plan n'introduit donc aucune dérive (EF-TIM-9,
 ENF-PER-3). Ticks toutes les 100 ms via `interval(100)`, arrêtés par un `takeUntil`.
 
-| Membre | Rôle |
-| --- | --- |
-| `timeLeft$`, `totalTime$`, `isRunning$` | État observable |
-| `finished$` | Émis à 0 avec le **retard constaté** en secondes, exploité pour la règle des 90 s |
-| `endTime` | Heure de fin en ms si le décompte tourne, sinon `null` (widget, notifications) |
-| `start` / `pause` / `resume` / `reset` | Contrôle |
-| `setTimeLeft` | Réglage au doigt sans interrompre le décompte : recale `endAt` |
+| Membre                                  | Rôle                                                                              |
+| --------------------------------------- | --------------------------------------------------------------------------------- |
+| `timeLeft$`, `totalTime$`, `isRunning$` | État observable                                                                   |
+| `finished$`                             | Émis à 0 avec le **retard constaté** en secondes, exploité pour la règle des 90 s |
+| `endTime`                               | Heure de fin en ms si le décompte tourne, sinon `null` (widget, notifications)    |
+| `start` / `pause` / `resume` / `reset`  | Contrôle                                                                          |
+| `setTimeLeft`                           | Réglage au doigt sans interrompre le décompte : recale `endAt`                    |
 
 L'haptique de fin est chargée dynamiquement (`import('@capacitor/haptics')`) et son échec est ignoré.
 
-### 4.2 `SessionService` — orchestration
+### 4.2 `SessionService` - orchestration
 
 Point central : durée réglée, mode sélectionné, session en cours, enchaînement, paliers sonores,
 notifications, widget, annonces pour lecteurs d'écran. Il vit en racine précisément pour survivre
@@ -242,9 +242,9 @@ notifications, widget, annonces pour lecteurs d'écran. Il vit en racine précis
 
 Il porte aussi le déroulé des routines (`activeRoutine`, `routineIndex`, `routineDone`,
 `currentStep`). Le point de couture tient en une ligne : `selectedPreset` renvoie l'étape en
-cours dès qu'une routine est chargée. Tout ce qui lit le mode — cadran, affichage, historique,
-notifications, widget — suit sans rien savoir des routines. Seuls trois endroits les connaissent :
-l'enchaînement de fin (l'étape suivante remplace le cycle pomodoro, sans prolongation — RG-17,
+cours dès qu'une routine est chargée. Tout ce qui lit le mode - cadran, affichage, historique,
+notifications, widget - suit sans rien savoir des routines. Seuls trois endroits les connaissent :
+l'enchaînement de fin (l'étape suivante remplace le cycle pomodoro, sans prolongation - RG-17,
 RG-18), la programmation des notifications, et la bande d'étapes.
 
 Il réagit aussi au cycle de vie de l'application (`@capacitor/app`) : à la mise en arrière-plan
@@ -269,35 +269,35 @@ redemande le maintien d'écran.
 
 #### Points notables
 
-`PreferencesService` — thème initial : la valeur enregistrée, sinon `prefers-color-scheme`.
+`PreferencesService` - thème initial : la valeur enregistrée, sinon `prefers-color-scheme`.
 
-`PresetService` — chargement filtré, refus de supprimer le dernier mode, restauration des modes
+`PresetService` - chargement filtré, refus de supprimer le dernier mode, restauration des modes
 par défaut.
 
-`RoutineService` — mêmes règles que les modes, mais la liste peut être vide ; une routine sans
+`RoutineService` - mêmes règles que les modes, mais la liste peut être vide ; une routine sans
 étape est écartée au chargement.
 
-`HistoryService` — `today`, `week`, `streak` et `goalProgress` en `computed` ; replanification au
+`HistoryService` - `today`, `week`, `streak` et `goalProgress` en `computed` ; replanification au
 passage de minuit.
 
-`SoundService` — synthèse des motifs partagés, portés au niveau mesuré (§ 8.1).
+`SoundService` - synthèse des motifs partagés, portés au niveau mesuré (§ 8.1).
 
-`SpeechService` — coupe l'annonce précédente, choisit une voix de la langue courante si le
+`SpeechService` - coupe l'annonce précédente, choisit une voix de la langue courante si le
 navigateur en propose une, et se masque si la synthèse manque.
 
-`HapticsService` — impulsions enchaînées par `setTimeout`, module Capacitor chargé à la demande,
+`HapticsService` - impulsions enchaînées par `setTimeout`, module Capacitor chargé à la demande,
 échec ignoré là où la vibration n'existe pas (iOS sur le web, ordinateur).
 
-`NotificationService` — écrit les WAV iOS au lancement, crée un canal Android par son, et un canal
+`NotificationService` - écrit les WAV iOS au lancement, crée un canal Android par son, et un canal
 silencieux pour les alertes muettes.
 
-`KeepAwakeService` — vérifie le support, ignore les échecs, redemande le verrou au retour au
+`KeepAwakeService` - vérifie le support, ignore les échecs, redemande le verrou au retour au
 premier plan.
 
-`WidgetService` — actif uniquement sur iOS ; n'envoie que si l'état JSON a changé ; réessaie au
+`WidgetService` - actif uniquement sur iOS ; n'envoie que si l'état JSON a changé ; réessaie au
 changement suivant en cas d'échec.
 
-`I18nService` — détection depuis `navigator.languages`, repli sur le français, met à jour `lang`
+`I18nService` - détection depuis `navigator.languages`, repli sur le français, met à jour `lang`
 et `dir` du document.
 
 ---
@@ -305,7 +305,7 @@ et `dir` du document.
 ## 5. Rendu du cadran
 
 - **Un seul SVG**, `viewBox="0 0 420 420"`, dont les chemins sont calculés en TypeScript par des
-  fonctions pures (`features/timer/dial-geometry.ts`) — testables sans DOM.
+  fonctions pures (`features/timer/dial-geometry.ts`) - testables sans DOM.
 - **Deux couches** : un voile en `mix-blend-mode: multiply` posé sur l'anneau arc-en-ciel de
   12 segments de 5 minutes, et un plateau plein au centre.
 - **Gestes** : événements *pointer* (`pointerdown` / `pointermove` / `pointerup` /
@@ -318,7 +318,7 @@ et `dir` du document.
 Le cadran projette une valeur de 0 à 60 sur un cercle. Rien n'y oblige à ce que cette valeur
 soit des minutes : quand la durée réglée descend sous `SECONDS_DIAL_BELOW`, `SessionService`
 alimente la même géométrie en **secondes**. Les douze segments valent alors 5 s, et les chiffres
-de la face — 0, 5, 10… — restent justes sans changer, puisqu'ils valent pour les deux unités.
+de la face - 0, 5, 10… - restent justes sans changer, puisqu'ils valent pour les deux unités.
 
 Sans cela, un effort de 20 s couvre deux degrés de disque : l'application perd exactement ce
 qu'elle promet, voir le temps. Avec, le disque part au tiers du cadran et se vide sous les yeux.
@@ -329,7 +329,7 @@ Deux garde-fous :
   secondes dans sa dernière minute (RG-27) ;
 - le **réglage** est neutralisé tant que la graduation est en secondes : glissement, flèches et
   boutons − / + travaillent en minutes et donneraient une durée sans rapport avec l'affichage
-  (RG-26). Démarrer et mettre en pause restent possibles — c'est le verrou, lui, qui les retire,
+  (RG-26). Démarrer et mettre en pause restent possibles - c'est le verrou, lui, qui les retire,
   et l'attribut porté est `aria-readonly`, non `aria-disabled`.
 
 Une pastille « sec » sous le bouton central dit l'unité : sans elle, un cadran réglé sur 20
@@ -349,7 +349,7 @@ texte de l'application dans dix teintes.
 Une exception mesurée : le gris secondaire tombait à **2,82:1** sur le fond teinté (pire cas
 sur les dix couleurs de la palette, thème clair, bas du dégradé). `.stage.sport` redéfinit donc
 `--muted` sur `--muted-strong`, ce qui remonte le pire cas à 5,0:1 et couvre d'un coup tout ce
-qui s'écrit sur la scène — l'état sous les boutons, le compteur de tours, le titre de la routine.
+qui s'écrit sur la scène - l'état sous les boutons, le compteur de tours, le titre de la routine.
 
 Le chrono et le nom de l'étape s'agrandissent par `:host-context(.sport)` : la classe vit sur
 la page, hors du composant, et un sélecteur descendant ordinaire ne correspondrait pas sous
@@ -370,7 +370,7 @@ Les contraintes qui ont dessiné le composant :
 - **Trois entrées équivalentes** : glissement horizontal, boutons (Précédent / Suivant, points),
   flèches du clavier. Le glissement n'est jamais le seul moyen (WCAG 2.5.1).
 - **Le focus part sur *Suivant* et y reste** d'une vue à l'autre : on traverse le tutoriel en
-  répétant la même touche. Une région `aria-live` dit « Étape 2 sur 5 : Régler la durée » —
+  répétant la même touche. Une région `aria-live` dit « Étape 2 sur 5 : Régler la durée » -
   le rang et le titre seulement, le texte se lisant sur place.
 - **Les quatre vues hors écran sont `inert` et `aria-hidden`** : elles restent dans le document
   pour le glissement, mais ni la tabulation ni le lecteur d'écran n'y entrent.
@@ -384,13 +384,13 @@ Les contraintes qui ont dessiné le composant :
   le téléphone est couché (`align-items: safe center`).
 - `prefers-reduced-motion` supprime le glissement : les vues se remplacent.
 - En arabe, `flex` inverse déjà l'ordre des vues ; le décalage est inversé par
-  `:host-context([dir='rtl'])` — et non `[dir='rtl'] .track`, que l'encapsulation Angular
+  `:host-context([dir='rtl'])` - et non `[dir='rtl'] .track`, que l'encapsulation Angular
   empêcherait de correspondre, l'attribut vivant sur `<html>`.
 
 ## 7. Paliers
 
 `core/helpers/milestones.ts` calcule, à partir de la durée d'une session, la liste des paliers
-— minutes restantes et timbre emprunté.
+- minutes restantes et timbre emprunté.
 
 Des paliers fixes à 45 / 30 / 15 ne préviennent que les longues sessions : un Pomodoro de 25 min
 ne reçoit que celui des 15 minutes, et une étape de routine de 10 min aucun. Au-delà de
@@ -407,7 +407,7 @@ se déduisent de la durée : **la moitié, le dernier quart, puis une minute ava
 | 20 s   | aucun                       |
 
 Une étape d'entraînement de quelques secondes ne reçoit donc aucun palier : le premier tomberait
-après le carillon. C'est voulu — un décompte « 3, 2, 1 » à la seconde est un autre signal, qui
+après le carillon. C'est voulu - un décompte « 3, 2, 1 » à la seconde est un autre signal, qui
 reste à écrire.
 
 Le timbre (son, motif de vibration, canal de notification) vient du **rang** et jamais du nombre
@@ -415,7 +415,7 @@ de minutes : le dernier palier porte toujours le plus insistant. Un palier arron
 de minutes qu'un autre est fusionné, et aucun ne tombe sur la durée totale elle-même.
 
 `SessionService` expose la liste sous forme de `computed`, calculée sur la durée annoncée de la
-session — un réglage au doigt en cours de route ne déplace donc pas les paliers déjà franchis —,
+session - un réglage au doigt en cours de route ne déplace donc pas les paliers déjà franchis -,
 et vide pendant la prolongation « +5 min », qui est un rabiot et non une session à jalonner.
 
 ---
@@ -423,7 +423,7 @@ et vide pendant la prolongation « +5 min », qui est un rabiot et non une sessi
 ## 8. Sons
 
 `core/helpers/sound-patterns.ts` définit les quatre motifs (`milestone45`, `milestone30`,
-`milestone15`, `end`) sous forme de notes — fréquence, décalage, durée, gain, forme d'onde — avec
+`milestone15`, `end`) sous forme de notes - fréquence, décalage, durée, gain, forme d'onde - avec
 un partiel aigu optionnel pour l'effet de cloche.
 
 Ce fichier unique sert **deux consommateurs** :
@@ -441,14 +441,14 @@ Les gains écrits dans les motifs sont relatifs : ils règlent l'équilibre entr
 motif, pas son volume. Celui-ci vient de `level(pattern)`, qui **mesure la crête du signal rendu**
 et la porte à `PEAK_TARGET` (0,89, soit −1 dBFS). Mesurer plutôt que calculer est nécessaire :
 les notes se chevauchent et s'additionnent, si bien qu'un gain posé à la main laisse le motif soit
-écrêté, soit très en dessous. Le facteur sert des deux côtés — gain maître en Web Audio, échelle
-des échantillons dans le WAV — et il est mémoïsé, le calcul valant un rendu complet.
+écrêté, soit très en dessous. Le facteur sert des deux côtés - gain maître en Web Audio, échelle
+des échantillons dans le WAV - et il est mémoïsé, le calcul valant un rendu complet.
 
 Deux conséquences voulues :
 
 - **tous les motifs sortent à la même crête**, alors qu'ils s'étalaient auparavant sur 17 dB
   (le carillon de fin couvrait les paliers, et le palier des 15 min était le plus discret des
-  quatre — le contraire de son rôle) ;
+  quatre - le contraire de son rôle) ;
 - **un son d'alerte doit sortir fort**, parce que l'appareil ne fait que réduire ce qu'on lui
   donne. Un fichier rendu à mi-échelle arrive irrémédiablement discret, notamment sur Android
   où le volume des notifications est un réglage à part.
@@ -460,7 +460,7 @@ qu'un claquement, et ce qui ne résonne pas ne s'entend pas.
 Aucun limiteur ne ferme la chaîne Web Audio. La mise à niveau est mesurée sur un rendu où les
 oscillateurs partent en phase, ce que Web Audio ne garantit pas : la crête réelle y monte jusqu'à
 −0,5 dB au lieu de −1, ce que la marge de `PEAK_TARGET` absorbe. Un `DynamicsCompressorNode`,
-mesuré à l'occasion, coûtait 3,9 dB au tic — trop bref pour échapper à son attaque — pour ne rien
+mesuré à l'occasion, coûtait 3,9 dB au tic - trop bref pour échapper à son attaque - pour ne rien
 protéger.
 
 ---
@@ -469,14 +469,14 @@ protéger.
 
 ### 9.1 Notifications locales
 
-| Plateforme | Mise en œuvre |
-| --- | --- |
-| iOS | L'application écrit elle-même les WAV dans `Library/Sounds` au lancement, via `@capacitor/filesystem` |
-| Android | `make sounds` copie les WAV dans `android/app/src/main/res/raw` ; l'application crée un canal de notification par son |
+| Plateforme | Mise en œuvre                                                                                                         |
+| ---------- | --------------------------------------------------------------------------------------------------------------------- |
+| iOS        | L'application écrit elle-même les WAV dans `Library/Sounds` au lancement, via `@capacitor/filesystem`                 |
+| Android    | `make sounds` copie les WAV dans `android/app/src/main/res/raw` ; l'application crée un canal de notification par son |
 
 ⚠️ **Un canal Android est immuable.** Son son est fixé à sa création : le recréer ne le change
 pas. Un canal né d'un build fait **avant** `make sounds` pointe vers une ressource `raw`
-absente et reste muet pour toujours sur cette installation — la notification s'affiche, sans
+absente et reste muet pour toujours sur cette installation - la notification s'affiche, sans
 un bruit. D'où `CHANNEL_VERSION` dans `notification.service.ts` : les identifiants portent
 `_v<n>`, et l'incrémenter crée des canaux neufs en supprimant les précédents (`deleteChannel`),
 pour ne pas laisser deux fois les mêmes intitulés dans les réglages du téléphone.
@@ -485,18 +485,18 @@ Ce qui est figé mérite d'être précis, sous peine de bumper pour rien : le ca
 **URI**, `android.resource://<package>/raw/<nom>` (voir `SoundResolver` côté plugin), un renvoi
 par nom résolu à la lecture.
 
-| Ce qui change | Bump de `CHANNEL_VERSION` ? |
-| --- | --- |
-| Le **contenu** d'un WAV (niveau, timbre, motif) | Non — réinstaller l'APK suffit, l'URI désigne toujours la même ressource |
-| Le **nom** d'un fichier, ou le son associé à un canal | Oui |
-| L'**importance** ou la vibration d'un canal | Oui |
-| Un canal créé alors que la ressource `raw` manquait | Oui — il est muet à vie |
+| Ce qui change                                         | Bump de `CHANNEL_VERSION` ?                                              |
+| ----------------------------------------------------- | ------------------------------------------------------------------------ |
+| Le **contenu** d'un WAV (niveau, timbre, motif)       | Non - réinstaller l'APK suffit, l'URI désigne toujours la même ressource |
+| Le **nom** d'un fichier, ou le son associé à un canal | Oui                                                                      |
+| L'**importance** ou la vibration d'un canal           | Oui                                                                      |
+| Un canal créé alors que la ressource `raw` manquait   | Oui - il est muet à vie                                                  |
 
 **Deux flux audio, deux volumes.** Le canal est créé avec `USAGE_NOTIFICATION` et
 `CONTENT_TYPE_SONIFICATION` : les notifications suivent donc le volume **notifications** d'Android,
 tandis que les sons joués par l'application au premier plan passent par Web Audio, donc par le
 volume **multimédia**. Les deux curseurs sont indépendants, et l'application ne choisit ni l'un
-ni l'autre. C'est la première chose à écarter devant un rapport de son trop faible — la seconde
+ni l'autre. C'est la première chose à écarter devant un rapport de son trop faible - la seconde
 étant le niveau des motifs eux-mêmes (§ 8.1).
 
 Les alertes (paliers, fin, fin de prolongation, fin de la session enchaînée) sont programmées au
@@ -507,18 +507,18 @@ requérir `SCHEDULE_EXACT_ALARM` dans `AndroidManifest.xml`. Aucun effet dans le
 
 **Trois durées de vie cohabitent**, et la distinction est vitale :
 
-|  | Alertes de session | Rappels de routine | Notification de test |
-| --- | --- | --- | --- |
-| **Ids** | < 1000 (`REMINDER_ID_BASE`) | ≥ 1000 | 2000 (`TEST_ID`) |
-| **Programmation** | au passage en arrière-plan | à chaque changement | à la demande |
-| **Annulation** | toutes, au retour au premier plan | jamais, sauf en bloc | jamais |
-| **Forme** | `schedule.at`, ponctuelle | `schedule.on`, hebdomadaire | `schedule.at`, à 5 s |
+|                   | Alertes de session                | Rappels de routine          | Notification de test |
+| ----------------- | --------------------------------- | --------------------------- | -------------------- |
+| **Ids**           | < 1000 (`REMINDER_ID_BASE`)       | ≥ 1000                      | 2000 (`TEST_ID`)     |
+| **Programmation** | au passage en arrière-plan        | à chaque changement         | à la demande         |
+| **Annulation**    | toutes, au retour au premier plan | jamais, sauf en bloc        | jamais               |
+| **Forme**         | `schedule.at`, ponctuelle         | `schedule.on`, hebdomadaire | `schedule.at`, à 5 s |
 
-- **Programmation** — les rappels sont réécrits à chaque changement de routine, de langue ou du
+- **Programmation** - les rappels sont réécrits à chaque changement de routine, de langue ou du
   réglage *Son* ; la notification de test part depuis les réglages.
-- **Annulation** — ni le retour au premier plan, ni la réécriture des rappels n'atteignent la
+- **Annulation** - ni le retour au premier plan, ni la réécriture des rappels n'atteignent la
   notification de test (RG-30). Les rappels ne sont annulés que par une reprogrammation en bloc.
-- **Forme** — `schedule.on` fonctionne façon cron (un jour, une heure) ; le test part à
+- **Forme** - `schedule.on` fonctionne façon cron (un jour, une heure) ; le test part à
   `TEST_DELAY_SECONDS` (5 s).
 
 `cancelPending()` filtre donc sur cette borne : sans ce filtre, le premier retour au premier plan
@@ -532,7 +532,7 @@ jusqu'à `SessionService`, qui **arme** la routine sans la démarrer (RG-21).
 ### 9.2 Notification de test et alarmes exactes
 
 Autorisation, canal, son, affichage écran verrouillé : la chaîne ne se vérifie pas autrement
-qu'en la parcourant. `sendTest()` programme donc une notification à cinq secondes — le délai
+qu'en la parcourant. `sendTest()` programme donc une notification à cinq secondes - le délai
 est le test lui-même, il laisse le temps de verrouiller l'écran. Le résultat rendu à l'appelant
 (`TestResult`) distingue ce qui s'est passé : `scheduled`, `inexact` (programmée, mais l'appareil
 ne garantit pas l'heure), `denied`, `unsupported` (navigateur : `Capacitor.isNativePlatform()`
@@ -541,7 +541,7 @@ région `aria-live="polite"`, à côté du bouton.
 
 `openExactAlarmSettings()` ouvre l'écran système « Alarmes et rappels » via
 `changeExactNotificationSetting()`. Android seulement : avant Android 12 la permission n'existe
-pas et le plugin répond « accordé » sans rien ouvrir, ailleurs l'appel lèverait — d'où
+pas et le plugin répond « accordé » sans rien ouvrir, ailleurs l'appel lèverait - d'où
 `unsupported`, qui ne ment pas sur la raison. À savoir : passer d'accordé à refusé depuis cet
 écran fait **redémarrer l'application** et efface les alarmes exactes déjà programmées ; c'est
 le système qui l'impose. Au retour, le test reste à refaire : c'est lui qui juge, pas la
@@ -550,21 +550,21 @@ permission.
 ### 9.3 Décompte permanent hors de l'app
 
 Le widget attend qu'on aille le voir ; celui-ci se pose sur l'écran verrouillé. Une seule
-méthode côté web — `LiveStatusService.update()` — reçoit **le même état que le widget**, au
+méthode côté web - `LiveStatusService.update()` - reçoit **le même état que le widget**, au
 même moment, et chaque plateforme en fait ce qu'elle sait faire.
 
-|  | Android | iOS |
-| --- | --- | --- |
-| Forme | Notification permanente (`LiveStatusPlugin.java`, id 3000) | Live Activity (ActivityKit, iOS 16.2+) |
-| Secondes | `setUsesChronometer` + `setChronometerCountDown` (API 24) | `Text(timerInterval:)` |
-| Cadran | absent : une notification n'a pas d'image vivante | `DialFace`, **figé entre deux mises à jour** |
+|                 | Android                                                     | iOS                                          |
+| --------------- | ----------------------------------------------------------- | -------------------------------------------- |
+| Forme           | Notification permanente (`LiveStatusPlugin.java`, id 3000)  | Live Activity (ActivityKit, iOS 16.2+)       |
+| Secondes        | `setUsesChronometer` + `setChronometerCountDown` (API 24)   | `Text(timerInterval:)`                       |
+| Cadran          | absent : une notification n'a pas d'image vivante           | `DialFace`, **figé entre deux mises à jour** |
 | Canal / réglage | canal `ongoing_v1`, importance basse, sans son ni vibration | `NSSupportsLiveActivities` dans `Info.plist` |
 
 **Elle informe, elle n'alerte pas** : sans cela, le décompte permanent couvrirait les paliers,
 qui eux doivent s'entendre. D'où un canal muet sur Android et `setOnlyAlertOnce(true)`, qui
 empêche chaque réécriture de rejouer l'arrivée de la notification.
 
-Côté iOS, `PomodoroActivity.swift` appartient aux **deux** cibles — l'app qui demande
+Côté iOS, `PomodoroActivity.swift` appartient aux **deux** cibles - l'app qui demande
 l'activité et l'extension qui la dessine : ActivityKit apparie les deux bouts par le type, et
 deux copies dans deux modules ne s'apparieraient pas. Le cadran, lui, ne se redessine qu'aux
 mises à jour poussées par l'app : une Live Activity ne s'anime pas seule, et la réveiller à la
@@ -587,44 +587,44 @@ minute demanderait un serveur de notifications push. Le chiffre, lui, court tout
   **PomodoroWidget** afin que Xcode crée l'App Group.
 
 **Le widget montre le cadran, pas un résumé du cadran.** L'énumération `Dial` de
-`PomodoroWidget.swift` porte les constantes de `dial-geometry.ts` — repère 420 × 420, `CX`/`CY`,
-rayons, douze couleurs de segment, sens anti-horaire depuis 0 — et un `Canvas` les dessine à
+`PomodoroWidget.swift` porte les constantes de `dial-geometry.ts` - repère 420 × 420, `CX`/`CY`,
+rayons, douze couleurs de segment, sens anti-horaire depuis 0 - et un `Canvas` les dessine à
 l'échelle du widget : anneau, voile du mode en `multiply` sur l'anneau, plateau central, douze
 séparateurs, trait de bord, languette, bouton nacré, et la pastille d'unité quand la graduation
 compte des secondes. Les jetons de `src/theme/` sont recopiés dans `Palette` (clair et sombre) :
 le widget suit le **thème choisi dans l'app** (`dark`), pas celui du système.
 
-| Famille | Composition |
-| --- | --- |
-| `systemSmall` | Le cadran, et sous lui la pastille de lecture : point de couleur, temps, nom du mode |
+| Famille        | Composition                                                                                             |
+| -------------- | ------------------------------------------------------------------------------------------------------- |
+| `systemSmall`  | Le cadran, et sous lui la pastille de lecture : point de couleur, temps, nom du mode                    |
 | `systemMedium` | Le cadran à gauche ; à droite le mode, le temps en grand dans la couleur du mode, et l'objectif du jour |
 
 **Android** (`android/app/src/main/java/.../`, en Java : le module `app` n'a pas le plugin
 Kotlin, et le widget ne valait pas de toucher au Gradle) tient le même dessin avec d'autres
 contraintes. Un widget ne sait pas exécuter de vue à lui : `DialBitmap` peint le cadran dans un
-`Bitmap` — troisième port de la même géométrie — que `RemoteViews` affiche. La largeur du widget
+`Bitmap` - troisième port de la même géométrie - que `RemoteViews` affiche. La largeur du widget
 choisit la disposition (`widget_pomodoro` sous 220 dp, `widget_pomodoro_wide` au-dessus), faute
 de `RemoteViews` multi-tailles avant l'API 31.
 
-|  | iOS | Android |
-| --- | --- | --- |
-| Dessin | SwiftUI `Canvas` | `Canvas` sur un `Bitmap` (320 px au plus : il voyage par IPC) |
-| Secondes | `Text(timerInterval:)` | `Chronometer` en mode compte à rebours (API 24) |
-| Graduation | une entrée de timeline par minute | une alarme `AlarmManager` par minute |
-| Transport | App Group + `WidgetCenter` | `SharedPreferences` + `AppWidgetManager` (même processus) |
+|            | iOS                               | Android                                                       |
+| ---------- | --------------------------------- | ------------------------------------------------------------- |
+| Dessin     | SwiftUI `Canvas`                  | `Canvas` sur un `Bitmap` (320 px au plus : il voyage par IPC) |
+| Secondes   | `Text(timerInterval:)`            | `Chronometer` en mode compte à rebours (API 24)               |
+| Graduation | une entrée de timeline par minute | une alarme `AlarmManager` par minute                          |
+| Transport  | App Group + `WidgetCenter`        | `SharedPreferences` + `AppWidgetManager` (même processus)     |
 
 **Deux horloges, et c'est ce qui rend le widget tenable pour la batterie** : le chronomètre
 égrène les secondes sans que rien ne le réveille, et l'alarme ne redessine le cadran qu'au
-changement de graduation — une minute, ou cinq secondes sur un cadran gradué en secondes.
+changement de graduation - une minute, ou cinq secondes sur un cadran gradué en secondes.
 Le décompte arrêté, l'alarme est annulée : un cadran figé n'a aucune raison de réveiller le
 téléphone. `updatePeriodMillis` vaut donc **0** : le système ne réveille rien de lui-même.
 
 Sur Android 12+, l'alarme exacte dépend d'« Alarmes et rappels » ; refusée, le widget retombe
-sur une alarme ordinaire et retarde un peu, il ne s'arrête pas. Avant Android 12 — donc sur
-Android 9 — la question ne se pose pas : l'alarme exacte est accordée d'office.
+sur une alarme ordinaire et retarde un peu, il ne s'arrête pas. Avant Android 12 - donc sur
+Android 9 - la question ne se pose pas : l'alarme exacte est accordée d'office.
 
-Le disque se vide tout seul : la timeline pose une entrée par **graduation franchie** — une par
-minute, ou une par seconde sur un cadran gradué en secondes — plus la fin du décompte et minuit,
+Le disque se vide tout seul : la timeline pose une entrée par **graduation franchie** - une par
+minute, ou une par seconde sur un cadran gradué en secondes - plus la fin du décompte et minuit,
 58 marches au plus. `.contentMarginsDisabled()` rend au cadran la marge que le système réserve.
 Le cadran est `accessibilityHidden` : c'est une image du temps, et la pastille dit la même chose
 en toutes lettres.
@@ -634,7 +634,7 @@ en toutes lettres.
 `appId` : `com.maximejolivet.pomodorotdah` · `appName` : Pomodoro Accessibilité · `webDir` : `www`.
 Icônes et écrans de lancement des deux plateformes sont générés par `make icons`
 (`scripts/generate-icons.ts`, rendu par Chromium) depuis `resources/app-icon.svg` et
-`resources/app-icon-foreground.svg` — voir [MOBILE.md](MOBILE.FR.md).
+`resources/app-icon-foreground.svg` - voir [MOBILE.md](MOBILE.FR.md).
 
 ---
 
@@ -647,7 +647,7 @@ Icônes et écrans de lancement des deux plateformes sont générés par `make i
 - `I18nService` détecte la langue depuis `navigator.languages`, retombe sur le français, et met à
   jour `document.documentElement.lang` ainsi que le sens d'écriture (`dir`).
 - **Ajouter une langue** = un fichier dans `locales/`, puis une entrée dans `Lang`,
-  `DICTIONARIES`, `LANGUAGES` — et dans `RTL_LANGS` si elle s'écrit de droite à gauche.
+  `DICTIONARIES`, `LANGUAGES` - et dans `RTL_LANGS` si elle s'écrit de droite à gauche.
 - Le CSS emploie des propriétés logiques (`inset-inline-*`, `start` / `end`) : le passage en RTL
   ne demande aucune règle miroir.
 
@@ -655,11 +655,11 @@ Icônes et écrans de lancement des deux plateformes sont générés par `make i
 
 ## 11. Thème et styles
 
-| Fichier | Contenu |
-| --- | --- |
-| `src/styles.css` | Imports du thème, Tailwind, utilitaires globaux |
-| `src/theme/tokens.css` | Jetons de couleur du thème clair, posés sur `<app-root>` |
-| `src/theme/dark.css` | Redéfinition des jetons sous `app-root.dark` |
+| Fichier                  | Contenu                                                                           |
+| ------------------------ | --------------------------------------------------------------------------------- |
+| `src/styles.css`         | Imports du thème, Tailwind, utilitaires globaux                                   |
+| `src/theme/tokens.css`   | Jetons de couleur du thème clair, posés sur `<app-root>`                          |
+| `src/theme/dark.css`     | Redéfinition des jetons sous `app-root.dark`                                      |
 | `src/theme/controls.css` | Primitives partagées : bouton en relief, curseur, contrôle segmenté, interrupteur |
 
 Les couleurs ne sont **jamais** écrites en dur dans un composant : toutes passent par des
@@ -670,44 +670,44 @@ garantit l'homogénéité des contrastes (ENF-MNT-2).
 
 ## 12. Accessibilité technique
 
-| Exigence | Mise en œuvre |
-| --- | --- |
-| Cadran utilisable au clavier et annoncé | Conteneur focalisable portant `role="slider"` |
-| Annonces temps réel | Région live alimentée par `SessionService.announcement` |
-| Temps restant sans la vue | Annonce vocale optionnelle (`SpeechService`) |
-| Alerte sans la vue ni l'ouïe | Motif de vibration propre à chaque palier (`HapticsService`) |
-| Alerte sans le son | Pulsation colorée à 0,6 Hz et bandeau de fin persistant |
-| Gestes involontaires | Verrou du cadran |
-| Panneau de réglages | Focus piégé, fermeture par Échap, focus rendu au déclencheur |
-| Onglets | Rôles `tablist` / `tab` / `tabpanel`, navigation par flèches |
-| Contraste | Jetons de thème vérifiés à 4,5:1 minimum, en clair et en sombre |
-| Couleur seule | Chaque couleur de mode est accompagnée de son nom |
-| Animations | `prefers-reduced-motion` respecté |
-| Dyslexie | Police OpenDyslexic activable, interlettrage et interlignage élargis |
-| Suite d'actions sans savoir lire | Un pictogramme avant le nom de chaque étape |
-| Structure | HTML sémantique, `main`, titres hiérarchisés, métadonnées de page |
+| Exigence                                | Mise en œuvre                                                        |
+| --------------------------------------- | -------------------------------------------------------------------- |
+| Cadran utilisable au clavier et annoncé | Conteneur focalisable portant `role="slider"`                        |
+| Annonces temps réel                     | Région live alimentée par `SessionService.announcement`              |
+| Temps restant sans la vue               | Annonce vocale optionnelle (`SpeechService`)                         |
+| Alerte sans la vue ni l'ouïe            | Motif de vibration propre à chaque palier (`HapticsService`)         |
+| Alerte sans le son                      | Pulsation colorée à 0,6 Hz et bandeau de fin persistant              |
+| Gestes involontaires                    | Verrou du cadran                                                     |
+| Panneau de réglages                     | Focus piégé, fermeture par Échap, focus rendu au déclencheur         |
+| Onglets                                 | Rôles `tablist` / `tab` / `tabpanel`, navigation par flèches         |
+| Contraste                               | Jetons de thème vérifiés à 4,5:1 minimum, en clair et en sombre      |
+| Couleur seule                           | Chaque couleur de mode est accompagnée de son nom                    |
+| Animations                              | `prefers-reduced-motion` respecté                                    |
+| Dyslexie                                | Police OpenDyslexic activable, interlettrage et interlignage élargis |
+| Suite d'actions sans savoir lire        | Un pictogramme avant le nom de chaque étape                          |
+| Structure                               | HTML sémantique, `main`, titres hiérarchisés, métadonnées de page    |
 
 ### Précisions
 
-**Cadran** — `aria-valuemin=1`, `aria-valuemax=60`, `aria-valuenow`, `aria-valuetext`
+**Cadran** - `aria-valuemin=1`, `aria-valuemax=60`, `aria-valuenow`, `aria-valuetext`
 (« *n* minutes, *action* ») et `aria-label`. Le SVG lui-même est `aria-hidden` : il ne dit rien
 qu'un lecteur d'écran puisse utiliser.
 
-**Annonce vocale** — aux paliers ou à chaque minute, dans la langue de l'interface.
+**Annonce vocale** - aux paliers ou à chaque minute, dans la langue de l'interface.
 
-**Vibration** — les motifs se distinguent par le nombre d'impulsions et leur rythme, pas par leur
+**Vibration** - les motifs se distinguent par le nombre d'impulsions et leur rythme, pas par leur
 durée (voir `ENF-A11-13`).
 
-**Alerte sans le son** — `aria-hidden` et `pointer-events: none`, figée sous
+**Alerte sans le son** - `aria-hidden` et `pointer-events: none`, figée sous
 `prefers-reduced-motion` : elle double une information déjà dite ailleurs.
 
-**Verrou du cadran** — `SessionService` ignore le réglage, la remise à zéro, le changement d'étape
+**Verrou du cadran** - `SessionService` ignore le réglage, la remise à zéro, le changement d'étape
 et la sortie de routine. Le curseur passe `aria-disabled`, ainsi que les boutons − / + et les
 vignettes d'étape.
 
-**Onglets** — les flèches sont nommées pour les lecteurs d'écran.
+**Onglets** - les flèches sont nommées pour les lecteurs d'écran.
 
-**Étapes de routine** — la bande est une `<ol>` de boutons, l'étape en cours marquée
+**Étapes de routine** - la bande est une `<ol>` de boutons, l'étape en cours marquée
 `aria-current="step"`. L'état (faite, en cours) est redit dans le nom accessible et doublé d'une
 coche, jamais porté par la couleur seule.
 
@@ -743,8 +743,8 @@ Les scripts npm correspondants sont `start`, `build`, `watch`, `test`, `test:a11
 Workflow GitHub Actions `.github/workflows/a11y.yml`, déclenché sur les poussées vers `main` et
 sur chaque demande de fusion, avec deux jobs sur `ubuntu-latest` :
 
-1. **Build de production** — `npm ci` puis `npm run build`.
-2. **Non-régression d'accessibilité** — installation de Chromium par Playwright, `npm run test:a11y`,
+1. **Build de production** - `npm ci` puis `npm run build`.
+2. **Non-régression d'accessibilité** - installation de Chromium par Playwright, `npm run test:a11y`,
    puis dépôt du rapport Playwright en artefact (7 jours de rétention).
 
 La version de Node vient de `.nvmrc` ; le cache npm est activé.
@@ -766,7 +766,7 @@ maintenue.
 | Accessibilité | Playwright + axe-core (`make test-a11y`) | Parcours réels, clavier, contrastes |
 
 ⚠️ `src/` ne contient **aucun** `.spec.ts`, et `make test` échoue donc sur `TS18003`. La logique du
-domaine — géométrie du cadran, helpers de temps, services — n'est couverte que de bout en bout,
+domaine - géométrie du cadran, helpers de temps, services - n'est couverte que de bout en bout,
 par la suite d'accessibilité.
 
 Configuration Playwright : dossier `tests/`, projet Chromium en **420 × 900** (cadrage mobile),
@@ -804,14 +804,14 @@ sémantique.
 
 ### 16.1 Limites assumées
 
-| Limite | Raison |
-| --- | --- |
-| Historique plafonné à 500 sessions | Taille de `localStorage` ; au-delà, l'intérêt statistique est marginal |
-| Pas d'export de données par l'utilisateur | Non spécifié à ce jour |
-| Widget iOS uniquement | Aucun équivalent Android réalisé |
-| Contrat `WidgetState` dupliqué TypeScript / Swift | Pas de génération de code ; toute évolution se fait des deux côtés |
-| Pas de tests avec lecteur d'écran réel | Vérification automatique et revue de code seulement ; écart publié dans la déclaration |
-| Tests d'accessibilité sur Chromium seul | Un seul moteur en CI |
+| Limite                                            | Raison                                                                                 |
+| ------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Historique plafonné à 500 sessions                | Taille de `localStorage` ; au-delà, l'intérêt statistique est marginal                 |
+| Pas d'export de données par l'utilisateur         | Non spécifié à ce jour                                                                 |
+| Widget iOS uniquement                             | Aucun équivalent Android réalisé                                                       |
+| Contrat `WidgetState` dupliqué TypeScript / Swift | Pas de génération de code ; toute évolution se fait des deux côtés                     |
+| Pas de tests avec lecteur d'écran réel            | Vérification automatique et revue de code seulement ; écart publié dans la déclaration |
+| Tests d'accessibilité sur Chromium seul           | Un seul moteur en CI                                                                   |
 
 ### 16.2 Points de vigilance
 

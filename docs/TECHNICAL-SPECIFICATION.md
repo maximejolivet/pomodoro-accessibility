@@ -4,7 +4,7 @@
 
 [← Back to the README](../README.md) · [Functional specification](FUNCTIONAL-SPECIFICATION.md)
 
-Version 1.1 — 26 September 2026 · **Pomodoro Accessibilité** application
+Version 1.1 - 26 September 2026 · **Pomodoro Accessibilité** application
 
 This document describes *how* the requirements of the [functional specification](FUNCTIONAL-SPECIFICATION.md)
 are implemented. For the map of the folders, see [Code architecture](ARCHITECTURE.md); for the commands,
@@ -35,17 +35,17 @@ are implemented. For the map of the folders, see [Code architecture](ARCHITECTUR
 
 ### 1.1 Dependencies
 
-| Area | Choice | Version | Role |
-| --- | --- | --- | --- |
-| Framework | Angular (standalone, signals) | 22 | Components, routing, reactivity |
-| Language | TypeScript | 6 | Strict typing of the domain |
-| Asynchronous streams | RxJS | 7.8 | Countdown ticks |
-| Styles | Tailwind CSS + PostCSS | 4 / 8 | Utilities, theme tokens |
-| Native | Capacitor | 8 | Web ↔ iOS / Android bridge |
-| iOS widget | Swift, SwiftUI, WidgetKit | iOS 17+ | Home screen widget |
-| Unit tests | Karma + Jasmine | 6 / 7 | Tooling in place, **no specification written to date** |
-| Accessibility tests | Playwright + axe-core | 1.63 / 4.13 | RGAA / WCAG regression testing |
-| Runtime | Node.js | ^24.15.0 (`engines`, `.nvmrc`) | Tooling and scripts |
+| Area                 | Choice                        | Version                        | Role                                                   |
+| -------------------- | ----------------------------- | ------------------------------ | ------------------------------------------------------ |
+| Framework            | Angular (standalone, signals) | 22                             | Components, routing, reactivity                        |
+| Language             | TypeScript                    | 6                              | Strict typing of the domain                            |
+| Asynchronous streams | RxJS                          | 7.8                            | Countdown ticks                                        |
+| Styles               | Tailwind CSS + PostCSS        | 4 / 8                          | Utilities, theme tokens                                |
+| Native               | Capacitor                     | 8                              | Web ↔ iOS / Android bridge                             |
+| iOS widget           | Swift, SwiftUI, WidgetKit     | iOS 17+                        | Home screen widget                                     |
+| Unit tests           | Karma + Jasmine               | 6 / 7                          | Tooling in place, **no specification written to date** |
+| Accessibility tests  | Playwright + axe-core         | 1.63 / 4.13                    | RGAA / WCAG regression testing                         |
+| Runtime              | Node.js                       | ^24.15.0 (`engines`, `.nvmrc`) | Tooling and scripts                                    |
 
 Capacitor plugins: `@capacitor/app`, `@capacitor/local-notifications`, `@capacitor/haptics`,
 `@capacitor/filesystem`, `@capacitor-community/keep-awake`, plus the local plugin `WidgetBridge`.
@@ -105,70 +105,70 @@ It is run both by the browser and directly by Node.
 
 ### 3.1 Domain types
 
-| Type | Fields |
-| --- | --- |
-| `Preset` | `id`, `name`, `nameKey?`, `seconds`, `color`, `kind` |
-| `RoutineStep` | `id`, `name`, `nameKey?`, `icon`, `seconds`, `color`, `kind` |
-| `Routine` | `id`, `name`, `nameKey?`, `icon`, `steps`, `rounds?`, `workout?`, `reminder?` |
-| `RoutineReminder` | `hour`, `minute`, `days` |
-| `Session` | `name`, `color`, `kind`, `plannedSeconds`, `activeSeconds`, `startedAt`, `endedAt`, `completed` |
-| `ActiveSession` | `name`, `color`, `kind`, `plannedSeconds`, `startedAt`, `activeMs`, `runningSince` |
-| `DayStat` | `date`, `focusMinutes` |
-| `Alert` | `id`, `at`, `title`, `body`, `sound` |
-| `Reminder` | `routineId`, `title`, `body`, `hour`, `minute`, `day` |
-| `WidgetState` | `dayStart`, `focusMinutes`, `goalMinutes`, `timer{…}`, `labels{…}`, `rtl` |
+| Type              | Fields                                                                                          |
+| ----------------- | ----------------------------------------------------------------------------------------------- |
+| `Preset`          | `id`, `name`, `nameKey?`, `seconds`, `color`, `kind`                                            |
+| `RoutineStep`     | `id`, `name`, `nameKey?`, `icon`, `seconds`, `color`, `kind`                                    |
+| `Routine`         | `id`, `name`, `nameKey?`, `icon`, `steps`, `rounds?`, `workout?`, `reminder?`                   |
+| `RoutineReminder` | `hour`, `minute`, `days`                                                                        |
+| `Session`         | `name`, `color`, `kind`, `plannedSeconds`, `activeSeconds`, `startedAt`, `endedAt`, `completed` |
+| `ActiveSession`   | `name`, `color`, `kind`, `plannedSeconds`, `startedAt`, `activeMs`, `runningSince`              |
+| `DayStat`         | `date`, `focusMinutes`                                                                          |
+| `Alert`           | `id`, `at`, `title`, `body`, `sound`                                                            |
+| `Reminder`        | `routineId`, `title`, `body`, `hour`, `minute`, `day`                                           |
+| `WidgetState`     | `dayStart`, `focusMinutes`, `goalMinutes`, `timer{…}`, `labels{…}`, `rtl`                       |
 
 #### Details
 
-`Preset` — `kind` ∈ `focus` \| `break` \| `longBreak`. `name` is empty for a default mode, whose label
+`Preset` - `kind` ∈ `focus` \| `break` \| `longBreak`. `name` is empty for a default mode, whose label
 comes from `nameKey`, translated.
 
-`RoutineStep` — a `Preset` plus a pictogram: a step starts and is recorded exactly like a mode
+`RoutineStep` - a `Preset` plus a pictogram: a step starts and is recorded exactly like a mode
 (`kind` ∈ `focus` \| `break`).
 
-`Routine` — ordered sequence of 1 to 10 steps (RG-16), played `rounds` times (1 to 20). `workout` switches
+`Routine` - ordered sequence of 1 to 10 steps (RG-16), played `rounds` times (1 to 20). `workout` switches
 the page to sport mode.
 
-`RoutineReminder` — `days` in ISO 8601 (1 = Monday … 7 = Sunday), never empty (RG-20).
+`RoutineReminder` - `days` in ISO 8601 (1 = Monday … 7 = Sunday), never empty (RG-20).
 
-`Session` — name and colour frozen when recorded (RG-9).
+`Session` - name and colour frozen when recorded (RG-9).
 
-`ActiveSession` — `runningSince` is `null` when paused; `activeMs` accumulates the time counted down before
+`ActiveSession` - `runningSince` is `null` when paused; `activeMs` accumulates the time counted down before
 the current resume.
 
-`DayStat` — one bar of the weekly histogram.
+`DayStat` - one bar of the weekly histogram.
 
-`Alert` — one-off local notification, scheduled when the app goes to the background.
+`Alert` - one-off local notification, scheduled when the app goes to the background.
 
-`Reminder` — weekly reminder of a routine: one per ticked day.
+`Reminder` - weekly reminder of a routine: one per ticked day.
 
-`WidgetState` — contract shared with `PomodoroWidget.swift`.
+`WidgetState` - contract shared with `PomodoroWidget.swift`.
 
 ### 3.2 Domain constants
 
-| Constant | Value | Requirement covered |
-| --- | --- | --- |
-| `MAX_MINUTES` | 60 | RG-1 |
-| `EXTRA_SECONDS` | 300 | RG-2 |
-| `MILESTONES` | `[45, 30, 15]` — the three chimes, and the milestones of a long session | RG-4 |
-| `LONG_SESSION_MINUTES` | 40 | RG-4 |
-| `FINAL_WARNING_MINUTES` | 1 | RG-4 |
-| `LATE_ALERT_SECONDS` | 90 | RG-15 |
-| `LONG_BREAK_EVERY` | 4 | RG-3 |
-| `MAX_SESSIONS` | 500 | RG-7 |
-| `MIN_RECORDED_SECONDS` | 60 | RG-6 |
-| `GOAL_MIN / MAX / STEP / DEFAULT_MINUTES` | 10 / 300 / 5 / 100 | RG-12 |
-| `PRESET_COLORS` | 10 ring hues | EF-MOD-3 |
-| `DEFAULT_PRESETS` | Pomodoro 25, Break 5, Long break 15, Focus 15 | EF-MOD-1 |
-| `STEP_ICONS` | 32 pictograms (daily life, school, work) | EF-ROU-2 |
-| `TUTORIAL_SLIDES` | 5 views (pictogram, title, text, colour) | EF-TUT-1 |
-| `MAX_STEPS` | 10 | RG-16 |
-| `STEP_DURATIONS` | 5 → 55 s in steps of 5, then 1 → 60 min in steps of 1 | EF-ROU-16 |
-| `MAX_ROUNDS` | 20 | EF-ROU-17 |
-| `SECONDS_DIAL_BELOW` | 60 | EF-ROU-20 |
-| `COUNTDOWN_FROM` | 3 | EF-ROU-21 |
-| `NEXT_ANNOUNCE_SECONDS` | 5 | EF-ROU-22 |
-| `DEFAULT_ROUTINES` | Morning routine (4 steps), Tabata (2 steps × 8 rounds), Homework (4 steps) | EF-ROU-3 |
+| Constant                                  | Value                                                                      | Requirement covered |
+| ----------------------------------------- | -------------------------------------------------------------------------- | ------------------- |
+| `MAX_MINUTES`                             | 60                                                                         | RG-1                |
+| `EXTRA_SECONDS`                           | 300                                                                        | RG-2                |
+| `MILESTONES`                              | `[45, 30, 15]` - the three chimes, and the milestones of a long session    | RG-4                |
+| `LONG_SESSION_MINUTES`                    | 40                                                                         | RG-4                |
+| `FINAL_WARNING_MINUTES`                   | 1                                                                          | RG-4                |
+| `LATE_ALERT_SECONDS`                      | 90                                                                         | RG-15               |
+| `LONG_BREAK_EVERY`                        | 4                                                                          | RG-3                |
+| `MAX_SESSIONS`                            | 500                                                                        | RG-7                |
+| `MIN_RECORDED_SECONDS`                    | 60                                                                         | RG-6                |
+| `GOAL_MIN / MAX / STEP / DEFAULT_MINUTES` | 10 / 300 / 5 / 100                                                         | RG-12               |
+| `PRESET_COLORS`                           | 10 ring hues                                                               | EF-MOD-3            |
+| `DEFAULT_PRESETS`                         | Pomodoro 25, Break 5, Long break 15, Focus 15                              | EF-MOD-1            |
+| `STEP_ICONS`                              | 32 pictograms (daily life, school, work)                                   | EF-ROU-2            |
+| `TUTORIAL_SLIDES`                         | 5 views (pictogram, title, text, colour)                                   | EF-TUT-1            |
+| `MAX_STEPS`                               | 10                                                                         | RG-16               |
+| `STEP_DURATIONS`                          | 5 → 55 s in steps of 5, then 1 → 60 min in steps of 1                      | EF-ROU-16           |
+| `MAX_ROUNDS`                              | 20                                                                         | EF-ROU-17           |
+| `SECONDS_DIAL_BELOW`                      | 60                                                                         | EF-ROU-20           |
+| `COUNTDOWN_FROM`                          | 3                                                                          | EF-ROU-21           |
+| `NEXT_ANNOUNCE_SECONDS`                   | 5                                                                          | EF-ROU-22           |
+| `DEFAULT_ROUTINES`                        | Morning routine (4 steps), Tabata (2 steps × 8 rounds), Homework (4 steps) | EF-ROU-3            |
 
 ### 3.3 Persistence
 
@@ -176,26 +176,26 @@ Access is centralised in `core/helpers/storage.ts`. All keys are prefixed `pomod
 every write is wrapped in a `try/catch`: in private browsing or with blocked storage, the application keeps
 working and the settings only last for the session (RG-14).
 
-| Key (prefixed) | Content | Format |
-| --- | --- | --- |
-| `theme` | Theme | `'dark'` \| `'light'` (absent ⇒ system preference) |
-| `opendyslexic` | OpenDyslexic font | `'on'` \| `'off'` (default: off) |
-| `sound` | Sounds | `'on'` \| `'off'` (default: on) |
-| `haptics` | Vibration | `'on'` \| `'off'` (default: on) |
-| `visual-alert` | Visual alert | `'off'` \| `'soft'` \| `'strong'` (default: soft) |
-| `auto-extra` | +5 min extension | `'on'` \| `'off'` (default: on) |
-| `auto-chain` | Automatic chaining | `'on'` \| `'off'` (default: off) |
-| `keep-awake` | Screen on | `'on'` \| `'off'` (default: on) |
-| `dial-lock` | Dial lock | `'on'` \| `'off'` (default: off) |
-| `speech` | Voice announcement | `'off'` \| `'milestones'` \| `'minutes'` (default: off) |
-| `tutorial-seen` | Welcome tutorial already seen | `'on'` \| `'off'` (default: off — it shows on first launch) |
-| `lang` | Language | language code or `'auto'` |
-| `preset` | Selected mode | identifier |
-| `presets` | Modes | JSON `Preset[]` |
-| `routine` | Loaded routine | identifier, empty if none (EF-ROU-10) |
-| `routines` | Routines | JSON `Routine[]`, an empty list is allowed |
-| `history` | History | JSON `Session[]`, 500 entries at most |
-| `daily-goal` | Daily goal | minutes |
+| Key (prefixed)  | Content                       | Format                                                      |
+| --------------- | ----------------------------- | ----------------------------------------------------------- |
+| `theme`         | Theme                         | `'dark'` \| `'light'` (absent ⇒ system preference)          |
+| `opendyslexic`  | OpenDyslexic font             | `'on'` \| `'off'` (default: off)                            |
+| `sound`         | Sounds                        | `'on'` \| `'off'` (default: on)                             |
+| `haptics`       | Vibration                     | `'on'` \| `'off'` (default: on)                             |
+| `visual-alert`  | Visual alert                  | `'off'` \| `'soft'` \| `'strong'` (default: soft)           |
+| `auto-extra`    | +5 min extension              | `'on'` \| `'off'` (default: on)                             |
+| `auto-chain`    | Automatic chaining            | `'on'` \| `'off'` (default: off)                            |
+| `keep-awake`    | Screen on                     | `'on'` \| `'off'` (default: on)                             |
+| `dial-lock`     | Dial lock                     | `'on'` \| `'off'` (default: off)                            |
+| `speech`        | Voice announcement            | `'off'` \| `'milestones'` \| `'minutes'` (default: off)     |
+| `tutorial-seen` | Welcome tutorial already seen | `'on'` \| `'off'` (default: off - it shows on first launch) |
+| `lang`          | Language                      | language code or `'auto'`                                   |
+| `preset`        | Selected mode                 | identifier                                                  |
+| `presets`       | Modes                         | JSON `Preset[]`                                             |
+| `routine`       | Loaded routine                | identifier, empty if none (EF-ROU-10)                       |
+| `routines`      | Routines                      | JSON `Routine[]`, an empty list is allowed                  |
+| `history`       | History                       | JSON `Session[]`, 500 entries at most                       |
+| `daily-goal`    | Daily goal                    | minutes                                                     |
 
 **Migrations.** There is no schema number: reads are defensive. Stored modes are filtered (string
 identifier, positive duration, string colour) and, if nothing valid remains, the default modes are restored.
@@ -211,23 +211,23 @@ started by hand.
 
 All provided at root (`providedIn: 'root'`).
 
-### 4.1 `TimerService` — countdown
+### 4.1 `TimerService` - countdown
 
 The countdown is **computed from the real end time** (`endAt`), not by decrementing: on each tick,
 `timeLeft = (endAt − now) / 1000`. A slowdown of the ticks by the browser or a move to the background therefore
 introduces no drift (EF-TIM-9, ENF-PER-3). Ticks every 100 ms via `interval(100)`, stopped by a `takeUntil`.
 
-| Member | Role |
-| --- | --- |
-| `timeLeft$`, `totalTime$`, `isRunning$` | Observable state |
-| `finished$` | Emitted at 0 with the **measured lateness** in seconds, used for the 90 s rule |
-| `endTime` | End time in ms if the countdown is running, otherwise `null` (widget, notifications) |
-| `start` / `pause` / `resume` / `reset` | Control |
-| `setTimeLeft` | Finger adjustment without interrupting the countdown: resets `endAt` |
+| Member                                  | Role                                                                                 |
+| --------------------------------------- | ------------------------------------------------------------------------------------ |
+| `timeLeft$`, `totalTime$`, `isRunning$` | Observable state                                                                     |
+| `finished$`                             | Emitted at 0 with the **measured lateness** in seconds, used for the 90 s rule       |
+| `endTime`                               | End time in ms if the countdown is running, otherwise `null` (widget, notifications) |
+| `start` / `pause` / `resume` / `reset`  | Control                                                                              |
+| `setTimeLeft`                           | Finger adjustment without interrupting the countdown: resets `endAt`                 |
 
 The end haptic is loaded dynamically (`import('@capacitor/haptics')`) and its failure is ignored.
 
-### 4.2 `SessionService` — orchestration
+### 4.2 `SessionService` - orchestration
 
 Central point: set duration, selected mode, current session, chaining, milestone sounds, notifications, widget,
 screen-reader announcements. It lives at root precisely so that it survives navigation (EF-A11-4, ENF-PER-4).
@@ -236,62 +236,62 @@ It exposes derived signals ready to display: `displaySeconds`, `displayMinutes`,
 
 It also carries the running of routines (`activeRoutine`, `routineIndex`, `routineDone`, `currentStep`). The
 seam fits in one line: `selectedPreset` returns the current step as soon as a routine is loaded. Everything that
-reads the mode — dial, display, history, notifications, widget — follows without knowing anything about routines.
+reads the mode - dial, display, history, notifications, widget - follows without knowing anything about routines.
 Only three places know about them: the end-of-step chaining (the next step replaces the Pomodoro cycle, without
-extension — RG-17, RG-18), the scheduling of notifications, and the step strip.
+extension - RG-17, RG-18), the scheduling of notifications, and the step strip.
 
 It also reacts to the application's lifecycle (`@capacitor/app`): on going to the background it schedules the
 remaining notifications; on return it cancels them, catches up on the state and requests the screen-on lock again.
 
 ### 4.3 Other services
 
-| Service | Responsibility |
-| --------------------- | ---------------------------------- |
-| `PreferencesService` | Preferences as signals |
-| `PresetService` | Modes |
-| `RoutineService` | Routines |
-| `HistoryService` | History, statistics, goal |
-| `SoundService` | Web Audio playback |
-| `SpeechService` | Voice announcement (Web Speech) |
-| `HapticsService` | Vibration patterns |
-| `NotificationService` | Local notifications |
-| `KeepAwakeService` | Screen on |
-| `WidgetService` | iOS widget |
-| `I18nService` | Language and translation |
+| Service               | Responsibility                  |
+| --------------------- | ------------------------------- |
+| `PreferencesService`  | Preferences as signals          |
+| `PresetService`       | Modes                           |
+| `RoutineService`      | Routines                        |
+| `HistoryService`      | History, statistics, goal       |
+| `SoundService`        | Web Audio playback              |
+| `SpeechService`       | Voice announcement (Web Speech) |
+| `HapticsService`      | Vibration patterns              |
+| `NotificationService` | Local notifications             |
+| `KeepAwakeService`    | Screen on                       |
+| `WidgetService`       | iOS widget                      |
+| `I18nService`         | Language and translation        |
 
 #### Notable points
 
-`PreferencesService` — initial theme: the saved value, otherwise `prefers-color-scheme`.
+`PreferencesService` - initial theme: the saved value, otherwise `prefers-color-scheme`.
 
-`PresetService` — filtered loading, refusal to delete the last mode, restoration of the default modes.
+`PresetService` - filtered loading, refusal to delete the last mode, restoration of the default modes.
 
-`RoutineService` — same rules as modes, but the list may be empty; a routine without steps is discarded on loading.
+`RoutineService` - same rules as modes, but the list may be empty; a routine without steps is discarded on loading.
 
-`HistoryService` — `today`, `week`, `streak` and `goalProgress` as `computed`; rescheduling at midnight.
+`HistoryService` - `today`, `week`, `streak` and `goalProgress` as `computed`; rescheduling at midnight.
 
-`SoundService` — synthesis of the shared patterns, brought to the measured level (§ 8.1).
+`SoundService` - synthesis of the shared patterns, brought to the measured level (§ 8.1).
 
-`SpeechService` — cancels the previous announcement, picks a voice in the current language if the browser offers
+`SpeechService` - cancels the previous announcement, picks a voice in the current language if the browser offers
 one, and hides itself if speech synthesis is missing.
 
-`HapticsService` — pulses chained with `setTimeout`, Capacitor module loaded on demand, failure ignored where
+`HapticsService` - pulses chained with `setTimeout`, Capacitor module loaded on demand, failure ignored where
 vibration does not exist (iOS on the web, computer).
 
-`NotificationService` — writes the iOS WAV files at launch, creates one Android channel per sound, and a silent
+`NotificationService` - writes the iOS WAV files at launch, creates one Android channel per sound, and a silent
 channel for the silent alerts.
 
-`KeepAwakeService` — checks support, ignores failures, requests the lock again on return to the foreground.
+`KeepAwakeService` - checks support, ignores failures, requests the lock again on return to the foreground.
 
-`WidgetService` — active only on iOS; sends only if the JSON state has changed; retries at the next change on failure.
+`WidgetService` - active only on iOS; sends only if the JSON state has changed; retries at the next change on failure.
 
-`I18nService` — detection from `navigator.languages`, fallback to French, updates the document's `lang` and `dir`.
+`I18nService` - detection from `navigator.languages`, fallback to French, updates the document's `lang` and `dir`.
 
 ---
 
 ## 5. Dial rendering
 
 - **A single SVG**, `viewBox="0 0 420 420"`, whose paths are computed in TypeScript by pure functions
-  (`features/timer/dial-geometry.ts`) — testable without the DOM.
+  (`features/timer/dial-geometry.ts`) - testable without the DOM.
 - **Two layers**: a veil with `mix-blend-mode: multiply` over the rainbow ring of 12 segments of 5 minutes,
   and a solid plate at the centre.
 - **Gestures**: *pointer* events (`pointerdown` / `pointermove` / `pointerup` / `pointercancel`), a single set of
@@ -303,7 +303,7 @@ channel for the silent alerts.
 
 The dial projects a value from 0 to 60 onto a circle. Nothing requires that value to be minutes: when the set
 duration falls below `SECONDS_DIAL_BELOW`, `SessionService` feeds the same geometry in **seconds**. The twelve
-segments then stand for 5 s each, and the numbers on the face — 0, 5, 10… — stay correct without change, since
+segments then stand for 5 s each, and the numbers on the face - 0, 5, 10… - stay correct without change, since
 they are valid for both units.
 
 Without this, an effort of 20 s would cover two degrees of the disc: the application would lose exactly what it
@@ -315,7 +315,7 @@ Two safeguards:
 - the unit follows the **set duration**, not the remaining time, otherwise a Pomodoro would switch to seconds in
   its last minute (RG-27);
 - **setting** is blocked while the graduation is in seconds: dragging, arrows and the − / + buttons work in
-  minutes and would produce a duration unrelated to the display (RG-26). Starting and pausing remain possible —
+  minutes and would produce a duration unrelated to the display (RG-26). Starting and pausing remain possible -
   the lock is what removes them, and the attribute used is `aria-readonly`, not `aria-disabled`.
 
 A "dry" marker under the central button states the unit: without it, a dial set to 20 seconds reads as 20 minutes.
@@ -332,7 +332,7 @@ solid colour would have forced re-checking every text of the application in ten 
 
 One measured exception: the secondary grey fell to **2.82:1** on the tinted background (worst case across the ten
 palette colours, light theme, bottom of the gradient). `.stage.sport` therefore redefines `--muted` as
-`--muted-strong`, which raises the worst case to 5.0:1 and covers in one go everything written on the stage — the
+`--muted-strong`, which raises the worst case to 5.0:1 and covers in one go everything written on the stage - the
 state under the buttons, the round counter, the routine title.
 
 The clock and the step name are enlarged through `:host-context(.sport)`: the class lives on the page, outside the
@@ -352,7 +352,7 @@ The constraints that shaped the component:
 - **Three equivalent inputs**: horizontal swipe, buttons (Previous / Next, dots), keyboard arrows. Swiping is never
   the only means (WCAG 2.5.1).
 - **Focus starts on *Next* and stays there** from one view to the next: you go through the tutorial by repeating the
-  same key. A `aria-live` region says "Step 2 of 5: Set the duration" — the rank and title only, the text being read
+  same key. A `aria-live` region says "Step 2 of 5: Set the duration" - the rank and title only, the text being read
   in place.
 - **The four off-screen views are `inert` and `aria-hidden`**: they stay in the document for the swipe, but neither
   the tab key nor the screen reader enters them.
@@ -364,13 +364,13 @@ The constraints that shaped the component:
   a large screen. Sizes follow the height (`clamp(…vh…)`), and the view scrolls instead of being cropped when the phone
   is lying down (`align-items: safe center`).
 - `prefers-reduced-motion` removes the swipe: the views simply replace one another.
-- In Arabic, `flex` already reverses the order of the views; the offset is reversed by `:host-context([dir='rtl'])` —
+- In Arabic, `flex` already reverses the order of the views; the offset is reversed by `:host-context([dir='rtl'])` -
   not `[dir='rtl'] .track`, which Angular's encapsulation would prevent from matching, since the attribute lives on
   `<html>`.
 
 ## 7. Milestones
 
-`core/helpers/milestones.ts` calculates, from the duration of a session, the list of milestones — minutes remaining and
+`core/helpers/milestones.ts` calculates, from the duration of a session, the list of milestones - minutes remaining and
 the chime borrowed.
 
 Fixed milestones at 45 / 30 / 15 only warn long sessions: a 25-minute Pomodoro would receive only the 15-minute one,
@@ -378,31 +378,31 @@ and a 10-minute routine step none. Above `LONG_SESSION_MINUTES`, the three known
 are; below it, they are derived from the duration: **the half, the last quarter, then one minute before the end**.
 
 | Duration | Milestones (minutes remaining) |
-| ------ | --------------------------- |
-| 60 min | 45, 30, 15                  |
-| 25 min | 13, 6, 1                    |
-| 10 min | 5, 3, 1                     |
-| 2 min  | 1                           |
-| 1 min  | none                        |
-| 20 s   | none                        |
+| -------- | ------------------------------ |
+| 60 min   | 45, 30, 15                     |
+| 25 min   | 13, 6, 1                       |
+| 10 min   | 5, 3, 1                        |
+| 2 min    | 1                              |
+| 1 min    | none                           |
+| 20 s     | none                           |
 
 A training step lasting a few seconds therefore receives no milestone: the first would fall after the chime. This is
-intended — a "3, 2, 1" countdown every second is a different signal, which remains to be written.
+intended - a "3, 2, 1" countdown every second is a different signal, which remains to be written.
 
 The timbre (sound, vibration pattern, notification channel) comes from the **rank** and never from the number of
 minutes: the last milestone always carries the most insistence. A milestone rounded to the same number of minutes as
 another is merged, and none falls on the total duration itself.
 
-`SessionService` exposes the list as a `computed`, calculated on the announced duration of the session — a finger
-adjustment made along the way therefore does not move the milestones already passed — and empty during the "+5 min"
+`SessionService` exposes the list as a `computed`, calculated on the announced duration of the session - a finger
+adjustment made along the way therefore does not move the milestones already passed - and empty during the "+5 min"
 extension, which is a grace period and not a session to mark out.
 
 ---
 
 ## 8. Sounds
 
-`core/helpers/sound-patterns.ts` defines the four patterns (`milestone45`, `milestone30`, `milestone15`, `end`) as notes —
-frequency, offset, duration, gain, waveform — with an optional high partial for the bell effect.
+`core/helpers/sound-patterns.ts` defines the four patterns (`milestone45`, `milestone30`, `milestone15`, `end`) as notes -
+frequency, offset, duration, gain, waveform - with an optional high partial for the bell effect.
 
 This single file serves **two consumers**:
 
@@ -418,13 +418,13 @@ notification sounds are thus identical by construction.
 The gains written into the patterns are relative: they set the balance between the notes of one pattern, not its
 volume. The volume comes from `level(pattern)`, which **measures the peak of the rendered signal** and brings it to
 `PEAK_TARGET` (0.89, i.e. −1 dBFS). Measuring rather than calculating is necessary: the notes overlap and add up, so a
-hand-set gain leaves the pattern either clipped or far too quiet. The factor is applied on both sides — master gain in
-Web Audio, sample scale in the WAV — and it is memoised, since the calculation costs a full render.
+hand-set gain leaves the pattern either clipped or far too quiet. The factor is applied on both sides - master gain in
+Web Audio, sample scale in the WAV - and it is memoised, since the calculation costs a full render.
 
 Two intended consequences:
 
 - **all patterns come out at the same peak**, whereas they used to spread over 17 dB (the end chime drowned out the
-  milestones, and the 15-minute milestone was the most discreet of the four — the opposite of its role);
+  milestones, and the 15-minute milestone was the most discreet of the four - the opposite of its role);
 - **an alert sound must come out loud**, because the device only ever reduces what it is given. A file rendered at half
   scale arrives irremediably quiet, notably on Android where the notification volume is a separate setting.
 
@@ -433,7 +433,7 @@ drop all the faster the lower the note started: a soft note was only a click, an
 
 No limiter closes the Web Audio chain. The level-up is measured on a render where the oscillators start in phase, which
 Web Audio does not guarantee: the real peak there rises to −0.5 dB instead of −1, which the margin in `PEAK_TARGET`
-absorbs. A `DynamicsCompressorNode`, measured in passing, cost 3.9 dB on the transient — too brief to escape its attack —
+absorbs. A `DynamicsCompressorNode`, measured in passing, cost 3.9 dB on the transient - too brief to escape its attack -
 for no protection at all.
 
 ---
@@ -442,14 +442,14 @@ for no protection at all.
 
 ### 9.1 Local notifications
 
-| Platform | Implementation |
-| --- | --- |
-| iOS | The application itself writes the WAV files into `Library/Sounds` at launch, via `@capacitor/filesystem` |
-| Android | `make sounds` copies the WAV files into `android/app/src/main/res/raw`; the application creates one notification channel per sound |
+| Platform | Implementation                                                                                                                     |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| iOS      | The application itself writes the WAV files into `Library/Sounds` at launch, via `@capacitor/filesystem`                           |
+| Android  | `make sounds` copies the WAV files into `android/app/src/main/res/raw`; the application creates one notification channel per sound |
 
 ⚠️ **An Android channel is immutable.** Its sound is fixed at creation: recreating it does not change it. A channel
 born from a build made **before** `make sounds` points to a missing `raw` resource and stays silent for ever on that
-installation — the notification appears, without a sound. Hence `CHANNEL_VERSION` in `notification.service.ts`: the
+installation - the notification appears, without a sound. Hence `CHANNEL_VERSION` in `notification.service.ts`: the
 identifiers carry `_v<n>`, and incrementing it creates new channels while deleting the previous ones (`deleteChannel`),
 so that the same names do not appear twice in the phone's settings.
 
@@ -457,18 +457,18 @@ What is fixed deserves to be precise, lest one bumps for nothing: the channel re
 `android.resource://<package>/raw/<name>` (see `SoundResolver` on the plugin side), a reference by name resolved at
 playback.
 
-| What changes | Bump `CHANNEL_VERSION`? |
-| --- | --- |
-| The **content** of a WAV file (level, timbre, pattern) | No — reinstalling the APK is enough, the URI still designates the same resource |
-| The **name** of a file, or the sound attached to a channel | Yes |
-| The **importance** or the vibration of a channel | Yes |
-| A channel created while the `raw` resource was missing | Yes — it is silent for ever |
+| What changes                                               | Bump `CHANNEL_VERSION`?                                                         |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| The **content** of a WAV file (level, timbre, pattern)     | No - reinstalling the APK is enough, the URI still designates the same resource |
+| The **name** of a file, or the sound attached to a channel | Yes                                                                             |
+| The **importance** or the vibration of a channel           | Yes                                                                             |
+| A channel created while the `raw` resource was missing     | Yes - it is silent for ever                                                     |
 
 **Two audio streams, two volumes.** The channel is created with `USAGE_NOTIFICATION` and
 `CONTENT_TYPE_SONIFICATION`: notifications therefore follow Android's **notification** volume, whereas the sounds played
 by the application in the foreground go through Web Audio, and so through the **media** volume. The two sliders are
 independent, and the application chooses neither. This is the first thing to rule out when a sound report says it is too
-quiet — the second being the level of the patterns themselves (§ 8.1).
+quiet - the second being the level of the patterns themselves (§ 8.1).
 
 The alerts (milestones, end, end of extension, end of the chained session) are scheduled when the app goes to the
 background and cancelled on return. During a routine, it is the next step that names the end notification ("Next up:
@@ -477,18 +477,18 @@ in `AndroidManifest.xml`. No effect in the browser.
 
 **Three lifetimes coexist**, and the distinction is vital:
 
-|  | Session alerts | Routine reminders | Test notification |
-| --- | --- | --- | --- |
-| **Ids** | < 1000 (`REMINDER_ID_BASE`) | ≥ 1000 | 2000 (`TEST_ID`) |
-| **Scheduling** | on going to the background | on every change | on demand |
-| **Cancellation** | all of them, on return to the foreground | never, except in bulk | never |
-| **Form** | `schedule.at`, one-off | `schedule.on`, weekly | `schedule.at`, after 5 s |
+|                  | Session alerts                           | Routine reminders     | Test notification        |
+| ---------------- | ---------------------------------------- | --------------------- | ------------------------ |
+| **Ids**          | < 1000 (`REMINDER_ID_BASE`)              | ≥ 1000                | 2000 (`TEST_ID`)         |
+| **Scheduling**   | on going to the background               | on every change       | on demand                |
+| **Cancellation** | all of them, on return to the foreground | never, except in bulk | never                    |
+| **Form**         | `schedule.at`, one-off                   | `schedule.on`, weekly | `schedule.at`, after 5 s |
 
-- **Scheduling** — the reminders are rewritten on every change to a routine, the language or the *Sound* setting;
+- **Scheduling** - the reminders are rewritten on every change to a routine, the language or the *Sound* setting;
   the test notification is sent from the settings.
-- **Cancellation** — neither the return to the foreground nor the rewriting of the reminders reaches the test
+- **Cancellation** - neither the return to the foreground nor the rewriting of the reminders reaches the test
   notification (RG-30). The reminders are cancelled only by a bulk rescheduling.
-- **Form** — `schedule.on` works like cron (a day, an hour); the test fires at `TEST_DELAY_SECONDS` (5 s).
+- **Form** - `schedule.on` works like cron (a day, an hour); the test fires at `TEST_DELAY_SECONDS` (5 s).
 
 `cancelPending()> therefore filters on this boundary: without that filter, the first return to the foreground would
 erase every reminder (RG-22). The days are converted from ISO 8601 to Capacitor's numbering, which counts from Sunday.
@@ -501,7 +501,7 @@ which **arms** the routine without starting it (RG-21).
 ### 9.2 Test notification and exact alarms
 
 Authorisation, channel, sound, display on the locked screen: the chain can only be verified by walking through it.
-`sendTest()` therefore schedules a notification five seconds ahead — the delay is the test itself, it leaves time to
+`sendTest()` therefore schedules a notification five seconds ahead - the delay is the test itself, it leaves time to
 lock the screen. The result returned to the caller (`TestResult`) distinguishes what happened: `scheduled`, `inexact`
 (scheduled, but the device does not guarantee the time), `denied`, `unsupported` (browser: `Capacitor.isNativePlatform()`
 is false, there is nothing to test) and `failed`. The *Settings* tab shows this outcome in an
@@ -509,28 +509,28 @@ is false, there is nothing to test) and `failed`. The *Settings* tab shows this 
 
 `openExactAlarmSettings()` opens the system screen "Alarms & reminders" through `changeExactNotificationSetting()`.
 Android only: before Android 12 the permission does not exist and the plugin answers "granted" without opening anything,
-elsewhere the call would throw — hence `unsupported`, which does not lie about the reason. Note that switching from granted
+elsewhere the call would throw - hence `unsupported`, which does not lie about the reason. Note that switching from granted
 to refused on this screen **restarts the application** and erases the exact alarms already scheduled; this is imposed by
 the system. On return, the test must be run again: it is the test that judges, not the permission.
 
 ### 9.3 Persistent countdown outside the app
 
-The widget waits for you to look at it; this one sits on the locked screen. A single method on the web side —
-`LiveStatusService.update()` — receives **the same state as the widget**, at the same moment, and each platform does what
+The widget waits for you to look at it; this one sits on the locked screen. A single method on the web side -
+`LiveStatusService.update()` - receives **the same state as the widget**, at the same moment, and each platform does what
 it can with it.
 
-|  | Android | iOS |
-| --- | --- | --- |
-| Form | Permanent notification (`LiveStatusPlugin.java`, id 3000) | Live Activity (ActivityKit, iOS 16.2+) |
-| Seconds | `setUsesChronometer` + `setChronometerCountDown` (API 24) | `Text(timerInterval:)` |
-| Dial | absent: a notification has no live image | `DialFace`, **frozen between two updates** |
+|                   | Android                                                     | iOS                                        |
+| ----------------- | ----------------------------------------------------------- | ------------------------------------------ |
+| Form              | Permanent notification (`LiveStatusPlugin.java`, id 3000)   | Live Activity (ActivityKit, iOS 16.2+)     |
+| Seconds           | `setUsesChronometer` + `setChronometerCountDown` (API 24)   | `Text(timerInterval:)`                     |
+| Dial              | absent: a notification has no live image                    | `DialFace`, **frozen between two updates** |
 | Channel / setting | channel `ongoing_v1`, low importance, no sound or vibration | `NSSupportsLiveActivities` in `Info.plist` |
 
 **It informs, it does not alert**: otherwise the persistent countdown would cover the milestones, which must be heard.
 Hence a silent channel on Android and `setOnlyAlertOnce(true)`, which prevents each rewrite from replaying the arrival of
 the notification.
 
-On iOS, `PomodoroActivity.swift` belongs to **both** targets — the application that requests the activity and the
+On iOS, `PomodoroActivity.swift` belongs to **both** targets - the application that requests the activity and the
 extension that draws it: ActivityKit pairs the two ends by type, and two copies in two modules would not pair. The dial,
 for its part, is redrawn only on updates pushed by the application: a Live Activity does not animate by itself, and waking
 it every minute would require a push notification server. The number, on the other hand, runs on its own.
@@ -549,40 +549,40 @@ it every minute would require a push notification server. The number, on the oth
   App Group.
 
 **The widget shows the dial, not a summary of it.** The `Dial` enumeration in `PomodoroWidget.swift` carries the
-constants of `dial-geometry.ts` — 420 × 420 frame, `CX`/`CY`, radii, twelve segment colours, anticlockwise from 0 — and a
+constants of `dial-geometry.ts` - 420 × 420 frame, `CX`/`CY`, radii, twelve segment colours, anticlockwise from 0 - and a
 `Canvas` draws them at the widget's scale: ring, mode veil in `multiply` over the ring, central plate, twelve separators,
 edge line, tab, pearly button, and the unit marker when the graduation counts seconds. The tokens of `src/theme/` are copied
 into `Palette` (light and dark): the widget follows the **theme chosen in the app** (`dark`), not the system's.
 
-| Family | Composition |
-| --- | --- |
-| `systemSmall` | The dial, and under it the reading badge: colour dot, time, mode name |
+| Family         | Composition                                                                                                  |
+| -------------- | ------------------------------------------------------------------------------------------------------------ |
+| `systemSmall`  | The dial, and under it the reading badge: colour dot, time, mode name                                        |
 | `systemMedium` | The dial on the left; on the right the mode, the time in large type in the mode's colour, and the day's goal |
 
 **Android** (`android/app/src/main/java/.../`, in Java: the `app` module does not have the Kotlin plugin, and the widget was
 not worth touching the Gradle setup) keeps the same drawing with different constraints. A widget cannot run a view of its own:
-`DialBitmap` paints the dial into a `Bitmap` — a third port of the same geometry — which `RemoteViews` displays. The width of the
+`DialBitmap` paints the dial into a `Bitmap` - a third port of the same geometry - which `RemoteViews` displays. The width of the
 widget selects the layout (`widget_pomodoro` below 220 dp, `widget_pomodoro_wide` above), since multi-size `RemoteViews` do not
 exist before API 31.
 
-|  | iOS | Android |
-| --- | --- | --- |
-| Drawing | SwiftUI `Canvas` | `Canvas` on a `Bitmap` (320 px at most: it travels by IPC) |
-| Seconds | `Text(timerInterval:)` | `Chronometer` in countdown mode (API 24) |
-| Graduation | one timeline entry per minute | one `AlarmManager` alarm per minute |
-| Transport | App Group + `WidgetCenter` | `SharedPreferences` + `AppWidgetManager` (same process) |
+|            | iOS                           | Android                                                    |
+| ---------- | ----------------------------- | ---------------------------------------------------------- |
+| Drawing    | SwiftUI `Canvas`              | `Canvas` on a `Bitmap` (320 px at most: it travels by IPC) |
+| Seconds    | `Text(timerInterval:)`        | `Chronometer` in countdown mode (API 24)                   |
+| Graduation | one timeline entry per minute | one `AlarmManager` alarm per minute                        |
+| Transport  | App Group + `WidgetCenter`    | `SharedPreferences` + `AppWidgetManager` (same process)    |
 
 **Two clocks, and this is what makes the widget sustainable for the battery**: the chronometer ticks the seconds without
-anything waking it, and the alarm redraws the dial only when the graduation changes — a minute, or five seconds on a dial
+anything waking it, and the alarm redraws the dial only when the graduation changes - a minute, or five seconds on a dial
 graduated in seconds. When the countdown stops, the alarm is cancelled: a frozen dial has no reason to wake the phone.
 `updatePeriodMillis` is therefore **0**: the system wakes nothing by itself.
 
 On Android 12+, the exact alarm depends on "Alarms & reminders"; if refused, the widget falls back to an ordinary alarm and
-is a little late, it does not stop. Before Android 12 — so on Android 9 — the question does not arise: the exact alarm is
+is a little late, it does not stop. Before Android 12 - so on Android 9 - the question does not arise: the exact alarm is
 granted by default.
 
-The disc empties by itself: the timeline sets one entry per **graduation crossed** — one per minute, or one per second on a
-dial graduated in seconds — plus the end of the countdown and midnight, 58 steps at most. `.contentMarginsDisabled()` returns to
+The disc empties by itself: the timeline sets one entry per **graduation crossed** - one per minute, or one per second on a
+dial graduated in seconds - plus the end of the countdown and midnight, 58 steps at most. `.contentMarginsDisabled()` returns to
 the dial the margin that the system reserves. The dial is `accessibilityHidden`: it is an image of the time, and the badge says
 the same thing in full words.
 
@@ -590,7 +590,7 @@ the same thing in full words.
 
 `appId`: `com.maximejolivet.pomodorotdah` · `appName`: Pomodoro Accessibilité · `webDir`: `www`.
 The icons and launch screens of both platforms are generated by `make icons` (`scripts/generate-icons.ts`, rendered by Chromium)
-from `resources/app-icon.svg` and `resources/app-icon-foreground.svg` — see [MOBILE.md](MOBILE.md).
+from `resources/app-icon.svg` and `resources/app-icon-foreground.svg` - see [MOBILE.md](MOBILE.md).
 
 ---
 
@@ -602,7 +602,7 @@ from `resources/app-icon.svg` and `resources/app-icon-foreground.svg` — see [M
 - The texts of the accessibility page live separately, in `features/accessibility/accessibility.i18n.ts`.
 - `I18nService` detects the language from `navigator.languages`, falls back to French, and updates
   `document.documentElement.lang` as well as the writing direction (`dir`).
-- **Adding a language** = a file in `locales/`, then an entry in `Lang`, `DICTIONARIES`, `LANGUAGES` — and in `RTL_LANGS` if it is
+- **Adding a language** = a file in `locales/`, then an entry in `Lang`, `DICTIONARIES`, `LANGUAGES` - and in `RTL_LANGS` if it is
   written right to left.
 - The CSS uses logical properties (`inset-inline-*`, `start` / `end`): switching to RTL needs no mirrored rule.
 
@@ -610,11 +610,11 @@ from `resources/app-icon.svg` and `resources/app-icon-foreground.svg` — see [M
 
 ## 11. Theme and styles
 
-| File | Content |
-| --- | --- |
-| `src/styles.css` | Theme imports, Tailwind, global utilities |
-| `src/theme/tokens.css` | Light theme colour tokens, set on `<app-root>` |
-| `src/theme/dark.css` | Token overrides under `app-root.dark` |
+| File                     | Content                                                             |
+| ------------------------ | ------------------------------------------------------------------- |
+| `src/styles.css`         | Theme imports, Tailwind, global utilities                           |
+| `src/theme/tokens.css`   | Light theme colour tokens, set on `<app-root>`                      |
+| `src/theme/dark.css`     | Token overrides under `app-root.dark`                               |
 | `src/theme/controls.css` | Shared primitives: relief button, slider, segmented control, switch |
 
 Colours are **never** hard-coded in a component: all go through CSS variables inherited from `<app-root>`, which makes
@@ -624,41 +624,41 @@ the theme switch instant and guarantees consistent contrast (ENF-MNT-2).
 
 ## 12. Technical accessibility
 
-| Requirement | Implementation |
-| --- | --- |
-| Dial usable by keyboard and announced | Focusable container carrying `role="slider"` |
-| Real-time announcements | Live region fed by `SessionService.announcement` |
-| Remaining time without sight | Optional voice announcement (`SpeechService`) |
-| Alert without sight or hearing | A vibration pattern specific to each milestone (`HapticsService`) |
-| Alert without sound | Coloured pulse at 0.6 Hz and a persistent end banner |
-| Involuntary gestures | Dial lock |
-| Settings panel | Trapped focus, closed with Escape, focus returned to the trigger |
-| Tabs | `tablist` / `tab` / `tabpanel` roles, arrow-key navigation |
-| Contrast | Theme tokens checked to 4.5:1 minimum, in light and dark |
-| Colour alone | Each mode colour is accompanied by its name |
-| Animations | `prefers-reduced-motion` respected |
-| Dyslexia | OpenDyslexic font can be enabled, with wider letter and line spacing |
-| Sequence of actions without reading | A pictogram before each step's name |
-| Structure | Semantic HTML, `main`, hierarchical headings, page metadata |
+| Requirement                           | Implementation                                                       |
+| ------------------------------------- | -------------------------------------------------------------------- |
+| Dial usable by keyboard and announced | Focusable container carrying `role="slider"`                         |
+| Real-time announcements               | Live region fed by `SessionService.announcement`                     |
+| Remaining time without sight          | Optional voice announcement (`SpeechService`)                        |
+| Alert without sight or hearing        | A vibration pattern specific to each milestone (`HapticsService`)    |
+| Alert without sound                   | Coloured pulse at 0.6 Hz and a persistent end banner                 |
+| Involuntary gestures                  | Dial lock                                                            |
+| Settings panel                        | Trapped focus, closed with Escape, focus returned to the trigger     |
+| Tabs                                  | `tablist` / `tab` / `tabpanel` roles, arrow-key navigation           |
+| Contrast                              | Theme tokens checked to 4.5:1 minimum, in light and dark             |
+| Colour alone                          | Each mode colour is accompanied by its name                          |
+| Animations                            | `prefers-reduced-motion` respected                                   |
+| Dyslexia                              | OpenDyslexic font can be enabled, with wider letter and line spacing |
+| Sequence of actions without reading   | A pictogram before each step's name                                  |
+| Structure                             | Semantic HTML, `main`, hierarchical headings, page metadata          |
 
 ### Details
 
-**Dial** — `aria-valuemin=1`, `aria-valuemax=60`, `aria-valuenow`, `aria-valuetext` ("*n* minutes, *action*") and `aria-label`.
+**Dial** - `aria-valuemin=1`, `aria-valuemax=60`, `aria-valuenow`, `aria-valuetext` ("*n* minutes, *action*") and `aria-label`.
 The SVG itself is `aria-hidden`: it says nothing a screen reader could use.
 
-**Voice announcement** — at the milestones or every minute, in the language of the interface.
+**Voice announcement** - at the milestones or every minute, in the language of the interface.
 
-**Vibration** — the patterns are distinguished by the number of pulses and their rhythm, not by their duration (see `ENF-A11-13`).
+**Vibration** - the patterns are distinguished by the number of pulses and their rhythm, not by their duration (see `ENF-A11-13`).
 
-**Alert without sound** — `aria-hidden` and `pointer-events: none`, frozen under `prefers-reduced-motion`: it duplicates information
+**Alert without sound** - `aria-hidden` and `pointer-events: none`, frozen under `prefers-reduced-motion`: it duplicates information
 already given elsewhere.
 
-**Dial lock** — `SessionService` ignores the setting, the reset, the step change and the exit from a routine. The slider gets
+**Dial lock** - `SessionService` ignores the setting, the reset, the step change and the exit from a routine. The slider gets
 `aria-disabled`, as do the − / + buttons and the step tiles.
 
-**Tabs** — the arrow keys are named for screen readers.
+**Tabs** - the arrow keys are named for screen readers.
 
-**Routine steps** — the strip is an `<ol>` of buttons, the current step marked `aria-current="step"`. The state (done, current) is
+**Routine steps** - the strip is an `<ol>` of buttons, the current step marked `aria-current="step"`. The state (done, current) is
 restated in the accessible name and doubled by a tick, never carried by colour alone.
 
 The known gaps are published in the application's accessibility statement (see § 7.1 of the functional specification).
@@ -692,8 +692,8 @@ native IDE.
 GitHub Actions workflow `.github/workflows/a11y.yml`, triggered by pushes to `main` and by every merge request, with two jobs on
 `ubuntu-latest`:
 
-1. **Production build** — `npm ci` then `npm run build`.
-2. **Accessibility regression** — installation of Chromium by Playwright, `npm run test:a11y`, then upload of the Playwright
+1. **Production build** - `npm ci` then `npm run build`.
+2. **Accessibility regression** - installation of Chromium by Playwright, `npm run test:a11y`, then upload of the Playwright
    report as an artefact (7-day retention).
 
 The Node version comes from `.nvmrc`; the npm cache is enabled.
@@ -707,13 +707,13 @@ versions are produced from Xcode and Android Studio. There are no published vers
 
 ## 14. Quality and tests
 
-| Level | Tool | Scope |
-| ------------- | ---------------------------------------- | ----------------------------------- |
-| Unit | Karma + Jasmine (`make test`) | **Nothing for now** |
+| Level         | Tool                                     | Scope                             |
+| ------------- | ---------------------------------------- | --------------------------------- |
+| Unit          | Karma + Jasmine (`make test`)            | **Nothing for now**               |
 | Accessibility | Playwright + axe-core (`make test-a11y`) | Real journeys, keyboard, contrast |
 
-⚠️ `src/` contains **no** `.spec.ts`, so `make test` fails with `TS18003`. The domain logic — dial geometry, time helpers,
-services — is covered only end to end, by the accessibility suite.
+⚠️ `src/` contains **no** `.spec.ts`, so `make test` fails with `TS18003`. The domain logic - dial geometry, time helpers,
+services - is covered only end to end, by the accessibility suite.
 
 Playwright configuration: `tests/` folder, Chromium project at **420 × 900** (mobile framing), development server started
 automatically on `http://localhost:4200`, parallel execution, one retry in CI, trace on the first retry, `forbidOnly` in CI.
@@ -744,14 +744,14 @@ is hard-coded, no translation key is missing (the compiler checks it), and the c
 
 ### 16.1 Accepted limits
 
-| Limit | Reason |
-| --- | --- |
-| History capped at 500 sessions | Size of `localStorage`; beyond that, the statistical value is marginal |
-| No data export by the user | Not specified to date |
-| iOS widget only | No Android equivalent built |
-| `WidgetState` contract duplicated in TypeScript / Swift | No code generation; any change is made on both sides |
-| No tests with a real screen reader | Automatic checks and code review only; the gap is published in the statement |
-| Accessibility tests on Chromium only | A single engine in CI |
+| Limit                                                   | Reason                                                                       |
+| ------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| History capped at 500 sessions                          | Size of `localStorage`; beyond that, the statistical value is marginal       |
+| No data export by the user                              | Not specified to date                                                        |
+| iOS widget only                                         | No Android equivalent built                                                  |
+| `WidgetState` contract duplicated in TypeScript / Swift | No code generation; any change is made on both sides                         |
+| No tests with a real screen reader                      | Automatic checks and code review only; the gap is published in the statement |
+| Accessibility tests on Chromium only                    | A single engine in CI                                                        |
 
 ### 16.2 Points of attention
 

@@ -4,7 +4,7 @@
 
 [← Retour au README](../README.FR.md) · [Cahier des charges technique](TECHNICAL-SPECIFICATION.FR.md)
 
-Version 1.1 — 26 septembre 2026 · Application **Pomodoro Accessibilité** (web, iOS, Android)
+Version 1.1 - 26 septembre 2026 · Application **Pomodoro Accessibilité** (web, iOS, Android)
 
 ## Sommaire
 
@@ -25,7 +25,7 @@ Version 1.1 — 26 septembre 2026 · Application **Pomodoro Accessibilité** (we
 
 Une horloge donne l'heure, un minuteur numérique affiche des chiffres : ni l'un ni l'autre ne
 **montre** la durée restante. Pour beaucoup de personnes neurodivergentes (TDAH, autisme,
-troubles DYS), le temps ne se « sent » pas — dix minutes et une heure peuvent paraître
+troubles DYS), le temps ne se « sent » pas - dix minutes et une heure peuvent paraître
 identiques, et lire l'heure n'aide pas à savoir combien il reste.
 
 ### 1.2 Objectif produit
@@ -37,19 +37,19 @@ introduire de pression ni de jugement.
 
 ### 1.3 Objectifs mesurables
 
-| Réf. | Objectif | Indicateur |
-| --- | --- | --- |
-| OBJ-1 | Comprendre le temps restant sans lire de chiffres | Le cadran seul suffit à situer la durée |
-| OBJ-2 | Être utilisable par tout le monde | RGAA 4.1 / WCAG 2.1 AA, 0 violation axe-core sur les parcours testés |
-| OBJ-3 | Fonctionner sans compte ni réseau | Aucune requête sortante, aucune donnée quittant l'appareil |
-| OBJ-4 | Rester juste en arrière-plan | Écart de décompte nul après retour au premier plan |
-| OBJ-5 | Servir hors du domaine scolaire | Usage en contexte professionnel documenté et supporté (open space, réunions) |
-| OBJ-6 | Suivre une suite d'actions sans savoir lire | Chaque étape d'une routine est portée par un pictogramme avant son nom |
+| Réf.  | Objectif                                          | Indicateur                                                                   |
+| ----- | ------------------------------------------------- | ---------------------------------------------------------------------------- |
+| OBJ-1 | Comprendre le temps restant sans lire de chiffres | Le cadran seul suffit à situer la durée                                      |
+| OBJ-2 | Être utilisable par tout le monde                 | RGAA 4.1 / WCAG 2.1 AA, 0 violation axe-core sur les parcours testés         |
+| OBJ-3 | Fonctionner sans compte ni réseau                 | Aucune requête sortante, aucune donnée quittant l'appareil                   |
+| OBJ-4 | Rester juste en arrière-plan                      | Écart de décompte nul après retour au premier plan                           |
+| OBJ-5 | Servir hors du domaine scolaire                   | Usage en contexte professionnel documenté et supporté (open space, réunions) |
+| OBJ-6 | Suivre une suite d'actions sans savoir lire       | Chaque étape d'une routine est portée par un pictogramme avant son nom       |
 
 ### 1.4 Principes directeurs
 
 1. **Sans pression** : pas de score punitif, pas de sanction ; pas d'autre objectif.
-2. **Contrôle à l'utilisateur** : sons, vibration, écran allumé, enchaînement — tout se coupe.
+2. **Contrôle à l'utilisateur** : sons, vibration, écran allumé, enchaînement - tout se coupe.
 3. **Affichage calme** : pas de clignotement, animations réduites si l'appareil le demande.
 4. **Fin en douceur** : à 0, une prolongation de 5 min évite l'arrêt brutal.
 5. **Accessibilité par défaut**, jamais en option ajoutée après coup.
@@ -60,18 +60,18 @@ introduire de pression ni de jugement.
 
 ### 2.1 Plateformes
 
-| Plateforme | Support | Spécificités |
-| --- | --- | --- |
-| Web (navigateur moderne) | Cible principale | Sons Web Audio, Wake Lock si disponible |
-| iOS | Via Capacitor | Notifications locales, haptique, widget d'écran d'accueil |
-| Android | Via Capacitor | Notifications locales avec canaux sonores, haptique |
+| Plateforme               | Support          | Spécificités                                              |
+| ------------------------ | ---------------- | --------------------------------------------------------- |
+| Web (navigateur moderne) | Cible principale | Sons Web Audio, Wake Lock si disponible                   |
+| iOS                      | Via Capacitor    | Notifications locales, haptique, widget d'écran d'accueil |
+| Android                  | Via Capacitor    | Notifications locales avec canaux sonores, haptique       |
 
 ### 2.2 Écrans
 
-| Écran | Route | Contenu |
-| --- | --- | --- |
-| Minuteur | `/` | Cadran, affichage du temps, bande de routine, commandes, panneau (Modes / Réglages) |
-| Accessibilité | `/accessibility` | Déclaration d'accessibilité RGAA, repères sur la neurodiversité, standards visés |
+| Écran         | Route            | Contenu                                                                             |
+| ------------- | ---------------- | ----------------------------------------------------------------------------------- |
+| Minuteur      | `/`              | Cadran, affichage du temps, bande de routine, commandes, panneau (Modes / Réglages) |
+| Accessibilité | `/accessibility` | Déclaration d'accessibilité RGAA, repères sur la neurodiversité, standards visés    |
 
 ### 2.3 Contraintes structurantes
 
@@ -85,23 +85,23 @@ introduire de pression ni de jugement.
 
 ### 3.1 Profils
 
-**TDAH** — estimer une durée, démarrer, s'arrêter à temps.
+**TDAH** - estimer une durée, démarrer, s'arrêter à temps.
 → Repère visuel continu, sessions courtes, mode *Focus TDAH*.
 
-**Autisme** — transitions, imprévu, bruit.
+**Autisme** - transitions, imprévu, bruit.
 → Paliers annoncés à l'avance, routines en pictogrammes, sons désactivables.
 
-**Troubles DYS** — lire des chiffres ou une heure, fatigue à la lecture.
+**Troubles DYS** - lire des chiffres ou une heure, fatigue à la lecture.
 → Temps lisible sans chiffres, police OpenDyslexic, texte espacé.
 
-**Autres profils** — besoin de consignes claires, de moins de pression.
+**Autres profils** - besoin de consignes claires, de moins de pression.
 → Durées libres 1–60 min, modes personnalisés, aucune note.
 
-**Personnes qui ne lisent pas** (jeunes enfants, déficience intellectuelle) — suivre une suite
+**Personnes qui ne lisent pas** (jeunes enfants, déficience intellectuelle) - suivre une suite
 d'actions sans texte.
 → Routines en pictogrammes, une étape après l'autre, sans rien à lire.
 
-**Accompagnants** (parents, enseignants, managers) — rappeler le temps sans intervenir.
+**Accompagnants** (parents, enseignants, managers) - rappeler le temps sans intervenir.
 → Durée visible par tous, autonomie de la personne.
 
 ### 3.2 Contextes d'usage
@@ -124,38 +124,38 @@ Codification : `EF-<domaine>-<n>`. Priorité : **M** (must), **S** (should), **C
 
 ### 4.1 Cadran et décompte (`EF-TIM`)
 
-| Réf. | Exigence | Prio |
-| --- | --- | --- |
-| EF-TIM-1 | Le cadran affiche un disque coloré couvrant la durée restante, qui rétrécit jusqu'à 0. | M |
-| EF-TIM-2 | La graduation couvre 60 min, avec un anneau de 12 segments colorés de 5 min. | M |
-| EF-TIM-3 | Un glissement du doigt sur le cadran règle la durée, de 0 à 60 min, y compris pendant le décompte. | M |
-| EF-TIM-4 | Un appui sur le cadran ou sur ▶ démarre, met en pause ou reprend le décompte. | M |
-| EF-TIM-5 | Le bouton ↺ remet le minuteur à zéro sans enregistrer de session. | M |
-| EF-TIM-6 | Le temps restant est également affiché en clair (mm:ss) à côté du cadran. | M |
-| EF-TIM-7 | L'état courant (mode, en cours / en pause / terminé, cycle) est affiché sous le temps. | M |
-| EF-TIM-8 | Au clavier : ← / → règlent d'une minute, Page↑ / Page↓ de cinq, Début / Fin vont à 0 / 60 min. | M |
-| EF-TIM-9 | Le décompte reste juste si l'application passe en arrière-plan ou si l'appareil se verrouille. | M |
-| EF-TIM-10 | Un retour haptique accompagne le réglage au doigt et la fin du décompte. | S |
-| EF-TIM-11 | Deux boutons − / + encadrent l'affichage : une minute par appui. | M |
+| Réf.      | Exigence                                                                                           | Prio |
+| --------- | -------------------------------------------------------------------------------------------------- | ---- |
+| EF-TIM-1  | Le cadran affiche un disque coloré couvrant la durée restante, qui rétrécit jusqu'à 0.             | M    |
+| EF-TIM-2  | La graduation couvre 60 min, avec un anneau de 12 segments colorés de 5 min.                       | M    |
+| EF-TIM-3  | Un glissement du doigt sur le cadran règle la durée, de 0 à 60 min, y compris pendant le décompte. | M    |
+| EF-TIM-4  | Un appui sur le cadran ou sur ▶ démarre, met en pause ou reprend le décompte.                      | M    |
+| EF-TIM-5  | Le bouton ↺ remet le minuteur à zéro sans enregistrer de session.                                  | M    |
+| EF-TIM-6  | Le temps restant est également affiché en clair (mm:ss) à côté du cadran.                          | M    |
+| EF-TIM-7  | L'état courant (mode, en cours / en pause / terminé, cycle) est affiché sous le temps.             | M    |
+| EF-TIM-8  | Au clavier : ← / → règlent d'une minute, Page↑ / Page↓ de cinq, Début / Fin vont à 0 / 60 min.     | M    |
+| EF-TIM-9  | Le décompte reste juste si l'application passe en arrière-plan ou si l'appareil se verrouille.     | M    |
+| EF-TIM-10 | Un retour haptique accompagne le réglage au doigt et la fin du décompte.                           | S    |
+| EF-TIM-11 | Deux boutons − / + encadrent l'affichage : une minute par appui.                                   | M    |
 
-**EF-TIM-11** — l'appui maintenu enchaîne les minutes.
+**EF-TIM-11** - l'appui maintenu enchaîne les minutes.
 
 ### 4.2 Modes (`EF-MOD`)
 
-| Réf. | Exigence | Prio |
-| --- | --- | --- |
-| EF-MOD-1 | Quatre modes sont livrés : Pomodoro, Pause, Pause longue, Focus TDAH. | M |
-| EF-MOD-2 | L'utilisateur peut créer, modifier et supprimer ses propres modes. | M |
-| EF-MOD-3 | Un mode porte un nom, une durée de 1 à 60 min, une couleur et une nature. | M |
-| EF-MOD-4 | La couleur du mode teinte le cadran et l'historique. | M |
-| EF-MOD-5 | Les modes par défaut peuvent être restaurés depuis les réglages. | S |
-| EF-MOD-6 | Le mode sélectionné est mémorisé d'une ouverture à l'autre. | M |
-| EF-MOD-7 | Chaque couleur est toujours accompagnée de son nom (jamais d'information portée par la couleur seule). | M |
+| Réf.     | Exigence                                                                                               | Prio |
+| -------- | ------------------------------------------------------------------------------------------------------ | ---- |
+| EF-MOD-1 | Quatre modes sont livrés : Pomodoro, Pause, Pause longue, Focus TDAH.                                  | M    |
+| EF-MOD-2 | L'utilisateur peut créer, modifier et supprimer ses propres modes.                                     | M    |
+| EF-MOD-3 | Un mode porte un nom, une durée de 1 à 60 min, une couleur et une nature.                              | M    |
+| EF-MOD-4 | La couleur du mode teinte le cadran et l'historique.                                                   | M    |
+| EF-MOD-5 | Les modes par défaut peuvent être restaurés depuis les réglages.                                       | S    |
+| EF-MOD-6 | Le mode sélectionné est mémorisé d'une ouverture à l'autre.                                            | M    |
+| EF-MOD-7 | Chaque couleur est toujours accompagnée de son nom (jamais d'information portée par la couleur seule). | M    |
 
-**EF-MOD-3** — la couleur est choisie dans une palette de 10 ; la nature est *travail*, *pause*
+**EF-MOD-3** - la couleur est choisie dans une palette de 10 ; la nature est *travail*, *pause*
 ou *pause longue*.
 
-**EF-MOD-1** — respectivement 25, 5, 15 et 15 min.
+**EF-MOD-1** - respectivement 25, 5, 15 et 15 min.
 
 ### 4.3 Routines (`EF-ROU`)
 
@@ -189,89 +189,89 @@ ou *pause longue*.
 
 #### Précisions
 
-**EF-ROU-1** — sans aucune action de l'utilisateur entre deux étapes.
+**EF-ROU-1** - sans aucune action de l'utilisateur entre deux étapes.
 
-**EF-ROU-2** — durée de 5 s à 60 min, et le fait d'être comptée ou non dans le focus du jour.
+**EF-ROU-2** - durée de 5 s à 60 min, et le fait d'être comptée ou non dans le focus du jour.
 
-**EF-ROU-3** — « Routine du matin » et « Devoirs ».
+**EF-ROU-3** - « Routine du matin » et « Devoirs ».
 
-**EF-ROU-4** — de 1 à 10 étapes par routine.
+**EF-ROU-4** - de 1 à 10 étapes par routine.
 
-**EF-ROU-5** — le décompte part ensuite du même geste qu'un mode.
+**EF-ROU-5** - le décompte part ensuite du même geste qu'un mode.
 
-**EF-ROU-6** — ce qui est fait, ce qui se joue, ce qui vient après.
+**EF-ROU-6** - ce qui est fait, ce qui se joue, ce qui vient après.
 
-**EF-ROU-7** — en avant comme en arrière.
+**EF-ROU-7** - en avant comme en arrière.
 
-**EF-ROU-8** — par le son, la voix, la notification et la région live.
+**EF-ROU-8** - par le son, la voix, la notification et la région live.
 
-**EF-ROU-11** — comme il neutralise la remise à zéro.
+**EF-ROU-11** - comme il neutralise la remise à zéro.
 
-**EF-ROU-13** — l'appui ouvre l'application et **arme** la routine sans la démarrer.
+**EF-ROU-13** - l'appui ouvre l'application et **arme** la routine sans la démarrer.
 
-**EF-ROU-14** — il est reprogrammé quand la routine ou la langue change.
+**EF-ROU-14** - il est reprogrammé quand la routine ou la langue change.
 
-**EF-ROU-15** — et dit dans son nom accessible.
+**EF-ROU-15** - et dit dans son nom accessible.
 
-**EF-ROU-16** — par pas de 5 s en dessous d'une minute, par pas d'une minute au-dessus.
+**EF-ROU-16** - par pas de 5 s en dessous d'une minute, par pas d'une minute au-dessus.
 
-**EF-ROU-17** — la suite d'étapes reprend à la première à chaque tour.
+**EF-ROU-17** - la suite d'étapes reprend à la première à chaque tour.
 
-**EF-ROU-18** — les pastilles comptent les tours, pas les cycles pomodoro.
+**EF-ROU-18** - les pastilles comptent les tours, pas les cycles pomodoro.
 
-**EF-ROU-19** — 20 s d'effort et 10 s de repos.
+**EF-ROU-19** - 20 s d'effort et 10 s de repos.
 
-**EF-ROU-20** — une pastille « sec » le signale.
+**EF-ROU-20** - une pastille « sec » le signale.
 
-**EF-ROU-21** — un son, une vibration, un éclat, et le chiffre dit.
+**EF-ROU-21** - un son, une vibration, un éclat, et le chiffre dit.
 
-**EF-ROU-22** — à voix haute : « Ensuite : Repos ».
+**EF-ROU-22** - à voix haute : « Ensuite : Repos ».
 
-**EF-ROU-23** — le mode sport s'installe tant qu'elle est chargée, et la quitte avec elle.
+**EF-ROU-23** - le mode sport s'installe tant qu'elle est chargée, et la quitte avec elle.
 
-**EF-ROU-24** — elle change à chaque phase, sans rien à lire.
+**EF-ROU-24** - elle change à chaque phase, sans rien à lire.
 
-**EF-ROU-25** — le nom passe sous le chrono.
+**EF-ROU-25** - le nom passe sous le chrono.
 
 ### 4.4 Tutoriel d'accueil (`EF-TUT`)
 
-| Réf. | Exigence | Prio |
-| --- | --- | --- |
-| EF-TUT-1 | Au premier lancement, cinq vues plein écran présentent l'application. | S |
-| EF-TUT-2 | Chaque vue porte un pictogramme avant son titre, et une phrase au plus. | M |
-| EF-TUT-3 | On avance au doigt (glissement), aux boutons (Précédent / Suivant, points) ou au clavier (flèches). | M |
-| EF-TUT-4 | Aucune avance automatique : le rythme appartient à qui lit (WCAG 2.2.2). | M |
-| EF-TUT-5 | Le tutoriel se passe d'un appui sur *Passer* ou sur Échap, et ne se remontre plus de lui-même. | M |
+| Réf.     | Exigence                                                                                            | Prio |
+| -------- | --------------------------------------------------------------------------------------------------- | ---- |
+| EF-TUT-1 | Au premier lancement, cinq vues plein écran présentent l'application.                               | S    |
+| EF-TUT-2 | Chaque vue porte un pictogramme avant son titre, et une phrase au plus.                             | M    |
+| EF-TUT-3 | On avance au doigt (glissement), aux boutons (Précédent / Suivant, points) ou au clavier (flèches). | M    |
+| EF-TUT-4 | Aucune avance automatique : le rythme appartient à qui lit (WCAG 2.2.2).                            | M    |
+| EF-TUT-5 | Le tutoriel se passe d'un appui sur *Passer* ou sur Échap, et ne se remontre plus de lui-même.      | M    |
 
-**EF-TUT-1** — voir le temps, le régler, le démarrer, les modes et routines, les alertes.
+**EF-TUT-1** - voir le temps, le régler, le démarrer, les modes et routines, les alertes.
 
 ### 4.4b Mode table (`EF-TAB`)
 
-| Réf. | Exigence | Prio |
-| --- | --- | --- |
-| EF-TAB-1 | Un mode table affiche le cadran en grand, tout le reste effacé. | S |
-| EF-TAB-2 | Tout ce qui ne se lit pas à deux mètres s'efface. | S |
-| EF-TAB-3 | Démarrer / Pause et le verrou du cadran restent : un minuteur qu'on ne peut plus lancer ne sert à rien. | M |
-| EF-TAB-4 | En paysage, le cadran se met à gauche et le temps à droite : empilés, ni l'un ni l'autre ne tiendrait. | S |
-| EF-TAB-5 | La sortie est visible, nommée en toutes lettres, atteignable au clavier, et Échap en sort aussi. | M |
-| EF-TAB-6 | L'écran reste allumé tant que dure le mode table, quel que soit le réglage. | M |
+| Réf.     | Exigence                                                                                                | Prio |
+| -------- | ------------------------------------------------------------------------------------------------------- | ---- |
+| EF-TAB-1 | Un mode table affiche le cadran en grand, tout le reste effacé.                                         | S    |
+| EF-TAB-2 | Tout ce qui ne se lit pas à deux mètres s'efface.                                                       | S    |
+| EF-TAB-3 | Démarrer / Pause et le verrou du cadran restent : un minuteur qu'on ne peut plus lancer ne sert à rien. | M    |
+| EF-TAB-4 | En paysage, le cadran se met à gauche et le temps à droite : empilés, ni l'un ni l'autre ne tiendrait.  | S    |
+| EF-TAB-5 | La sortie est visible, nommée en toutes lettres, atteignable au clavier, et Échap en sort aussi.        | M    |
+| EF-TAB-6 | L'écran reste allumé tant que dure le mode table, quel que soit le réglage.                             | M    |
 
-**EF-TAB-6** — un minuteur de table qui s'éteint ne sert à rien.
+**EF-TAB-6** - un minuteur de table qui s'éteint ne sert à rien.
 
-**EF-TAB-2** — réglages, remise à zéro, boutons − / +, pastille d'accessibilité.
+**EF-TAB-2** - réglages, remise à zéro, boutons − / +, pastille d'accessibilité.
 
-**EF-TAB-1** — le téléphone posé debout sert alors de minuteur visuel à une table ou à une
+**EF-TAB-1** - le téléphone posé debout sert alors de minuteur visuel à une table ou à une
 classe.
 
 ### 4.5 Enchaînement et prolongation (`EF-CHA`)
 
-| Réf. | Exigence | Prio |
-| --- | --- | --- |
-| EF-CHA-1 | Option « +5 min » : à 0, une session de travail se prolonge automatiquement de 5 minutes. | M |
-| EF-CHA-2 | La prolongation n'a lieu qu'une fois par session. | M |
-| EF-CHA-3 | Option d'enchaînement automatique : travail → pause → travail, sans action de l'utilisateur. | S |
-| EF-CHA-4 | Une pause longue est proposée toutes les 4 sessions de travail terminées. | S |
-| EF-CHA-5 | Les deux options sont désactivables indépendamment. | M |
+| Réf.     | Exigence                                                                                     | Prio |
+| -------- | -------------------------------------------------------------------------------------------- | ---- |
+| EF-CHA-1 | Option « +5 min » : à 0, une session de travail se prolonge automatiquement de 5 minutes.    | M    |
+| EF-CHA-2 | La prolongation n'a lieu qu'une fois par session.                                            | M    |
+| EF-CHA-3 | Option d'enchaînement automatique : travail → pause → travail, sans action de l'utilisateur. | S    |
+| EF-CHA-4 | Une pause longue est proposée toutes les 4 sessions de travail terminées.                    | S    |
+| EF-CHA-5 | Les deux options sont désactivables indépendamment.                                          | M    |
 
 ### 4.6 Alertes sonores, tactiles et notifications (`EF-ALE`)
 
@@ -299,79 +299,79 @@ classe.
 
 #### Précisions
 
-**EF-ALE-1** — les trois paliers se calculent sur la durée de la session (§ 7. Paliers du cahier
+**EF-ALE-1** - les trois paliers se calculent sur la durée de la session (§ 7. Paliers du cahier
 technique), et non à heure fixe.
 
-**EF-ALE-2** — cette progression est portée par le motif et le timbre : une note ronde, deux notes
+**EF-ALE-2** - cette progression est portée par le motif et le timbre : une note ronde, deux notes
 montantes, trois bips rapides. Elle n'est **pas** portée par le volume. Un palier ne doit pas être
 manqué parce qu'il est le premier.
 
-**EF-ALE-5** — quand l'application est en arrière-plan ou l'appareil verrouillé, là où le
+**EF-ALE-5** - quand l'application est en arrière-plan ou l'appareil verrouillé, là où le
 JavaScript est suspendu.
 
-**EF-ALE-6** — les sons de l'application prennent alors le relais.
+**EF-ALE-6** - les sons de l'application prennent alors le relais.
 
-**EF-ALE-7** — la notification a déjà prévenu ; le rejouer ferait sonner deux fois le même palier.
+**EF-ALE-7** - la notification a déjà prévenu ; le rejouer ferait sonner deux fois le même palier.
 
-**EF-ALE-9** — le motif est calqué sur le rythme du son correspondant : une impulsion longue, deux
+**EF-ALE-9** - le motif est calqué sur le rythme du son correspondant : une impulsion longue, deux
 impulsions, trois brèves, trois longues.
 
-**EF-ALE-10** — la durée demandée est respectée sur Android et sur un iPhone à Taptic Engine ; un
+**EF-ALE-10** - la durée demandée est respectée sur Android et sur un iPhone à Taptic Engine ; un
 appareil iOS plus ancien retombe sur une vibration système de longueur fixe. D'où la
 reconnaissance par le nombre et le rythme plutôt que par la durée.
 
-**EF-ALE-11** — un battement au palier, trois à la fin.
+**EF-ALE-11** - un battement au palier, trois à la fin.
 
-**EF-ALE-12** — il se fige sous `prefers-reduced-motion`, n'intercepte aucun clic et n'est pas
+**EF-ALE-12** - il se fige sous `prefers-reduced-motion`, n'intercepte aucun clic et n'est pas
 exposé aux lecteurs d'écran : il double une information déjà dite ailleurs.
 
-**EF-ALE-13** — une alerte qui passe se rate.
+**EF-ALE-13** - une alerte qui passe se rate.
 
-**EF-ALE-14** — le délai est le sujet même du test : il laisse le temps de verrouiller l'écran, et
+**EF-ALE-14** - le délai est le sujet même du test : il laisse le temps de verrouiller l'écran, et
 c'est écran verrouillé qu'on veut savoir si l'appareil prévient.
 
-**EF-ALE-15** — cinq issues distinguées : programmée, programmée sans alarme exacte, notifications
+**EF-ALE-15** - cinq issues distinguées : programmée, programmée sans alarme exacte, notifications
 refusées, indisponible hors de l'application installée, ou échouée.
 
-**EF-ALE-16** — ailleurs, le lien annonce que cet écran n'existe pas, plutôt que de faire croire à
+**EF-ALE-16** - ailleurs, le lien annonce que cet écran n'existe pas, plutôt que de faire croire à
 un refus.
 
-**EF-ALE-17** — notification muette sur Android, Live Activity sur iOS. Il donne le temps restant
+**EF-ALE-17** - notification muette sur Android, Live Activity sur iOS. Il donne le temps restant
 sans déverrouiller.
 
-**EF-ALE-18** — il informe, et laisse les paliers se faire entendre.
+**EF-ALE-18** - il informe, et laisse les paliers se faire entendre.
 
-**EF-ALE-20** — un appareil ne fait que *réduire* ce qu'on lui donne. Un son rendu à mi-échelle
+**EF-ALE-20** - un appareil ne fait que *réduire* ce qu'on lui donne. Un son rendu à mi-échelle
 arrive irrémédiablement discret, et une alerte qui ne s'entend pas ne remplit pas son rôle.
 
 ### 4.8 Préférences (`EF-PRE`)
 
-| Réf. | Exigence | Prio |
-| --- | --- | --- |
-| EF-PRE-1 | Mode sombre : suit l'appareil au premier lancement, puis modifiable et mémorisé. | M |
-| EF-PRE-2 | Police OpenDyslexic activable. | M |
-| EF-PRE-3 | Sons on/off. | M |
-| EF-PRE-4 | Prolongation « +5 min » on/off. | M |
-| EF-PRE-5 | Enchaînement automatique on/off. | S |
-| EF-PRE-6 | Écran toujours allumé pendant le décompte, on/off. | S |
-| EF-PRE-8 | Langue : automatique (langue de l'appareil) ou choisie. | M |
-| EF-PRE-9 | Toute préférence est conservée d'une ouverture à l'autre. | M |
-| EF-PRE-10 | Annonce vocale : aucune, aux paliers, ou à chaque minute (défaut : aucune). | S |
-| EF-PRE-11 | Vibration on/off (défaut : on) ; l'activation fait sentir le motif de fin. | S |
-| EF-PRE-12 | Alerte visuelle : aucune, douce ou forte (défaut : douce) ; le choix se montre aussitôt. | S |
-| EF-PRE-13 | Verrou du cadran on/off (défaut : off), conservé d'une ouverture à l'autre. | S |
+| Réf.      | Exigence                                                                                 | Prio |
+| --------- | ---------------------------------------------------------------------------------------- | ---- |
+| EF-PRE-1  | Mode sombre : suit l'appareil au premier lancement, puis modifiable et mémorisé.         | M    |
+| EF-PRE-2  | Police OpenDyslexic activable.                                                           | M    |
+| EF-PRE-3  | Sons on/off.                                                                             | M    |
+| EF-PRE-4  | Prolongation « +5 min » on/off.                                                          | M    |
+| EF-PRE-5  | Enchaînement automatique on/off.                                                         | S    |
+| EF-PRE-6  | Écran toujours allumé pendant le décompte, on/off.                                       | S    |
+| EF-PRE-8  | Langue : automatique (langue de l'appareil) ou choisie.                                  | M    |
+| EF-PRE-9  | Toute préférence est conservée d'une ouverture à l'autre.                                | M    |
+| EF-PRE-10 | Annonce vocale : aucune, aux paliers, ou à chaque minute (défaut : aucune).              | S    |
+| EF-PRE-11 | Vibration on/off (défaut : on) ; l'activation fait sentir le motif de fin.               | S    |
+| EF-PRE-12 | Alerte visuelle : aucune, douce ou forte (défaut : douce) ; le choix se montre aussitôt. | S    |
+| EF-PRE-13 | Verrou du cadran on/off (défaut : off), conservé d'une ouverture à l'autre.              | S    |
 
-**EF-PRE-10** — le choix se fait entendre aussitôt.
+**EF-PRE-10** - le choix se fait entendre aussitôt.
 
 ### 4.9 Internationalisation (`EF-I18`)
 
-| Réf. | Exigence | Prio |
-| --- | --- | --- |
-| EF-I18-1 | Sept langues : français, anglais, espagnol, allemand, italien, portugais, arabe. | M |
-| EF-I18-2 | L'arabe s'affiche de droite à gauche, mise en page comprise. | M |
-| EF-I18-3 | La langue est détectée depuis l'appareil au premier lancement, avec repli sur le français. | M |
-| EF-I18-4 | Le changement de langue est immédiat, sans rechargement. | M |
-| EF-I18-5 | Les libellés transmis au widget et aux notifications suivent la langue de l'application. | S |
+| Réf.     | Exigence                                                                                   | Prio |
+| -------- | ------------------------------------------------------------------------------------------ | ---- |
+| EF-I18-1 | Sept langues : français, anglais, espagnol, allemand, italien, portugais, arabe.           | M    |
+| EF-I18-2 | L'arabe s'affiche de droite à gauche, mise en page comprise.                               | M    |
+| EF-I18-3 | La langue est détectée depuis l'appareil au premier lancement, avec repli sur le français. | M    |
+| EF-I18-4 | Le changement de langue est immédiat, sans rechargement.                                   | M    |
+| EF-I18-5 | Les libellés transmis au widget et aux notifications suivent la langue de l'application.   | S    |
 
 ### 4.10 Écran allumé et widget (`EF-NAT`)
 
@@ -388,48 +388,48 @@ arrive irrémédiablement discret, et une alerte qui ne s'entend pas ne remplit 
 
 #### Précisions
 
-**EF-NAT-2** — anneau de couleurs, disque du mode, bouton central, avec le temps restant et
+**EF-NAT-2** - anneau de couleurs, disque du mode, bouton central, avec le temps restant et
 l'objectif du jour.
 
-**EF-NAT-3** — son disque se vide graduation par graduation.
+**EF-NAT-3** - son disque se vide graduation par graduation.
 
-**EF-NAT-4** — démarrage, pause, fin, passage en arrière-plan, objectif, langue.
+**EF-NAT-4** - démarrage, pause, fin, passage en arrière-plan, objectif, langue.
 
-**EF-NAT-5** — et non celui du système : c'est l'application qui décide.
+**EF-NAT-5** - et non celui du système : c'est l'application qui décide.
 
-**EF-NAT-6** — il montre, il ne commande pas.
+**EF-NAT-6** - il montre, il ne commande pas.
 
-**EF-NAT-7** — puis le voile s'efface.
+**EF-NAT-7** - puis le voile s'efface.
 
-**EF-NAT-8** — il se fige sous `prefers-reduced-motion`, et le voile s'efface **quoi qu'il
+**EF-NAT-8** - il se fige sous `prefers-reduced-motion`, et le voile s'efface **quoi qu'il
 arrive**, même si le démarrage échoue : un voile resté en place laisserait un écran noir
 incompréhensible.
 
 ### 4.11 Page d'accessibilité (`EF-A11`)
 
-| Réf.     | Exigence                                                               | Prio |
-| -------- | ---------------------------------------------------------------------- | ---- |
-| EF-A11-1 | Un lien « ♿ Accessibilité » est accessible depuis le minuteur.        | M    |
-| EF-A11-2 | La page publie la déclaration dans le plan du décret n° 2019-768.      | M    |
-| EF-A11-3 | La page est traduite dans les sept langues.                            | M    |
+| Réf.     | Exigence                                                                  | Prio |
+| -------- | ------------------------------------------------------------------------- | ---- |
+| EF-A11-1 | Un lien « ♿ Accessibilité » est accessible depuis le minuteur.            | M    |
+| EF-A11-2 | La page publie la déclaration dans le plan du décret n° 2019-768.         | M    |
+| EF-A11-3 | La page est traduite dans les sept langues.                               | M    |
 | EF-A11-4 | Une session continue, se termine et s'enregistre pendant la consultation. | M    |
-| EF-A11-5 | La page dit que la déclaration est volontaire.                         | M    |
-| EF-A11-6 | Aucun taux de conformité n'est annoncé sans audit mené par un tiers.   | M    |
-| EF-A11-7 | L'établissement de la déclaration nomme ce sur quoi elle s'appuie.     | M    |
+| EF-A11-5 | La page dit que la déclaration est volontaire.                            | M    |
+| EF-A11-6 | Aucun taux de conformité n'est annoncé sans audit mené par un tiers.      | M    |
+| EF-A11-7 | L'établissement de la déclaration nomme ce sur quoi elle s'appuie.        | M    |
 
 #### Précisions
 
-**EF-A11-2** — les sept rubriques, dans l'ordre du décret : engagement, état de conformité,
+**EF-A11-2** - les sept rubriques, dans l'ordre du décret : engagement, état de conformité,
 résultats des tests, contenus non accessibles (non-conformités, dérogations pour charge
 disproportionnée, contenus non soumis), établissement de la déclaration, contact, voies de
 recours.
 
-**EF-A11-5** — l'application n'entre pas dans le champ de l'article 47 : laisser croire à une
+**EF-A11-5** - l'application n'entre pas dans le champ de l'article 47 : laisser croire à une
 obligation serait faux.
 
-**EF-A11-6** — un pourcentage auto-attribué tromperait sur ce qui a été vérifié.
+**EF-A11-6** - un pourcentage auto-attribué tromperait sur ce qui a été vérifié.
 
-**EF-A11-7** — la date, les technologies, l'environnement de test, les outils et les pages
+**EF-A11-7** - la date, les technologies, l'environnement de test, les outils et les pages
 évaluées ; et le fait qu'aucune technologie d'assistance n'a été utilisée.
 
 ---
@@ -470,57 +470,57 @@ obligation serait faux.
 
 ### Précisions
 
-**RG-4** — en dessous de 40 min, les paliers se calculent sur la durée choisie : la **moitié**, le
+**RG-4** - en dessous de 40 min, les paliers se calculent sur la durée choisie : la **moitié**, le
 **dernier quart**, puis **1 min** avant la fin. Sinon un Pomodoro de 25 min ne serait prévenu
 qu'une fois, et une étape de routine de 10 min jamais.
 
-**RG-4b** — le dernier palier est donc toujours le plus insistant, quelle que soit la durée.
+**RG-4b** - le dernier palier est donc toujours le plus insistant, quelle que soit la durée.
 
-**RG-6** — c'est un faux départ, pas une session.
+**RG-6** - c'est un faux départ, pas une session.
 
-**RG-7** — les plus anciennes sont supprimées.
+**RG-7** - les plus anciennes sont supprimées.
 
-**RG-8** — `activeSeconds` : le temps réellement décompté.
+**RG-8** - `activeSeconds` : le temps réellement décompté.
 
-**RG-9** — renommer un mode ne réécrit pas l'historique.
+**RG-9** - renommer un mode ne réécrit pas l'historique.
 
-**RG-11** — jusqu'à aujourd'hui, ou jusqu'à hier si rien n'a encore été fait aujourd'hui.
+**RG-11** - jusqu'à aujourd'hui, ou jusqu'à hier si rien n'a encore été fait aujourd'hui.
 
-**RG-14** — en navigation privée ou stockage bloqué, les réglages ne valent que pour la session.
+**RG-14** - en navigation privée ou stockage bloqué, les réglages ne valent que pour la session.
 
-**RG-16b** — une durée ou un nombre de tours hors bornes est ramené dans les bornes à la lecture.
+**RG-16b** - une durée ou un nombre de tours hors bornes est ramené dans les bornes à la lecture.
 
-**RG-17** — ce qui a été annoncé arrive à l'heure dite.
+**RG-17** - ce qui a été annoncé arrive à l'heure dite.
 
-**RG-18** — que l'option « enchaîner travail → pause » soit active ou non.
+**RG-18** - que l'option « enchaîner travail → pause » soit active ou non.
 
-**RG-19** — se laver les dents n'est pas du temps de travail (RG-10).
+**RG-19** - se laver les dents n'est pas du temps de travail (RG-10).
 
-**RG-20** — mieux vaut pas de rappel qu'un rappel qui ne partira jamais. Allumer un rappel coche
+**RG-20** - mieux vaut pas de rappel qu'un rappel qui ne partira jamais. Allumer un rappel coche
 la semaine entière.
 
-**RG-21** — un décompte qui part sans geste de l'utilisateur est une source d'anxiété.
+**RG-21** - un décompte qui part sans geste de l'utilisateur est une source d'anxiété.
 
-**RG-22** — ils échappent ainsi à l'annulation des alertes de session, qui a lieu à chaque retour
+**RG-22** - ils échappent ainsi à l'annulation des alertes de session, qui a lieu à chaque retour
 au premier plan.
 
-**RG-23** — passé, terminé ou revu, il ne se remontre plus de lui-même.
+**RG-23** - passé, terminé ou revu, il ne se remontre plus de lui-même.
 
-**RG-24** — deux modales à la fois ne s'entendraient pas.
+**RG-24** - deux modales à la fois ne s'entendraient pas.
 
-**RG-25** — jamais quand on saute d'une étape à l'autre : refaire une étape ne recommence pas
+**RG-25** - jamais quand on saute d'une étape à l'autre : refaire une étape ne recommence pas
 l'entraînement.
 
-**RG-26** — glissement, flèches et boutons − / + travaillent en minutes. Démarrer et mettre en
+**RG-26** - glissement, flèches et boutons − / + travaillent en minutes. Démarrer et mettre en
 pause restent possibles.
 
-**RG-27** — un Pomodoro ne bascule pas en secondes dans sa dernière minute.
+**RG-27** - un Pomodoro ne bascule pas en secondes dans sa dernière minute.
 
-**RG-28** — clair reste clair, sombre reste sombre, et les textes gardent leur contraste.
+**RG-28** - clair reste clair, sombre reste sombre, et les textes gardent leur contraste.
 
-**RG-29** — mesuré sur les dix couleurs de la palette, il tombait à 2,82:1 (WCAG 1.4.3).
+**RG-29** - mesuré sur les dix couleurs de la palette, il tombait à 2,82:1 (WCAG 1.4.3).
 
-**RG-30** — ni le retour au premier plan, qui annule les alertes de session, ni la réécriture en
+**RG-30** - ni le retour au premier plan, qui annule les alertes de session, ni la réécriture en
 bloc des rappels ne l'effacent : elle doit arriver, c'est tout son objet.
 
 ---
@@ -541,7 +541,7 @@ suivant. Au lancement d'après, le minuteur est là tout de suite.
 1. Ouverture : le mode mémorisé est sélectionné, sa durée s'affiche sur le cadran.
 2. Réglage facultatif au doigt, aux boutons − / + ou au clavier.
 3. Appui sur le cadran ou sur ▶ : le décompte démarre, l'écran reste allumé si l'option est active.
-4. Paliers — 45 / 30 / 15 min restantes au-delà de 40 min, sinon la moitié, le dernier quart et
+4. Paliers - 45 / 30 / 15 min restantes au-delà de 40 min, sinon la moitié, le dernier quart et
    1 min : un son, et une notification si l'application est en arrière-plan.
 5. À 0 : carillon, motif de vibration de fin ; prolongation de 5 min si l'option est active, sinon fin.
 6. La session est enregistrée si elle a duré au moins 60 s .
@@ -554,12 +554,12 @@ la pause courte. L'utilisateur peut interrompre la chaîne à tout moment.
 
 ### 6.4 Déroulé d'une routine
 
-Une routine répétée sert aussi d'entraînement : deux étapes — « Effort 20 s », « Repos 10 s » —
+Une routine répétée sert aussi d'entraînement : deux étapes - « Effort 20 s », « Repos 10 s » -
 et huit tours font un Tabata, livré avec l'application. Sur une étape aussi courte, le cadran
 gradue des secondes, les trois dernières sont égrenées et la suivante est annoncée avant la fin.
 L'échauffement, lui, se fait en routine à part : les tours rejouent la routine entière.
 Marquée *entraînement*, la routine fait en plus passer la page en mode sport : la couleur de
-l'étape teinte tout l'écran — rouge à l'effort, vert au repos — et le chrono s'agrandit.
+l'étape teinte tout l'écran - rouge à l'effort, vert au repos - et le chrono s'agrandit.
 
 ⚙︎ → Modes → *Routines* → « Routine du matin » : le panneau se ferme, la première étape
 (« S'habiller », 10 min) est armée sur le cadran, et la bande montre les quatre étapes. Appui
@@ -571,7 +571,7 @@ l'étape suivante démarre seule. Une étape déjà faite se retrouve d'un appui
 
 ⚙︎ → Modes → *Routines* → crayon → *Rappel* : l'interrupteur allumé propose 8 h 00 et la
 semaine entière ; l'heure se règle, les jours se décochent. Enregistrer. À 7 h 30 le lundi,
-une notification « C'est l'heure : 🌅 Routine du matin — 4 étapes · 33 min » arrive, même
+une notification « C'est l'heure : 🌅 Routine du matin - 4 étapes · 33 min » arrive, même
 application fermée. L'appui ouvre l'application avec la routine armée sur le cadran : il reste
 à appuyer sur ▶.
 
@@ -604,27 +604,27 @@ choisir la nature. Enregistrer. Le mode rejoint la liste et devient sélectionna
 
 #### Précisions
 
-**ENF-A11-1** — statut annoncé : conforme aux normes WCAG 2.1 niveau AA et RGAA 4.1.
+**ENF-A11-1** - statut annoncé : conforme aux normes WCAG 2.1 niveau AA et RGAA 4.1.
 
-**ENF-A11-2** — avec un indicateur de focus toujours visible.
+**ENF-A11-2** - avec un indicateur de focus toujours visible.
 
-**ENF-A11-8** — un battement de 1,6 s, cinq fois sous le seuil des trois éclats par seconde
+**ENF-A11-8** - un battement de 1,6 s, cinq fois sous le seuil des trois éclats par seconde
 (WCAG 2.3.1). Elle se règle, se coupe, et se fige sous `prefers-reduced-motion`.
 
-**ENF-A11-10** — axe-core sur WCAG 2.0 / 2.1 niveaux A et AA, plus les bonnes pratiques, en thème
+**ENF-A11-10** - axe-core sur WCAG 2.0 / 2.1 niveaux A et AA, plus les bonnes pratiques, en thème
 clair et sombre.
 
-**ENF-A11-11** — WCAG 2.5.7, avec des cibles d'au moins 44 × 44 px (WCAG 2.5.8).
+**ENF-A11-11** - WCAG 2.5.7, avec des cibles d'au moins 44 × 44 px (WCAG 2.5.8).
 
-**ENF-A11-12** — réglage à trois choix, hors ligne, éteint par défaut : sans regarder le cadran.
+**ENF-A11-12** - réglage à trois choix, hors ligne, éteint par défaut : sans regarder le cadran.
 
-**ENF-A11-13** — reconnaissable sans la vue ni l'ouïe : c'est le seul canal d'alerte pour une
+**ENF-A11-13** - reconnaissable sans la vue ni l'ouïe : c'est le seul canal d'alerte pour une
 personne sourde-aveugle.
 
-**ENF-A11-14** — pour qui déclenche des actions involontaires (tremblements, spasticité, paume
+**ENF-A11-14** - pour qui déclenche des actions involontaires (tremblements, spasticité, paume
 posée). Démarrer / Pause reste actif : seule la remise à zéro fait perdre la session.
 
-**ENF-A11-15** — un pictogramme précède son nom, et son état (faite, en cours, à venir) est porté
+**ENF-A11-15** - un pictogramme précède son nom, et son état (faite, en cours, à venir) est porté
 par une coche et par le nom accessible, jamais par la couleur seule.
 
 #### Écarts connus et assumés
@@ -638,44 +638,44 @@ Publiés dans la déclaration d'accessibilité :
 
 ### 7.2 Confidentialité et sécurité
 
-| Réf. | Exigence |
-| --- | --- |
-| ENF-SEC-1 | Aucune donnée ne quitte l'appareil : pas de compte, pas de serveur, pas d'analytique. |
-| ENF-SEC-2 | Préférences, modes et historique résident dans le stockage local de l'appareil. |
+| Réf.      | Exigence                                                                                               |
+| --------- | ------------------------------------------------------------------------------------------------------ |
+| ENF-SEC-1 | Aucune donnée ne quitte l'appareil : pas de compte, pas de serveur, pas d'analytique.                  |
+| ENF-SEC-2 | Préférences, modes et historique résident dans le stockage local de l'appareil.                        |
 | ENF-SEC-3 | Aucune donnée personnelle sensible n'est collectée ; le RGPD ne s'applique à aucun traitement distant. |
-| ENF-SEC-4 | Les vulnérabilités se signalent en privé via l'avis de sécurité GitHub du dépôt (voir `SECURITY.md`). |
+| ENF-SEC-4 | Les vulnérabilités se signalent en privé via l'avis de sécurité GitHub du dépôt (voir `SECURITY.md`).  |
 
 ### 7.3 Performance et robustesse
 
-| Réf. | Exigence |
-| --- | --- |
-| ENF-PER-1 | Budget du bundle initial : alerte à 500 ko, erreur à 1 Mo. |
+| Réf.      | Exigence                                                                                          |
+| --------- | ------------------------------------------------------------------------------------------------- |
+| ENF-PER-1 | Budget du bundle initial : alerte à 500 ko, erreur à 1 Mo.                                        |
 | ENF-PER-2 | Les deux pages sont chargées à la demande : la page d'accessibilité ne pèse pas sur le démarrage. |
-| ENF-PER-3 | La précision du décompte ne dépend pas de la régularité des ticks du navigateur. |
-| ENF-PER-4 | Une session en cours survit à la navigation entre les deux pages. |
-| ENF-PER-5 | Un service indisponible ne bloque jamais l'application. |
+| ENF-PER-3 | La précision du décompte ne dépend pas de la régularité des ticks du navigateur.                  |
+| ENF-PER-4 | Une session en cours survit à la navigation entre les deux pages.                                 |
+| ENF-PER-5 | Un service indisponible ne bloque jamais l'application.                                           |
 
-**ENF-PER-5** — stockage, notifications, haptique ou maintien d'écran.
+**ENF-PER-5** - stockage, notifications, haptique ou maintien d'écran.
 
 ### 7.4 Compatibilité
 
-| Cible | Exigence |
-| --- | --- |
-| Navigateurs | Navigateurs modernes supportant Web Audio et les propriétés logiques CSS |
-| iOS | Widget WidgetKit à partir d'iOS 17 |
-| Android | Notifications à canaux ; la permission d'alarme exacte peut être nécessaire à partir d'Android 12 |
-| Écrans | Conception mobile d'abord ; thème clair et sombre ; sens d'écriture gauche→droite et droite→gauche |
+| Cible       | Exigence                                                                                           |
+| ----------- | -------------------------------------------------------------------------------------------------- |
+| Navigateurs | Navigateurs modernes supportant Web Audio et les propriétés logiques CSS                           |
+| iOS         | Widget WidgetKit à partir d'iOS 17                                                                 |
+| Android     | Notifications à canaux ; la permission d'alarme exacte peut être nécessaire à partir d'Android 12  |
+| Écrans      | Conception mobile d'abord ; thème clair et sombre ; sens d'écriture gauche→droite et droite→gauche |
 
 ### 7.5 Maintenabilité
 
-| Réf. | Exigence |
-| --- | --- |
-| ENF-MNT-1 | Ajouter une langue ne demande qu'un dictionnaire et quatre déclarations. |
-| ENF-MNT-2 | Les couleurs sont des variables CSS centralisées, jamais écrites en dur dans les composants. |
+| Réf.      | Exigence                                                                                               |
+| --------- | ------------------------------------------------------------------------------------------------------ |
+| ENF-MNT-1 | Ajouter une langue ne demande qu'un dictionnaire et quatre déclarations.                               |
+| ENF-MNT-2 | Les couleurs sont des variables CSS centralisées, jamais écrites en dur dans les composants.           |
 | ENF-MNT-3 | Les tests de non-régression d'accessibilité sont rejoués à chaque poussée et chaque demande de fusion. |
-| ENF-MNT-4 | Les messages de commit suivent le format sémantique. |
+| ENF-MNT-4 | Les messages de commit suivent le format sémantique.                                                   |
 
-**ENF-MNT-1** — une clé manquante est une erreur de compilation.
+**ENF-MNT-1** - une clé manquante est une erreur de compilation.
 
 ---
 

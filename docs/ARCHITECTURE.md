@@ -60,7 +60,7 @@ tests/
 playwright.config.ts            # Starts the app and runs the tests on Chromium
 .github/workflows/a11y.yml      # Production build + accessibility tests on every push
 scripts/
-└── generate-sounds.ts          # Notification WAV files (make sounds — also copies them into res/raw)
+└── generate-sounds.ts          # Notification WAV files (make sounds - also copies them into res/raw)
 resources/sounds/               # Generated WAV files, peak at −1 dBFS
 resources/app-icon.svg          # Icons and launch screens, iOS · Android · web (make icons)
 resources/app-icon-foreground.svg  # Foreground layer of the Android adaptive icon
@@ -87,7 +87,7 @@ to put in them today. These folders will be created on the day a second use appe
 
 ### Components
 
-The timer page only assembles blocks — `dial`, `readout`, `controls`, `sheet` — each with its own
+The timer page only assembles blocks - `dial`, `readout`, `controls`, `sheet` - each with its own
 template and style.
 
 They read the state from the services rather than through a cascade of inputs. Only what is local
@@ -127,12 +127,12 @@ same factor on both sides.
 
 Measuring rather than calculating is necessary: the notes overlap and add up, so a hand-set gain
 leaves the pattern either clipped or far too quiet. An alert sound must come out loud, because the
-device only ever *reduces* what it is given — and on Android, the notification volume is a slider
+device only ever *reduces* what it is given - and on Android, the notification volume is a slider
 separate from the media volume.
 
 ### A routine is a sequence of modes
 
-Each step has the shape of a `Preset` — name, duration, colour, nature — plus an icon.
+Each step has the shape of a `Preset` - name, duration, colour, nature - plus an icon.
 
 `SessionService.selectedPreset` returns the current step when a routine is loaded, so the dial, the
 history, the notifications and the widget have no concept of routines to handle. Only the chaining
@@ -149,7 +149,7 @@ One dictionary per language in `core/i18n/locales/`, typed from French: a key mi
 language is a **compile-time error**.
 
 Adding a language means adding a file in `locales/`, then an entry in `Lang`, `DICTIONARIES` and
-`LANGUAGES` — and in `RTL_LANGS` if it is written right to left. The CSS uses logical properties
+`LANGUAGES` - and in `RTL_LANGS` if it is written right to left. The CSS uses logical properties
 (`inset-inline-*`, `start` / `end`).
 
 ### Persistence
@@ -162,7 +162,7 @@ Preferences, modes, routines and history are saved in `localStorage`; the histor
 `npm run test:a11y` starts the application and checks seventy-two points:
 
 - **axe-core** on the home page, the panel (three tabs), the mode editor, the routine editor and the
-  accessibility page — in light and dark themes, and in Arabic;
+  accessibility page - in light and dark themes, and in Arabic;
 - adjusting the dial **with the keyboard**;
 - the chaining of the steps of a routine, and its strip;
 - the **focus trap** of the modal, Escape, and the return of focus;
