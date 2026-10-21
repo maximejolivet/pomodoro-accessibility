@@ -28,6 +28,7 @@ You see the time that's left instead of reading it.
 &nbsp;&nbsp;
 <img src="docs/screenshot-dark.png" alt="Pomodoro Accessibilité in dark mode" width="300">
 <img src="docs/screenshot-widget.png" alt="The widget on the home screen, in light and dark themes" width="620">
+<img src="docs/screenshot-widget-modes.png" alt="The iOS widget in 1x1 and 2x1 sizes, for a mode and for a routine step" width="620">
 
 </div>
 

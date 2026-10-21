@@ -28,6 +28,7 @@ On voit le temps qui reste au lieu de le lire.
 &nbsp;&nbsp;
 <img src="docs/screenshot-dark.png" alt="Pomodoro Accessibilité en mode sombre" width="300">
 <img src="docs/screenshot-widget.png" alt="Le widget sur l'écran d'accueil, en thème clair et sombre" width="620">
+<img src="docs/screenshot-widget-modes.png" alt="Le widget iOS en tailles 1x1 et 2x1, pour un mode et pour une étape de routine" width="620">
 
 </div>
 
