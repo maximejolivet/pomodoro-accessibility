@@ -131,7 +131,7 @@ struct Provider: TimelineProvider {
     /**
      Entrées : maintenant, chaque graduation franchie jusqu'à la fin, la fin elle-même, et
      minuit (remise à zéro du focus du jour). Le disque du cadran se vide donc tout seul,
-     graduation par graduation, sans réveiller l'app — comme le vrai cadran sous les yeux.
+     graduation par graduation, sans réveiller l'app - comme le vrai cadran sous les yeux.
      */
     func getTimeline(in context: Context, completion: @escaping (Timeline<PomodoroEntry>) -> Void) {
         let now = Date()
@@ -559,7 +559,7 @@ struct PomodoroWidgetBundle: WidgetBundle {
     var body: some Widget {
         PomodoroWidget()
         // La Live Activity vit dans la même extension que le widget, et n'existe qu'à
-        // partir d'iOS 16.2 — l'extension, elle, demande déjà iOS 17.
+        // partir d'iOS 16.2 - l'extension, elle, demande déjà iOS 17.
         PomodoroLiveActivity()
     }
 }
