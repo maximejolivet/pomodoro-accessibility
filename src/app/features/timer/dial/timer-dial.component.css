@@ -95,7 +95,11 @@
   padding: 4.2% 4.2% 3%;
   /* Les marges de la base se calculent sur la largeur du boîtier (unités cqw). */
   container-type: inline-size;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--c) 80%, #fff), var(--c));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--c) 80%, #fff),
+    var(--c)
+  );
   box-shadow:
     inset 0 2px 0 rgba(255, 255, 255, 0.4),
     0 6px 0 var(--c-dark),
@@ -181,13 +185,21 @@
 
 .face::after {
   display: none;
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
   background:
-    linear-gradient(125deg, rgba(255, 255, 255, var(--sheen)) 0%, rgba(255, 255, 255, 0) 32%),
-    linear-gradient(305deg, rgba(255, 255, 255, calc(var(--sheen) / 2)) 0%, rgba(255, 255, 255, 0) 20%);
+    linear-gradient(
+      125deg,
+      rgba(255, 255, 255, var(--sheen)) 0%,
+      rgba(255, 255, 255, 0) 32%
+    ),
+    linear-gradient(
+      305deg,
+      rgba(255, 255, 255, calc(var(--sheen) / 2)) 0%,
+      rgba(255, 255, 255, 0) 20%
+    );
   pointer-events: none;
 }
 
@@ -310,10 +322,14 @@
      * Le cadran rend exactement ce que la bande de la pastille d'accessibilité
      * prend à la scène (40 px de padding bas au départ), quelle que soit
      * l'encoche : la page ne grandit pas. Passé le `min-width: 280px` du cadran,
-     * la soustraction ne peut plus suivre et seule la bande reste — inévitable
+     * la soustraction ne peut plus suivre et seule la bande reste - inévitable
      * sur les écrans très courts.
      */
-    --dw: min(calc(100vw - 32px), 560px, calc(100dvh - 330px - var(--pill-band) + 40px));
+    --dw: min(
+      calc(100vw - 32px),
+      560px,
+      calc(100dvh - 330px - var(--pill-band) + 40px)
+    );
     width: var(--dw);
   }
 }
@@ -360,14 +376,18 @@
 
 @media (orientation: portrait) {
   .device {
-    --dw: min(calc(100vw - 96px), 420px, calc(100dvh - 330px - var(--pill-band, 68px) + 40px));
+    --dw: min(
+      calc(100vw - 96px),
+      420px,
+      calc(100dvh - 330px - var(--pill-band, 68px) + 40px)
+    );
     width: var(--dw);
   }
 }
 
 /*
  * Mode table : le cadran prend ce que les commandes effacées lui laissent. En paysage, il
- * se cale sur la hauteur — c'est elle qui manque — et laisse la largeur au chrono.
+ * se cale sur la hauteur - c'est elle qui manque - et laisse la largeur au chrono.
  */
 :host-context(.table) .tilt-zone {
   padding: 4px 0 30px;

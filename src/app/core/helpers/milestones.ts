@@ -21,8 +21,8 @@ export interface Milestone {
  * Paliers d'une session, calculés sur sa durée.
  *
  * Des paliers fixes à 45 / 30 / 15 minutes ne préviennent que les longues sessions :
- * un Pomodoro de 25 min ne reçoit que celui des 15 minutes — au bout de dix minutes,
- * puis plus rien jusqu'au carillon — et une étape de routine de 10 min n'en reçoit
+ * un Pomodoro de 25 min ne reçoit que celui des 15 minutes - au bout de dix minutes,
+ * puis plus rien jusqu'au carillon - et une étape de routine de 10 min n'en reçoit
  * aucun. Or l'avertissement avant la fin est justement ce dont dépend une transition
  * qui ne se subit pas.
  *

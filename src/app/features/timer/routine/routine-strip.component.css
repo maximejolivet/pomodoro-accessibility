@@ -59,7 +59,7 @@
   stroke-linecap: round;
 }
 
-.routine-quit[aria-disabled='true'] {
+.routine-quit[aria-disabled="true"] {
   opacity: 0.4;
   cursor: default;
 }
@@ -130,7 +130,7 @@
 /*
  * `--muted-strong` et non `--muted` : sur la pastille en cours, le fond est teinté de la
  * couleur de l'étape, et le gris clair tombait à 4,44:1 sur les teintes rouge, magenta et
- * grise — sous les 4,5:1 exigés (WCAG 1.4.3).
+ * grise - sous les 4,5:1 exigés (WCAG 1.4.3).
  */
 .step-time {
   font-size: 11px;
@@ -167,7 +167,7 @@
   stroke-linejoin: round;
 }
 
-.step-chip[aria-disabled='true'] {
+.step-chip[aria-disabled="true"] {
   cursor: default;
 }
 

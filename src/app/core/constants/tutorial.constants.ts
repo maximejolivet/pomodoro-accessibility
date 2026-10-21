@@ -14,7 +14,7 @@ export interface TutorialSlide {
  *
  * Cinq, et pas dix : un tutoriel long est un tutoriel passé, et l'application s'adresse
  * d'abord à des personnes que la lecture fatigue ou que l'attention lâche. L'ordre suit
- * celui de la découverte — voir le temps, le régler, le lancer, puis ce qu'il y a autour.
+ * celui de la découverte - voir le temps, le régler, le lancer, puis ce qu'il y a autour.
  *
  * Le pictogramme vient avant le titre, comme dans les routines : il porte l'idée pour
  * qui ne lit pas encore, ou plus.

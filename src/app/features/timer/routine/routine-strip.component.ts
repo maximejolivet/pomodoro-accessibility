@@ -8,7 +8,7 @@ import { IconsService } from '../../../core/services/icons.service';
 
 /**
  * Bande des étapes de la routine en cours : ce qui est fait, ce qui se joue, ce qui
- * vient après. C'est l'emploi du temps visuel que le cadran ne peut pas donner — il
+ * vient après. C'est l'emploi du temps visuel que le cadran ne peut pas donner - il
  * montre le temps d'une étape, elle montre la place de cette étape dans la suite.
  *
  * Chaque étape est un bouton : on y va directement quand elle est déjà faite, ou

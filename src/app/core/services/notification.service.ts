@@ -11,7 +11,7 @@ const SILENT_FILE = 'silence.wav';
 
 /**
  * Version des canaux Android. Un canal est **immuable** : son son est fixé à sa création et
- * ne change plus jamais — le recréer ne le corrige pas. Un canal né alors que le WAV manquait
+ * ne change plus jamais - le recréer ne le corrige pas. Un canal né alors que le WAV manquait
  * dans `res/raw` (build fait avant `make sounds`) reste donc muet pour toujours, sur cette
  * installation. Incrémenter cette version crée de nouveaux canaux, qui portent le son ;
  * les précédents sont supprimés pour ne pas encombrer les réglages du téléphone.
@@ -21,7 +21,7 @@ const CHANNEL_VERSION = 2;
 /**
  * Les rappels de routine vivent au-dessus de cette borne, les alertes d'une session
  * en dessous. La distinction est vitale : les alertes sont annulées à chaque retour au
- * premier plan, alors qu'un rappel doit survivre — il est programmé une fois et attend
+ * premier plan, alors qu'un rappel doit survivre - il est programmé une fois et attend
  * son heure, parfois des jours.
  */
 const REMINDER_ID_BASE = 1000;
@@ -133,7 +133,7 @@ export class NotificationService {
   /**
    * Programme une notification de test dans quelques secondes. Le délai est le sujet même
    * du test : il laisse le temps de verrouiller l'écran, et c'est écran verrouillé qu'on
-   * veut savoir si l'appareil prévient — l'autorisation, le canal et le son y passent tous.
+   * veut savoir si l'appareil prévient - l'autorisation, le canal et le son y passent tous.
    */
   sendTest(title: string, body: string, withSound: boolean): Promise<TestResult> {
     if (!this.available) return Promise.resolve<TestResult>('unsupported');
@@ -145,11 +145,11 @@ export class NotificationService {
    * permission n'existe pas et le plugin répond « accordé » sans rien ouvrir.
    *
    * À savoir : passer d'accordé à refusé depuis cet écran fait redémarrer l'app et efface
-   * les alarmes exactes déjà programmées — c'est le système qui l'impose, pas l'app.
+   * les alarmes exactes déjà programmées - c'est le système qui l'impose, pas l'app.
    */
   async openExactAlarmSettings(): Promise<ExactAlarmResult> {
     // L'écran n'existe que sur Android ; ailleurs l'appel lèverait, et « refusé » mentirait
-    // sur la raison — il n'y a rien à refuser là où la permission n'existe pas.
+    // sur la raison - il n'y a rien à refuser là où la permission n'existe pas.
     if (!this.available || this.platform !== 'android') return 'unsupported';
     try {
       const { exact_alarm } = await LocalNotifications.changeExactNotificationSetting();
@@ -205,7 +205,7 @@ export class NotificationService {
       id: REMINDER_ID_BASE + i,
       title: r.title,
       body: r.body,
-      // `on` est la forme récurrente, façon cron : un jour, une heure, et rien d'autre —
+      // `on` est la forme récurrente, façon cron : un jour, une heure, et rien d'autre -
       // la notification revient chaque semaine, et survit au redémarrage de l'appareil
       schedule: {
         on: { weekday: capacitorWeekday(r.day), hour: r.hour, minute: r.minute, second: 0 },

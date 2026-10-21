@@ -155,7 +155,7 @@ export const pt: Dictionary = {
   'tutorial.3.title': 'Começar, fazer uma pausa',
   'tutorial.3.text': 'Carrega no mostrador ou em ▶. A seta ↺ volta a zero.',
   'tutorial.4.title': 'Modos e rotinas',
-  'tutorial.4.text': 'Em ⚙︎, escolhe um modo — trabalho, pausa — ou uma rotina: uma série de passos em imagens que se encadeiam sozinhos.',
+  'tutorial.4.text': 'Em ⚙︎, escolhe um modo - trabalho, pausa - ou uma rotina: uma série de passos em imagens que se encadeiam sozinhos.',
   'tutorial.5.title': 'Avisado à tua maneira',
   'tutorial.5.text': 'Três marcos anunciam o fim: um som, uma vibração, um clarão colorido ou a voz. Tudo se ajusta em ⚙︎.',
   'notif.channel.end': 'Fim do timer'

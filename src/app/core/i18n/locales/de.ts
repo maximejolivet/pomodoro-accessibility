@@ -155,7 +155,7 @@ export const de: Dictionary = {
   'tutorial.3.title': 'Starten, Pause machen',
   'tutorial.3.text': 'Auf das Zifferblatt oder auf ▶ drücken. Der Pfeil ↺ setzt zurück.',
   'tutorial.4.title': 'Modi und Routinen',
-  'tutorial.4.text': 'Unter ⚙︎ einen Modus wählen — Arbeit, Pause — oder eine Routine: eine Folge von Schritten in Bildern, die von allein weiterlaufen.',
+  'tutorial.4.text': 'Unter ⚙︎ einen Modus wählen - Arbeit, Pause - oder eine Routine: eine Folge von Schritten in Bildern, die von allein weiterlaufen.',
   'tutorial.5.title': 'So gewarnt, wie du willst',
   'tutorial.5.text': 'Drei Marken kündigen das Ende an: ein Ton, eine Vibration, ein farbiges Aufleuchten oder die Stimme. Alles unter ⚙︎.',
   'notif.channel.end': 'Timer-Ende'

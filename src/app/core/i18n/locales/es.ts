@@ -155,7 +155,7 @@ export const es: Dictionary = {
   'tutorial.3.title': 'Empezar y hacer una pausa',
   'tutorial.3.text': 'Pulsa la esfera o ▶. La flecha ↺ lo pone a cero.',
   'tutorial.4.title': 'Modos y rutinas',
-  'tutorial.4.text': 'En ⚙︎, elige un modo —trabajo, pausa— o una rutina: una serie de pasos con imágenes que se encadenan solos.',
+  'tutorial.4.text': 'En ⚙︎, elige un modo -trabajo, pausa- o una rutina: una serie de pasos con imágenes que se encadenan solos.',
   'tutorial.5.title': 'Avisado a tu manera',
   'tutorial.5.text': 'Tres avisos anuncian el final: un sonido, una vibración, un destello de color o la voz. Todo se ajusta en ⚙︎.',
   'notif.channel.end': 'Fin del temporizador'

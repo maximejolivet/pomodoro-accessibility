@@ -48,7 +48,7 @@ async function showTutorial(page: Page, lang = 'fr') {
 
 async function violations(page: Page) {
   const { violations } = await new AxeBuilder({ page }).withTags(WCAG).analyze();
-  return violations.map(v => `${v.id} (${v.impact}) × ${v.nodes.length} — ${v.nodes[0].failureSummary}`);
+  return violations.map(v => `${v.id} (${v.impact}) × ${v.nodes.length} - ${v.nodes[0].failureSummary}`);
 }
 
 test.describe('axe-core', () => {
@@ -459,7 +459,7 @@ test.describe('annonce vocale', () => {
 
     // Les paliers, eux, sont calculés sur la durée réglée : la moitié, le dernier quart,
     // puis la dernière minute. Des paliers fixes à 45 / 30 / 15 ne préviendraient jamais
-    // une session de six minutes — ni une étape de routine.
+    // une session de six minutes - ni une étape de routine.
     await page.clock.runFor(2 * 60_000);
     await page.clock.runFor(60_000);
     await page.clock.runFor(60_000);
@@ -519,7 +519,7 @@ test.describe('vibration', () => {
     await page.goto('/');
     await ready(page);
 
-    // 6 min : les paliers tombent à 3, 2 et 1 minute restantes — une session courte est
+    // 6 min : les paliers tombent à 3, 2 et 1 minute restantes - une session courte est
     // prévenue elle aussi, ce que des paliers fixes à 45 / 30 / 15 ne faisaient pas
     await setMinutes(page, 6);
     await page.getByRole('button', { name: /démarrer/i }).click();
@@ -652,7 +652,7 @@ test.describe('verrouillage du cadran', () => {
     await page.keyboard.press('Home');
     await expect(time(page)).toHaveText('25:00');
     // `force` : Playwright refuse de cliquer un élément `aria-disabled`, ce qui est
-    // déjà une garantie — mais on veut vérifier que le clic lui-même ne fait rien.
+    // déjà une garantie - mais on veut vérifier que le clic lui-même ne fait rien.
     await page.locator('.face').click({ force: true });
     await expect(page.locator('.readout-time')).toHaveText('25:00');
     await expect(page.getByRole('slider')).toHaveAttribute('aria-disabled', 'true');
@@ -948,7 +948,7 @@ test.describe("tutoriel d'accueil", () => {
   /**
    * Attend que la bande ait fini de glisser. Sans cette attente, axe-core mesure la vue
    * pendant le glissement : elle dépasse alors de la fenêtre, qui la rogne, et plus rien
-   * ne se trouve derrière son texte — le contraste est calculé contre le blanc du canevas
+   * ne se trouve derrière son texte - le contraste est calculé contre le blanc du canevas
    * et le thème sombre paraît illisible.
    */
   async function settled(page: Page) {
@@ -1089,7 +1089,7 @@ test.describe("tutoriel d'accueil", () => {
 test.describe('secondes et tours', () => {
   /**
    * Un Tabata : deux étapes de cinq secondes, jouées deux fois. Cinq secondes plutôt que
-   * vingt pour que l'horloge simulée n'ait pas mille ticks à jouer — la règle testée est
+   * vingt pour que l'horloge simulée n'ait pas mille ticks à jouer - la règle testée est
    * l'enchaînement des tours, pas la durée.
    */
   const TABATA = {
@@ -1445,7 +1445,7 @@ test.describe('mode sport (design)', () => {
 /**
  * Mode table : le téléphone posé debout devient le minuteur visuel de la pièce. Ce qui
  * s'efface doit s'effacer vraiment (et non seulement à l'œil), ce qui reste doit rester
- * atteignable au clavier, et la porte de sortie doit se voir et s'ouvrir — un mode sans
+ * atteignable au clavier, et la porte de sortie doit se voir et s'ouvrir - un mode sans
  * sortie visible est un piège, surtout pour qui ne sait pas comment il y est entré.
  */
 test.describe('mode table', () => {
@@ -1519,7 +1519,7 @@ test.describe('mode table', () => {
 
 /**
  * Voile d'amorçage : il tient l'écran entre l'image de lancement du système et la première
- * image de l'app. Deux choses comptent — qu'il s'en aille, sinon il ne reste qu'un écran
+ * image de l'app. Deux choses comptent - qu'il s'en aille, sinon il ne reste qu'un écran
  * noir dont personne ne sait rien ; et qu'il se fige pour qui demande moins de mouvement.
  */
 test.describe('voile d’amorçage', () => {

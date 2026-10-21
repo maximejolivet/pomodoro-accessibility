@@ -112,12 +112,12 @@
   transform: translateY(2px);
 }
 
-.step[aria-disabled='true'] {
+.step[aria-disabled="true"] {
   opacity: 0.45;
   cursor: default;
 }
 
-.step[aria-disabled='true']:active {
+.step[aria-disabled="true"]:active {
   transform: none;
 }
 
@@ -177,7 +177,7 @@
 }
 
 /*
- * Mode table : le temps se lit de loin. Les boutons − / + disparaissent — on ne règle pas
+ * Mode table : le temps se lit de loin. Les boutons − / + disparaissent - on ne règle pas
  * une durée à deux mètres, et un appui involontaire sur une table passée est vite arrivé.
  */
 :host-context(.table) .step {

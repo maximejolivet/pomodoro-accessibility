@@ -138,7 +138,7 @@ export class RoutinesPanelComponent {
 
   /**
    * Nom accessible de la carte : le rappel y est dit, parce que l'`aria-label` remplace
-   * tout le contenu du bouton — la pastille ⏰ ne serait vue que des voyants.
+   * tout le contenu du bouton - la pastille ⏰ ne serait vue que des voyants.
    */
   startLabel(routine: Routine): string {
     const label = this.i18n.t('routine.start', { name: this.routineName(routine) });

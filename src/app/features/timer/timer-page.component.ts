@@ -76,7 +76,7 @@ export class TimerPageComponent {
   }
 
   /**
-   * Échap sort du mode table, comme il ferme une modale — mais pas quand une vraie modale
+   * Échap sort du mode table, comme il ferme une modale - mais pas quand une vraie modale
    * est ouverte : elle a la priorité, c'est elle qu'on veut fermer d'abord.
    */
   @HostListener('document:keydown.escape')

@@ -155,7 +155,7 @@ export const it: Dictionary = {
   'tutorial.3.title': 'Avviare, fare una pausa',
   'tutorial.3.text': 'Premi il quadrante o ▶. La freccia ↺ riporta a zero.',
   'tutorial.4.title': 'Modalità e routine',
-  'tutorial.4.text': 'In ⚙︎ scegli una modalità — lavoro, pausa — o una routine: una serie di passi illustrati che si susseguono da soli.',
+  'tutorial.4.text': 'In ⚙︎ scegli una modalità - lavoro, pausa - o una routine: una serie di passi illustrati che si susseguono da soli.',
   'tutorial.5.title': 'Avvisato a modo tuo',
   'tutorial.5.text': 'Tre traguardi annunciano la fine: un suono, una vibrazione, un lampo colorato o la voce. Tutto si regola in ⚙︎.',
   'notif.channel.end': 'Fine del timer'

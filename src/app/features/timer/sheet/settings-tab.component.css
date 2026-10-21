@@ -142,7 +142,7 @@
   color: var(--muted);
 }
 
-/* Test de notification : l'en-tête, le bouton, puis le compte rendu — dans cet ordre de lecture. */
+/* Test de notification : l'en-tête, le bouton, puis le compte rendu - dans cet ordre de lecture. */
 .notif-test {
   display: grid;
   gap: 10px;
@@ -201,7 +201,11 @@
 /* OpenDyslexic setting : mise en évidence spéciale */
 .opendyslexic-setting {
   border: 1.5px solid var(--bar);
-  background: linear-gradient(180deg, color-mix(in srgb, var(--bar) 8%, var(--surface-hi)), color-mix(in srgb, var(--bar) 5%, var(--surface-lo)));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bar) 8%, var(--surface-hi)),
+    color-mix(in srgb, var(--bar) 5%, var(--surface-lo))
+  );
 }
 
 .opendyslexic-setting .setting-label app-icon {

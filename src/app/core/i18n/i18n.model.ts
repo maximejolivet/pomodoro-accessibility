@@ -6,7 +6,7 @@ export type Dictionary = Record<I18nKey, string>;
 
 /**
  * Langues disponibles. Pour en ajouter une : un fichier dans `locales/`, une entrée
- * dans cette union, dans `DICTIONARIES`, dans `LANGUAGES` — et dans `RTL_LANGS` si
+ * dans cette union, dans `DICTIONARIES`, dans `LANGUAGES` - et dans `RTL_LANGS` si
  * elle s'écrit de droite à gauche.
  */
 export type Lang = 'fr' | 'en' | 'es' | 'de' | 'it' | 'pt' | 'ar';

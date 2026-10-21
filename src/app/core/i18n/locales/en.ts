@@ -155,7 +155,7 @@ export const en: Dictionary = {
   'tutorial.3.title': 'Start, take a break',
   'tutorial.3.text': 'Press the dial or ▶. The ↺ arrow sets it back to zero.',
   'tutorial.4.title': 'Modes and routines',
-  'tutorial.4.text': 'In ⚙︎, pick a mode — work, break — or a routine: a sequence of steps in pictures that follow on their own.',
+  'tutorial.4.text': 'In ⚙︎, pick a mode - work, break - or a routine: a sequence of steps in pictures that follow on their own.',
   'tutorial.5.title': 'Warned your way',
   'tutorial.5.text': 'Three milestones announce the end: a sound, a vibration, a coloured flash or the voice. It all lives in ⚙︎.',
   'notif.channel.end': 'Timer end'

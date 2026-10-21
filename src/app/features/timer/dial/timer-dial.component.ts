@@ -83,7 +83,7 @@ export class TimerDialComponent {
 
   /**
    * Ce que le cadran gradue : des minutes, ou des secondes quand l'étape en cours dure
-   * moins d'une minute. La valeur va de 0 à 60 dans les deux cas — les chiffres de la
+   * moins d'une minute. La valeur va de 0 à 60 dans les deux cas - les chiffres de la
    * face, eux, ne changent pas.
    */
   get displayUnits(): number {

@@ -154,7 +154,7 @@ export const fr = {
   'tutorial.3.title': 'Démarrer, faire une pause',
   'tutorial.3.text': 'Appuie sur le cadran ou sur ▶. La flèche ↺ remet à zéro.',
   'tutorial.4.title': 'Modes et routines',
-  'tutorial.4.text': "Dans ⚙︎, choisis un mode — travail, pause — ou une routine : une suite d'étapes en images qui s'enchaînent toutes seules.",
+  'tutorial.4.text': "Dans ⚙︎, choisis un mode - travail, pause - ou une routine : une suite d'étapes en images qui s'enchaînent toutes seules.",
   'tutorial.5.title': 'Être prévenu à ta façon',
   'tutorial.5.text': 'Trois paliers annoncent la fin : un son, une vibration, un éclat coloré ou la voix. Tout se règle dans ⚙︎.',
   'notif.channel.end': 'Fin du minuteur'

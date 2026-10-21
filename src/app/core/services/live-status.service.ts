@@ -13,7 +13,7 @@ const LiveStatus = registerPlugin<LiveStatusPlugin>('LiveStatus');
 /**
  * Le décompte qui reste sous les yeux quand l'app ne l'est plus : une notification
  * permanente et muette sur Android, une Live Activity sur iOS. Les deux montrent le même
- * état que le widget — on lui donne d'ailleurs le même JSON — mais là où le widget attend
+ * état que le widget - on lui donne d'ailleurs le même JSON - mais là où le widget attend
  * qu'on aille le voir, celui-ci se pose sur l'écran verrouillé.
  *
  * Aucun effet dans le navigateur.

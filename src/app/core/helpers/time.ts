@@ -9,7 +9,7 @@ export function formatTime(seconds: number): string {
 /**
  * Découpe une durée pour l'affichage : en dessous d'une minute elle se dit en secondes,
  * au-delà en minutes. Les durées réglables (`STEP_DURATIONS`) sont soit l'un, soit
- * l'autre, jamais un mélange — « 1 min 30 » ne se lit pas d'un coup d'œil.
+ * l'autre, jamais un mélange - « 1 min 30 » ne se lit pas d'un coup d'œil.
  */
 export function durationParts(seconds: number): { value: number; unit: 'seconds' | 'minutes' } {
   return seconds < 60

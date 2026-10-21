@@ -21,7 +21,7 @@ export class PreferencesService {
   readonly keepAwake = signal(readFlag('keep-awake'));
   /**
    * Cadran verrouillé : les gestes qui changent la durée ou remettent à zéro sont ignorés.
-   * Conservé d'une ouverture à l'autre — qui en a besoin en a besoin à chaque fois.
+   * Conservé d'une ouverture à l'autre - qui en a besoin en a besoin à chaque fois.
    */
   readonly locked = signal(readFlag('dial-lock', false));
   /** Signal visuel aux paliers et à la fin : la seule alerte qui reste sans le son. */

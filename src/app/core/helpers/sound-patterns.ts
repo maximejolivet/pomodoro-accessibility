@@ -78,7 +78,7 @@ export const SOUND_PATTERNS: Record<SoundId, SoundPattern> = {
 
 /**
  * Motifs joués seulement dans l'application, jamais par une notification : ils n'ont donc
- * ni fichier WAV ni canal Android. Le tic des dernières secondes en fait partie — il
+ * ni fichier WAV ni canal Android. Le tic des dernières secondes en fait partie - il
  * arrive une fois par seconde, ce qu'aucune notification ne saurait faire.
  */
 export const CUE_PATTERNS = {
@@ -98,7 +98,7 @@ export const SOUND_FILES: Record<SoundId, string> = {
  * Crête visée par chaque motif, à un cheveu du maximum. Un son d'alerte doit sortir fort :
  * c'est l'appareil qui décide du volume, pas nous, et sur Android il ne fait que réduire ce
  * qu'on lui donne. Un fichier rendu à mi-échelle arrive donc deux fois trop discret, et la
- * notification passe inaperçue — exactement ce qu'elle est censée empêcher.
+ * notification passe inaperçue - exactement ce qu'elle est censée empêcher.
  */
 export const PEAK_TARGET = 0.89;
 
@@ -106,7 +106,7 @@ export const PEAK_TARGET = 0.89;
  * Niveau atteint par une note au bout de sa durée, relatif à sa crête (-48 dB). Relatif et
  * non absolu : une décroissance jusqu'à un plancher fixe plonge d'autant plus vite que la
  * note part bas, si bien qu'une note douce n'était qu'un claquement. Là, toutes les notes
- * résonnent de la même façon — et ce qui résonne s'entend.
+ * résonnent de la même façon - et ce qui résonne s'entend.
  */
 const DECAY = 0.004;
 
@@ -176,7 +176,7 @@ const levels = new WeakMap<SoundPattern, number>();
 /**
  * Facteur qui porte un motif à `PEAK_TARGET`. Mesuré sur le signal rendu, et non déduit des
  * gains des notes : celles qui se chevauchent s'additionnent, et le faire à la main revient
- * soit à écrêter, soit à rester bien en dessous — c'est ce qui laissait les trois dernières
+ * soit à écrêter, soit à rester bien en dessous - c'est ce qui laissait les trois dernières
  * notes dix décibels sous les autres. Mesuré une fois et retenu, le calcul valant un rendu.
  */
 export function level(pattern: SoundPattern): number {
