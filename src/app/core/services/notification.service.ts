@@ -196,7 +196,12 @@ export class NotificationService {
     if (this.electron) return this.electron.scheduleReminders(reminders, withSound);
     if (!this.available) return;
     // Un rappel n'a de sens que si l'appareil accepte de le montrer
-    if (reminders.length && !(await this.ensurePermission())) return;
+    if (reminders.length && !(await this.ensurePermission())) {
+      // Sans permission, rien ne part : les rappels déjà programmés doivent quand même partir
+      await this.ready;
+      await this.cancelPending(true);
+      return;
+    }
     await this.ready;
     await this.cancelPending(true);
     if (!reminders.length) return;
