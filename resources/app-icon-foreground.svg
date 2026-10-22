@@ -8,7 +8,7 @@
     </radialGradient>
   </defs>
   <!--
-    Avant-plan de l'icône adaptative Android : le cadran seul, sans le boîtier — c'est le
+    Avant-plan de l'icône adaptative Android : le cadran seul, sans le boîtier - c'est le
     système qui pose le fond (`ic_launcher_background`) et découpe la forme. Le dessin tient
     dans un disque de 63 unités sur les 108 de la toile, donc à l'intérieur des 66 unités
     sûres : aucun masque, si serré soit-il, ne mordra sur l'anneau.

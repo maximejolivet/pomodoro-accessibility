@@ -51,7 +51,7 @@ export class ModesTabComponent {
   }
 
   kindLabel(kind: PresetKind): string {
-    return this.i18n.t(`preset.kind.${kind}` as I18nKey);
+    return this.i18n.t(`preset.${kind}` as I18nKey);
   }
 
   colorLabel(hex: string): string {

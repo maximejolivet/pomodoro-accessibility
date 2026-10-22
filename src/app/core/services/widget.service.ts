@@ -11,7 +11,7 @@ const WidgetBridge = registerPlugin<WidgetBridgePlugin>('WidgetBridge');
 
 /**
  * Widget d'écran d'accueil (iOS et Android) : l'app lui transmet son état, le widget décompte
- * seul ensuite. Le plugin est local aux deux plateformes — `WidgetBridgePlugin.swift` d'un
+ * seul ensuite. Le plugin est local aux deux plateformes - `WidgetBridgePlugin.swift` d'un
  * côté, `WidgetBridgePlugin.java` de l'autre.
  */
 @Injectable({ providedIn: 'root' })

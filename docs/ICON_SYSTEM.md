@@ -1,26 +1,34 @@
-# System d'Icônes SVG
+# SVG Icon System
 
-## Vue d'ensemble
+🇬🇧 English · [🇫🇷 Français](ICON_SYSTEM.FR.md)
 
-Un système d'icônes SVG complet remplace les emojis pour une meilleure accessibilité et contrôle du style.
+## Overview
 
-## Services et Composants
+A complete SVG icon system replaces emojis for better accessibility and style control.
+
+## Services and Components
 
 ### IconsService (`src/app/core/services/icons.service.ts`)
 
-Service qui gère toutes les icônes SVG disponibles.
+Service that manages all the available SVG icons.
 
-**Méthodes principales:**
+**Main methods:**
 
 ```typescript
-// Récupérer une icône SVG par nom
+// Get an SVG icon by name
 getSVG(name: IconName): SafeHtml
 
-// Convertir un emoji en IconName
+// Convert an emoji to an IconName
 getIconFromEmoji(emoji: string): IconName
+
+// Resolve a routine or step icon: accepts an emoji (older data) or an IconName (current editor)
+resolveIcon(value: string): IconName
 ```
 
-**Types disponibles:**
+Routine and step icons are stored as icon names (for example `bed`), so the templates use
+`resolveIcon`. `getIconFromEmoji` only maps emoji and falls back to `info` for anything else.
+
+**Available types:**
 
 ```typescript
 type IconName =
@@ -44,16 +52,16 @@ type IconName =
 
 ### IconComponent (`src/app/shared/components/icon/icon.component.ts`)
 
-Composant standalone pour afficher une icône SVG.
+Standalone component that displays an SVG icon.
 
-**Utilisation:**
+**Usage:**
 
 ```html
-<!-- Par nom d'icône -->
+<!-- By icon name -->
 <app-icon name="sunrise" aria-hidden="true"></app-icon>
 
-<!-- Convertir depuis emoji -->
-<app-icon 
+<!-- Convert from emoji -->
+<app-icon
   [name]="iconsService.getIconFromEmoji('🌅')"
   aria-hidden="true">
 </app-icon>
@@ -61,12 +69,29 @@ Composant standalone pour afficher une icône SVG.
 
 **Props:**
 
-- `name: IconName` - Le nom de l'icône (required)
-- `ariaHidden: boolean | 'true' | 'false'` - Masquer pour les lecteurs d'écran (default: 'true')
+- `name: IconName` - The icon name (required)
+- `ariaHidden: boolean | 'true' | 'false'` - Hide from screen readers (default: 'true')
 
-## Mapping Emoji → Icon
+## Icon source (Lucide)
 
-**Routine Icons:**
+The icons in `IconsService` come from **[Lucide](https://lucide.dev)** (ISC license). They are
+bundled with the app: no network call is needed, and the app works offline and under
+Electron.
+
+The file `src/app/core/helpers/lucide-icons.ts` is **generated**. To change an icon:
+
+1. Edit the `internal name → Lucide icon` mapping in `scripts/generate-lucide-icons.mjs`.
+2. Regenerate: `make ui-icons` (or `node scripts/generate-lucide-icons.mjs`).
+
+The script fails if a Lucide name does not exist in `lucide-static`. The `Record<IconName, string>`
+type also requires an icon for every name in the `IconName` type.
+
+SVGs written directly in HTML templates do not go through this service and are not affected by
+this generation.
+
+## Emoji → Icon mapping
+
+**Routine icons:**
 - 🌅 → `sunrise`
 - 👕 → `shirt`
 - 🥣 → `breakfast`
@@ -75,7 +100,7 @@ Composant standalone pour afficher une icône SVG.
 - 🧘 → `meditation`
 - 💪 → `gym`
 
-**Accessibility Icons:**
+**Accessibility icons:**
 - 🦯 → `blind`
 - ⌨️ → `keyboard`
 - 🔍 → `search`
@@ -85,39 +110,43 @@ Composant standalone pour afficher une icône SVG.
 - 🔤 → `font`
 - 🖼️ → `image`
 
-## Utilisation dans les Composants
+## Usage in components
 
-### Exemple: Affichage d'une icône de routine
+### Example: displaying a routine icon
 
-**Avant (avec emoji):**
+**Before (with emoji):**
 
 ```html
 <span class="step-emoji" aria-hidden="true">{{ step.icon }}</span>
 ```
 
-**Après (avec SVG):**
+**After (with SVG):**
 
 ```typescript
 import { IconComponent } from '@app/shared/components/icon/icon.component';
 import { IconsService } from '@app/core/services';
 
+@Component({
+  // ...
+  imports: [IconComponent]
+})
 export class MyComponent {
   constructor(public iconsService: IconsService) {}
 }
 ```
 
 ```html
-<app-icon 
+<app-icon
   [name]="iconsService.getIconFromEmoji(step.icon)"
   aria-hidden="true"
   class="step-icon">
 </app-icon>
 ```
 
-## Ajouter une Nouvelle Icône
+## Adding a new icon
 
-1. Ajouter le type dans `IconName` (icons.service.ts)
-2. Ajouter la définition SVG dans `registerIcons()`:
+1. Add the type to `IconName` (icons.service.ts).
+2. Add the SVG definition in `registerIcons()`:
 
 ```typescript
 this.icons.set('my-icon', {
@@ -126,7 +155,7 @@ this.icons.set('my-icon', {
 });
 ```
 
-3. Optionnel: Ajouter au mapping emoji si applicable:
+3. Optional: add it to the emoji mapping if applicable:
 
 ```typescript
 export const EMOJI_TO_ICON_MAP: Record<string, IconName> = {
@@ -137,16 +166,16 @@ export const EMOJI_TO_ICON_MAP: Record<string, IconName> = {
 
 ## Styling
 
-Les icônes héritent automatiquement de la couleur du texte:
+Icons automatically inherit the text colour:
 
 ```css
-/* La couleur sera rouge */
+/* The colour will be red */
 .my-icon-red {
   color: red;
 }
 ```
 
-Ou avec CSS personnalisé:
+Or with custom CSS:
 
 ```css
 app-icon {
@@ -156,22 +185,22 @@ app-icon {
 }
 ```
 
-## Accessibilité
+## Accessibility
 
-- Les icônes utilisent `aria-hidden="true"` par défaut (elles sont purement décoratives)
-- Pour les icônes importantes, utiliser `aria-hidden="false"` et ajouter un label
-- Les titres et labels doivent décrire l'icône, pas simplement "icône"
+- Icons use `aria-hidden="true"` by default (they are purely decorative).
+- For important icons, use `aria-hidden="false"` and add a label.
+- Titles and labels must describe the icon, not just say "icon".
 
 ## Performance
 
-- Les SVG sont intégrés inline et rendus dans le DOM
-- Pas de requête HTTP pour chaque icône
-- Les icônes sont scalables sans perte de qualité
-- Les icônes héritent des propriétés CSS (couleur, taille, etc.)
+- SVGs are inlined and rendered in the DOM.
+- No HTTP request for each icon.
+- Icons scale without loss of quality.
+- Icons inherit CSS properties (colour, size, etc.).
 
-## Compatibilité
+## Compatibility
 
-- Fonctionne dans tous les navigateurs modernes
-- Compatible avec le dark mode et les thèmes
-- Accessible aux lecteurs d'écran
-- Pas de dépendances externes (Material Icons, Font Awesome, etc.)
+- Works in all modern browsers.
+- Compatible with dark mode and themes.
+- Accessible to screen readers.
+- No external dependencies (Material Icons, Font Awesome, etc.).

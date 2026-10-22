@@ -22,7 +22,7 @@ import java.util.Locale;
  *
  * Deux horloges cohabitent, et c'est ce qui rend le widget tenable pour la batterie :
  * le <b>chronomètre</b> égrène les secondes tout seul, sans que rien ne le réveille, et une
- * <b>alarme</b> ne redessine le cadran qu'au changement de graduation — une fois par minute.
+ * <b>alarme</b> ne redessine le cadran qu'au changement de graduation - une fois par minute.
  * Le décompte arrêté, l'alarme l'est aussi : un cadran figé n'a aucune raison de réveiller
  * le téléphone.
  */
@@ -165,7 +165,7 @@ public class PomodoroWidgetProvider extends AppWidgetProvider {
         if (untilNext < 1000) untilNext += step;
         long at = System.currentTimeMillis() + untilNext;
 
-        // Alarme exacte quand le système l'accorde — toujours le cas avant Android 12 —
+        // Alarme exacte quand le système l'accorde - toujours le cas avant Android 12 -
         // sinon une alarme ordinaire : le cadran retardera un peu, il ne s'arrêtera pas.
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S || alarms.canScheduleExactAlarms()) {
             alarms.setExact(AlarmManager.RTC, at, pending);

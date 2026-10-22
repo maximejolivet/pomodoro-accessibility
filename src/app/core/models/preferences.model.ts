@@ -9,7 +9,7 @@ export const VISUAL_ALERTS: readonly VisualAlert[] = ['off', 'soft', 'strong'];
 
 /**
  * Annonce vocale du temps restant : aux trois paliers, ou à chaque minute ronde. Sans elle,
- * une personne aveugle ou très malvoyante n'a rien — le cadran est muet, et les sons de
+ * une personne aveugle ou très malvoyante n'a rien - le cadran est muet, et les sons de
  * palier disent qu'un repère approche sans dire lequel.
  */
 export type SpeechMode = 'off' | 'milestones' | 'minutes';

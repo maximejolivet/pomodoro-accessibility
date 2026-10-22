@@ -13,22 +13,15 @@
   font: inherit;
   font-weight: 700;
   color: #fff;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--c) 80%, #fff), var(--c));
-  box-shadow:
-    inset 0 2px 0 rgba(255, 255, 255, 0.4),
-    0 6px 0 var(--c-dark),
-    0 12px 20px rgba(25, 55, 65, 0.22);
+  background: var(--c);
+  box-shadow: none;
   cursor: pointer;
-  transition: transform 0.08s ease, box-shadow 0.08s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Plat : l'état appuyé se lit à la couleur, sans bouger le bouton. */
 .btn3d:active {
-  transform: translateY(5px);
-  box-shadow:
-    inset 0 2px 0 rgba(255, 255, 255, 0.4),
-    0 1px 0 var(--c-dark),
-    0 4px 8px rgba(25, 55, 65, 0.2);
+  background: var(--c-dark);
 }
 
 .btn3d:focus-visible {

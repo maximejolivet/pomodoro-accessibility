@@ -64,11 +64,15 @@
 /* La routine chargée sur le cadran, comme un mode sélectionné. */
 /*
  * Texte sombre et non blanc : `--c` est redéclaré par `.btn3d`, si bien que la carte
- * active tombe toujours sur le bleu pâle du bouton — le blanc y valait 1,7:1, loin des
+ * active tombe toujours sur le bleu pâle du bouton - le blanc y valait 1,7:1, loin des
  * 4,5:1 exigés (WCAG 1.4.3). Sur ce fond clair, l'encre monte à 8,8:1.
  */
 .routine.active {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--c) 80%, #fff), var(--c));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--c) 80%, #fff),
+    var(--c)
+  );
   color: var(--ink);
   box-shadow:
     inset 0 2px 0 rgba(255, 255, 255, 0.4),
@@ -168,7 +172,7 @@
   cursor: pointer;
 }
 
-.routine-add[aria-disabled='true'] {
+.routine-add[aria-disabled="true"] {
   opacity: 0.45;
   cursor: default;
 }
@@ -198,7 +202,7 @@
 
 /*
  * Grille de pictogrammes : des cibles de 44 px, jamais serrées (WCAG 2.5.8), et
- * l'emoji lui-même pour nom accessible — les lecteurs d'écran le lisent dans la
+ * l'emoji lui-même pour nom accessible - les lecteurs d'écran le lisent dans la
  * langue du système.
  */
 .icons {
@@ -243,7 +247,9 @@
 .step-row {
   border-radius: 16px;
   background: linear-gradient(180deg, var(--surface-hi), var(--surface-lo));
-  box-shadow: 0 3px 0 var(--surface-edge), 0 6px 12px rgba(25, 55, 65, 0.1);
+  box-shadow:
+    0 3px 0 var(--surface-edge),
+    0 6px 12px rgba(25, 55, 65, 0.1);
 }
 
 .step-head {
@@ -317,7 +323,7 @@
   transition: transform 0.15s ease;
 }
 
-.step-open[aria-expanded='true'] .step-chevron {
+.step-open[aria-expanded="true"] .step-chevron {
   transform: rotate(180deg);
 }
 
@@ -338,7 +344,7 @@
   color: var(--danger);
 }
 
-.step-move[aria-disabled='true'] {
+.step-move[aria-disabled="true"] {
   opacity: 0.35;
   cursor: default;
 }
@@ -360,8 +366,14 @@
   aspect-ratio: 1;
   border: 0;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--c) 55%, #fff), var(--c));
-  box-shadow: 0 3px 0 color-mix(in srgb, var(--c) 68%, #000), 0 5px 10px rgba(0, 0, 0, 0.18);
+  background: radial-gradient(
+    circle at 35% 30%,
+    color-mix(in srgb, var(--c) 55%, #fff),
+    var(--c)
+  );
+  box-shadow:
+    0 3px 0 color-mix(in srgb, var(--c) 68%, #000),
+    0 5px 10px rgba(0, 0, 0, 0.18);
   cursor: pointer;
 }
 
@@ -422,7 +434,7 @@
  * fonctionnent déjà, et il s'affiche dans le format du pays. La hauteur assure la
  * cible de 44 px (WCAG 2.5.8) que le rendu natif ne garantit pas.
  */
-.reminder-time input[type='time'] {
+.reminder-time input[type="time"] {
   min-height: 44px;
   padding: 10px 14px;
   border: 0;
@@ -435,7 +447,7 @@
   font-variant-numeric: tabular-nums;
 }
 
-.reminder-time input[type='time']:focus-visible {
+.reminder-time input[type="time"]:focus-visible {
   outline: 3px solid var(--c);
   outline-offset: 1px;
 }
@@ -470,7 +482,11 @@
 }
 
 .day.active {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--c) 80%, #fff), var(--c));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--c) 80%, #fff),
+    var(--c)
+  );
   color: #fff;
   box-shadow: 0 2px 0 color-mix(in srgb, var(--c) 68%, #000);
 }

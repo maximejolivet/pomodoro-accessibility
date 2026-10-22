@@ -2,12 +2,12 @@ import ActivityKit
 import Foundation
 
 /**
- Ce qu'une Live Activity du minuteur transporte. Ce fichier appartient aux **deux** cibles —
+ Ce qu'une Live Activity du minuteur transporte. Ce fichier appartient aux **deux** cibles -
  l'app qui la demande et l'extension qui la dessine : ActivityKit apparie les deux bouts par
  le type, et deux copies dans deux modules ne s'apparieraient pas.
 
  iOS 16.2 : c'est la version où `Activity.request(attributes:content:)` prend sa forme
- actuelle. L'app, elle, descend jusqu'à iOS 15 — d'où les gardes partout où on s'en sert.
+ actuelle. L'app, elle, descend jusqu'à iOS 15 - d'où les gardes partout où on s'en sert.
  */
 @available(iOS 16.2, *)
 struct PomodoroActivityAttributes: ActivityAttributes {

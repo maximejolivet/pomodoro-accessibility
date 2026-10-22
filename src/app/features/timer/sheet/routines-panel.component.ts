@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Capacitor } from '@capacitor/core';
 import { PRESET_COLORS } from '../../../core/constants/preset.constants';
+import { electronApi } from '../../../core/helpers/electron';
 import {
   DEFAULT_REMINDER_TIME, MAX_ROUNDS, MAX_STEPS, STEP_DURATIONS, STEP_ICONS
 } from '../../../core/constants/routine.constants';
@@ -56,7 +57,7 @@ export class RoutinesPanelComponent {
   readonly activeRoutineId = computed(() => this.session.activeRoutine()?.id ?? null);
 
   /** Hors iOS et Android, aucune notification ne part : le dire plutôt que le laisser croire. */
-  readonly isNative = Capacitor.isNativePlatform();
+  readonly isNative = Capacitor.isNativePlatform() || electronApi() !== null;
 
   /**
    * Les sept jours, lundi d'abord, nommés par le navigateur : une lettre sur le bouton,
@@ -137,7 +138,7 @@ export class RoutinesPanelComponent {
 
   /**
    * Nom accessible de la carte : le rappel y est dit, parce que l'`aria-label` remplace
-   * tout le contenu du bouton — la pastille ⏰ ne serait vue que des voyants.
+   * tout le contenu du bouton - la pastille ⏰ ne serait vue que des voyants.
    */
   startLabel(routine: Routine): string {
     const label = this.i18n.t('routine.start', { name: this.routineName(routine) });
@@ -165,6 +166,11 @@ export class RoutinesPanelComponent {
       m: Math.round(routineTotalSeconds(routine) / 60)
     });
     return rounds > 1 ? `${summary} · ×${rounds}` : summary;
+  }
+
+  /** Nom d'un pictogramme pour les lecteurs d'écran : sans lui, le bouton est muet. */
+  iconLabel(icon: string): string {
+    return this.i18n.t(`icon.${icon}` as I18nKey);
   }
 
   colorLabel(hex: string): string {

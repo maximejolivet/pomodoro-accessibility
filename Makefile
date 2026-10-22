@@ -5,7 +5,7 @@ ANDROID_RAW := android/app/src/main/res/raw
 NODE_TS := node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON
 
 .DEFAULT_GOAL := help
-.PHONY: help install dev build watch test test-a11y sync sounds icons clean ios android open-ios open-android
+.PHONY: help install dev build watch test test-a11y sync sounds icons ui-icons clean ios android open-ios open-android electron-dev electron-dmg electron-win
 
 help: ## Affiche cette aide
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
@@ -42,6 +42,9 @@ sounds: ## Génère les sons de notification (WAV) et les copie dans Android
 icons: ## Génère icônes et écrans de lancement (iOS, Android, web) depuis resources/*.svg
 	$(NODE_TS) scripts/generate-icons.ts
 
+ui-icons: ## Régénère les icônes de l'interface depuis Lucide (lucide-static)
+	node scripts/generate-lucide-icons.mjs
+
 ios: ## Ajoute la plateforme iOS (une seule fois)
 	npx cap add ios
 
@@ -54,5 +57,14 @@ open-ios: sync ## Build, sync et ouvre Xcode
 open-android: sync ## Build, sync et ouvre Android Studio
 	npx cap open android
 
+electron-dev: ## Build puis lance l'app Electron (macOS)
+	npm run electron:dev
+
+electron-dmg: ## Génère le DMG macOS (release/)
+	npm run electron:build
+
+electron-win: ## Génère l'installeur Windows x64 (release/)
+	npm run electron:build:win
+
 clean: ## Supprime les artefacts de build
-	rm -rf dist $(WWW) .angular/cache
+	rm -rf dist $(WWW) .angular/cache release

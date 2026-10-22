@@ -16,7 +16,7 @@ import android.graphics.Shader;
  * lui, c'est donc l'app qui peint et le widget qui affiche l'image.
  *
  * Port de `src/app/features/timer/dial-geometry.ts` : même repère 420 × 420, mêmes rayons,
- * mêmes douze couleurs, même sens anti-horaire depuis 0 — et des mêmes jetons de `src/theme/`
+ * mêmes douze couleurs, même sens anti-horaire depuis 0 - et des mêmes jetons de `src/theme/`
  * pour les couleurs de face. Le cadran du widget est le cadran de l'app, à l'échelle près.
  */
 final class DialBitmap {

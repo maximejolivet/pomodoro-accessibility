@@ -131,7 +131,7 @@ struct Provider: TimelineProvider {
     /**
      Entrées : maintenant, chaque graduation franchie jusqu'à la fin, la fin elle-même, et
      minuit (remise à zéro du focus du jour). Le disque du cadran se vide donc tout seul,
-     graduation par graduation, sans réveiller l'app — comme le vrai cadran sous les yeux.
+     graduation par graduation, sans réveiller l'app - comme le vrai cadran sous les yeux.
      */
     func getTimeline(in context: Context, completion: @escaping (Timeline<PomodoroEntry>) -> Void) {
         let now = Date()
@@ -190,11 +190,11 @@ struct Palette {
     let bar: Color
 
     static let light = Palette(
-        face: Color(hex: "#fbfbf8"), faceHi: Color(hex: "#ffffff"), faceLo: Color(hex: "#eceee9"),
-        ink: Color(hex: "#2f3336"), muted: Color(hex: "#5f6a6f"),
-        surfaceHi: Color(hex: "#ffffff"), surfaceLo: Color(hex: "#eef1f1"),
-        surfaceEdge: Color(hex: "#cfd6d8"), track: Color(hex: "#dfe5e7"),
-        tab: Color(hex: "#1d282d"), bar: Color(hex: "#8b6fd6")
+        face: Color(hex: "#f5f2ea"), faceHi: Color(hex: "#fbfaf6"), faceLo: Color(hex: "#e6e1d3"),
+        ink: Color(hex: "#1d2b3a"), muted: Color(hex: "#5b6b7a"),
+        surfaceHi: Color(hex: "#fbfaf6"), surfaceLo: Color(hex: "#e6e1d3"),
+        surfaceEdge: Color(hex: "#b9c3c6"), track: Color(hex: "#e4ddcc"),
+        tab: Color(hex: "#1d2b3a"), bar: Color(hex: "#8b6fd6")
     )
 
     static let dark = Palette(
@@ -212,17 +212,17 @@ struct Palette {
 /// 420 × 420, même sens anti-horaire depuis 0. Le cadran du widget est le cadran de l'app.
 private enum Dial {
     static let size: CGFloat = 420
-    static let cx: CGFloat = 217
-    static let cy: CGFloat = 218
+    static let cx: CGFloat = 210
+    static let cy: CGFloat = 210
     static let ringOuter: CGFloat = 150
     static let ringInner: CGFloat = 102
-    static let diskR: CGFloat = 147
-    static let labelR: CGFloat = 181
+    static let diskR: CGFloat = 138
+    static let labelR: CGFloat = 180
 
-    /// De 0-5 min (rouge) à 55-60 min (magenta).
+    /// Douze segments pastel, de 0-5 min à 55-60 min : les mêmes que `SEGMENT_COLORS` dans l'app.
     static let segmentColors = [
-        "#d63f4f", "#e5593a", "#ef7d2d", "#f3a52b", "#f0c52f", "#c3cd36",
-        "#56b27b", "#5d9fb6", "#5d6db3", "#5a55a3", "#6c4b9c", "#b24f97"
+        "#f7b3b3", "#f8c9a6", "#f9e4a0", "#d7eca0", "#b5e6b5", "#a8e6d4",
+        "#a6dcea", "#b1cff5", "#c3c0f5", "#d4bff2", "#efbbe8", "#f5b8c8"
     ].map(Color.init(hex:))
 
     static let center = CGPoint(x: cx, y: cy)
@@ -276,9 +276,9 @@ private enum Dial {
         return path
     }
 
-    /// Un rectangle arrondi posé au centre puis pivoté : la languette du disque, l'index du bouton.
-    static func rotatedRect(_ rect: CGRect, radius: CGFloat, units: Double) -> Path {
-        let path = Path(roundedRect: rect, cornerRadius: radius)
+    /// Le repère du widget : un rond de 60 centré sur le rayon 180, tourné à la valeur courante.
+    static func pointerTab(units: Double) -> Path {
+        let path = Path(ellipseIn: CGRect(x: -30, y: -210, width: 60, height: 60))
         let transform = CGAffineTransform(translationX: cx, y: cy).rotated(by: angle(units))
         return path.applying(transform)
     }
@@ -335,14 +335,12 @@ struct DialFace: View {
                 ctx.stroke(edge, with: .color(.white.opacity(0.9)), style: StrokeStyle(lineWidth: 2.5, lineCap: .round))
             }
 
-            ctx.fill(
-                Dial.rotatedRect(CGRect(x: -14, y: -160.5, width: 28, height: 7), radius: 3.5, units: units),
-                with: .color(palette.tab)
-            )
+            // Repère : carré en haut, demi-cercle en bas, à la couleur du mode (comme `tabColor` dans l'app).
+            ctx.fill(Dial.pointerTab(units: units), with: .color(color))
 
             for i in 0..<12 {
                 let text = Text(String(i * 5))
-                    .font(.system(size: 27, weight: .medium, design: .rounded))
+                    .font(.system(size: 22, weight: .semibold, design: .rounded))
                     .foregroundStyle(palette.ink)
                 ctx.draw(ctx.resolve(text), at: Dial.point(Dial.labelR, Double(i) * 5), anchor: .center)
             }
@@ -354,28 +352,9 @@ struct DialFace: View {
                 ctx.draw(ctx.resolve(text), at: CGPoint(x: Dial.cx, y: Dial.cy + 66), anchor: .center)
             }
 
-            // Bouton central : joint sombre, index, capuchon nacré.
-            ctx.fill(circle(r: 31), with: .color(Color(hex: "#1d282d")))
-            ctx.fill(
-                Dial.rotatedRect(CGRect(x: -6, y: -47, width: 12, height: 26), radius: 6, units: units),
-                with: .color(Color(hex: "#b3d4dd"))
-            )
-            ctx.fill(
-                circle(r: 26),
-                with: .radialGradient(
-                    Gradient(stops: [
-                        .init(color: Color(hex: "#e4f2f6"), location: 0),
-                        .init(color: Color(hex: "#b3d4dd"), location: 0.55),
-                        .init(color: Color(hex: "#8db5c0"), location: 1)
-                    ]),
-                    center: CGPoint(x: Dial.cx - 6, y: Dial.cy - 9),
-                    startRadius: 0, endRadius: 34
-                )
-            )
-            ctx.fill(
-                Path(ellipseIn: CGRect(x: Dial.cx - 17, y: Dial.cy - 15, width: 20, height: 12)),
-                with: .color(.white.opacity(0.55))
-            )
+            // Bouton central : joint encre, capuchon blanc comme l'aiguille de l'app.
+            ctx.fill(circle(r: 31), with: .color(palette.ink))
+            ctx.fill(circle(r: 26), with: .color(.white))
         }
         .aspectRatio(1, contentMode: .fit)
         // Le cadran ne se lit pas de gauche à droite : en arabe aussi, 0 reste en haut.
@@ -451,9 +430,10 @@ struct ReadoutPill: View {
     }
 }
 
-/// Fine barre d'objectif, dans la couleur des statistiques de l'app.
+/// Fine barre de temps : la part restante du minuteur, sur la même échelle que le cadran.
 struct GoalBar: View {
-    let entry: PomodoroEntry
+    let fraction: Double
+    let color: Color
     let palette: Palette
 
     var body: some View {
@@ -461,33 +441,25 @@ struct GoalBar: View {
             ZStack(alignment: .leading) {
                 Capsule().fill(palette.track)
                 Capsule()
-                    .fill(entry.progress >= 1 ? Color(hex: "#56b27b") : palette.bar)
-                    .frame(width: geo.size.width * entry.progress)
+                    .fill(color)
+                    .frame(width: geo.size.width * fraction)
             }
         }
         .frame(height: 6)
     }
 }
 
-/// Objectif du jour : la barre, son libellé et le compte des minutes.
+/// Barre de temps sous le cadran : vide à l'arrêt, elle se vide avec le décompte.
 struct GoalRow: View {
     let entry: PomodoroEntry
     let palette: Palette
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            HStack(spacing: 4) {
-                Text(entry.progress >= 1 ? entry.state.labels.goalReached : entry.state.labels.today)
-                    .lineLimit(1)
-                Spacer(minLength: 4)
-                Text("\(entry.focusMinutes) / \(entry.state.goalMinutes) min")
-                    .monospacedDigit()
-                    .environment(\.layoutDirection, .leftToRight)
-            }
-            .font(.system(size: 11, weight: .semibold, design: .rounded))
-            .foregroundStyle(palette.muted)
-            GoalBar(entry: entry, palette: palette)
-        }
+        GoalBar(
+            fraction: entry.isActive ? min(1, entry.dialUnits / 60) : 0,
+            color: Color(hex: entry.state.timer.color),
+            palette: palette
+        )
     }
 }
 
@@ -587,7 +559,7 @@ struct PomodoroWidgetBundle: WidgetBundle {
     var body: some Widget {
         PomodoroWidget()
         // La Live Activity vit dans la même extension que le widget, et n'existe qu'à
-        // partir d'iOS 16.2 — l'extension, elle, demande déjà iOS 17.
+        // partir d'iOS 16.2 - l'extension, elle, demande déjà iOS 17.
         PomodoroLiveActivity()
     }
 }

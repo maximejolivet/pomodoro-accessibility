@@ -13,38 +13,63 @@
 /* Remonté contre les boutons : l'écart de 28 px de la scène l'isolerait du lecteur. */
 .state {
   margin: -18px 0 0;
+}
+
+/* Dans le boîtier, le libellé reste sous les boutons au lieu de passer derrière. */
+:host-context(.case-controls) .state {
+  margin: 14px 0 0;
+  color: #f3efe6;
+}
+
+.state {
   font-size: 13px;
   font-weight: 600;
   color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
+/* Démarrer : la grosse bulle de couleur, la première chose que l'enfant touche. */
 .btn-main {
   display: grid;
   place-items: center;
-  width: 76px;
-  height: 76px;
+  width: 88px;
+  height: 88px;
   padding: 0;
+  border: 0;
   border-radius: 50%;
+  box-shadow: 0 8px 0 var(--c-dark);
+}
+
+/* Appui : la bulle descend sur son arête. */
+.btn-main:active {
+  transform: translateY(6px);
+  box-shadow: 0 2px 0 var(--c-dark);
 }
 
 .btn-main svg {
   width: 34px;
   height: 34px;
-  fill: #fff;
-  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+  fill: #1d2b3a;
+  filter: none;
 }
 
 .btn-round {
-  --c: var(--neutral);
-  --c-dark: var(--neutral-edge);
+  /* Bulle blanche, contour encre épais : facile à repérer et à toucher. */
+  --c: var(--face);
+  --c-dark: var(--face);
   display: grid;
   place-items: center;
-  width: 56px;
-  height: 56px;
+  width: 64px;
+  height: 64px;
   padding: 0;
+  border: 0;
   border-radius: 50%;
+  box-shadow: 0 6px 0 var(--neutral-edge);
+}
+
+/* Appui : la bulle descend sur son arête. */
+.btn-round:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 var(--neutral-edge);
 }
 
 .btn-round svg {

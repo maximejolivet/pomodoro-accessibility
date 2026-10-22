@@ -31,7 +31,7 @@ export interface RoutineStepDraft {
 
 /**
  * Rappel en cours d'édition. L'heure y est la chaîne « HH:MM » de `<input type="time">`,
- * qui reste en 24 h quelle que soit la langue — c'est l'affichage qui se localise.
+ * qui reste en 24 h quelle que soit la langue - c'est l'affichage qui se localise.
  */
 export interface RoutineReminderDraft {
   enabled: boolean;
