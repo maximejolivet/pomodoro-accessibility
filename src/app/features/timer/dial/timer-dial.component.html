@@ -1,14 +1,17 @@
-<div
-  class="tilt-zone"
-  (pointermove)="onTilt($event)"
-  (pointerleave)="resetTilt()"
->
-  <div
-    class="device"
-    [style.--rx]="tiltX + 'deg'"
-    [style.--ry]="tiltY + 'deg'"
-  >
+<div class="tilt-zone">
+  <div class="case-shadow">
+  <div class="device">
     <div class="bezel">
+      <!-- Trait au bord du cadran : il se remplit à mesure que le temps passe. -->
+      <svg class="progress" viewBox="0 0 100 100" aria-hidden="true">
+        <circle class="progress-track" cx="50" cy="50" r="48" />
+        <path
+          *ngFor="let arc of progressArcs; trackBy: trackArc"
+          class="progress-seg"
+          [attr.d]="arc.d"
+          [attr.stroke]="arc.color"
+        />
+      </svg>
       <button
         type="button"
         class="face"
@@ -41,9 +44,9 @@
               <stop offset="100%" [attr.stop-color]="selectedPreset.color" />
             </radialGradient>
             <radialGradient id="knobGrad" cx="38%" cy="32%" r="75%">
-              <stop offset="0%" stop-color="#e4f2f6" />
-              <stop offset="55%" stop-color="#b3d4dd" />
-              <stop offset="100%" stop-color="#8db5c0" />
+              <stop offset="0%" stop-color="#ffffff" />
+              <stop offset="55%" stop-color="#eef3f6" />
+              <stop offset="100%" stop-color="#c9d6dc" />
             </radialGradient>
             <filter id="plateShadow" x="-20%" y="-20%" width="140%" height="140%">
               <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#1c1030" flood-opacity="0.3" />
@@ -81,20 +84,20 @@
           <g [attr.transform]="dialTransform">
           <!-- Effet d'arrière-plan de 0 à 20 -->
           <g mask="url(#bgFadeMask)">
-            <g filter="url(#bandRelief)">
-              <path [attr.d]="bgFillPath" fill="url(#bandGrad)" />
+            <g>
+              <path [attr.d]="bgFillPath" style="fill: var(--band-in)" />
               <path [attr.d]="bgArcPath" class="bg-line" />
             </g>
-            <path [attr.d]="bgHighlightPath" class="bg-highlight" filter="url(#softGlow)" />
+            <path [attr.d]="bgHighlightPath" class="bg-highlight" />
           </g>
 
           <!-- Anneau de couleurs -->
-          <path *ngFor="let s of segments" [attr.d]="s.d" [attr.fill]="s.color" />
+          <path *ngFor="let s of segments; let i = index" [attr.d]="s.d" [attr.fill]="segmentFill(i)" />
 
           <!-- Disque : voile sur l'anneau puis plateau plein au centre -->
-          <path [attr.d]="diskOuterPath" [attr.fill]="selectedPreset.color" class="disk-veil" />
-          <g filter="url(#plateShadow)">
-            <path [attr.d]="diskInnerPath" fill="url(#diskGrad)" />
+          <path [attr.d]="diskOuterPath" [attr.fill]="tabColor" class="disk-veil" />
+          <g>
+            <path [attr.d]="diskInnerPath" [attr.fill]="tabColor" />
           </g>
 
           <!-- Séparateurs blancs -->
@@ -104,6 +107,14 @@
             class="separator"
           />
 
+          <!-- Graduations de l'horloge : 60, épaisses toutes les 5 minutes -->
+          <line
+            *ngFor="let t of ticks"
+            [attr.x1]="t.x1" [attr.y1]="t.y1" [attr.x2]="t.x2" [attr.y2]="t.y2"
+            class="tick"
+            [class.major]="t.major"
+          />
+
           <!-- Bord du disque -->
           <line
             *ngIf="displayMinutes > 0 && displayMinutes < 60"
@@ -111,7 +122,8 @@
             class="edge"
           />
           <g [attr.transform]="'translate(' + cx + ' ' + cy + ') rotate(' + edgeAngle + ')'">
-            <rect x="-14" y="-160.5" width="28" height="7" rx="3.5" class="disk-tab" />
+            <!-- Repère : haut carré, bas arrondi en demi-cercle -->
+            <path class="disk-tab" d="M -30 -210 L 30 -210 L 30 -180 A 30 30 0 0 1 -30 -180 Z" [style.fill]="tabColor" />
           </g>
 
           <!-- Chiffres -->
@@ -119,6 +131,7 @@
             *ngFor="let t of labels"
             [attr.x]="t.x" [attr.y]="t.y"
             class="label"
+            [class.on-tab]="isOnTab(t.text)"
           >{{ t.text }}</text>
 
           <!--
@@ -130,38 +143,47 @@
           </text>
 
           <!-- Bouton central -->
-          <g filter="url(#knobShadow)">
+          <g>
             <circle [attr.cx]="cx" [attr.cy]="cy" r="31" class="gasket" />
             <g [attr.transform]="'translate(' + cx + ' ' + cy + ') rotate(' + edgeAngle + ')'">
-              <rect x="-6" y="-47" width="12" height="26" rx="6" fill="url(#knobGrad)" />
+              <rect x="-6" y="-47" width="12" height="26" rx="6" fill="#ffffff" />
             </g>
-            <circle [attr.cx]="cx" [attr.cy]="cy" r="26" fill="url(#knobGrad)" />
+            <circle [attr.cx]="cx" [attr.cy]="cy" r="26" fill="#ffffff" />
             <ellipse [attr.cx]="cx - 7" [attr.cy]="cy - 9" rx="10" ry="6" class="knob-shine" />
           </g>
           </g>
         </svg>
       </button>
     </div>
+    <!-- Durée sous le cadran, à l'intérieur du boîtier. -->
+    <div class="case-readout">
+      <app-timer-readout />
+    </div>
+    <!-- Commandes sous la durée, à l'intérieur du boîtier. -->
+    <div class="case-controls">
+      <app-timer-controls (openSettings)="openSettings.emit()" />
+    </div>
+    <!--
+      Verrou dans le coin bas du boîtier : hors du cadran qu'il protège, pour qu'on ne le touche
+      pas en le réglant. Icône seule, nommée pour les lecteurs d'écran et les infobulles.
+    -->
+    <button
+      type="button"
+      class="lock"
+      [class.on]="locked"
+      [attr.aria-label]="i18n.t(locked ? 'action.unlock' : 'action.lock')"
+      [attr.title]="i18n.t(locked ? 'action.unlock' : 'action.lock')"
+      [style.--c]="selectedPreset.color"
+      (click)="toggleLock()"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5" />
+        <path *ngIf="locked" d="M8 10.5V7a4 4 0 0 1 8 0v3.5" />
+        <path *ngIf="!locked" d="M8 10.5V7a4 4 0 0 1 7.6-1.7" />
+      </svg>
+    </button>
+  </div>
   </div>
 
-  <!--
-    Verrou posé au bas du boîtier : hors du cadran qu'il protège, pour qu'on ne le touche
-    pas en le réglant. Icône seule, nommée pour les lecteurs d'écran et les infobulles.
-  -->
-  <button
-    type="button"
-    class="lock"
-    [class.on]="locked"
-    [attr.aria-label]="i18n.t(locked ? 'action.unlock' : 'action.lock')"
-    [attr.title]="i18n.t(locked ? 'action.unlock' : 'action.lock')"
-    [style.--c]="selectedPreset.color"
-    (click)="toggleLock()"
-  >
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5" />
-      <path *ngIf="locked" d="M8 10.5V7a4 4 0 0 1 8 0v3.5" />
-      <path *ngIf="!locked" d="M8 10.5V7a4 4 0 0 1 7.6-1.7" />
-    </svg>
-  </button>
 </div>
 <span id="dial-hint" class="sr-only">{{ i18n.t('action.dialHint') }}</span>

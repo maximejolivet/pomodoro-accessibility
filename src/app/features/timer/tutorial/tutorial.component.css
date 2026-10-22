@@ -16,8 +16,7 @@
   z-index: 1100;
   display: flex;
   justify-content: center;
-  padding:
-    calc(12px + env(safe-area-inset-top))
+  padding: calc(12px + env(safe-area-inset-top))
     calc(16px + env(safe-area-inset-right))
     calc(20px + env(safe-area-inset-bottom))
     calc(16px + env(safe-area-inset-left));
@@ -55,14 +54,14 @@
 
 /*
  * La fenêtre sur la bande : une seule vue visible, les autres à côté. Elle prend toute
- * la hauteur libre, et la vue s'y centre — les boutons restent en bas, à portée du pouce.
+ * la hauteur libre, et la vue s'y centre - les boutons restent en bas, à portée du pouce.
  */
 .viewport {
   flex: 1;
   display: flex;
   /*
    * `safe` : quand la vue est plus haute que la place (téléphone couché), le centrage
-   * rognerait le haut du pictogramme — l'alignement repart alors du début, et ce qui
+   * rognerait le haut du pictogramme - l'alignement repart alors du début, et ce qui
    * dépasse se fait défiler au lieu d'être coupé.
    */
   align-items: safe center;
@@ -82,7 +81,7 @@
 
 /* `:host-context` et non `[dir='rtl'] .track` : l'attribut est sur `<html>`, hors du
    composant, et l'encapsulation Angular ne laisserait jamais le sélecteur correspondre. */
-:host-context([dir='rtl']) .track {
+:host-context([dir="rtl"]) .track {
   transform: translateX(calc(var(--i) * 100%));
 }
 
@@ -101,13 +100,38 @@
   display: grid;
   place-items: center;
   /* Aussi grand que l'écran le permet : plein sur un téléphone debout, réduit couché */
-  width: clamp(72px, 15vh, 132px);
-  height: clamp(72px, 15vh, 132px);
+  width: clamp(120px, 26vh, 216px);
+  height: clamp(120px, 26vh, 216px);
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--c) 45%, #fff), var(--c));
-  box-shadow: 0 5px 0 color-mix(in srgb, var(--c) 68%, #000), 0 10px 20px rgba(25, 55, 65, 0.2);
-  font-size: clamp(34px, 7vh, 64px);
+  background: radial-gradient(
+    circle at 35% 30%,
+    color-mix(in srgb, var(--c) 45%, #fff),
+    var(--c)
+  );
+  box-shadow:
+    0 6px 0 color-mix(in srgb, var(--c) 68%, #000),
+    0 12px 24px rgba(25, 55, 65, 0.2);
+  /* Le pictogramme occupe la moitié du cercle : 1em = 50 % de la largeur ci-dessus */
+  font-size: clamp(60px, 13vh, 108px);
   line-height: 1;
+  color: #fff;
+}
+
+/*
+ * `app-icon` pose sa couleur de catégorie en style inline, qui l'emporte sur l'héritage :
+ * il faut donc `::ng-deep` et `!important` pour passer le pictogramme en blanc.
+ */
+.slide-icon ::ng-deep .icon {
+  color: #fff !important;
+}
+
+/*
+ * Le SVG Lucide porte `width="24"` en attribut et ne reçoit pas le style de `app-icon`
+ * (injecté en `innerHTML`, hors encapsulation) : sans cette règle, il reste à 24 px.
+ */
+.slide-icon ::ng-deep .icon svg {
+  width: 100%;
+  height: 100%;
 }
 
 .slide-title {
@@ -147,12 +171,14 @@
 }
 
 .dot::before {
-  content: '';
+  content: "";
   width: 10px;
   height: 10px;
   border-radius: 50%;
   background: var(--muted);
-  transition: width 0.25s ease, background-color 0.25s ease;
+  transition:
+    width 0.25s ease,
+    background-color 0.25s ease;
 }
 
 .dot.active::before {
@@ -177,22 +203,28 @@
   min-height: 48px;
 }
 
+/*
+ * Le texte est blanc, et la couleur de la vue va du violet au jaune : assombrie de 35 %,
+ * elle tient 4,5:1 sur les cinq vues (le vert et le cyan pastel ne tenaient pas à nu).
+ */
 .btn-text {
   --c: inherit;
   padding: 11px 18px;
   font-size: 15px;
+  background: color-mix(in srgb, var(--c) 65%, #000);
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .btn-neutral {
   --c: var(--neutral);
   --c-dark: var(--neutral-edge);
+  background: var(--c);
   color: var(--muted-strong);
   text-shadow: none;
 }
 
 /* Première vue : « Précédent » ne mène nulle part, mais reste atteignable et annoncé. */
-.tutorial-actions button[aria-disabled='true'] {
+.tutorial-actions button[aria-disabled="true"] {
   opacity: 0.45;
   pointer-events: none;
 }

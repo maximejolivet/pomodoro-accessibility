@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 /**
  * Tests de non-régression d'accessibilité : ils démarrent l'app et la parcourent
- * comme un utilisateur (clavier, focus, contrastes) — voir tests/a11y.spec.ts.
+ * comme un utilisateur (clavier, focus, contrastes) - voir tests/a11y.spec.ts.
  */
 export default defineConfig({
   testDir: './tests',

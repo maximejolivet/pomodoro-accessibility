@@ -14,15 +14,15 @@ export interface TutorialSlide {
  *
  * Cinq, et pas dix : un tutoriel long est un tutoriel passé, et l'application s'adresse
  * d'abord à des personnes que la lecture fatigue ou que l'attention lâche. L'ordre suit
- * celui de la découverte — voir le temps, le régler, le lancer, puis ce qu'il y a autour.
+ * celui de la découverte - voir le temps, le régler, le lancer, puis ce qu'il y a autour.
  *
  * Le pictogramme vient avant le titre, comme dans les routines : il porte l'idée pour
  * qui ne lit pas encore, ou plus.
  */
 export const TUTORIAL_SLIDES: readonly TutorialSlide[] = [
-  { icon: 'info', titleKey: 'tutorial.1.title', textKey: 'tutorial.1.text', color: '#8b6fd6' },
-  { icon: 'play', titleKey: 'tutorial.2.title', textKey: 'tutorial.2.text', color: '#f3a52b' },
+  { icon: 'clock', titleKey: 'tutorial.1.title', textKey: 'tutorial.1.text', color: '#8b6fd6' },
+  { icon: 'edit', titleKey: 'tutorial.2.title', textKey: 'tutorial.2.text', color: '#f3a52b' },
   { icon: 'play', titleKey: 'tutorial.3.title', textKey: 'tutorial.3.text', color: '#56b27b' },
-  { icon: 'settings', titleKey: 'tutorial.4.title', textKey: 'tutorial.4.text', color: '#5aa9c4' },
-  { icon: 'warning', titleKey: 'tutorial.5.title', textKey: 'tutorial.5.text', color: '#d63f4f' }
+  { icon: 'sunrise', titleKey: 'tutorial.4.title', textKey: 'tutorial.4.text', color: '#5aa9c4' },
+  { icon: 'hearing', titleKey: 'tutorial.5.title', textKey: 'tutorial.5.text', color: '#d63f4f' }
 ];

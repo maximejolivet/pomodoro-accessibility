@@ -23,12 +23,12 @@ import java.util.Locale;
 
 /**
  * Le décompte qui reste sous les yeux : une notification permanente, muette, dont le
- * chronomètre s'égrène tout seul — l'écran verrouillé dit le temps restant sans qu'on
+ * chronomètre s'égrène tout seul - l'écran verrouillé dit le temps restant sans qu'on
  * déverrouille, et sans que l'app ait à tourner.
  *
  * Elle ne remplace pas les alertes de palier : celles-là sonnent et s'en vont, celle-ci se
  * tait et demeure. D'où un canal à part, en importance basse : ni son, ni vibration, ni
- * pastille — elle ne doit jamais couvrir ce qui, lui, doit s'entendre.
+ * pastille - elle ne doit jamais couvrir ce qui, lui, doit s'entendre.
  */
 @CapacitorPlugin(name = "LiveStatus")
 public class LiveStatusPlugin extends Plugin {

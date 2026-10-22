@@ -12,6 +12,24 @@
 }
 
 /*
+ * L'épaisseur du boîtier et son ombre suivent le nuage : un box-shadow serait découpé
+ * par le clip-path, donc elles passent par un filtre posé sur un conteneur autour du seul boîtier.
+ */
+.case-shadow {
+  filter: none;
+}
+
+.tick {
+  stroke: #b9b2a4;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.tick.major {
+  stroke-width: 3;
+}
+
+/*
  * Verrou du cadran : pour les mains qui tremblent et les paumes posées, un contact
  * involontaire ne peut plus changer la durée ni effacer la session en cours.
  * Cible de 44 px (WCAG 2.5.8), posée sous le boîtier plutôt que sur le cadran.
@@ -29,7 +47,7 @@
   border: 1px solid var(--surface-edge);
   border-radius: 50%;
   background: var(--surface-hi);
-  box-shadow: 0 2px 6px var(--band-shadow);
+  box-shadow: none;
   color: var(--muted);
   cursor: pointer;
   transform: translateX(-50%);
@@ -60,39 +78,91 @@
 .device {
   --rx: 0deg;
   --ry: 0deg;
-  width: min(calc(100vw - 32px), 560px, calc(100dvh - 330px));
+  /* Même relief que le bouton principal, en gris : arête foncée dessous. */
+  --c: #1d2b3a;
+  --c-dark: color-mix(in srgb, var(--c) 84%, #000);
+  /* Hauteur = boîtier + durée + commandes : la largeur suit donc la hauteur disponible. */
+  --dw: min(calc(100vw - 32px), 560px, calc((100dvh - 200px) / 1.4));
+  width: var(--dw);
   min-width: 280px;
-  aspect-ratio: 1;
-  border-radius: 22%;
-  padding: 4.2%;
-  background:
-    linear-gradient(145deg, var(--bumper-light) 0%, var(--bumper) 45%, var(--bumper-dark) 100%);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* Haut en demi-cercle, bas plat avec de légers coins, comme un réveil. */
+  /* Le haut est un vrai demi-cercle : son rayon vaut la moitié de la largeur. */
+  border-radius: calc(var(--dw) / 2) calc(var(--dw) / 2) 6% 6%;
+  /* Le bas garde la place de la durée et des commandes, à l'intérieur du boîtier. */
+  padding: 4.2% 4.2% 3%;
+  /* Les marges de la base se calculent sur la largeur du boîtier (unités cqw). */
+  container-type: inline-size;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--c) 80%, #fff),
+    var(--c)
+  );
   box-shadow:
-    inset 0 3px 2px rgba(255, 255, 255, 0.75),
-    inset 3px 0 3px rgba(255, 255, 255, 0.35),
-    inset 0 -5px 8px rgba(30, 70, 85, 0.3),
-    0 1px 0 var(--bumper-dark),
-    0 3px 0 var(--bumper-dark),
-    0 5px 0 var(--bumper-edge),
-    0 8px 0 var(--bumper-edge),
-    0 11px 0 var(--bumper-deep),
-    0 22px 28px rgba(25, 55, 65, 0.28),
-    0 44px 60px rgba(25, 55, 65, 0.22);
-  transform: rotateX(calc(8deg + var(--rx))) rotateY(var(--ry));
+    inset 0 2px 0 rgba(255, 255, 255, 0.4),
+    0 6px 0 var(--c-dark),
+    0 12px 20px rgba(25, 55, 65, 0.22);
+  transform: none;
   transform-style: preserve-3d;
   transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+/* Trait au bord du cadran, dans la marge du boîtier : il touche le cadran sans le recouvrir. */
+.progress {
+  position: absolute;
+  z-index: 2;
+  left: 1.45%;
+  top: 1.45%;
+  width: 97.1%;
+  height: 97.1%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.progress circle,
+.progress-seg {
+  fill: none;
+  stroke-width: 2.2;
+}
+
+.progress-track {
+  stroke: var(--bg-line);
+  opacity: 0.6;
+}
+
 .bezel {
+  position: relative;
   width: 100%;
-  height: 100%;
-  border-radius: 19%;
-  padding: 2.4%;
-  background: linear-gradient(160deg, var(--bezel-a), var(--bezel-b) 60%, var(--bezel-c));
-  box-shadow:
-    inset 0 -2px 3px rgba(255, 255, 255, 0.6),
-    inset 0 4px 8px rgba(30, 70, 85, 0.35),
-    0 1px 1px rgba(255, 255, 255, 0.6);
+  aspect-ratio: 1;
+  border-radius: 50% 50% 5% 5% / 50% 50% 5% 5%;
+  padding: 4.5%;
+  background: var(--bezel-b);
+  box-shadow: none;
+}
+
+/* La durée occupe le bas plat du boîtier, sous le cadran. */
+/* Sous le cadran, dans la base du boîtier : la base suit la taille de la durée et des commandes. */
+/* Pas de boîte propre : pilule et cycle sont rangés directement dans la colonne du boîtier. */
+.case-readout {
+  display: contents;
+}
+
+/* Verrou dans le coin bas droit du boîtier. */
+.device > .lock {
+  left: auto;
+  right: 6cqw;
+  bottom: 4cqw;
+  transform: none;
+}
+
+.case-controls {
+  order: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4cqw;
 }
 
 .face {
@@ -102,11 +172,9 @@
   height: 100%;
   padding: 0;
   border: 0;
-  border-radius: 16%;
-  background: radial-gradient(circle at 40% 30%, var(--face-hi) 0%, var(--face) 50%, var(--face-lo) 100%);
-  box-shadow:
-    inset 0 3px 7px rgba(20, 40, 50, 0.22),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  background: var(--face);
+  box-shadow: none;
   cursor: pointer;
   overflow: hidden;
   -webkit-tap-highlight-color: transparent;
@@ -116,13 +184,22 @@
 }
 
 .face::after {
-  content: '';
+  display: none;
+  content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
   background:
-    linear-gradient(125deg, rgba(255, 255, 255, var(--sheen)) 0%, rgba(255, 255, 255, 0) 32%),
-    linear-gradient(305deg, rgba(255, 255, 255, calc(var(--sheen) / 2)) 0%, rgba(255, 255, 255, 0) 20%);
+    linear-gradient(
+      125deg,
+      rgba(255, 255, 255, var(--sheen)) 0%,
+      rgba(255, 255, 255, 0) 32%
+    ),
+    linear-gradient(
+      305deg,
+      rgba(255, 255, 255, calc(var(--sheen) / 2)) 0%,
+      rgba(255, 255, 255, 0) 20%
+    );
   pointer-events: none;
 }
 
@@ -189,13 +266,26 @@
 
 .disk-tab {
   fill: var(--tab);
-  filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.35));
+}
+
+/* Contour du repère : haut, gauche et droite seulement. */
+.tab-edge {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 3;
+  stroke-linecap: butt;
+}
+
+/* Le chiffre sous l'aiguille est écrit sur le rond coloré : plus gros et en gras pour le contraste. */
+.label.on-tab {
+  font-size: 24px;
+  font-weight: 700;
 }
 
 .label {
-  font-size: 27px;
-  font-weight: 500;
-  fill: var(--ink);
+  font-size: 22px;
+  font-weight: 600;
+  fill: var(--dial-numeral);
   text-anchor: middle;
   dominant-baseline: central;
 }
@@ -232,27 +322,85 @@
      * Le cadran rend exactement ce que la bande de la pastille d'accessibilité
      * prend à la scène (40 px de padding bas au départ), quelle que soit
      * l'encoche : la page ne grandit pas. Passé le `min-width: 280px` du cadran,
-     * la soustraction ne peut plus suivre et seule la bande reste — inévitable
+     * la soustraction ne peut plus suivre et seule la bande reste - inévitable
      * sur les écrans très courts.
      */
-    width: min(calc(100vw - 32px), 560px, calc(100dvh - 330px - var(--pill-band) + 40px));
+    --dw: min(
+      calc(100vw - 32px),
+      560px,
+      calc(100dvh - 330px - var(--pill-band) + 40px)
+    );
+    width: var(--dw);
+  }
+}
+
+/*
+ * Portrait (téléphone, fenêtre haute) : le cadran ne remplit plus la largeur, il laisse
+ * des marges aux côtés et de la place au chrono et aux commandes.
+ */
+/*
+ * Téléphone couché : le cadran se cale sur la hauteur, sinon les commandes sortent de
+ * l'écran. Le minimum de 280 px ne s'applique pas ici, il ne tient pas en paysage.
+ */
+/* Sur téléphone, le cadran n'a aucun padding autour : le verrou est dans le boîtier. */
+@media (max-width: 640px) {
+  .tilt-zone {
+    width: 98%;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .tilt-zone .case-shadow {
+    width: 95vw;
+    margin: 0 auto;
+  }
+
+  /* Le boîtier prend toute la largeur de la zone, sans être réduit par la hauteur. */
+  .tilt-zone .device {
+    --dw: 95vw;
+    width: var(--dw);
+    min-width: 0;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .tilt-zone {
+    padding-bottom: 12px;
+  }
+
+  .device {
+    min-width: 0;
+    width: calc((100dvh - 150px) / 1.5);
+  }
+}
+
+@media (orientation: portrait) {
+  .device {
+    --dw: min(
+      calc(100vw - 96px),
+      420px,
+      calc(100dvh - 330px - var(--pill-band, 68px) + 40px)
+    );
+    width: var(--dw);
   }
 }
 
 /*
  * Mode table : le cadran prend ce que les commandes effacées lui laissent. En paysage, il
- * se cale sur la hauteur — c'est elle qui manque — et laisse la largeur au chrono.
+ * se cale sur la hauteur - c'est elle qui manque - et laisse la largeur au chrono.
  */
 :host-context(.table) .tilt-zone {
   padding: 4px 0 30px;
 }
 
 :host-context(.table) .device {
-  width: min(calc(100vw - 24px), calc(100dvh - 210px));
+  --dw: min(calc(100vw - 24px), calc(100dvh - 210px));
+  width: var(--dw);
 }
 
 @media (orientation: landscape) {
   :host-context(.table) .device {
-    width: min(calc(100dvh - 52px), calc(100vw - 340px));
+    --dw: min(calc(100dvh - 52px), calc(100vw - 340px));
+    width: var(--dw);
   }
 }

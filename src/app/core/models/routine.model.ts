@@ -3,8 +3,8 @@ import type { PresetKind } from './preset.model';
 
 /**
  * Étape d'une routine : un mode (nom, durée, couleur, nature) auquel s'ajoute un
- * pictogramme. C'est lui qui porte l'information pour qui ne lit pas — enfant,
- * personne dyslexique, personne avec une déficience intellectuelle — là où le nom
+ * pictogramme. C'est lui qui porte l'information pour qui ne lit pas - enfant,
+ * personne dyslexique, personne avec une déficience intellectuelle - là où le nom
  * reste le libellé lu par les lecteurs d'écran.
  *
  * La forme est volontairement celle d'un `Preset` : une étape se démarre, s'affiche
@@ -26,7 +26,7 @@ export interface RoutineStep {
  * Rappel d'une routine : l'heure à laquelle une notification vient la proposer, et les
  * jours où elle part.
  *
- * Une routine ne sert qu'à qui a pensé à ouvrir l'app à 7 h 30 — c'est-à-dire à qui en
+ * Une routine ne sert qu'à qui a pensé à ouvrir l'app à 7 h 30 - c'est-à-dire à qui en
  * avait le moins besoin. Ne pas remarquer qu'il est l'heure est justement le trouble
  * qu'on adresse : le rappel fait venir l'outil, au lieu d'attendre qu'on y pense.
  */
@@ -78,7 +78,7 @@ export interface Routine {
   rounds?: number;
   /**
    * Routine d'entraînement : tant qu'elle est chargée, la couleur de l'étape en cours
-   * irrigue toute la page — rouge à l'effort, vert au repos. On sait où l'on en est d'un
+   * irrigue toute la page - rouge à l'effort, vert au repos. On sait où l'on en est d'un
    * coup d'œil, de loin, le téléphone posé par terre.
    *
    * Porté par la routine et non par un réglage : une séance s'arme et se quitte, alors

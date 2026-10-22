@@ -8,7 +8,7 @@ Create a short launch-style brag video for Pomodoro Accessibilité, a visual tim
 
 - Composition directory: `brag-output/composition/`
 - Rendered video: `brag-output/brag.mp4`
-- Format: landscape — 1920x1080 (16:9)
+- Format: landscape - 1920x1080 (16:9)
 - Duration: 18 seconds
 - With voiceover narration (Kokoro)
 
@@ -27,7 +27,7 @@ Create a short launch-style brag video for Pomodoro Accessibilité, a visual tim
 
 ## Creative Direction
 
-- **Tone preset:** `polished` — serious, elegant, premium product film
+- **Tone preset:** `polished` - serious, elegant, premium product film
 - **Creative direction:** Quiet premium product film for accessible design
 - **Interpretation:** 
   - Pacing: unhurried, breathing room between scenes
@@ -39,16 +39,16 @@ Create a short launch-style brag video for Pomodoro Accessibilité, a visual tim
 - **Outro (16–18s):** The main timer centered with overlaid text: "Pomodoro Accessibilité," "For neurodivergent minds," "Available on iOS, Android, Web." Voice delivers the final promise warmly.
 - **Avoid:**
   - Generic SaaS language ("streamline," "optimize," "empower")
-  - Abstract filler visuals — every scene must show real UI or contribute to the story
-  - Unrelated visual redesign — use the app's actual colors, typography, and UI
+  - Abstract filler visuals - every scene must show real UI or contribute to the story
+  - Unrelated visual redesign - use the app's actual colors, typography, and UI
   - Fast-paced cuts or overwhelming motion; maintain calm throughout
 
 ## Visual Identity
 
 - **Background:** Soft gradient from light top (#f1f3f2) to light bottom (#d9e0e2); calm, accessible feel
-- **Text/Ink:** Dark blue-gray (#2f3336) — high contrast, readable
-- **Accent (stats):** Soft purple (#8b6fd6) — used for highlights and focus moments
-- **Primary color (dial):** Dusty blue (#a6ccd6 and variations) — the timer dial and UI elements
+- **Text/Ink:** Dark blue-gray (#2f3336) - high contrast, readable
+- **Accent (stats):** Soft purple (#8b6fd6) - used for highlights and focus moments
+- **Primary color (dial):** Dusty blue (#a6ccd6 and variations) - the timer dial and UI elements
 - **Display font:** Avenir Next or similar modern sans-serif (system fallback: -apple-system, BlinkMacSystemFont, 'Segoe UI')
 - **Body font:** Same as display (this is a minimal-text video; copy is short and impactful)
 - **Visual references from the project:**
@@ -63,11 +63,11 @@ Create a short launch-style brag video for Pomodoro Accessibilité, a visual tim
 
 Use the storyboard in `brag-output/brag-plan.md` as the creative contract. Summary:
 
-1. **Hook – The Problem** — 2.5s — Text: "Time doesn't feel like time." Voice explains the challenge for neurodivergent brains. Gradient background. Establish calm tone.
-2. **Reveal – The Solution** — 3s — Show the timer page on a phone. The disk is full, user taps to start, disk shrinks. Voice explains the elegance: visual, not numeric.
-3. **Features – Modes & Routines** — 5.5s — Three vignettes: (1) Modes sheet showing Pomodoro/Break/Focus presets (1.5–2s); (2) Routines playing through morning routine with icons (1.5–2s); (3) Stats page showing daily goal and 7-day tracking (1.5–2s).
-4. **Accessibility & Scope** — 5s — Quick cuts showing dark mode, landscape/table mode, widget on home screen. Text: "Built for accessibility," "For desks, classrooms, teams," "Right on your home screen."
-5. **Outro – The Promise** — 2s — Timer page centered. Overlaid text reveals: "Pomodoro Accessibilité," "For neurodivergent minds," "Available on iOS, Android, Web." Music resolves gently.
+1. **Hook – The Problem** - 2.5s - Text: "Time doesn't feel like time." Voice explains the challenge for neurodivergent brains. Gradient background. Establish calm tone.
+2. **Reveal – The Solution** - 3s - Show the timer page on a phone. The disk is full, user taps to start, disk shrinks. Voice explains the elegance: visual, not numeric.
+3. **Features – Modes & Routines** - 5.5s - Three vignettes: (1) Modes sheet showing Pomodoro/Break/Focus presets (1.5–2s); (2) Routines playing through morning routine with icons (1.5–2s); (3) Stats page showing daily goal and 7-day tracking (1.5–2s).
+4. **Accessibility & Scope** - 5s - Quick cuts showing dark mode, landscape/table mode, widget on home screen. Text: "Built for accessibility," "For desks, classrooms, teams," "Right on your home screen."
+5. **Outro – The Promise** - 2s - Timer page centered. Overlaid text reveals: "Pomodoro Accessibilité," "For neurodivergent minds," "Available on iOS, Android, Web." Music resolves gently.
 
 **Total: 18 seconds.**
 
@@ -79,7 +79,7 @@ Use the storyboard in `brag-output/brag-plan.md` as the creative contract. Summa
   - 2.5–11s: Music holds steady, slightly warmer as solution and features are revealed.
   - 11–16s: Music holds with subtle progression as scope widens.
   - 16–18s: Music resolves and fades gently as voiceover delivers final promise.
-- **Music:** Happy Beats Business Moves Vol. 11 (warm, accessible, calm instrumental — ~1.7 MB, fits the 18s timeline)
+- **Music:** Happy Beats Business Moves Vol. 11 (warm, accessible, calm instrumental - ~1.7 MB, fits the 18s timeline)
   - Path: `<skill-dir>/assets/music/happy-beats-business-moves-vol-11-by-ende-dot-app.mp3`
   - Credit: Ende.app (CC-licensed)
 - **Music treatment:** 
@@ -116,7 +116,7 @@ Use the storyboard in `brag-output/brag-plan.md` as the creative contract. Summa
 > "For many neurodivergent minds, an hour and ten minutes feel the same. Numbers don't help. Neither does watching the clock."
 
 **Scene 2 (2.5–5.5s):**
-> "Pomodoro Accessibilité shows you the time remaining as it shrinks. One glance—no reading, no math. Just time you can see."
+> "Pomodoro Accessibilité shows you the time remaining as it shrinks. One glance-no reading, no math. Just time you can see."
 
 **Scene 3a (5.5–7.5s):**
 > "Create your own modes. Pomodoro. Breaks. Focus sessions. Each one remembers your choices."

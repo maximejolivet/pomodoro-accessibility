@@ -15,7 +15,7 @@ const SWIPE_PX = 50;
  * fois au premier lancement.
  *
  * Il tient dans les mêmes contraintes que le reste : un pictogramme avant le texte pour
- * qui ne lit pas, du texte court, aucune avance automatique (WCAG 2.2.2 — on n'impose
+ * qui ne lit pas, du texte court, aucune avance automatique (WCAG 2.2.2 - on n'impose
  * pas son rythme à quelqu'un qui lit lentement), et trois façons d'avancer : le doigt,
  * les boutons, le clavier. Il se passe d'un appui, et se revoit depuis les réglages.
  */
@@ -43,7 +43,7 @@ export class TutorialComponent {
 
   /**
    * Ce que le lecteur d'écran entend au changement de vue : le rang et le titre, pas
-   * le texte entier — il est juste là, lisible en parcourant la vue, et l'entendre deux
+   * le texte entier - il est juste là, lisible en parcourant la vue, et l'entendre deux
    * fois ne renseigne personne.
    */
   readonly liveLabel = computed(() =>

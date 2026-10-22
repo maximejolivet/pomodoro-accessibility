@@ -1,18 +1,16 @@
-import { ApplicationConfig, APP_INITIALIZER, importProvidersFrom } from '@angular/core';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
+import { ApplicationConfig } from '@angular/core';
+import { provideRouter, withHashLocation, withInMemoryScrolling } from '@angular/router';
 import { appRoutes } from './app.routes';
-import { IconsService } from './core/services/icons.service';
+
+// En file:// (app Electron), les URL en chemin ne se rechargent pas : on passe en hash
+const isFileProtocol = typeof window !== 'undefined' && window.location.protocol === 'file:';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(appRoutes, withInMemoryScrolling({ scrollPositionRestoration: 'top' })),
-    provideHttpClient(),
-    {
-      provide: APP_INITIALIZER,
-      useFactory: (iconsService: IconsService) => () => iconsService.preloadIcons(),
-      deps: [IconsService],
-      multi: true
-    }
+    provideRouter(
+      appRoutes,
+      withInMemoryScrolling({ scrollPositionRestoration: 'top' }),
+      ...(isFileProtocol ? [withHashLocation()] : []),
+    )
   ]
 };

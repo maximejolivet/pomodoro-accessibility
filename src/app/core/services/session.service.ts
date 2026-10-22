@@ -1,5 +1,4 @@
 import { Injectable, computed, effect, inject, signal, untracked } from '@angular/core';
-import { App } from '@capacitor/app';
 import { MIN_RECORDED_SECONDS } from '../constants/history.constants';
 import {
   COUNTDOWN_FROM, CUE_MS, EXTRA_SECONDS, LATE_ALERT_SECONDS, LONG_BREAK_EVERY, MAX_MINUTES,
@@ -21,6 +20,7 @@ import { HapticsService } from './haptics.service';
 import { HistoryService } from './history.service';
 import { KeepAwakeService } from './keep-awake.service';
 import { NotificationService } from './notification.service';
+import { AppStateService } from './app-state.service';
 import { PreferencesService } from './preferences.service';
 import { PresetService } from './preset.service';
 import { RoutineService } from './routine.service';
@@ -48,6 +48,7 @@ export class SessionService {
   private readonly haptics = inject(HapticsService);
   private readonly speech = inject(SpeechService);
   private readonly notifications = inject(NotificationService);
+  private readonly appState = inject(AppStateService);
   private readonly keepAwake = inject(KeepAwakeService);
   private readonly widget = inject(WidgetService);
   private readonly live = inject(LiveStatusService);
@@ -94,8 +95,8 @@ export class SessionService {
   readonly visualCue = signal<VisualCue | null>(null);
 
   /**
-   * Cadran verrouillé. Il neutralise tout ce qui peut faire *perdre* une session — réglage
-   * au doigt, au clavier, boutons − / +, remise à zéro — et laisse Démarrer / Pause : une
+   * Cadran verrouillé. Il neutralise tout ce qui peut faire *perdre* une session - réglage
+   * au doigt, au clavier, boutons − / +, remise à zéro - et laisse Démarrer / Pause : une
    * pause involontaire se rattrape, une remise à zéro involontaire ne se rattrape pas.
    */
   readonly locked = this.prefs.locked;
@@ -112,7 +113,7 @@ export class SessionService {
   /**
    * Unité du cadran. Une étape d'entraînement dure vingt secondes : sur une graduation
    * d'une heure elle ne se voit pas, sur une graduation d'une minute elle se vide sous
-   * les yeux. C'est la durée réglée qui décide, et non le temps restant — sinon le cadran
+   * les yeux. C'est la durée réglée qui décide, et non le temps restant - sinon le cadran
    * changerait d'unité dans la dernière minute d'un Pomodoro.
    */
   readonly dialUnit = computed<'seconds' | 'minutes'>(() =>
@@ -135,13 +136,13 @@ export class SessionService {
 
   /**
    * Mode sport : la routine chargée est un entraînement. La page prend alors la couleur
-   * de l'étape en cours, et le chrono grossit — on lit sa séance de loin, en bougeant.
+   * de l'étape en cours, et le chrono grossit - on lit sa séance de loin, en bougeant.
    */
   readonly sportMode = computed(() => this.activeRoutine()?.workout === true);
 
   /**
    * Mode table : le téléphone posé debout sur un bureau devient un vrai minuteur visuel,
-   * lisible à deux mètres. Le cadran prend tout, le reste s'efface — il ne demeure que
+   * lisible à deux mètres. Le cadran prend tout, le reste s'efface - il ne demeure que
    * Démarrer / Pause, le verrou, et de quoi sortir.
    *
    * C'est un état de vue, pas une préférence : on n'ouvre pas l'app en mode table trois
@@ -169,7 +170,7 @@ export class SessionService {
 
   /**
    * « Cycle n/4 » pendant une session de travail, ou « Tour 2 sur 8 » dans une routine
-   * répétée : c'est la même place à l'écran, et la même question — où en suis-je dans
+   * répétée : c'est la même place à l'écran, et la même question - où en suis-je dans
    * ce qui se répète ?
    */
   readonly cycleLabel = computed<string | null>(() => {
@@ -194,7 +195,7 @@ export class SessionService {
   private manualChange = false;
 
   /**
-   * Paliers de la session en cours, calculés sur la durée annoncée — celle qui a été
+   * Paliers de la session en cours, calculés sur la durée annoncée - celle qui a été
    * réglée au départ, et non le temps restant : un réglage au doigt en cours de route ne
    * déplace pas les paliers déjà franchis.
    *
@@ -271,7 +272,7 @@ export class SessionService {
     /**
      * Les rappels vivent dans le système, qui ne sait pas qu'une routine a changé de nom,
      * d'heure, ni que le son a été coupé : ils sont reprogrammés à chaque fois que l'un
-     * de ces trois éléments change — et une première fois au démarrage.
+     * de ces trois éléments change - et une première fois au démarrage.
      */
     effect(() => {
       const reminders = this.reminders();
@@ -282,7 +283,7 @@ export class SessionService {
     /**
      * Rappel touché : la routine est armée sur le cadran, prête à démarrer, mais rien ne
      * part tout seul. Un décompte qui se lance sans qu'on l'ait touché est une source
-     * d'anxiété — le rappel propose, il n'impose pas.
+     * d'anxiété - le rappel propose, il n'impose pas.
      */
     this.notifications.reminderTapped$.subscribe(routineId => {
       const routine = this.routineService.byId(routineId);
@@ -290,7 +291,7 @@ export class SessionService {
     });
 
     // Téléphone verrouillé / app en arrière-plan : notifications locales ; au retour, on les annule
-    App.addListener('appStateChange', ({ isActive }) => {
+    this.appState.isActive$.subscribe(isActive => {
       if (isActive) {
         this.notifications.cancelAll();
         this.keepAwake.refresh();
@@ -346,7 +347,7 @@ export class SessionService {
   /**
    * Entre ou sort du mode table. L'écran y reste allumé quoi qu'en dise le réglage : un
    * minuteur posé sur une table qui s'éteint au bout d'une minute ne sert à rien. En
-   * sortant, on rend la main au réglage — et au décompte, s'il tourne.
+   * sortant, on rend la main au réglage - et au décompte, s'il tourne.
    */
   setTableMode(on: boolean): void {
     this.tableMode.set(on);
@@ -394,7 +395,7 @@ export class SessionService {
   }
 
   /**
-   * Va directement à une étape — la suivante quand elle est déjà faite, la précédente
+   * Va directement à une étape - la suivante quand elle est déjà faite, la précédente
    * quand on veut la refaire. C'est la seule façon de sortir d'une étape sans attendre
    * la fin, et elle passe par la bande, où chaque étape est un bouton. Le verrou la
    * neutralise : elle abandonne l'étape en cours, comme la remise à zéro.
@@ -498,7 +499,7 @@ export class SessionService {
   /**
    * Ajoute ou retire des minutes à partir de la valeur affichée : flèches du clavier et
    * boutons − / +, seule façon de régler la durée sans glisser sur le cadran (WCAG 2.5.7).
-   * `speak` annonce la nouvelle valeur — inutile depuis le cadran, qui est un curseur et
+   * `speak` annonce la nouvelle valeur - inutile depuis le cadran, qui est un curseur et
    * dont le lecteur d'écran lit déjà `aria-valuetext`.
    */
   stepMinutes(delta: number, speak = false): void {
@@ -696,7 +697,7 @@ export class SessionService {
    * Dernières secondes d'une étape courte : un tic, une impulsion et un éclat par seconde,
    * et la suite annoncée un peu avant.
    *
-   * Un effort de vingt secondes ne reçoit aucun palier — ils se calculent en minutes, et
+   * Un effort de vingt secondes ne reçoit aucun palier - ils se calculent en minutes, et
    * le premier tomberait après le carillon. Ce décompte est ce qui permet de finir son
    * effort sans regarder l'écran, et de savoir ce qui vient sans l'avoir lu.
    */
@@ -852,7 +853,7 @@ export class SessionService {
   /**
    * Transmet l'état affiché (mode, fin du décompte, objectif du jour) aux deux surfaces qui
    * le montrent hors de l'app : le widget de l'écran d'accueil, et le décompte permanent de
-   * l'écran verrouillé. Même état, deux endroits — d'où un seul objet, construit une fois.
+   * l'écran verrouillé. Même état, deux endroits - d'où un seul objet, construit une fois.
    */
   private syncWidget(): void {
     const endAt = this.timer.endTime;
@@ -902,7 +903,7 @@ export class SessionService {
   /**
    * Dit le temps restant à voix haute quand le décompte franchit une minute ronde : aux
    * trois paliers, ou à chacune, selon le réglage. La voix est le seul canal qui donne la
-   * valeur elle-même — le cadran demande de voir, les sons de palier demandent de savoir
+   * valeur elle-même - le cadran demande de voir, les sons de palier demandent de savoir
    * lequel vient de sonner.
    */
   private speakRemaining(previous: number, current: number): void {

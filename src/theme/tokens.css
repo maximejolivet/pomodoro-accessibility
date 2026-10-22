@@ -3,33 +3,39 @@
  * pages ; le thème sombre les redéfinit dans dark.css.
  */
 app-root {
-  --bumper-light: #c6e2e9;
-  --bumper: #a6ccd6;
-  --bumper-dark: #7fa9b4;
-  --bumper-edge: #6f98a3;
-  --face: #fbfbf8;
-  --ink: #2f3336;
-  --bg-top: #f1f3f2;
-  --bg-bottom: #d9e0e2;
-  --bg-glow: #ffffff;
-  --bumper-deep: #628b96;
-  --bezel-a: #d8edf2;
-  --bezel-b: #b4d5de;
-  --bezel-c: #9cc2cc;
-  --face-hi: #ffffff;
-  --face-lo: #eceee9;
+  /* Boîtier noir, comme une montre connectée */
+  --bumper-light: #3a3a3a;
+  --bumper: #1f1f1f;
+  --bumper-dark: #161616;
+  --bumper-edge: #0d0d0d;
+  /* Encre et papier : fond papier, texte encre, une seule couleur d'action */
+  --face: #f5f2ea;
+  --ink: #1d2b3a;
+  --dial-numeral: #1d2b3a;
+  --bg-top: #f5f2ea;
+  --bg-bottom: #f5f2ea;
+  --bg-glow: #f5f2ea;
+  --bumper-deep: #000000;
+  /* Bordure noire, comme le boîtier */
+  --bezel-a: #2a2a2a;
+  --bezel-b: #e4ddcc;
+  --bezel-c: #0a0a0a;
+  --face-hi: #fbfaf6;
+  --face-lo: #e6e1d3;
   --sheen: 0.55;
-  --band-in: #f1f3f1;
-  --band-out: #f7f8f6;
+  /* Arc des 0 à 20 minutes : vert un peu plus soutenu que le cadran */
+  --band-in: #e4ddcc;
+  --band-out: #ebe5d7;
   --band-shadow: rgba(40, 60, 70, 0.22);
-  --bg-line: #c2cacd;
-  --bg-highlight: #ffffff;
-  --tab: #1d282d;
+  --bg-line: #b0a793;
+  --bg-highlight: rgba(255, 255, 255, 0.25);
+  /* Repère sombre, comme l'aiguille de la montre */
+  --tab: #141414;
   --surface-hi: #ffffff;
   --surface-lo: #eef1f1;
   --surface-edge: #cfd6d8;
-  --muted: #5f6a6f;
-  --muted-strong: #3d4449;
+  --muted: #5b6b7a;
+  --muted-strong: #2e3d4d;
   --neutral: #e6eaeb;
   --neutral-edge: #b9c3c6;
   --range-bg: #dfe5e7;
@@ -41,5 +47,5 @@ app-root {
   --switch-edge: #7e888d;
   color-scheme: light;
   display: block;
-  font-family: 'Avenir Next', Avenir, 'Nunito Sans', 'Segoe UI', system-ui, sans-serif;
+  font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
 }

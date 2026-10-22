@@ -2,7 +2,7 @@
  * Motifs de vibration, jumeaux des motifs sonores de `sound-patterns.ts` : même
  * progression du discret à l'insistant à mesure que la fin approche, mais dans la main.
  *
- * C'est le seul canal qui reste à une personne sourde-aveugle — la voix ne l'atteint pas,
+ * C'est le seul canal qui reste à une personne sourde-aveugle - la voix ne l'atteint pas,
  * le cadran et le signal visuel non plus. Il sert aussi à prévenir sans rien montrer ni
  * faire entendre : en réunion, en cours, en open space.
  *

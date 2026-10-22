@@ -10,7 +10,7 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 /**
  * Transmet l'état du minuteur au widget : JSON écrit dans les préférences de l'app, puis
  * redessin des widgets posés. Le jumeau du `WidgetBridgePlugin.swift` d'iOS, au détail près
- * qu'Android n'a pas besoin d'App Group — le widget vit dans le même processus que l'app.
+ * qu'Android n'a pas besoin d'App Group - le widget vit dans le même processus que l'app.
  */
 @CapacitorPlugin(name = "WidgetBridge")
 public class WidgetBridgePlugin extends Plugin {

@@ -4,13 +4,13 @@ import WidgetKit
 
 /**
  Le décompte sur l'écran verrouillé et dans la Dynamic Island. Il reprend le cadran du
- widget — même `DialFace`, même palette : c'est la même app, vue d'un autre endroit.
+ widget - même `DialFace`, même palette : c'est la même app, vue d'un autre endroit.
 
  Deux horloges, comme ailleurs : le temps chiffré est un `Text(timerInterval:)` que le
  système égrène tout seul, tandis que le cadran est **figé entre deux mises à jour**. Une
  Live Activity ne se redessine pas d'elle-même, et la réveiller à la minute demanderait un
  serveur de notifications push. Le disque saute donc d'un cran à chaque fois que l'app a la
- main — au démarrage, à la pause, au changement d'étape.
+ main - au démarrage, à la pause, au changement d'étape.
  */
 @available(iOS 16.2, *)
 struct PomodoroLiveActivity: Widget {

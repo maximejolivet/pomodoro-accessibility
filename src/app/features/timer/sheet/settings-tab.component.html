@@ -82,7 +82,6 @@
   </div>
 </div>
 
-<button type="button" class="link-btn" (click)="replayTutorial()">{{ i18n.t('tutorial.replay') }}</button>
 
 <div class="sound-test">
   <span class="sound-test-head">{{ i18n.t('table.open') }}</span>
@@ -91,20 +90,5 @@
       <small>{{ i18n.t('table.hint') }}</small>
     </span>
     <button type="button" class="btn3d btn-text" (click)="openTableMode()">{{ i18n.t('table.open') }}</button>
-  </div>
-</div>
-
-<div class="sound-test">
-  <span class="sound-test-head">{{ i18n.t('settings.listen') }}</span>
-  <div class="sound-test-buttons">
-    <button
-      *ngFor="let m of soundPreviews"
-      type="button"
-      class="btn3d sound-chip"
-      [style.--c]="m.color"
-      [disabled]="!prefs.sound()"
-      [attr.aria-label]="i18n.t('settings.listenOne', { label: m.label })"
-      (click)="previewSound(m.value)"
-    >{{ m.label }}</button>
   </div>
 </div>

@@ -16,7 +16,7 @@ export const STEP_ICONS: readonly IconName[] = [
 
 /**
  * Heure proposée quand on allume un rappel : le matin, parce que c'est l'usage premier
- * d'une routine — se préparer, partir à l'heure. Elle se change en deux gestes.
+ * d'une routine - se préparer, partir à l'heure. Elle se change en deux gestes.
  */
 export const DEFAULT_REMINDER_TIME = '08:00';
 

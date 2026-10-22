@@ -21,7 +21,7 @@ export type MilestoneTone = (typeof MILESTONES)[number];
 
 /**
  * Au-delà de cette durée, les paliers restent ceux qu'on connaît : 45, 30 et 15 minutes
- * restantes. En dessous, ils se calculent sur la durée choisie — sinon un Pomodoro de
+ * restantes. En dessous, ils se calculent sur la durée choisie - sinon un Pomodoro de
  * 25 min n'est prévenu qu'une fois, et une étape de routine de 10 min jamais.
  */
 export const LONG_SESSION_MINUTES = 40;
@@ -33,7 +33,7 @@ export const FINAL_WARNING_MINUTES = 1;
  * En dessous de cette durée, le cadran gradue des **secondes** : ses douze segments
  * valent 5 s au lieu de 5 min, et les chiffres 0 à 55 se lisent en secondes.
  *
- * Sans cela, un effort de 20 s couvre deux degrés de disque — invisible, alors que voir
+ * Sans cela, un effort de 20 s couvre deux degrés de disque - invisible, alors que voir
  * le temps est toute la raison d'être de l'application. Les chiffres de la face, eux, ne
  * changent pas : 0, 5, 10… valent pour les deux unités.
  */
@@ -57,6 +57,6 @@ export const LONG_BREAK_EVERY = 4;
 
 /**
  * Durée du signal visuel, en millisecondes : une pulsation de 1,6 s aux paliers, trois à
- * la fin. Soit 0,6 Hz — très loin des trois éclats par seconde interdits (WCAG 2.3.1).
+ * la fin. Soit 0,6 Hz - très loin des trois éclats par seconde interdits (WCAG 2.3.1).
  */
 export const CUE_MS = { milestone: 1600, end: 4800 } as const;

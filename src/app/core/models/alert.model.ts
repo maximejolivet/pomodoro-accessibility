@@ -11,7 +11,7 @@ export interface Alert {
 
 /**
  * Rappel de routine à programmer : il se répète chaque semaine, le même jour à la même
- * heure, et survit à la fermeture de l'app — c'est le système qui le garde.
+ * heure, et survit à la fermeture de l'app - c'est le système qui le garde.
  */
 export interface Reminder {
   /** Routine à armer quand la notification est touchée. */
