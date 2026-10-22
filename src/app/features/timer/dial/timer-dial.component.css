@@ -345,21 +345,26 @@
 /* Sur téléphone, le cadran n'a aucun padding autour : le verrou est dans le boîtier. */
 @media (max-width: 640px) {
   .tilt-zone {
-    width: 98%;
+    width: 100%;
     margin: 0 auto;
     padding: 0;
   }
 
   .tilt-zone .case-shadow {
-    width: 95vw;
+    width: 100%;
     margin: 0 auto;
   }
 
-  /* Le boîtier prend toute la largeur de la zone, sans être réduit par la hauteur. */
+  /*
+   * Le boîtier prend toute la largeur de la zone, en pourcentage de celle-ci : `100vw`
+   * dépasse sur iOS (la barre de défilement n'y est pas retirée), et le boîtier sortait
+   * alors à droite. Le rayon du haut, en `calc(var(--dw) / 2)`, reste valide en %.
+   */
   .tilt-zone .device {
-    --dw: 95vw;
+    --dw: min(100%, 560px);
     width: var(--dw);
     min-width: 0;
+    margin: 0 auto;
   }
 }
 
