@@ -37,6 +37,7 @@ On voit le temps qui reste au lieu de le lire.
 
 - [Pourquoi un minuteur visuel ?](#pourquoi-un-minuteur-visuel-)
 - [Ce que fait l'application](#ce-que-fait-lapplication)
+- [Téléchargements](#téléchargements)
 - [Comment s'en servir](#comment-sen-servir)
 - [Les sons](#les-sons)
 - [Accessibilité](#accessibilité)
@@ -190,6 +191,18 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
 
 Le décompte reste juste même si l'application passe en arrière-plan ou si le téléphone se
 verrouille : au retour, tout est à jour.
+
+## Téléchargements
+
+Récupère la dernière version sur la [page des releases](https://github.com/maximejolivet/pomodoro-accessibility/releases/latest) :
+
+- **macOS (Apple Silicon)** : `Pomodoro TDAH-1.0.0-arm64.dmg`
+- **Windows (64 bits)** : `Pomodoro TDAH Setup 1.0.0.exe`
+- **Android** : `Pomodoro-TDAH-1.0.0.apk`
+
+Les installeurs macOS et Windows ne sont pas encore signés par un certificat. macOS demande une
+confirmation au premier lancement (clic droit sur l'app, puis Ouvrir). Windows SmartScreen affiche
+un avertissement : clique sur *Informations complémentaires*, puis *Exécuter quand même*.
 
 ## Comment s'en servir
 
