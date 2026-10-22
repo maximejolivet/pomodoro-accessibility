@@ -196,8 +196,8 @@ verrouille : au retour, tout est à jour.
 
 Récupère la dernière version sur la [page des releases](https://github.com/maximejolivet/pomodoro-accessibility/releases/latest) :
 
-- **macOS (Apple Silicon)** : `Pomodoro TDAH-1.0.0-arm64.dmg`
-- **Windows (64 bits)** : `Pomodoro TDAH Setup 1.0.0.exe`
+- **macOS (Apple Silicon)** : `Pomodoro-TDAH-1.0.0-arm64.dmg`
+- **Windows (64 bits)** : `Pomodoro-TDAH-Setup-1.0.0.exe`
 - **Android** : `Pomodoro-TDAH-1.0.0.apk`
 
 Les installeurs macOS et Windows ne sont pas encore signés par un certificat. macOS demande une

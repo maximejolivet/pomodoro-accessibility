@@ -195,8 +195,8 @@ when you come back, everything is up to date.
 
 Get the latest version from the [Releases page](https://github.com/maximejolivet/pomodoro-accessibility/releases/latest):
 
-- **macOS (Apple Silicon)**: `Pomodoro TDAH-1.0.0-arm64.dmg`
-- **Windows (64-bit)**: `Pomodoro TDAH Setup 1.0.0.exe`
+- **macOS (Apple Silicon)**: `Pomodoro-TDAH-1.0.0-arm64.dmg`
+- **Windows (64-bit)**: `Pomodoro-TDAH-Setup-1.0.0.exe`
 - **Android**: `Pomodoro-TDAH-1.0.0.apk`
 
 The macOS and Windows installers are not signed by a certificate yet. macOS asks you to confirm
