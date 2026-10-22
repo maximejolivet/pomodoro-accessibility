@@ -37,6 +37,7 @@ You see the time that's left instead of reading it.
 
 - [Why a visual timer?](#why-a-visual-timer)
 - [What the app does](#what-the-app-does)
+- [Download](#download)
 - [How to use it](#how-to-use-it)
 - [Sounds](#sounds)
 - [Accessibility](#accessibility)
@@ -189,6 +190,18 @@ visual timer is a simple, discreet and free tool at that level.
 
 The countdown stays accurate even if the app goes to the background or the phone locks:
 when you come back, everything is up to date.
+
+## Download
+
+Get the latest version from the [Releases page](https://github.com/maximejolivet/pomodoro-accessibility/releases/latest):
+
+- **macOS (Apple Silicon)**: `Pomodoro TDAH-1.0.0-arm64.dmg`
+- **Windows (64-bit)**: `Pomodoro TDAH Setup 1.0.0.exe`
+- **Android**: `Pomodoro-TDAH-1.0.0.apk`
+
+The macOS and Windows installers are not signed by a certificate yet. macOS asks you to confirm
+the first opening (Control-click the app, then Open). Windows SmartScreen shows a warning: click
+*More info*, then *Run anyway*.
 
 ## How to use it
 
