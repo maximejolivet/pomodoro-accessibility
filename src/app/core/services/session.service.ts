@@ -287,7 +287,10 @@ export class SessionService {
      */
     this.notifications.reminderTapped$.subscribe(routineId => {
       const routine = this.routineService.byId(routineId);
-      if (routine) this.startRoutine(routine);
+      // Une session en cours, ou le verrou, ne se remplacent pas par un rappel : le geste
+      // n'a pas été fait sur le cadran, et `startRoutine` remettrait le décompte à zéro
+      if (!routine || this.locked() || this.isRunning() || this.isPaused()) return;
+      this.startRoutine(routine);
     });
 
     // Téléphone verrouillé / app en arrière-plan : notifications locales ; au retour, on les annule
@@ -757,15 +760,25 @@ export class SessionService {
     this.endSession(true, lateBy);
 
     // Une routine s'enchaîne d'elle-même : c'est sa définition, pas l'option « enchaîner »
-    const ahead = routine ? this.stepAfter(routine, this.routineIndex(), this.routineRound()) : undefined;
+    let ahead = routine ? this.stepAfter(routine, this.routineIndex(), this.routineRound()) : undefined;
+    const roundBefore = this.routineRound();
+    // Le retard peut avaler des étapes entières (téléphone verrouillé pendant tout un
+    // palier) : elles sont passées, on regarde la suivante, sans marquer la routine finie
+    let remaining = lateBy;
+    while (routine && ahead && ahead.step.seconds - remaining <= 0) {
+      remaining -= ahead.step.seconds;
+      this.routineIndex.set(ahead.index);
+      this.routineRound.set(ahead.round);
+      ahead = this.stepAfter(routine, ahead.index, ahead.round);
+    }
     const next = routine
       ? ahead?.step
       : this.prefs.autoChain()
         ? this.nextInChain(kind, this.focusRounds())
         : undefined;
-    if (next && next.seconds - lateBy > 0) {
+    if (next && next.seconds - remaining > 0) {
       // Un tour qui recommence se dit : sans cela, la bande repart à zéro sans raison visible
-      const newRound = !!ahead && ahead.round !== this.routineRound();
+      const newRound = !!ahead && ahead.round !== roundBefore;
       if (routine && ahead) {
         this.routineIndex.set(ahead.index);
         this.routineRound.set(ahead.round);
@@ -773,7 +786,7 @@ export class SessionService {
         this.setSelectedPreset(next);
       }
       this.durationSeconds.set(next.seconds);
-      this.startSession(next, next.seconds - lateBy, lateBy);
+      this.startSession(next, next.seconds - remaining, remaining);
       const name = newRound
         ? `${this.cycleLabel()}, ${this.presetName(next)}`
         : this.presetName(next);
