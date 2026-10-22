@@ -116,10 +116,6 @@ visual timer is a simple, discreet and free tool at that level.
 - 🧰 **A simple accommodation**: to offer alongside other workplace adjustments, without
   singling anyone out, since the tool is useful to everyone.
 
-> [!NOTE]
-> Independent project, inspired by the visual timer principle. It is neither affiliated with
-> nor endorsed by Time Timer®, a registered trademark of its owner.
-
 ## What the app does
 
 ### The dial

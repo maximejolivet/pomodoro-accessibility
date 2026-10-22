@@ -116,10 +116,6 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
 - 🧰 **Un aménagement simple** : à proposer avec les autres aménagements de poste, sans exposer
   la situation de la personne, puisque l'outil sert à tout le monde.
 
-> [!NOTE]
-> Projet indépendant, inspiré du principe des minuteurs visuels. Il n'est ni affilié ni
-> approuvé par Time Timer®, marque déposée de son propriétaire.
-
 ## Ce que fait l'application
 
 ### Le cadran

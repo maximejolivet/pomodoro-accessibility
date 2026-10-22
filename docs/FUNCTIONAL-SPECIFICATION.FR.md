@@ -681,5 +681,3 @@ Publiés dans la déclaration d'accessibilité :
 
 ## 8. Hors périmètre
 
-> Projet indépendant, inspiré du principe des minuteurs visuels. Il n'est ni affilié ni approuvé
-> par Time Timer®, marque déposée de son propriétaire.

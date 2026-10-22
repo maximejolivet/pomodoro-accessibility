@@ -665,5 +665,3 @@ Published in the accessibility statement:
 
 ## 8. Out of scope
 
-> Independent project, inspired by the principle of visual timers. It is neither affiliated with nor endorsed
-> by Time Timer®, a registered trademark of its owner.
