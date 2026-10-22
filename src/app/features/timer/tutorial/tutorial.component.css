@@ -203,16 +203,22 @@
   min-height: 48px;
 }
 
+/*
+ * Le texte est blanc, et la couleur de la vue va du violet au jaune : assombrie de 35 %,
+ * elle tient 4,5:1 sur les cinq vues (le vert et le cyan pastel ne tenaient pas à nu).
+ */
 .btn-text {
   --c: inherit;
   padding: 11px 18px;
   font-size: 15px;
+  background: color-mix(in srgb, var(--c) 65%, #000);
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .btn-neutral {
   --c: var(--neutral);
   --c-dark: var(--neutral-edge);
+  background: var(--c);
   color: var(--muted-strong);
   text-shadow: none;
 }

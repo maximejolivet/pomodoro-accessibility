@@ -168,6 +168,11 @@ export class RoutinesPanelComponent {
     return rounds > 1 ? `${summary} · ×${rounds}` : summary;
   }
 
+  /** Nom d'un pictogramme pour les lecteurs d'écran : sans lui, le bouton est muet. */
+  iconLabel(icon: string): string {
+    return this.i18n.t(`icon.${icon}` as I18nKey);
+  }
+
   colorLabel(hex: string): string {
     const names: Record<string, I18nKey> = {
       '#8b6fd6': 'color.purple',

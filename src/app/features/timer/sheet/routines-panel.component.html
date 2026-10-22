@@ -110,6 +110,7 @@
           class="icon"
           [class.active]="d.icon === ic"
           [attr.aria-pressed]="d.icon === ic"
+          [attr.aria-label]="iconLabel(ic)"
           (click)="d.icon = ic"
         >
           <app-icon [name]="ic" aria-hidden="true"></app-icon>
@@ -296,6 +297,7 @@
                   class="icon"
                   [class.active]="s.icon === ic"
                   [attr.aria-pressed]="s.icon === ic"
+                  [attr.aria-label]="iconLabel(ic)"
                   (click)="s.icon = ic"
                 >
                   <app-icon [name]="ic" aria-hidden="true"></app-icon>

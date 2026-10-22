@@ -1,13 +1,11 @@
-import { Component, HostListener, ViewChild, computed, inject } from '@angular/core';
+import { Component, HostListener, Injector, ViewChild, afterNextRender, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { I18nService } from '../../core/i18n/i18n.service';
 import { PreferencesService } from '../../core/services/preferences.service';
 import { SessionService } from '../../core/services/session.service';
 import { IconComponent } from '../../shared/components/icon/icon.component';
-import { TimerControlsComponent } from './controls/timer-controls.component';
 import { TimerDialComponent } from './dial/timer-dial.component';
-import { TimerReadoutComponent } from './readout/timer-readout.component';
 import { RoutineStripComponent } from './routine/routine-strip.component';
 import { SettingsSheetComponent } from './sheet/settings-sheet.component';
 import { TutorialComponent } from './tutorial/tutorial.component';
@@ -25,9 +23,7 @@ import { TutorialComponent } from './tutorial/tutorial.component';
     RouterModule,
     IconComponent,
     TimerDialComponent,
-    TimerReadoutComponent,
     RoutineStripComponent,
-    TimerControlsComponent,
     SettingsSheetComponent,
     TutorialComponent
   ],
@@ -38,6 +34,7 @@ export class TimerPageComponent {
   readonly session = inject(SessionService);
   readonly prefs = inject(PreferencesService);
   readonly i18n = inject(I18nService);
+  private readonly injector = inject(Injector);
 
   /**
    * Bandeau de fin : il reste tant que rien n'a été touché, là où la pulsation passe.
@@ -53,7 +50,7 @@ export class TimerPageComponent {
    */
   readonly showTutorial = computed(() => !this.prefs.tutorialSeen());
 
-  @ViewChild(TimerControlsComponent) private controls?: TimerControlsComponent;
+  @ViewChild(TimerDialComponent) private dial?: TimerDialComponent;
 
   showSheet = false;
 
@@ -67,7 +64,7 @@ export class TimerPageComponent {
     // Sauf si le panneau s'est fermé pour laisser place au tutoriel, qui prend le focus
     if (this.showTutorial()) return;
     // La page ne sort de `inert` qu'au rendu : un focus immédiat serait ignoré
-    setTimeout(() => this.controls?.focusSettingsButton());
+    afterNextRender(() => this.dial?.focusSettingsButton(), { injector: this.injector });
   }
 
   /** Sortie du mode table par le bouton. */
@@ -88,6 +85,7 @@ export class TimerPageComponent {
   /** Vu, passé ou revu : dans les trois cas il ne se remontrera pas tout seul. */
   onTutorialClosed(): void {
     this.prefs.setTutorialSeen(true);
-    setTimeout(() => this.controls?.focusMainButton());
+    // La page ne sort de `inert` qu'au rendu : on attend qu'il soit fait pour donner le focus
+    afterNextRender(() => this.dial?.focusMainButton(), { injector: this.injector });
   }
 }

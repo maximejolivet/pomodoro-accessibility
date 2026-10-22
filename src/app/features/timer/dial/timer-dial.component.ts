@@ -46,6 +46,8 @@ const DRAG_THRESHOLD_PX = 6;
   styleUrl: './timer-dial.component.css'
 })
 export class TimerDialComponent {
+  @ViewChild(TimerControlsComponent) private controls?: TimerControlsComponent;
+
   Math = Math;  // Expose Math to templates
   readonly session = inject(SessionService);
   /** Relayé depuis les commandes du boîtier : ouvre les réglages. */
@@ -244,4 +246,12 @@ export class TimerDialComponent {
     this.dragStart = null;
   }
 
+  /** Les commandes vivent dans le boîtier du cadran : la page passe par ici pour le focus. */
+  focusMainButton(): void {
+    this.controls?.focusMainButton();
+  }
+
+  focusSettingsButton(): void {
+    this.controls?.focusSettingsButton();
+  }
 }
