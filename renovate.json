@@ -1,0 +1,25 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "baseBranches": ["develop"],
+  "timezone": "Europe/Paris",
+  "schedule": ["before 6am on monday"],
+  "dependencyDashboard": true,
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "groupName": "Angular",
+      "matchPackageNames": ["/^@angular/"]
+    },
+    {
+      "groupName": "Capacitor",
+      "matchPackageNames": ["/^@capacitor/"]
+    },
+    {
+      "groupName": "Playwright and axe",
+      "matchPackageNames": ["@playwright/test", "@axe-core/playwright"]
+    }
+  ]
+}
