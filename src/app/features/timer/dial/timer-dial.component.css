@@ -290,9 +290,10 @@
  */
 /* Sur téléphone, le cadran n'a aucun padding autour. */
 @media (max-width: 640px) {
+  /* Le boîtier déborde de 8 px de chaque côté sur les 16 px de la scène : un cadran plus grand. */
   .tilt-zone {
-    width: 100%;
-    margin: 0 auto;
+    width: calc(100% + 16px);
+    margin: 0 -8px;
     padding: 0;
   }
 
