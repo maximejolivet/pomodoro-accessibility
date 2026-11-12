@@ -190,6 +190,13 @@
   margin: 6cqw auto 0;
 }
 
+/* Téléphone : l'air entre la durée et les commandes se prend ici, sous la pilule. */
+@media (max-width: 640px) {
+  :host-context(.case-readout) .readout {
+    margin-bottom: 4cqw;
+  }
+}
+
 :host-context(.case-readout) .cycle {
   order: 3;
   width: auto;
