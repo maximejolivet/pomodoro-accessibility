@@ -1225,10 +1225,13 @@ test.describe('mode sport', () => {
     expect(await page.evaluate(() => (window as any).__spoken as string[])).toEqual(['Ensuite : Repos']);
 
     // Puis une impulsion sèche par seconde, et le chiffre
+    // La vibration passe par un import() dynamique du plugin : il se charge en temps réel,
+    // que l'horloge simulée n'avance pas. On attend donc l'impulsion au lieu de la lire d'emblée.
+    const vibrations = () => page.evaluate(() => (window as any).__vibrations as number[]);
     await page.clock.runFor(2_000);
-    expect(await page.evaluate(() => (window as any).__vibrations as number[])).toEqual([60]);
+    await expect.poll(vibrations).toEqual([60]);
     await page.clock.runFor(2_000);
-    expect(await page.evaluate(() => (window as any).__vibrations as number[])).toEqual([60, 60, 60]);
+    await expect.poll(vibrations).toEqual([60, 60, 60]);
     expect(await page.evaluate(() => (window as any).__spoken as string[])).toEqual([
       'Ensuite : Repos', '3', '2', '1'
     ]);
@@ -1236,8 +1239,7 @@ test.describe('mode sport', () => {
     // La fin enchaîne sur le repos, avec son motif à elle
     await page.clock.runFor(3_000);
     await expect(page.locator('.readout-mode')).toHaveText('Repos');
-    expect((await page.evaluate(() => (window as any).__vibrations as number[])).slice(3))
-      .toEqual([500, 500, 500]);
+    await expect.poll(async () => (await vibrations()).slice(3)).toEqual([500, 500, 500]);
   });
 
   for (const theme of ['light', 'dark'] as const) {
