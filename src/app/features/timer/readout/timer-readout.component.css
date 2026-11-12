@@ -34,6 +34,40 @@
     flex-direction: column;
     gap: 0;
   }
+
+  .readout {
+    padding: 6px 8px;
+  }
+
+  .readout-time {
+    font-size: 30px;
+    line-height: 1.15;
+  }
+
+  /*
+   * Le mode se reconnaît à sa couleur : le nom devient une pastille teintée, précédée d'un
+   * point plein comme ceux du cycle. Le texte reste en encre, seule la teinte porte le mode.
+   */
+  .readout-mode {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 2px;
+    padding: 2px 10px 2px 8px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--c) 24%, var(--face));
+    font-size: 13px;
+    line-height: 1.3;
+  }
+
+  .readout-mode::before {
+    content: "";
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c);
+  }
 }
 
 .readout-time {
@@ -69,6 +103,14 @@
   font-size: 16px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  /* Le mode sport garde son nom nu, sans pastille. */
+  margin-top: 0;
+  padding: 0;
+  background: none;
+}
+
+:host-context(.sport) .readout-mode::before {
+  display: none;
 }
 
 :host-context(.sport) .cycle {
@@ -146,6 +188,13 @@
   order: 1;
   width: 84%;
   margin: 6cqw auto 0;
+}
+
+/* Téléphone : l'air entre la durée et les commandes se prend ici, sous la pilule. */
+@media (max-width: 640px) {
+  :host-context(.case-readout) .readout {
+    margin-bottom: 4cqw;
+  }
 }
 
 :host-context(.case-readout) .cycle {

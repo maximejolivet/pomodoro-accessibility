@@ -12,7 +12,7 @@ import { IconsService } from '../../../core/services/icons.service';
  * montre le temps d'une étape, elle montre la place de cette étape dans la suite.
  *
  * Chaque étape est un bouton : on y va directement quand elle est déjà faite, ou
- * qu'on veut la refaire. Le verrou du cadran les neutralise, comme la remise à zéro.
+ * qu'on veut la refaire.
  */
 @Component({
   selector: 'app-routine-strip',
@@ -47,7 +47,6 @@ export class RoutineStripComponent {
   }
 
   readonly routine = this.session.activeRoutine;
-  readonly locked = this.session.locked;
 
   readonly routineLabel = computed(() => {
     const routine = this.routine();

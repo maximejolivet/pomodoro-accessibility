@@ -20,7 +20,6 @@
         [attr.aria-valuemax]="maxMinutes"
         [attr.aria-valuenow]="Math.ceil(displayUnits)"
         [attr.aria-valuetext]="dialText"
-        [attr.aria-disabled]="locked"
         [attr.aria-readonly]="inSeconds ? 'true' : null"
         [class.dragging]="isDragging"
         (click)="onFaceClick()"
@@ -163,25 +162,6 @@
     <div class="case-controls">
       <app-timer-controls (openSettings)="openSettings.emit()" />
     </div>
-    <!--
-      Verrou dans le coin bas du boîtier : hors du cadran qu'il protège, pour qu'on ne le touche
-      pas en le réglant. Icône seule, nommée pour les lecteurs d'écran et les infobulles.
-    -->
-    <button
-      type="button"
-      class="lock"
-      [class.on]="locked"
-      [attr.aria-label]="i18n.t(locked ? 'action.unlock' : 'action.lock')"
-      [attr.title]="i18n.t(locked ? 'action.unlock' : 'action.lock')"
-      [style.--c]="selectedPreset.color"
-      (click)="toggleLock()"
-    >
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="4.5" y="10.5" width="15" height="10.5" rx="2.5" />
-        <path *ngIf="locked" d="M8 10.5V7a4 4 0 0 1 8 0v3.5" />
-        <path *ngIf="!locked" d="M8 10.5V7a4 4 0 0 1 7.6-1.7" />
-      </svg>
-    </button>
   </div>
   </div>
 

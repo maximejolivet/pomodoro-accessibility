@@ -10,7 +10,7 @@ export const RING_INNER = 102;
 /* Le voile s'arrête avant le bord de l'anneau : une marge de couleur reste visible. */
 export const DISK_R = 138;
 export const LABEL_R = 180;
-/** Effet d'arrière-plan de 0 à 20, comme sur le Time Timer */
+/** Effet d'arrière-plan de 0 à 20 */
 export const BG_R = 205;
 export const BG_TO_MIN = 20;
 /* Échelle pleine : les graduations touchent le bord du boîtier, sans anneau vide. */

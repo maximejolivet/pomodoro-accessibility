@@ -108,10 +108,6 @@ export class TimerDialComponent {
     return this.session.dragging();
   }
 
-  get locked(): boolean {
-    return this.session.locked();
-  }
-
   /** Le réglage seul est neutralisé : en secondes, glisser donnerait des minutes. */
   get settingLocked(): boolean {
     return this.session.settingLocked();
@@ -185,13 +181,7 @@ export class TimerDialComponent {
     return point(DISK_R, this.displayUnits);
   }
 
-  toggleLock(): void {
-    this.session.toggleLock();
-  }
-
   onFaceClick(): void {
-    // Verrouillé, le cadran ne démarre plus : une paume posée dessus ne fait plus rien
-    if (this.locked) return;
     if (this.suppressClick) {
       this.suppressClick = false;
       return;

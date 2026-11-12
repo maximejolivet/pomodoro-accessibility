@@ -116,10 +116,6 @@ visual timer is a simple, discreet and free tool at that level.
 - 🧰 **A simple accommodation**: to offer alongside other workplace adjustments, without
   singling anyone out, since the tool is useful to everyone.
 
-> [!NOTE]
-> Independent project, inspired by the visual timer principle. It is neither affiliated with
-> nor endorsed by Time Timer®, a registered trademark of its owner.
-
 ## What the app does
 
 ### The dial
@@ -130,8 +126,6 @@ visual timer is a simple, discreet and free tool at that level.
   countdown is running
 - ➖➕ **− and + buttons** - one minute per tap, no dragging: for shaky hands, a single finger or
   a switch device
-- 🔒 **Dial lock** - one tap and the dial stops responding: a resting palm can no longer change
-  the time or wipe the session
 - 💪 **Dial in seconds** - below a minute the graduation counts seconds: a 20 s effort drains
   before your eyes instead of being a sliver
 - 🍽️ **Table mode** - the dial writ large, everything else cleared away: a phone stood on a desk
@@ -274,8 +268,6 @@ The app is designed to be usable by everyone:
 - 🌀 **Reduced motion**: if your device asks for less motion, the app respects it.
 - 🖐️ **No dragging required**: the − and + buttons set the duration with a single tap, for anyone
   who cannot hold a drag (WCAG 2.5.7), with targets of at least 44 px.
-- 🔒 **Against accidental touches**: the lock neutralizes the dial, the − / + buttons and the reset.
-  Start / Pause stays live: an accidental pause costs nothing, an accidental reset loses the session.
 
 A dedicated page covers all of this, including the RGAA 4.1 accessibility statement laid out as
 French decree no. 2019-768 requires (commitment, conformance status, test results, non-accessible
@@ -290,7 +282,7 @@ These guarantees are checked on every change: `npm run test:a11y` replays sevent
 − / + buttons; spoken time, vibration patterns and the visual alert checked against a simulated
 countdown, a short session's milestones included; the dial in seconds, the last three seconds
 counted down and rounds chaining; the welcome tutorial by keyboard, in Arabic and with no
-focus escape; the dial lock; the chaining of a routine's steps, its strip and its editor; target
+focus escape; the chaining of a routine's steps, its strip and its editor; target
 sizes; the modal focus trap; no horizontal scrolling at 320 px), and CI runs them on every push.
 
 ## For developers

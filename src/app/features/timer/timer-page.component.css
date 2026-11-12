@@ -22,6 +22,12 @@
   align-items: center;
   justify-content: center;
   gap: 28px;
+  /* Encoche et barre d'état : le boîtier ne se pose jamais dessous */
+  padding:
+    max(16px, env(safe-area-inset-top))
+    max(16px, env(safe-area-inset-right))
+    max(16px, env(safe-area-inset-bottom))
+    max(16px, env(safe-area-inset-left));
   background:
     radial-gradient(ellipse at 50% 30%, var(--bg-glow) 0%, transparent 60%),
     linear-gradient(180deg, var(--bg-top), var(--bg-bottom));

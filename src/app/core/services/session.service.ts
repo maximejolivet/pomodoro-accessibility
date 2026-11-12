@@ -94,13 +94,6 @@ export class SessionService {
   /** Alerte visuelle en cours, rendue en pulsation par la page : palier, fin, ou rien. */
   readonly visualCue = signal<VisualCue | null>(null);
 
-  /**
-   * Cadran verrouillé. Il neutralise tout ce qui peut faire *perdre* une session - réglage
-   * au doigt, au clavier, boutons − / +, remise à zéro - et laisse Démarrer / Pause : une
-   * pause involontaire se rattrape, une remise à zéro involontaire ne se rattrape pas.
-   */
-  readonly locked = this.prefs.locked;
-
   readonly isPaused = computed(() => !this.isRunning() && this.timeLeft() > 0);
 
   /** Secondes affichées sur le cadran : temps restant, ou durée réglée au repos. */
@@ -130,9 +123,9 @@ export class SessionService {
    * les boutons − / + travaillent en minutes, et donneraient une durée sans rapport avec
    * ce qui est affiché. Une étape de quelques secondes se règle dans l'éditeur de routine.
    *
-   * Démarrer et mettre en pause restent possibles : c'est le verrou, lui, qui les retire.
+   * Démarrer et mettre en pause restent possibles.
    */
-  readonly settingLocked = computed(() => this.locked() || this.dialUnit() === 'seconds');
+  readonly settingLocked = computed(() => this.dialUnit() === 'seconds');
 
   /**
    * Mode sport : la routine chargée est un entraînement. La page prend alors la couleur
@@ -143,7 +136,7 @@ export class SessionService {
   /**
    * Mode table : le téléphone posé debout sur un bureau devient un vrai minuteur visuel,
    * lisible à deux mètres. Le cadran prend tout, le reste s'efface - il ne demeure que
-   * Démarrer / Pause, le verrou, et de quoi sortir.
+   * Démarrer / Pause, et de quoi sortir.
    *
    * C'est un état de vue, pas une préférence : on n'ouvre pas l'app en mode table trois
    * jours plus tard sans se souvenir pourquoi elle n'a plus de boutons.
@@ -287,9 +280,9 @@ export class SessionService {
      */
     this.notifications.reminderTapped$.subscribe(routineId => {
       const routine = this.routineService.byId(routineId);
-      // Une session en cours, ou le verrou, ne se remplacent pas par un rappel : le geste
-      // n'a pas été fait sur le cadran, et `startRoutine` remettrait le décompte à zéro
-      if (!routine || this.locked() || this.isRunning() || this.isPaused()) return;
+      // Une session en cours ne se remplace pas par un rappel : le geste n'a pas été fait
+      // sur le cadran, et `startRoutine` remettrait le décompte à zéro
+      if (!routine || this.isRunning() || this.isPaused()) return;
       this.startRoutine(routine);
     });
 
@@ -342,11 +335,6 @@ export class SessionService {
     }
   }
 
-  /** Bascule le verrou du cadran. */
-  toggleLock(): void {
-    this.prefs.setLocked(!this.locked());
-  }
-
   /**
    * Entre ou sort du mode table. L'écran y reste allumé quoi qu'en dise le réglage : un
    * minuteur posé sur une table qui s'éteint au bout d'une minute ne sert à rien. En
@@ -359,7 +347,6 @@ export class SessionService {
   }
 
   reset(): void {
-    if (this.locked()) return;
     this.resetTimer();
   }
 
@@ -375,8 +362,7 @@ export class SessionService {
     this.manualChange = false;
   }
 
-  /** Choisir un mode dans le panneau reste possible verrouillé : le geste est délibéré. */
-  selectPreset(preset: Preset): void {
+    selectPreset(preset: Preset): void {
     this.leaveRoutine();
     this.setSelectedPreset(preset);
     this.durationSeconds.set(preset.seconds);
@@ -393,24 +379,21 @@ export class SessionService {
     this.activeRoutine.set(routine);
     this.routineRound.set(1);
     writePref('routine', routine.id);
-    // Comme choisir un mode, le geste vient du panneau : le verrou ne s'y oppose pas
     this.armStep(0);
   }
 
   /**
    * Va directement à une étape - la suivante quand elle est déjà faite, la précédente
    * quand on veut la refaire. C'est la seule façon de sortir d'une étape sans attendre
-   * la fin, et elle passe par la bande, où chaque étape est un bouton. Le verrou la
-   * neutralise : elle abandonne l'étape en cours, comme la remise à zéro.
+   * la fin, et elle passe par la bande, où chaque étape est un bouton.
    */
   goToStep(index: number): void {
-    if (this.locked()) return;
     this.armStep(index);
   }
 
   /** Quitte la routine et revient au mode choisi avant elle. */
   exitRoutine(): void {
-    if (!this.activeRoutine() || this.locked()) return;
+    if (!this.activeRoutine()) return;
     this.leaveRoutine();
     this.durationSeconds.set(this.selectedPreset().seconds);
     this.resetTimer();
@@ -530,7 +513,7 @@ export class SessionService {
    */
   syncRoutine(routine: Routine | null, id: string): void {
     if (this.activeRoutine()?.id !== id) return;
-    // Routine supprimée : on en sort sans passer par le verrou, le geste vient du panneau
+    // Routine supprimée : on en sort, le geste vient du panneau
     if (!routine) {
       this.leaveRoutine();
       this.durationSeconds.set(this.selectedPreset().seconds);
