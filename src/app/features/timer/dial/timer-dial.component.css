@@ -350,7 +350,7 @@
   .device {
     --dw: min(
       calc(100vw - 96px),
-      420px,
+      560px,
       calc(100dvh - 330px - var(--pill-band, 68px) + 40px)
     );
     width: var(--dw);
