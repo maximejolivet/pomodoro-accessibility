@@ -358,10 +358,17 @@
   /*
    * Le boîtier prend toute la largeur de la zone, en pourcentage de celle-ci : `100vw`
    * dépasse sur iOS (la barre de défilement n'y est pas retirée), et le boîtier sortait
-   * alors à droite. Le rayon du haut, en `calc(var(--dw) / 2)`, reste valide en %.
+   * alors à droite. La largeur se prend en `cqw` (la zone est un conteneur) et non en % :
+   * le rayon du haut, `calc(var(--dw) / 2)`, doit rester une longueur. En %, le rayon
+   * vertical se calculerait sur la hauteur du boîtier et le demi-cercle deviendrait
+   * une ellipse allongée.
    */
+  .tilt-zone {
+    container-type: inline-size;
+  }
+
   .tilt-zone .device {
-    --dw: min(100%, 560px);
+    --dw: min(100cqw, 560px);
     width: var(--dw);
     min-width: 0;
     margin: 0 auto;
