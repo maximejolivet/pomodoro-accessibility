@@ -126,8 +126,6 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
   pendant le décompte
 - ➖➕ **Boutons − et +** - une minute par appui, sans glisser : pour les mains qui tremblent,
   un seul doigt ou un contacteur
-- 🔒 **Verrou du cadran** - un appui et le cadran ne répond plus : une paume posée ne peut plus
-  changer la durée ni effacer la session
 - 💪 **Cadran en secondes** - sous la minute, la graduation passe en secondes : un effort de 20 s
   se vide sous les yeux au lieu d'être un filet
 - 🍽️ **Mode table** - le cadran en grand, tout le reste effacé : le téléphone posé debout devient
@@ -207,7 +205,6 @@ un avertissement : clique sur *Informations complémentaires*, puis *Exécuter q
 | **Toucher** le cadran ou ▶   | Démarrer, mettre en pause ou reprendre                                                                    |
 | **Glisser** sur le cadran    | Régler les minutes (0 → 60)                                                                               |
 | **−** / **+** sous le cadran | Retirer ou ajouter une minute ; appui maintenu pour défiler                                               |
-| 🔒 sous le boîtier            | Verrouiller ou déverrouiller le cadran                                                                    |
 | ↺                            | Remettre à zéro                                                                                           |
 | ⚙︎ → **Modes**                | Choisir, créer, modifier ou supprimer un mode                                                             |
 | ⚙︎ → **Modes** → *Routines*   | Lancer une routine, en créer une, réordonner ses étapes                                                   |
@@ -273,9 +270,6 @@ L'application est pensée pour être utilisable par tout le monde :
 - 🌀 **Animations réduites** : si ton appareil demande moins de mouvement, l'application le respecte.
 - 🖐️ **Sans glisser** : les boutons − et + règlent la durée en un seul appui, pour qui ne peut pas
   maintenir un glissement (WCAG 2.5.7), avec des cibles d'au moins 44 px.
-- 🔒 **Contre les gestes involontaires** : le verrou neutralise le cadran, les boutons − / + et la
-  remise à zéro. Démarrer / Pause reste actif : une pause involontaire se rattrape, une remise à
-  zéro involontaire fait perdre la session.
 
 Une page dédiée détaille tout cela, avec la déclaration d'accessibilité RGAA 4.1 au plan du
 décret n° 2019-768 (engagement, état de conformité, résultats des tests, contenus non
@@ -290,7 +284,7 @@ contrôles (axe-core sur toutes les vues, en clair, en sombre et en arabe ; rég
 clavier et aux boutons − / + ; annonce vocale, motifs de vibration et alerte visuelle vérifiés sur
 un décompte simulé, paliers d'une session courte comprise ; cadran en secondes, décompte des
 trois dernières et enchaînement des tours ; tutoriel d'accueil au clavier, en arabe et sans
-fuite du focus ; verrou du cadran ; enchaînement des étapes d'une routine, sa bande et son
+fuite du focus ; enchaînement des étapes d'une routine, sa bande et son
 éditeur ; taille des cibles ; piège à focus de la modale ; pas de défilement horizontal à 320 px),
 et la CI les relance à chaque push.
 

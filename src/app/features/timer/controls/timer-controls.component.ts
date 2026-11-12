@@ -37,11 +37,6 @@ export class TimerControlsComponent {
     return this.session.stateLabel();
   }
 
-  /** Cadran verrouillé : la remise à zéro se neutralise avec lui. */
-  get locked(): boolean {
-    return this.session.locked();
-  }
-
   toggle(): void {
     this.session.toggle();
   }

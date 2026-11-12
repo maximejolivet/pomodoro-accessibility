@@ -7,7 +7,6 @@
     <button
       type="button"
       class="routine-quit"
-      [attr.aria-disabled]="locked()"
       [attr.aria-label]="i18n.t('routine.quit')"
       (click)="quit()"
     >
@@ -24,7 +23,6 @@
         [class.current]="isCurrent(i)"
         [style.--c]="step.color"
         [attr.aria-current]="isCurrent(i) ? 'step' : null"
-        [attr.aria-disabled]="locked()"
         [attr.aria-label]="label(i)"
         (click)="goTo(i)"
       >

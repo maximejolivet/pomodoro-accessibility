@@ -29,52 +29,6 @@
   stroke-width: 3;
 }
 
-/*
- * Verrou du cadran : pour les mains qui tremblent et les paumes posées, un contact
- * involontaire ne peut plus changer la durée ni effacer la session en cours.
- * Cible de 44 px (WCAG 2.5.8), posée sous le boîtier plutôt que sur le cadran.
- */
-.lock {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  z-index: 2;
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border: 1px solid var(--surface-edge);
-  border-radius: 50%;
-  background: var(--surface-hi);
-  box-shadow: none;
-  color: var(--muted);
-  cursor: pointer;
-  transform: translateX(-50%);
-}
-
-.lock svg {
-  width: 20px;
-  height: 20px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* Verrouillé, la pastille prend la couleur du mode : l'état se voit d'un coup d'œil. */
-.lock.on {
-  border-color: var(--c);
-  color: var(--c);
-  background: color-mix(in srgb, var(--c) 14%, var(--surface-hi));
-}
-
-.lock:focus-visible {
-  outline: 3px solid var(--c);
-  outline-offset: 3px;
-}
-
 .device {
   --rx: 0deg;
   --ry: 0deg;
@@ -147,14 +101,6 @@
 /* Pas de boîte propre : pilule et cycle sont rangés directement dans la colonne du boîtier. */
 .case-readout {
   display: contents;
-}
-
-/* Verrou dans le coin bas droit du boîtier. */
-.device > .lock {
-  left: auto;
-  right: 6cqw;
-  bottom: 4cqw;
-  transform: none;
 }
 
 .case-controls {
@@ -342,7 +288,7 @@
  * Téléphone couché : le cadran se cale sur la hauteur, sinon les commandes sortent de
  * l'écran. Le minimum de 280 px ne s'applique pas ici, il ne tient pas en paysage.
  */
-/* Sur téléphone, le cadran n'a aucun padding autour : le verrou est dans le boîtier. */
+/* Sur téléphone, le cadran n'a aucun padding autour. */
 @media (max-width: 640px) {
   .tilt-zone {
     width: 100%;
@@ -368,7 +314,7 @@
   }
 
   /*
-   * Hauteur du boîtier = sa largeur + environ 200 px (durée, commandes, état). On plafonne
+   * Hauteur du boîtier = sa largeur + environ 210 px (durée, commandes, état). On plafonne
    * donc la largeur pour qu'il tienne au-dessus de la bande de la pastille d'accessibilité,
    * au lieu de faire défiler la page sur un écran court.
    */
@@ -376,16 +322,16 @@
     --dw: min(
       100cqw,
       560px,
-      calc(100dvh - 200px - var(--pill-band, 68px) - 16px)
+      calc(100dvh - 210px - var(--pill-band, 68px) - 16px)
     );
     width: var(--dw);
     min-width: 0;
     margin: 0 auto;
   }
 
-  /* Le bas du boîtier se resserre : les commandes se rapprochent de la durée. */
+  /* L'écart sous la durée vient de la marge de la pilule (`.readout`). */
   .case-controls {
-    margin-top: 2.5cqw;
+    margin-top: 0;
   }
 }
 
