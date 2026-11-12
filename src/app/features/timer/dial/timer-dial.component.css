@@ -367,11 +367,25 @@
     container-type: inline-size;
   }
 
+  /*
+   * Hauteur du boîtier = sa largeur + environ 200 px (durée, commandes, état). On plafonne
+   * donc la largeur pour qu'il tienne au-dessus de la bande de la pastille d'accessibilité,
+   * au lieu de faire défiler la page sur un écran court.
+   */
   .tilt-zone .device {
-    --dw: min(100cqw, 560px);
+    --dw: min(
+      100cqw,
+      560px,
+      calc(100dvh - 200px - var(--pill-band, 68px) - 16px)
+    );
     width: var(--dw);
     min-width: 0;
     margin: 0 auto;
+  }
+
+  /* Le bas du boîtier se resserre : les commandes se rapprochent de la durée. */
+  .case-controls {
+    margin-top: 2.5cqw;
   }
 }
 

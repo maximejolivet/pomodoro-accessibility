@@ -34,6 +34,15 @@
     flex-direction: column;
     gap: 0;
   }
+
+  .readout {
+    padding: 6px 8px;
+  }
+
+  .readout-time {
+    font-size: 30px;
+    line-height: 1.15;
+  }
 }
 
 .readout-time {
