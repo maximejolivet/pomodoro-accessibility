@@ -83,6 +83,48 @@
 }
 
 /*
+ * Téléphone : les boutons rapetissent d'un cran pour laisser de l'air au cadran. Ils
+ * restent bien au-dessus de 44 px (WCAG 2.5.8), et Démarrer reste le plus gros.
+ */
+@media (max-width: 640px) {
+  .controls {
+    gap: 18px;
+  }
+
+  .btn-main {
+    width: 72px;
+    height: 72px;
+    box-shadow: 0 6px 0 var(--c-dark);
+  }
+
+  .btn-main:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 var(--c-dark);
+  }
+
+  .btn-main svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .btn-round {
+    width: 52px;
+    height: 52px;
+    box-shadow: 0 5px 0 var(--neutral-edge);
+  }
+
+  .btn-round:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 var(--neutral-edge);
+  }
+
+  .btn-round svg {
+    width: 21px;
+    height: 21px;
+  }
+}
+
+/*
  * Mode table : Démarrer / Pause reste, le reste s'en va. Remettre à zéro et les réglages
  * ne se touchent pas à deux mètres, et une remise à zéro involontaire coûte la session.
  */
