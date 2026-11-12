@@ -168,7 +168,6 @@ Coding: `EF-<area>-<n>`. Priority: **M** (must), **S** (should), **C** (could).
 | EF-ROU-8  | At the end of a step, the next one starts and its name is announced.     | M    |
 | EF-ROU-9  | At the last step, the routine is finished and everything is ticked.      | M    |
 | EF-ROU-10 | The loaded routine is remembered and can be left with one button.        | S    |
-| EF-ROU-11 | The dial lock blocks step changes and leaving the routine.               | M    |
 | EF-ROU-12 | A routine can carry a reminder: a time and days.                         | S    |
 | EF-ROU-13 | At the set time, the notification names the routine and its pictogram.   | S    |
 | EF-ROU-14 | The reminder survives closing the application and restarting the device. | M    |
@@ -201,8 +200,6 @@ Coding: `EF-<area>-<n>`. Priority: **M** (must), **S** (should), **C** (could).
 **EF-ROU-7** - forwards as well as backwards.
 
 **EF-ROU-8** - through the sound, the voice, the notification and the live region.
-
-**EF-ROU-11** - as it blocks the reset.
 
 **EF-ROU-13** - tapping opens the application and **arms** the routine without starting it.
 
@@ -248,7 +245,7 @@ Coding: `EF-<area>-<n>`. Priority: **M** (must), **S** (should), **C** (could).
 | -------- | ---------------------------------------------------------------------------------------------- | ---- |
 | EF-TAB-1 | A table mode shows the dial large, with everything else cleared.                               | S    |
 | EF-TAB-2 | Everything that cannot be read from two metres is cleared.                                     | S    |
-| EF-TAB-3 | Start / Pause and the dial lock remain: a timer you cannot start is of no use.                 | M    |
+| EF-TAB-3 | Start / Pause remain: a timer you cannot start is of no use.                 | M    |
 | EF-TAB-4 | In landscape, the dial goes on the left and the time on the right: stacked, neither would fit. | S    |
 | EF-TAB-5 | The exit is visible, named in full, reachable by keyboard, and Escape also exits.              | M    |
 | EF-TAB-6 | The screen stays on for as long as table mode lasts, whatever the setting.                     | M    |
@@ -354,7 +351,6 @@ irremediably quiet, and an alert that cannot be heard does not fulfil its role.
 | EF-PRE-10 | Voice announcement: none, at milestones, or every minute (default: none).        | S    |
 | EF-PRE-11 | Vibration on/off (default: on); turning it on lets you feel the end pattern.     | S    |
 | EF-PRE-12 | Visual alert: none, soft or strong (default: soft); the choice is shown at once. | S    |
-| EF-PRE-13 | Dial lock on/off (default: off), kept from one opening to the next.              | S    |
 
 **EF-PRE-10** - the choice is heard at once.
 
@@ -586,7 +582,6 @@ The mode joins the list and can be selected.
 | ENF-A11-11 | What is set by dragging can also be set with a simple pointer.           |
 | ENF-A11-12 | The remaining time can be spoken aloud by the device's speech synthesis. |
 | ENF-A11-13 | Each milestone and the end have a distinct vibration pattern.            |
-| ENF-A11-14 | A lock disables the dial, the − / + buttons and the reset.               |
 | ENF-A11-15 | A routine step is identifiable without being able to read.               |
 
 #### Details
@@ -605,9 +600,6 @@ be set, switched off, and freezes under `prefers-reduced-motion`.
 **ENF-A11-12** - a three-choice setting, offline, off by default: without looking at the dial.
 
 **ENF-A11-13** - recognisable without sight or hearing: it is the only alert channel for a deafblind person.
-
-**ENF-A11-14** - for people who trigger unintended actions (tremors, spasticity, a resting palm). Start / Pause
-remains active: only the reset loses the session.
 
 **ENF-A11-15** - a pictogram precedes its name, and its state (done, current, upcoming) is carried by a tick and by
 the accessible name, never by colour alone.

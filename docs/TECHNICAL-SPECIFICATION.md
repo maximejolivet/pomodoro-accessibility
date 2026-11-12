@@ -186,7 +186,6 @@ working and the settings only last for the session (RG-14).
 | `auto-extra`    | +5 min extension              | `'on'` \| `'off'` (default: on)                             |
 | `auto-chain`    | Automatic chaining            | `'on'` \| `'off'` (default: off)                            |
 | `keep-awake`    | Screen on                     | `'on'` \| `'off'` (default: on)                             |
-| `dial-lock`     | Dial lock                     | `'on'` \| `'off'` (default: off)                            |
 | `speech`        | Voice announcement            | `'off'` \| `'milestones'` \| `'minutes'` (default: off)     |
 | `tutorial-seen` | Welcome tutorial already seen | `'on'` \| `'off'` (default: off - it shows on first launch) |
 | `lang`          | Language                      | language code or `'auto'`                                   |
@@ -315,8 +314,8 @@ Two safeguards:
 - the unit follows the **set duration**, not the remaining time, otherwise a Pomodoro would switch to seconds in
   its last minute (RG-27);
 - **setting** is blocked while the graduation is in seconds: dragging, arrows and the − / + buttons work in
-  minutes and would produce a duration unrelated to the display (RG-26). Starting and pausing remain possible -
-  the lock is what removes them, and the attribute used is `aria-readonly`, not `aria-disabled`.
+  minutes and would produce a duration unrelated to the display (RG-26). Starting and pausing remain possible,
+  and the attribute used is `aria-readonly`, not `aria-disabled`.
 
 A "dry" marker under the central button states the unit: without it, a dial set to 20 seconds reads as 20 minutes.
 
@@ -631,7 +630,6 @@ the theme switch instant and guarantees consistent contrast (ENF-MNT-2).
 | Remaining time without sight          | Optional voice announcement (`SpeechService`)                        |
 | Alert without sight or hearing        | A vibration pattern specific to each milestone (`HapticsService`)    |
 | Alert without sound                   | Coloured pulse at 0.6 Hz and a persistent end banner                 |
-| Involuntary gestures                  | Dial lock                                                            |
 | Settings panel                        | Trapped focus, closed with Escape, focus returned to the trigger     |
 | Tabs                                  | `tablist` / `tab` / `tabpanel` roles, arrow-key navigation           |
 | Contrast                              | Theme tokens checked to 4.5:1 minimum, in light and dark             |
@@ -652,9 +650,6 @@ The SVG itself is `aria-hidden`: it says nothing a screen reader could use.
 
 **Alert without sound** - `aria-hidden` and `pointer-events: none`, frozen under `prefers-reduced-motion`: it duplicates information
 already given elsewhere.
-
-**Dial lock** - `SessionService` ignores the setting, the reset, the step change and the exit from a routine. The slider gets
-`aria-disabled`, as do the − / + buttons and the step tiles.
 
 **Tabs** - the arrow keys are named for screen readers.
 

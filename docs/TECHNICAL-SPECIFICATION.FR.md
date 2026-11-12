@@ -190,7 +190,6 @@ la session (RG-14).
 | `auto-extra`    | Prolongation +5 min        | `'on'` \| `'off'` (défaut : on)                                      |
 | `auto-chain`    | Enchaînement automatique   | `'on'` \| `'off'` (défaut : off)                                     |
 | `keep-awake`    | Écran allumé               | `'on'` \| `'off'` (défaut : on)                                      |
-| `dial-lock`     | Verrou du cadran           | `'on'` \| `'off'` (défaut : off)                                     |
 | `speech`        | Annonce vocale             | `'off'` \| `'milestones'` \| `'minutes'` (défaut : off)              |
 | `tutorial-seen` | Tutoriel d'accueil déjà vu | `'on'` \| `'off'` (défaut : off - il se montre au premier lancement) |
 | `lang`          | Langue                     | code de langue ou `'auto'`                                           |
@@ -329,7 +328,7 @@ Deux garde-fous :
   secondes dans sa dernière minute (RG-27) ;
 - le **réglage** est neutralisé tant que la graduation est en secondes : glissement, flèches et
   boutons − / + travaillent en minutes et donneraient une durée sans rapport avec l'affichage
-  (RG-26). Démarrer et mettre en pause restent possibles - c'est le verrou, lui, qui les retire,
+  (RG-26). Démarrer et mettre en pause restent possibles,
   et l'attribut porté est `aria-readonly`, non `aria-disabled`.
 
 Une pastille « sec » sous le bouton central dit l'unité : sans elle, un cadran réglé sur 20
@@ -677,7 +676,6 @@ garantit l'homogénéité des contrastes (ENF-MNT-2).
 | Temps restant sans la vue               | Annonce vocale optionnelle (`SpeechService`)                         |
 | Alerte sans la vue ni l'ouïe            | Motif de vibration propre à chaque palier (`HapticsService`)         |
 | Alerte sans le son                      | Pulsation colorée à 0,6 Hz et bandeau de fin persistant              |
-| Gestes involontaires                    | Verrou du cadran                                                     |
 | Panneau de réglages                     | Focus piégé, fermeture par Échap, focus rendu au déclencheur         |
 | Onglets                                 | Rôles `tablist` / `tab` / `tabpanel`, navigation par flèches         |
 | Contraste                               | Jetons de thème vérifiés à 4,5:1 minimum, en clair et en sombre      |
@@ -700,10 +698,6 @@ durée (voir `ENF-A11-13`).
 
 **Alerte sans le son** - `aria-hidden` et `pointer-events: none`, figée sous
 `prefers-reduced-motion` : elle double une information déjà dite ailleurs.
-
-**Verrou du cadran** - `SessionService` ignore le réglage, la remise à zéro, le changement d'étape
-et la sortie de routine. Le curseur passe `aria-disabled`, ainsi que les boutons − / + et les
-vignettes d'étape.
 
 **Onglets** - les flèches sont nommées pour les lecteurs d'écran.
 

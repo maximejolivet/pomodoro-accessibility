@@ -171,7 +171,6 @@ ou *pause longue*.
 | EF-ROU-8  | À la fin d'une étape, la suivante démarre et son nom est annoncé.        | M    |
 | EF-ROU-9  | À la dernière étape, la routine est terminée et tout est coché.          | M    |
 | EF-ROU-10 | La routine chargée est mémorisée, et se quitte d'un bouton.              | S    |
-| EF-ROU-11 | Le verrou du cadran neutralise le changement d'étape et la sortie.       | M    |
 | EF-ROU-12 | Une routine peut porter un rappel : une heure, et des jours.             | S    |
 | EF-ROU-13 | À l'heure dite, la notification nomme la routine et son pictogramme.     | S    |
 | EF-ROU-14 | Le rappel survit à la fermeture de l'application et au redémarrage.      | M    |
@@ -204,8 +203,6 @@ ou *pause longue*.
 **EF-ROU-7** - en avant comme en arrière.
 
 **EF-ROU-8** - par le son, la voix, la notification et la région live.
-
-**EF-ROU-11** - comme il neutralise la remise à zéro.
 
 **EF-ROU-13** - l'appui ouvre l'application et **arme** la routine sans la démarrer.
 
@@ -251,7 +248,7 @@ ou *pause longue*.
 | -------- | ------------------------------------------------------------------------------------------------------- | ---- |
 | EF-TAB-1 | Un mode table affiche le cadran en grand, tout le reste effacé.                                         | S    |
 | EF-TAB-2 | Tout ce qui ne se lit pas à deux mètres s'efface.                                                       | S    |
-| EF-TAB-3 | Démarrer / Pause et le verrou du cadran restent : un minuteur qu'on ne peut plus lancer ne sert à rien. | M    |
+| EF-TAB-3 | Démarrer / Pause restent : un minuteur qu'on ne peut plus lancer ne sert à rien. | M    |
 | EF-TAB-4 | En paysage, le cadran se met à gauche et le temps à droite : empilés, ni l'un ni l'autre ne tiendrait.  | S    |
 | EF-TAB-5 | La sortie est visible, nommée en toutes lettres, atteignable au clavier, et Échap en sort aussi.        | M    |
 | EF-TAB-6 | L'écran reste allumé tant que dure le mode table, quel que soit le réglage.                             | M    |
@@ -359,7 +356,6 @@ arrive irrémédiablement discret, et une alerte qui ne s'entend pas ne remplit 
 | EF-PRE-10 | Annonce vocale : aucune, aux paliers, ou à chaque minute (défaut : aucune).              | S    |
 | EF-PRE-11 | Vibration on/off (défaut : on) ; l'activation fait sentir le motif de fin.               | S    |
 | EF-PRE-12 | Alerte visuelle : aucune, douce ou forte (défaut : douce) ; le choix se montre aussitôt. | S    |
-| EF-PRE-13 | Verrou du cadran on/off (défaut : off), conservé d'une ouverture à l'autre.              | S    |
 
 **EF-PRE-10** - le choix se fait entendre aussitôt.
 
@@ -599,7 +595,6 @@ choisir la nature. Enregistrer. Le mode rejoint la liste et devient sélectionna
 | ENF-A11-11 | Ce qui se règle par glissement se règle aussi par un pointeur simple.      |
 | ENF-A11-12 | Le temps restant peut être dit à voix haute par la synthèse de l'appareil. |
 | ENF-A11-13 | Chaque palier et la fin ont un motif de vibration distinct.                |
-| ENF-A11-14 | Un verrou neutralise le cadran, les boutons − / + et la remise à zéro.     |
 | ENF-A11-15 | Une étape de routine est identifiable sans savoir lire.                    |
 
 #### Précisions
@@ -620,9 +615,6 @@ clair et sombre.
 
 **ENF-A11-13** - reconnaissable sans la vue ni l'ouïe : c'est le seul canal d'alerte pour une
 personne sourde-aveugle.
-
-**ENF-A11-14** - pour qui déclenche des actions involontaires (tremblements, spasticité, paume
-posée). Démarrer / Pause reste actif : seule la remise à zéro fait perdre la session.
 
 **ENF-A11-15** - un pictogramme précède son nom, et son état (faite, en cours, à venir) est porté
 par une coche et par le nom accessible, jamais par la couleur seule.
