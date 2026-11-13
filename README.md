@@ -1,5 +1,11 @@
 <div align="center">
 
+<img src="https://www.maxime.bzh/maxime-black.svg" alt="Maxime" height="80" align="middle">
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://github.com/maximejolivet"><img src="https://wsrv.nl/?url=github.com/maximejolivet.png&w=160&h=160&fit=cover&mask=circle" alt="maximejolivet" width="80" height="80" align="middle"></a>
+
+<br>
+
 [🇫🇷 Français](README.FR.md) · 🇬🇧 English
 
 <img src="public/apple-touch-icon.png" alt="Pomodoro Accessibilité icon" width="96" height="96">
@@ -27,7 +33,6 @@ You see the time that's left instead of reading it.
 <img src="docs/screenshot.png" alt="Pomodoro Accessibilité in light mode" width="300">
 &nbsp;&nbsp;
 <img src="docs/screenshot-dark.png" alt="Pomodoro Accessibilité in dark mode" width="300">
-<img src="docs/screenshot-widget-modes.png" alt="The iOS widget in 1x1 and 2x1 sizes, for a mode and for a routine step" width="620">
 
 </div>
 
@@ -165,10 +170,10 @@ visual timer is a simple, discreet and free tool at that level.
 
 ### Outside the app
 
-- 🧩 **iPhone and Android widget** - the dial itself on your home screen: the disk empties minute
-  by minute. The iPhone widget adds a bar for the time left; the Android widget also shows today's goal
-- ⏱️ **Countdown on the lock screen** - a silent notification on Android, a Live Activity on
-  iPhone: the time left without unlocking
+- 🧩 **Android widget** - the dial itself on your home screen: the disk empties minute by minute,
+  and the widget also shows today's goal
+- ⏱️ **Countdown on the lock screen** - a silent notification on Android: the time left without
+  unlocking
 - 🔆 **Screen always on** - the screen doesn't turn off during the countdown (can be turned off)
 
 ### Comfort and settings
@@ -293,12 +298,9 @@ sizes; the modal focus trap; no horizontal scrolling at 320 px), and CI runs the
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
 ![PostCSS](https://img.shields.io/badge/PostCSS-8-DD3A0A?logo=postcss&logoColor=white)
 ![Capacitor](https://img.shields.io/badge/Capacitor-8-119EFF?logo=capacitor&logoColor=white)
-![Swift](https://img.shields.io/badge/Swift-widget_iOS-F05138?logo=swift&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&logoColor=white)
 ![Jasmine](https://img.shields.io/badge/Jasmine-7-8A4182?logo=jasmine&logoColor=white)
 
-![SwiftUI](https://img.shields.io/badge/SwiftUI-widget-0D96F6?logo=swift&logoColor=white)
-![WidgetKit](https://img.shields.io/badge/WidgetKit-iOS-000000?logo=apple&logoColor=white)
 ![Xcode](https://img.shields.io/badge/Xcode-iOS-147EFB?logo=xcode&logoColor=white)
 ![Java](https://img.shields.io/badge/Java-Android-ED8B00?logo=openjdk&logoColor=white)
 ![Gradle](https://img.shields.io/badge/Gradle-Android-02303A?logo=gradle&logoColor=white)
@@ -315,7 +317,7 @@ sizes; the modal focus trap; no horizontal scrolling at 320 px), and CI runs the
 The technical documentation is in French:
 
 - [Installation and commands](docs/INSTALLATION.md)
-- [Mobile build (iOS / Android), notifications and widget](docs/MOBILE.md)
+- [Mobile build (iOS / Android), notifications and Android widget](docs/MOBILE.md)
 - [Code architecture](docs/ARCHITECTURE.md)
 - [Functional specification (French)](docs/FUNCTIONAL-SPECIFICATION.md)
 - [Technical specification (French)](docs/TECHNICAL-SPECIFICATION.md)

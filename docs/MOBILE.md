@@ -89,40 +89,15 @@ During a session, the remaining time appears outside the app:
 - **Android** - a permanent, silent notification whose chronometer ticks on its own. Channel
   `ongoing_v1`, low importance: it must never cover the milestones. It works from Android 7 (the
   chronometer countdown dates from API 24); before that, it shows the remaining time frozen.
-- **iOS** - a Live Activity, on the lock screen and in the Dynamic Island, from **iOS 16.2**.
-  It requires `NSSupportsLiveActivities` in `App/Info.plist` (already set) and that the user has not
-  turned off live activities in the system settings.
 
-⚠️ On iOS, the dial of a Live Activity is **frozen between two updates**: only the number ticks on
-its own. Animating it would require a push notification server, which this app does not have - and
-will not have, as it does not talk to anyone.
-
-## Home screen widgets
-
-### iOS
-
-The `PomodoroWidget` extension (SwiftUI, iOS 17+) reads the state written by the app in the App Group
-`group.com.maximejolivet.pomodorotdah` (local plugin `WidgetBridge`, registered by
-`MainViewController`).
-
-On a device, choose your team in *Signing & Capabilities* for the **App** and **PomodoroWidget**
-targets: Xcode then creates the App Group. The widget's countdown advances on its own; the app only
-updates it on changes (start, pause, end, going to the background, goal, language, theme, duration
-set).
-
-The widget shows **the app's dial**, redrawn in SwiftUI from the same constants as
-`src/app/features/timer/dial-geometry.ts` and the same colours as `src/theme/`: the disc empties there
-graduation by graduation, without waking the app. Changing the geometry or the palette on one side
-therefore requires the same change on the other.
-
-### Android
+## Android home screen widget
 
 Nothing to configure: the widget is an `AppWidgetProvider` of the `app` module, declared in the
 manifest, available as soon as the app is installed (long press on the home screen → Widgets). The
 dial is painted there into a bitmap by `DialBitmap.java`, from the same constants; two layouts depending
 on the size chosen, 2×2 and 4×2.
 
-State passes through `WidgetBridgePlugin.java`, the twin of the Swift plugin, registered in
+State passes through `WidgetBridgePlugin.java`, registered in
 `MainActivity`. The countdown advances on its own (`Chronometer`), and the disc empties on a per-minute
 alarm, cancelled as soon as the countdown stops.
 

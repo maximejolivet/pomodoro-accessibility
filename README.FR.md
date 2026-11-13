@@ -1,5 +1,11 @@
 <div align="center">
 
+<img src="https://www.maxime.bzh/maxime-black.svg" alt="Maxime" height="80" align="middle">
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://github.com/maximejolivet"><img src="https://wsrv.nl/?url=github.com/maximejolivet.png&w=160&h=160&fit=cover&mask=circle" alt="maximejolivet" width="80" height="80" align="middle"></a>
+
+<br>
+
 🇫🇷 Français · [🇬🇧 English](README.md)
 
 <img src="public/apple-touch-icon.png" alt="Icône Pomodoro Accessibilité" width="96" height="96">
@@ -27,7 +33,6 @@ On voit le temps qui reste au lieu de le lire.
 <img src="docs/screenshot.png" alt="Pomodoro Accessibilité en mode clair" width="300">
 &nbsp;&nbsp;
 <img src="docs/screenshot-dark.png" alt="Pomodoro Accessibilité en mode sombre" width="300">
-<img src="docs/screenshot-widget-modes.png" alt="Le widget iOS en tailles 1x1 et 2x1, pour un mode et pour une étape de routine" width="620">
 
 </div>
 
@@ -167,11 +172,10 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
 
 ### Hors de l'application
 
-- 🧩 **Widget iPhone et Android** - le cadran lui-même sur l'écran d'accueil : le disque s'y vide
-  minute par minute. Le widget iPhone ajoute une barre du temps restant ; le widget Android affiche
-  aussi l'objectif du jour
-- ⏱️ **Décompte sur l'écran verrouillé** - une notification muette sur Android, une Live Activity
-  sur iPhone : le temps restant sans déverrouiller
+- 🧩 **Widget Android** - le cadran lui-même sur l'écran d'accueil : le disque s'y vide minute par
+  minute, et le widget affiche aussi l'objectif du jour
+- ⏱️ **Décompte sur l'écran verrouillé** - une notification muette sur Android : le temps restant
+  sans déverrouiller
 - 🔆 **Écran toujours allumé** - l'écran ne s'éteint pas pendant le décompte (désactivable)
 
 ### Confort et réglages
@@ -298,12 +302,9 @@ et la CI les relance à chaque push.
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
 ![PostCSS](https://img.shields.io/badge/PostCSS-8-DD3A0A?logo=postcss&logoColor=white)
 ![Capacitor](https://img.shields.io/badge/Capacitor-8-119EFF?logo=capacitor&logoColor=white)
-![Swift](https://img.shields.io/badge/Swift-widget_iOS-F05138?logo=swift&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-24-5FA04E?logo=nodedotjs&logoColor=white)
 ![Jasmine](https://img.shields.io/badge/Jasmine-7-8A4182?logo=jasmine&logoColor=white)
 
-![SwiftUI](https://img.shields.io/badge/SwiftUI-widget-0D96F6?logo=swift&logoColor=white)
-![WidgetKit](https://img.shields.io/badge/WidgetKit-iOS-000000?logo=apple&logoColor=white)
 ![Xcode](https://img.shields.io/badge/Xcode-iOS-147EFB?logo=xcode&logoColor=white)
 ![Java](https://img.shields.io/badge/Java-Android-ED8B00?logo=openjdk&logoColor=white)
 ![Gradle](https://img.shields.io/badge/Gradle-Android-02303A?logo=gradle&logoColor=white)
@@ -318,7 +319,7 @@ et la CI les relance à chaque push.
 </div>
 
 - [Installation et commandes](docs/INSTALLATION.md)
-- [Build mobile (iOS / Android), notifications et widget](docs/MOBILE.md)
+- [Build mobile (iOS / Android), notifications et widget Android](docs/MOBILE.md)
 - [Architecture du code](docs/ARCHITECTURE.md)
 - [Cahier des charges fonctionnel](docs/FUNCTIONAL-SPECIFICATION.md)
 - [Cahier des charges technique](docs/TECHNICAL-SPECIFICATION.md)

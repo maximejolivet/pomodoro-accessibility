@@ -93,40 +93,15 @@ Pendant une session, le temps restant se pose hors de l'app :
   seul. Canal `ongoing_v1`, importance basse : elle ne doit jamais couvrir les paliers. Elle
   marche depuis Android 7 (le compte à rebours du chronomètre date de l'API 24) ; avant, elle
   affiche le temps restant figé.
-- **iOS** - une Live Activity, écran verrouillé et Dynamic Island, à partir d'**iOS 16.2**.
-  Elle exige `NSSupportsLiveActivities` dans `App/Info.plist` (déjà posé) et que l'utilisateur
-  n'ait pas coupé les activités en direct dans les réglages du système.
 
-⚠️ Sur iOS, le cadran d'une Live Activity est **figé entre deux mises à jour** : seul le
-chiffre court tout seul. L'animer demanderait un serveur de notifications push, que cette app
-n'a pas - et n'aura pas, elle ne parle à personne.
-
-## Widgets d'écran d'accueil
-
-### iOS
-
-L'extension `PomodoroWidget` (SwiftUI, iOS 17+) lit l'état écrit par l'app dans l'App Group
-`group.com.maximejolivet.pomodorotdah` (plugin local `WidgetBridge`, enregistré par
-`MainViewController`).
-
-Sur un appareil, choisir son équipe dans *Signing & Capabilities* pour les cibles **App** et
-**PomodoroWidget** : Xcode crée alors l'App Group. Le décompte du widget avance seul ; l'app
-ne le met à jour qu'aux changements (démarrage, pause, fin, passage en arrière-plan,
-objectif, langue, thème, durée réglée).
-
-Le widget affiche **le cadran de l'app**, redessiné en SwiftUI à partir des mêmes constantes
-que `src/app/features/timer/dial-geometry.ts` et des mêmes couleurs que `src/theme/` : le disque
-s'y vide graduation par graduation, sans réveiller l'app. Toucher à la géométrie ou à la palette
-d'un côté demande donc le même geste de l'autre.
-
-### Android
+## Widget Android d'écran d'accueil
 
 Rien à configurer : le widget est un `AppWidgetProvider` du module `app`, déclaré dans le
 manifeste, disponible dès l'installation (appui long sur l'écran d'accueil → Widgets). Le cadran
 y est peint dans un bitmap par `DialBitmap.java`, à partir des mêmes constantes ; deux
 dispositions selon la largeur posée, 2×2 et 4×2.
 
-L'état passe par `WidgetBridgePlugin.java`, jumeau du plugin Swift, enregistré dans
+L'état passe par `WidgetBridgePlugin.java`, enregistré dans
 `MainActivity`. Le décompte avance seul (`Chronometer`), le disque se vide sur une alarme à la
 minute, annulée dès que le décompte s'arrête.
 
