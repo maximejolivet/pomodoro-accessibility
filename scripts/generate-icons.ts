@@ -121,11 +121,8 @@ async function main(): Promise<void> {
     await shoot(browser, centered(720, 1280), 720, 1280, false)
   );
 
-  // iOS pose la même image carrée aux trois échelles : c'est le storyboard qui la cadre.
-  const iosSplash = await shoot(browser, centered(2732, 2732), 2732, 2732, false);
-  for (const name of ['splash-2732x2732.png', 'splash-2732x2732-1.png', 'splash-2732x2732-2.png']) {
-    write(join(ROOT, 'ios/App/App/Assets.xcassets/Splash.imageset/' + name), iosSplash);
-  }
+  // iOS : pas d'image de lancement générée ici. `LaunchScreen.storyboard` pose le logo
+  // `BootLogo.imageset` (tiré de `public/favicon.svg`) sur un fond beige.
 
   // --- Web : l'icône de l'écran d'accueil iOS quand l'app est ajoutée depuis Safari.
   write(join(ROOT, 'public/apple-touch-icon.png'), await shoot(browser, sized(ICON, 180), 180, 180, false));
