@@ -314,10 +314,16 @@ sizes; the modal focus trap; no horizontal scrolling at 320 px), and CI runs the
 
 </div>
 
-The technical documentation is in French:
+The documentation is in the [`docs/`](docs/00_INDEX.md) folder. Each document is in French, followed by its English translation:
 
-- [Installation and commands](docs/INSTALLATION.md)
-- [Mobile build (iOS / Android), notifications and Android widget](docs/MOBILE.md)
-- [Code architecture](docs/ARCHITECTURE.md)
-- [Functional specification (French)](docs/FUNCTIONAL-SPECIFICATION.md)
-- [Technical specification (French)](docs/TECHNICAL-SPECIFICATION.md)
+- [Documentation index](docs/00_INDEX.md)
+- [Project brief](docs/01_PROJECT_BRIEF.md)
+- [PRD: product requirements](docs/02_PRD.md)
+- [Architecture](docs/03_ARCHITECTURE.md)
+- [TRD: technical choices, mobile build, installation and commands](docs/04_TRD.md)
+- [Data schema](docs/05_DATA_SCHEMA.md)
+- [App flow](docs/06_APP_FLOW.md)
+- [UI/UX design](docs/07_UI_UX_DESIGN.md)
+- [Epics and user stories](docs/08_EPICS.md)
+- [Implementation plan](docs/09_IMPLEMENTATION_PLAN.md)
+- [Kanban](docs/10_KANBAN.md)

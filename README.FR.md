@@ -318,8 +318,16 @@ et la CI les relance à chaque push.
 
 </div>
 
-- [Installation et commandes](docs/INSTALLATION.md)
-- [Build mobile (iOS / Android), notifications et widget Android](docs/MOBILE.md)
-- [Architecture du code](docs/ARCHITECTURE.md)
-- [Cahier des charges fonctionnel](docs/FUNCTIONAL-SPECIFICATION.md)
-- [Cahier des charges technique](docs/TECHNICAL-SPECIFICATION.md)
+La documentation est dans le dossier [`docs/`](docs/00_INDEX.md). Chaque document est en français, suivi de sa traduction anglaise :
+
+- [Index de la documentation](docs/00_INDEX.md)
+- [Brief projet](docs/01_PROJECT_BRIEF.md)
+- [PRD : exigences produit](docs/02_PRD.md)
+- [Architecture](docs/03_ARCHITECTURE.md)
+- [TRD : choix techniques, build mobile, installation et commandes](docs/04_TRD.md)
+- [Schéma des données](docs/05_DATA_SCHEMA.md)
+- [Parcours de l'appli](docs/06_APP_FLOW.md)
+- [Design UI/UX](docs/07_UI_UX_DESIGN.md)
+- [Epics et user stories](docs/08_EPICS.md)
+- [Plan d'implémentation](docs/09_IMPLEMENTATION_PLAN.md)
+- [Kanban](docs/10_KANBAN.md)
