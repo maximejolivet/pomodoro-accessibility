@@ -148,7 +148,7 @@
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: transparent;
+  background: var(--face);
   box-shadow: none;
   cursor: pointer;
   overflow: hidden;
