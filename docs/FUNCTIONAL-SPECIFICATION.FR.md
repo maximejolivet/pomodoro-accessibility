@@ -242,24 +242,6 @@ ou *pause longue*.
 
 **EF-TUT-1** - voir le temps, le régler, le démarrer, les modes et routines, les alertes.
 
-### 4.4b Mode table (`EF-TAB`)
-
-| Réf.     | Exigence                                                                                                | Prio |
-| -------- | ------------------------------------------------------------------------------------------------------- | ---- |
-| EF-TAB-1 | Un mode table affiche le cadran en grand, tout le reste effacé.                                         | S    |
-| EF-TAB-2 | Tout ce qui ne se lit pas à deux mètres s'efface.                                                       | S    |
-| EF-TAB-3 | Démarrer / Pause restent : un minuteur qu'on ne peut plus lancer ne sert à rien. | M    |
-| EF-TAB-4 | En paysage, le cadran se met à gauche et le temps à droite : empilés, ni l'un ni l'autre ne tiendrait.  | S    |
-| EF-TAB-5 | La sortie est visible, nommée en toutes lettres, atteignable au clavier, et Échap en sort aussi.        | M    |
-| EF-TAB-6 | L'écran reste allumé tant que dure le mode table, quel que soit le réglage.                             | M    |
-
-**EF-TAB-6** - un minuteur de table qui s'éteint ne sert à rien.
-
-**EF-TAB-2** - réglages, remise à zéro, boutons − / +, pastille d'accessibilité.
-
-**EF-TAB-1** - le téléphone posé debout sert alors de minuteur visuel à une table ou à une
-classe.
-
 ### 4.5 Enchaînement et prolongation (`EF-CHA`)
 
 | Réf.     | Exigence                                                                                     | Prio |

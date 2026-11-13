@@ -173,11 +173,6 @@ export const ar: Dictionary = {
   'tutorial.step': 'الخطوة {n} من {total}: {title}',
   'tutorial.goTo': 'الانتقال إلى الخطوة {n}',
 
-  'table.open': 'وضع الطاولة',
-  'table.hint': 'القرص بحجم كبير، لطاولة أو لفصل دراسي',
-  'table.exit': 'مغادرة وضع الطاولة',
-  'table.entered': 'وضع الطاولة',
-  'table.left': 'تم إنهاء وضع الطاولة',
   'tutorial.1.title': 'الوقت يُرى',
   'tutorial.1.text': 'يتقلّص القرص الملوّن مع مرور الوقت. نظرة واحدة تكفي: لا قراءة ولا حساب.',
   'tutorial.2.title': 'ضبط المدة',

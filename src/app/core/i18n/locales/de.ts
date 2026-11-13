@@ -173,11 +173,6 @@ export const de: Dictionary = {
   'tutorial.step': 'Schritt {n} von {total}: {title}',
   'tutorial.goTo': 'Zu Schritt {n}',
 
-  'table.open': 'Tischmodus',
-  'table.hint': 'Das Zifferblatt groß, für einen Tisch oder eine Klasse',
-  'table.exit': 'Tischmodus verlassen',
-  'table.entered': 'Tischmodus',
-  'table.left': 'Tischmodus beendet',
   'tutorial.1.title': 'Zeit, die man sieht',
   'tutorial.1.text': 'Die farbige Scheibe schrumpft, während die Zeit vergeht. Ein Blick genügt: nichts zu lesen, nichts zu rechnen.',
   'tutorial.2.title': 'Dauer einstellen',

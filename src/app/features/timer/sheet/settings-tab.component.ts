@@ -7,7 +7,7 @@ import { PreferencesService } from '../../../core/services/preferences.service';
 import { SessionService } from '../../../core/services/session.service';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
 
-/** Onglet « Réglages » : thème, son, langue, tutoriel, mode table. */
+/** Onglet « Réglages » : thème, son, langue, tutoriel. */
 @Component({
   selector: 'app-settings-tab',
   standalone: true,
@@ -26,10 +26,5 @@ export class SettingsTabComponent {
 
   setLanguage(choice: LangChoice): void {
     this.i18n.setChoice(choice);
-  }
-
-  openTableMode(): void {
-    this.session.setTableMode(true);
-    this.closeSheet.emit();
   }
 }

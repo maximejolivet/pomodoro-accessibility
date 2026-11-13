@@ -4,6 +4,10 @@ const config: CapacitorConfig = {
   appId: 'com.maximejolivet.pomodorotdah',
   appName: 'Pomodoro Accessibilité',
   webDir: 'www',
+  // Fond de la WebView avant le premier affichage : le blanc par défaut ne passe plus.
+  ios: {
+    backgroundColor: '#f5f2ea'
+  },
   plugins: {
     LocalNotifications: {
       // Sans silhouette dédiée, Android réduit l'icône de l'app à un carré blanc dans la

@@ -173,11 +173,6 @@ export const es: Dictionary = {
   'tutorial.step': 'Paso {n} de {total}: {title}',
   'tutorial.goTo': 'Ir al paso {n}',
 
-  'table.open': 'Modo mesa',
-  'table.hint': 'La esfera en grande, para una mesa o un aula',
-  'table.exit': 'Salir del modo mesa',
-  'table.entered': 'Modo mesa',
-  'table.left': 'Modo mesa cerrado',
   'tutorial.1.title': 'El tiempo se ve',
   'tutorial.1.text': 'El disco de color se encoge según pasa el tiempo. Basta un vistazo: nada que leer ni que calcular.',
   'tutorial.2.title': 'Ajustar la duración',

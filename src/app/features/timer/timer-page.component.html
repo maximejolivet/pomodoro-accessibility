@@ -1,7 +1,6 @@
 <main
   class="stage"
   [class.sport]="session.sportMode()"
-  [class.table]="session.tableMode()"
   [style.--sport-c]="session.selectedPreset().color"
 >
   <h1 class="sr-only">Pomodoro Accessibilité</h1>
@@ -32,24 +31,6 @@
     class="stage-content"
     [attr.inert]="showSheet || showTutorial() ? '' : null"
   >
-    <!--
-      Sortie du mode table : premier dans l'ordre de tabulation, discrète mais nommée en
-      toutes lettres - un mode sans porte de sortie visible est un piège.
-    -->
-    <button
-      *ngIf="session.tableMode()"
-      type="button"
-      class="table-exit"
-      (click)="leaveTable()"
-    >
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M9 9 4 4m0 0v5m0-5h5" />
-        <path d="m15 9 5-5m0 0v5m0-5h-5" />
-        <path d="m9 15-5 5m0 0v-5m0 5h5" />
-        <path d="m15 15 5 5m0 0v-5m0 5h-5" />
-      </svg>
-      {{ i18n.t("table.exit") }}
-    </button>
     <!-- Reste affiché jusqu'à la prochaine action : une alerte qui passe se rate. -->
     <p
       class="end-banner"
