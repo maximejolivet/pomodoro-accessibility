@@ -1,4 +1,4 @@
-/** État lu par le widget iOS (voir WidgetState dans PomodoroWidget.swift). */
+/** État lu par le widget Android (voir `WidgetState.java`). */
 export interface WidgetState {
   /** Début (ms) du jour auquel se rapporte `focusMinutes`. */
   dayStart: number;
