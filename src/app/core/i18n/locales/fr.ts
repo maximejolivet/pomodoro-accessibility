@@ -172,11 +172,6 @@ export const fr = {
   'tutorial.step': 'Étape {n} sur {total} : {title}',
   'tutorial.goTo': "Aller à l'étape {n}",
 
-  'table.open': 'Mode table',
-  'table.hint': 'Le cadran en grand, pour une table ou une classe',
-  'table.exit': 'Quitter le mode table',
-  'table.entered': 'Mode table',
-  'table.left': 'Mode table quitté',
   'tutorial.1.title': 'Le temps se voit',
   'tutorial.1.text': "Le disque coloré rétrécit à mesure que le temps passe. Un coup d'œil suffit : rien à lire, rien à calculer.",
   'tutorial.2.title': 'Régler la durée',

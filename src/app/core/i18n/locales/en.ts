@@ -173,11 +173,6 @@ export const en: Dictionary = {
   'tutorial.step': 'Step {n} of {total}: {title}',
   'tutorial.goTo': 'Go to step {n}',
 
-  'table.open': 'Table mode',
-  'table.hint': 'The dial writ large, for a desk or a classroom',
-  'table.exit': 'Leave table mode',
-  'table.entered': 'Table mode',
-  'table.left': 'Table mode closed',
   'tutorial.1.title': 'Time you can see',
   'tutorial.1.text': 'The coloured disc shrinks as time passes. One glance is enough: nothing to read, nothing to work out.',
   'tutorial.2.title': 'Set the length',

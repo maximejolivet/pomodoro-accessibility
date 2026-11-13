@@ -190,14 +190,6 @@
   margin: 0;
 }
 
-/* Mode table : une ligne comme les autres réglages, texte à gauche, action à droite. */
-.table-mode {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
 /* OpenDyslexic setting : mise en évidence spéciale */
 .opendyslexic-setting {
   border: 1.5px solid var(--bar);

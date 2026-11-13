@@ -173,11 +173,6 @@ export const it: Dictionary = {
   'tutorial.step': 'Passo {n} di {total}: {title}',
   'tutorial.goTo': 'Vai al passo {n}',
 
-  'table.open': 'Modalità tavolo',
-  'table.hint': 'Il quadrante in grande, per un tavolo o una classe',
-  'table.exit': 'Esci dalla modalità tavolo',
-  'table.entered': 'Modalità tavolo',
-  'table.left': 'Modalità tavolo chiusa',
   'tutorial.1.title': 'Il tempo si vede',
   'tutorial.1.text': "Il disco colorato si restringe mentre il tempo passa. Basta un'occhiata: niente da leggere, niente da calcolare.",
   'tutorial.2.title': 'Regolare la durata',

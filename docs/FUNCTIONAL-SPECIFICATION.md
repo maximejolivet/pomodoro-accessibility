@@ -239,23 +239,6 @@ Coding: `EF-<area>-<n>`. Priority: **M** (must), **S** (should), **C** (could).
 
 **EF-TUT-1** - seeing the time, setting it, starting it, the modes and routines, the alerts.
 
-### 4.4b Table mode (`EF-TAB`)
-
-| Ref.     | Requirement                                                                                    | Prio |
-| -------- | ---------------------------------------------------------------------------------------------- | ---- |
-| EF-TAB-1 | A table mode shows the dial large, with everything else cleared.                               | S    |
-| EF-TAB-2 | Everything that cannot be read from two metres is cleared.                                     | S    |
-| EF-TAB-3 | Start / Pause remain: a timer you cannot start is of no use.                 | M    |
-| EF-TAB-4 | In landscape, the dial goes on the left and the time on the right: stacked, neither would fit. | S    |
-| EF-TAB-5 | The exit is visible, named in full, reachable by keyboard, and Escape also exits.              | M    |
-| EF-TAB-6 | The screen stays on for as long as table mode lasts, whatever the setting.                     | M    |
-
-**EF-TAB-6** - a table timer that switches its screen off is of no use.
-
-**EF-TAB-2** - settings, reset, − / + buttons, accessibility badge.
-
-**EF-TAB-1** - a phone placed upright then serves as a visual timer for a table or a class.
-
 ### 4.5 Chaining and extension (`EF-CHA`)
 
 | Ref.     | Requirement                                                               | Prio |

@@ -128,8 +128,6 @@ visual timer is a simple, discreet and free tool at that level.
   a switch device
 - 💪 **Dial in seconds** - below a minute the graduation counts seconds: a 20 s effort drains
   before your eyes instead of being a sliver
-- 🍽️ **Table mode** - the dial writ large, everything else cleared away: a phone stood on a desk
-  becomes the timer for the table or the classroom
 
 ### Modes and routines
 

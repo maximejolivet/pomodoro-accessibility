@@ -133,16 +133,6 @@ export class SessionService {
    */
   readonly sportMode = computed(() => this.activeRoutine()?.workout === true);
 
-  /**
-   * Mode table : le téléphone posé debout sur un bureau devient un vrai minuteur visuel,
-   * lisible à deux mètres. Le cadran prend tout, le reste s'efface - il ne demeure que
-   * Démarrer / Pause, et de quoi sortir.
-   *
-   * C'est un état de vue, pas une préférence : on n'ouvre pas l'app en mode table trois
-   * jours plus tard sans se souvenir pourquoi elle n'a plus de boutons.
-   */
-  readonly tableMode = signal(false);
-
   /** Étape assez courte pour que les dernières secondes se comptent une à une. */
   private readonly shortStep = computed(() => this.dialUnit() === 'seconds');
 
@@ -247,7 +237,7 @@ export class SessionService {
     this.timer.finished$.subscribe(lateBy => this.onFinished(lateBy));
     this.timer.isRunning$.subscribe(running => {
       this.isRunning.set(running);
-      this.keepAwake.set(this.tableMode() || (running && this.prefs.keepAwake()));
+      this.keepAwake.set(running && this.prefs.keepAwake());
       this.syncWidget();
     });
 
@@ -333,17 +323,6 @@ export class SessionService {
     if (this.isRunning()) {
       this.notifications.ensurePermission();
     }
-  }
-
-  /**
-   * Entre ou sort du mode table. L'écran y reste allumé quoi qu'en dise le réglage : un
-   * minuteur posé sur une table qui s'éteint au bout d'une minute ne sert à rien. En
-   * sortant, on rend la main au réglage - et au décompte, s'il tourne.
-   */
-  setTableMode(on: boolean): void {
-    this.tableMode.set(on);
-    this.keepAwake.set(on || (this.isRunning() && this.prefs.keepAwake()));
-    this.announce(this.i18n.t(on ? 'table.entered' : 'table.left'));
   }
 
   reset(): void {

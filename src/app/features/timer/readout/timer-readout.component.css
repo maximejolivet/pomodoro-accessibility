@@ -224,33 +224,3 @@
   background: var(--c);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
-
-/*
- * Mode table : le temps se lit de loin. Les boutons − / + disparaissent - on ne règle pas
- * une durée à deux mètres, et un appui involontaire sur une table passée est vite arrivé.
- */
-:host-context(.table) .step {
-  display: none;
-}
-
-:host-context(.table) .readout {
-  min-width: 0;
-  padding: 24px 32px;
-}
-
-:host-context(.table) .readout-main {
-  flex-direction: column;
-  gap: 0;
-}
-
-/* Plancher à 56 px : sur un téléphone debout, 44 px ne faisaient que 1,3 fois le cadran */
-:host-context(.table) .readout-time {
-  font-size: clamp(56px, 13vmin, 96px);
-  line-height: 1.05;
-}
-
-:host-context(.table) .readout-mode {
-  font-size: 16px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
