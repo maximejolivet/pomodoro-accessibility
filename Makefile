@@ -5,7 +5,7 @@ ANDROID_RAW := android/app/src/main/res/raw
 NODE_TS := node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON
 
 .DEFAULT_GOAL := help
-.PHONY: help install dev build watch test test-a11y sync sounds icons ui-icons clean ios android open-ios open-android electron-dev electron-dmg electron-win
+.PHONY: help install dev build watch test test-a11y sync sounds icons desktop-icons ui-icons clean ios android open-ios open-android electron-dev electron-dmg electron-win
 
 help: ## Affiche cette aide
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
@@ -41,6 +41,9 @@ sounds: ## Génère les sons de notification (WAV) et les copie dans Android
 
 icons: ## Génère icônes et écrans de lancement (iOS, Android, web) depuis resources/*.svg
 	$(NODE_TS) scripts/generate-icons.ts
+
+desktop-icons: ## Génère build/icon.icns et build/icon.ico (Electron) depuis resources/app-icon.svg
+	$(NODE_TS) scripts/generate-desktop-icons.ts
 
 ui-icons: ## Régénère les icônes de l'interface depuis Lucide (lucide-static)
 	node scripts/generate-lucide-icons.mjs

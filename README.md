@@ -188,11 +188,20 @@ verrouille : au retour, tout est à jour.
 
 ## Téléchargements
 
+<p align="center">
+<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-1.0.0-arm64.dmg"><img src="docs/badges/macos.svg" alt="Télécharger pour macOS" height="54"></a>
+<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-Setup-1.0.0.exe"><img src="docs/badges/windows.svg" alt="Télécharger pour Windows" height="54"></a>
+<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-1.0.0.apk"><img src="docs/badges/android.svg" alt="Télécharger pour Android (APK)" height="54"></a>
+<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-1.0.0.ipa"><img src="docs/badges/ios.svg" alt="iOS via AltStore" height="54"></a>
+</p>
+
 Récupère la dernière version sur la [page des releases](https://github.com/maximejolivet/pomodoro-accessibility/releases/latest) :
 
 - **macOS (Apple Silicon)** : `Pomodoro-TDAH-1.0.0-arm64.dmg`
 - **Windows (64 bits)** : `Pomodoro-TDAH-Setup-1.0.0.exe`
 - **Android** : `Pomodoro-TDAH-1.0.0.apk`
+
+**iOS (AltStore)** : sur l'iPhone, ouvre [ce lien](altstore://source?url=https://raw.githubusercontent.com/maximejolivet/pomodoro-accessibility/develop/altstore/source.json) pour ajouter la source, ou colle `https://raw.githubusercontent.com/maximejolivet/pomodoro-accessibility/develop/altstore/source.json` dans AltStore (*Sources*, puis *+*). L'app s'installe et se met à jour depuis AltStore, qui la re-signe avec ton Apple ID.
 
 Les installeurs macOS et Windows ne sont pas encore signés par un certificat. macOS demande une
 confirmation au premier lancement (clic droit sur l'app, puis Ouvrir). Windows SmartScreen affiche
@@ -521,11 +530,20 @@ when you come back, everything is up to date.
 
 ## Download
 
+<p align="center">
+<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-1.0.0-arm64.dmg"><img src="docs/badges/macos.svg" alt="Download for macOS" height="54"></a>
+<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-Setup-1.0.0.exe"><img src="docs/badges/windows.svg" alt="Download for Windows" height="54"></a>
+<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-1.0.0.apk"><img src="docs/badges/android.svg" alt="Download for Android (APK)" height="54"></a>
+<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-1.0.0.ipa"><img src="docs/badges/ios.svg" alt="iOS via AltStore" height="54"></a>
+</p>
+
 Get the latest version from the [Releases page](https://github.com/maximejolivet/pomodoro-accessibility/releases/latest):
 
 - **macOS (Apple Silicon)**: `Pomodoro-TDAH-1.0.0-arm64.dmg`
 - **Windows (64-bit)**: `Pomodoro-TDAH-Setup-1.0.0.exe`
 - **Android**: `Pomodoro-TDAH-1.0.0.apk`
+
+**iOS (AltStore)**: on your iPhone, open [this link](altstore://source?url=https://raw.githubusercontent.com/maximejolivet/pomodoro-accessibility/develop/altstore/source.json) to add the source, or paste `https://raw.githubusercontent.com/maximejolivet/pomodoro-accessibility/develop/altstore/source.json` into AltStore (*Sources*, then *+*). The app installs and updates from AltStore, which re-signs it with your Apple ID.
 
 The macOS and Windows installers are not signed by a certificate yet. macOS asks you to confirm
 the first opening (Control-click the app, then Open). Windows SmartScreen shows a warning: click
