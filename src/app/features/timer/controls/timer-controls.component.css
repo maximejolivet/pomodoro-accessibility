@@ -123,3 +123,46 @@
     height: 21px;
   }
 }
+
+/*
+ * Boîtier étroit (fenêtre de bureau basse : le cadran tombe à son minimum de 280 px) : les
+ * boutons suivent la largeur du boîtier, comme sur téléphone, au lieu de garder leur taille
+ * de grand écran et d'allonger le boîtier. Ils restent à 44 px au moins (WCAG 2.5.8).
+ */
+@container (max-width: 400px) {
+  .controls {
+    gap: 14px;
+  }
+
+  .btn-main {
+    width: 64px;
+    height: 64px;
+    box-shadow: 0 5px 0 var(--c-dark);
+  }
+
+  .btn-main:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 var(--c-dark);
+  }
+
+  .btn-main svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .btn-round {
+    width: 48px;
+    height: 48px;
+    box-shadow: 0 4px 0 var(--neutral-edge);
+  }
+
+  .btn-round:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 var(--neutral-edge);
+  }
+
+  .btn-round svg {
+    width: 20px;
+    height: 20px;
+  }
+}
