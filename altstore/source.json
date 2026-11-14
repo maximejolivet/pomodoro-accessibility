@@ -1,0 +1,42 @@
+{
+  "name": "Pomodoro Accessibilité",
+  "identifier": "com.maximejolivet.pomodorotdah.source",
+  "subtitle": "Un minuteur visuel pour l'autisme, le TDAH et les troubles DYS",
+  "description": "Source AltStore de Pomodoro Accessibilité : on voit le temps qui reste au lieu de le lire.",
+  "iconURL": "https://raw.githubusercontent.com/maximejolivet/pomodoro-accessibility/develop/ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",
+  "website": "https://github.com/maximejolivet/pomodoro-accessibility",
+  "tintColor": "8b6fd6",
+  "apps": [
+    {
+      "name": "Pomodoro Accessibilité",
+      "bundleIdentifier": "com.maximejolivet.pomodorotdah",
+      "developerName": "Maxime Jolivet",
+      "subtitle": "Un minuteur visuel, sans rien à lire",
+      "localizedDescription": "Un minuteur visuel pour l'autisme, le TDAH, les troubles DYS et les autres profils neurodivergents. Le disque coloré se vide avec le temps : un coup d'œil suffit.\n\nConforme RGAA 4.1 et WCAG 2.1 AA, mode sombre, sept langues (FR, EN, ES, DE, IT, PT, AR).",
+      "iconURL": "https://raw.githubusercontent.com/maximejolivet/pomodoro-accessibility/develop/ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",
+      "tintColor": "8b6fd6",
+      "category": "productivity",
+      "screenshots": [
+        "https://raw.githubusercontent.com/maximejolivet/pomodoro-accessibility/develop/docs/screenshot.png",
+        "https://raw.githubusercontent.com/maximejolivet/pomodoro-accessibility/develop/docs/screenshot-modes.png",
+        "https://raw.githubusercontent.com/maximejolivet/pomodoro-accessibility/develop/docs/screenshot-routine.png"
+      ],
+      "versions": [
+        {
+          "version": "1.0.0",
+          "buildVersion": "1",
+          "date": "2026-11-14",
+          "localizedDescription": "Première version.",
+          "downloadURL": "https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-1.0.0.ipa",
+          "size": 896373,
+          "minOSVersion": "15.0"
+        }
+      ],
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {}
+      }
+    }
+  ],
+  "news": []
+}
