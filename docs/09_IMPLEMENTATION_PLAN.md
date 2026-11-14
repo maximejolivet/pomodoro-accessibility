@@ -81,7 +81,7 @@ Un seul lot publié : l'application est livrée en continu depuis `main`, sans v
 
 ## Étape suivante
 
-Ce qui reste ouvert, par ordre de priorité approximatif. Rien ici n'est une promesse ni une date : c'est la liste des bouts connus, pour qu'ils ne soient pas oubliés. La liste vivante est dans `ROADMAP.md`.
+Ce qui reste ouvert, par ordre de priorité approximatif. Rien ici n'est une promesse ni une date : c'est la liste des bouts connus, pour qu'ils ne soient pas oubliés. La liste vivante est dans [`ROADMAP.md`](../ROADMAP.md).
 
 - **À vérifier à la main** : `cap open ios` et `cap open android` ; le cadran sur un vrai téléphone et une vraie tablette ; la pastille du nom de mode dans tous les thèmes.
 - **Dépendances** : `@axe-core/playwright` 4.14 (noms accessibles à corriger avant de lever l'épinglage à 4.13) ; les avis `minimatch` venus d'`electron-builder` ; les mises à jour majeures (Electron, TypeScript, Gradle, Node), une à la fois.
@@ -181,7 +181,7 @@ A single published stream: the application ships continuously from `main`, with 
 
 ## Next step
 
-What is still open, in rough priority order. Nothing here is a promise or a date: it is the list of known loose ends, so they are not forgotten. The live list is in `ROADMAP.md`.
+What is still open, in rough priority order. Nothing here is a promise or a date: it is the list of known loose ends, so they are not forgotten. The live list is in [`ROADMAP.md`](../ROADMAP.md).
 
 - **To verify by hand**: `cap open ios` and `cap open android`; the dial on a real phone and a real tablet; the mode name chip in every theme.
 - **Dependencies**: `@axe-core/playwright` 4.14 (accessible names to fix before lifting the pin to 4.13); the `minimatch` advisories coming from `electron-builder`; major upgrades (Electron, TypeScript, Gradle, Node), one at a time.

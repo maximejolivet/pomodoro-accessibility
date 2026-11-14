@@ -334,7 +334,7 @@ Configuration Playwright : dossier `tests/`, projet Chromium en **420 × 900** (
 serveur de développement démarré automatiquement sur `http://localhost:4200`, exécution
 parallèle, une reprise en CI, trace à la première reprise, `forbidOnly` en CI.
 
-La suite `tests/a11y.spec.ts` (80 tests) analyse avec les jeux de règles `wcag2a`, `wcag2aa`,
+La suite `tests/a11y.spec.ts` (61 tests) analyse avec les jeux de règles `wcag2a`, `wcag2aa`,
 `wcag21a`, `wcag21aa` et `best-practice`, en **thème clair et en thème sombre**, sur l'accueil,
 sur le panneau de réglages ouvert et sur les éditeurs de mode et de routine. Les comportements
 qui dépendent du temps (annonce vocale, vibration, alerte visuelle, enchaînement des étapes
@@ -673,7 +673,7 @@ services - is covered only end to end, by the accessibility suite.
 Playwright configuration: `tests/` folder, Chromium project at **420 × 900** (mobile framing), development server started
 automatically on `http://localhost:4200`, parallel execution, one retry in CI, trace on the first retry, `forbidOnly` in CI.
 
-The suite `tests/a11y.spec.ts` (80 tests) analyses with the rule sets `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa` and
+The suite `tests/a11y.spec.ts` (61 tests) analyses with the rule sets `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa` and
 `best-practice`, in **light and dark themes**, on the home page, on the open settings panel and on the mode and routine editors.
 The behaviours that depend on time (voice announcement, vibration, visual alert, chaining of the steps of a routine) are played
 with Playwright's simulated clock. Any violation fails the CI.

@@ -8,15 +8,15 @@ Le travail circule en continu. Il n'y a pas de sprints fixes. Une nouvelle carte
 
 | Colonne | Signification | Règle d'entrée |
 | --- | --- | --- |
-| **Backlog** | Stories des [epics](08_EPICS.md) et points de `ROADMAP.md` pas encore préparés | Story listée dans un epic ou point listé dans `ROADMAP.md` |
+| **Backlog** | Stories des [epics](08_EPICS.md) et points de [`ROADMAP.md`](../ROADMAP.md) pas encore préparés | Story listée dans un epic ou point listé dans [`ROADMAP.md`](../ROADMAP.md) |
 | **Prêt** | La carte est assez claire pour démarrer | La définition de prêt (ci-dessous) est remplie |
 | **En cours** | Quelqu'un y travaille, sur `develop` | Limite de travail en cours respectée (ci-dessous) |
 | **Revue** | Code, tests et documentation attendent une vérification | Pull request `develop` → `main` ouverte |
 | **Terminé** | Fusionné dans `main` et vérifié par rapport aux critères d'acceptation | La définition de terminé (ci-dessous) est remplie |
 
-Chaque carte correspond à une story, nommée avec son identifiant d'epic : par exemple `E1-S5 Boutons − / +`. Les points de `ROADMAP.md` sans story gardent leur intitulé.
+Chaque carte correspond à une story, nommée avec son identifiant d'epic : par exemple `E1-S5 Boutons − / +`. Les points de [`ROADMAP.md`](../ROADMAP.md) sans story gardent leur intitulé.
 
-Le document des epics reste la source des stories. `ROADMAP.md` liste ce qui est ouvert, et les issues GitHub (dont le tableau de bord Renovate) portent les mises à jour de dépendances.
+Le document des epics reste la source des stories. [`ROADMAP.md`](../ROADMAP.md) liste ce qui est ouvert, et les issues GitHub (dont le tableau de bord Renovate) portent les mises à jour de dépendances.
 
 ## Limites de travail en cours
 
@@ -29,7 +29,7 @@ Le document des epics reste la source des stories. `ROADMAP.md` liste ce qui est
 | Classe | Usage | Règle |
 | --- | --- | --- |
 | **Urgent** | Faille de sécurité, build cassé, une alerte qui ne part pas, un parcours inutilisable au clavier ou au lecteur d'écran | Pris immédiatement, avant toute autre carte |
-| **Standard** | Stories P0 et P1, et points de `ROADMAP.md` | Pris dans l'ordre du backlog |
+| **Standard** | Stories P0 et P1, et points de [`ROADMAP.md`](../ROADMAP.md) | Pris dans l'ordre du backlog |
 | **Plus tard** | Stories P2 et idées pas encore dans le PRD | Pris seulement quand aucune carte standard n'est prête |
 
 ## Définition de prêt
@@ -69,7 +69,7 @@ Revus de temps en temps, sans objectif chiffré :
 
 ## Cadence
 
-- **Revue hebdomadaire (30 minutes)** : regarder le tableau et `ROADMAP.md` ; choisir les cartes de la semaine suivante.
+- **Revue hebdomadaire (30 minutes)** : regarder le tableau et [`ROADMAP.md`](../ROADMAP.md) ; choisir les cartes de la semaine suivante.
 - **Réapprovisionnement** : quand Prêt contient moins de 3 cartes, les suivantes du backlog sont préparées.
 - **Rétrospective** : une fois par mois, une question : qu'est-ce qui a ralenti le flux ? La réponse est ajoutée à ce document.
 
@@ -91,15 +91,15 @@ Work flows continuously. There are no fixed sprints. A new card starts when a sl
 
 | Column | Meaning | Entry rule |
 | --- | --- | --- |
-| **Backlog** | Stories from the [epics](08_EPICS.md) and `ROADMAP.md` items not yet prepared | Story listed in an epic or item listed in `ROADMAP.md` |
+| **Backlog** | Stories from the [epics](08_EPICS.md) and [`ROADMAP.md`](../ROADMAP.md) items not yet prepared | Story listed in an epic or item listed in [`ROADMAP.md`](../ROADMAP.md) |
 | **Ready** | The card is clear enough to start | The definition of ready (below) is met |
 | **In progress** | Someone is working on it, on `develop` | Work-in-progress limit respected (below) |
 | **Review** | Code, tests and documentation await a check | A `develop` → `main` pull request is open |
 | **Done** | Merged into `main` and checked against the acceptance criteria | The definition of done (below) is met |
 
-Each card matches a story, named with its epic identifier: for example `E1-S5 − / + buttons`. `ROADMAP.md` items that have no story keep their own title.
+Each card matches a story, named with its epic identifier: for example `E1-S5 − / + buttons`. [`ROADMAP.md`](../ROADMAP.md) items that have no story keep their own title.
 
-The epics document stays the source of the stories. `ROADMAP.md` lists what is open, and GitHub issues (including the Renovate dashboard) carry the dependency updates.
+The epics document stays the source of the stories. [`ROADMAP.md`](../ROADMAP.md) lists what is open, and GitHub issues (including the Renovate dashboard) carry the dependency updates.
 
 ## Work-in-progress limits
 
@@ -112,7 +112,7 @@ The epics document stays the source of the stories. `ROADMAP.md` lists what is o
 | Class | Use | Rule |
 | --- | --- | --- |
 | **Urgent** | Security flaw, broken build, an alert that does not fire, a flow that cannot be used with a keyboard or a screen reader | Taken immediately, before any other card |
-| **Standard** | P0 and P1 stories, and `ROADMAP.md` items | Taken in backlog order |
+| **Standard** | P0 and P1 stories, and [`ROADMAP.md`](../ROADMAP.md) items | Taken in backlog order |
 | **Later** | P2 stories and ideas not yet in the PRD | Taken only when no standard card is ready |
 
 ## Definition of ready
@@ -152,6 +152,6 @@ Reviewed from time to time, with no numeric target:
 
 ## Cadence
 
-- **Weekly review (30 minutes)**: look at the board and `ROADMAP.md`; choose the next week's cards.
+- **Weekly review (30 minutes)**: look at the board and [`ROADMAP.md`](../ROADMAP.md); choose the next week's cards.
 - **Replenishment**: when Ready holds fewer than 3 cards, the next ones from the backlog are prepared.
 - **Retrospective**: once a month, one question: what slowed the flow down? The answer is added to this document.

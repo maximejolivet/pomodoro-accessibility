@@ -69,12 +69,12 @@ flowchart TD
 - **Comprendre le projet** : 01, puis 02.
 - **Développer une fonctionnalité** : 08 (la story et ses critères), puis 02 (l'exigence), 05 (les données), 06 (les écrans) et 07 (l'interface).
 - **Comprendre la technique** : 03, puis 04.
-- **Savoir quoi faire ensuite** : 09, puis 10.
+- **Savoir quoi faire ensuite** : 09, 10, puis la [feuille de route](../ROADMAP.md).
 
 ## Règles de lecture
 
 - En cas de conflit entre le code et ces documents, signaler l'écart avant de choisir.
-- Le suivi du travail vit dans `ROADMAP.md` (points ouverts) et dans les issues GitHub ; les stories restent écrites dans le document des epics.
+- Le suivi du travail vit dans [`ROADMAP.md`](../ROADMAP.md) (points ouverts) et dans les issues GitHub ; les stories restent écrites dans le document des epics.
 - Les installations et les commandes du quotidien sont dans le [TRD](04_TRD.md) ; le [README](../README.md) présente le produit.
 
 <br>
@@ -156,10 +156,10 @@ flowchart TD
 - **Understand the project**: 01, then 02.
 - **Build a feature**: 08 (the story and its criteria), then 02 (the requirement), 05 (the data), 06 (the screens) and 07 (the interface).
 - **Understand the technology**: 03, then 04.
-- **Know what to do next**: 09, then 10.
+- **Know what to do next**: 09, 10, then the [roadmap](../ROADMAP.md).
 
 ## Reading rules
 
 - If the code and these documents disagree, report the gap before choosing.
-- Work tracking lives in `ROADMAP.md` (open items) and in GitHub issues; the stories stay written in the epics document.
+- Work tracking lives in [`ROADMAP.md`](../ROADMAP.md) (open items) and in GitHub issues; the stories stay written in the epics document.
 - Installation and everyday commands are in the [TRD](04_TRD.md); the [README](../README.md) presents the product.
