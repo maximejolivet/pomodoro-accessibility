@@ -191,8 +191,8 @@ verrouille : au retour, tout est à jour.
 <p align="center">
 <a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-1.0.0-arm64.dmg"><img src="docs/badges/macos.svg" alt="Télécharger pour macOS" height="54"></a>
 <a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-Setup-1.0.0.exe"><img src="docs/badges/windows.svg" alt="Télécharger pour Windows" height="54"></a>
-<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/latest"><img src="docs/badges/android.svg" alt="Télécharger pour Android (APK)" height="54"></a>
-<a href="https://altstore.io/"><img src="docs/badges/ios.svg" alt="iOS via AltStore" height="54"></a>
+<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-1.0.0.apk"><img src="docs/badges/android.svg" alt="Télécharger pour Android (APK)" height="54"></a>
+<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-1.0.0.ipa"><img src="docs/badges/ios.svg" alt="iOS via AltStore" height="54"></a>
 </p>
 
 Récupère la dernière version sur la [page des releases](https://github.com/maximejolivet/pomodoro-accessibility/releases/latest) :
@@ -531,8 +531,8 @@ when you come back, everything is up to date.
 <p align="center">
 <a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-1.0.0-arm64.dmg"><img src="docs/badges/macos.svg" alt="Download for macOS" height="54"></a>
 <a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-Setup-1.0.0.exe"><img src="docs/badges/windows.svg" alt="Download for Windows" height="54"></a>
-<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/latest"><img src="docs/badges/android.svg" alt="Download for Android (APK)" height="54"></a>
-<a href="https://altstore.io/"><img src="docs/badges/ios.svg" alt="iOS via AltStore" height="54"></a>
+<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-1.0.0.apk"><img src="docs/badges/android.svg" alt="Download for Android (APK)" height="54"></a>
+<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-1.0.0.ipa"><img src="docs/badges/ios.svg" alt="iOS via AltStore" height="54"></a>
 </p>
 
 Get the latest version from the [Releases page](https://github.com/maximejolivet/pomodoro-accessibility/releases/latest):
