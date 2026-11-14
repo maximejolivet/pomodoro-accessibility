@@ -73,6 +73,7 @@ introduire de pression ni de jugement.
 | Web (navigateur moderne) | Cible principale | Sons Web Audio, Wake Lock si disponible                   |
 | iOS                      | Via Capacitor    | Notifications locales, haptique                           |
 | Android                  | Via Capacitor    | Notifications locales avec canaux sonores, haptique       |
+| macOS, Windows           | Via Electron     | Application de bureau, notifications du système, installeurs non signés |
 
 ### Écrans
 
@@ -194,6 +195,7 @@ passes, so that a calculation is replaced by an image. Add to it the mechanisms 
 | Web (modern browser) | Main target   | Web Audio sounds, Wake Lock where available      |
 | iOS                  | Via Capacitor | Local notifications, haptics                     |
 | Android              | Via Capacitor | Local notifications with sound channels, haptics |
+| macOS, Windows       | Via Electron  | Desktop app, system notifications, unsigned installers |
 
 ### Screens
 

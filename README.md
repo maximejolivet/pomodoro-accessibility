@@ -131,8 +131,6 @@ d'obstacles inutiles. Un minuteur visuel est un outil simple, discret et sans co
   un seul doigt ou un contacteur
 - 💪 **Cadran en secondes** - sous la minute, la graduation passe en secondes : un effort de 20 s
   se vide sous les yeux au lieu d'être un filet
-- 🍽️ **Mode table** - le cadran en grand, tout le reste effacé : le téléphone posé debout devient
-  le minuteur de la table ou de la classe
 
 ### Modes et routines
 

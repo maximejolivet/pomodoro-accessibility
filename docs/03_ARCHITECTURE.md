@@ -64,6 +64,7 @@ resources/app-icon.svg          # Icônes et écrans de lancement, iOS · Androi
 resources/app-icon-foreground.svg  # Calque avant de l'icône adaptative Android
 ios/App/App/
 └── SceneDelegate.swift           # Voile de démarrage (logo, version) sur la WebView
+electron/                       # App de bureau : main.js, preload.js, notifications.js
 public/
 ├── favicon.svg · favicon.ico · apple-touch-icon.png
 docs/
@@ -419,6 +420,7 @@ resources/app-icon.svg          # Icons and launch screens, iOS · Android · we
 resources/app-icon-foreground.svg  # Foreground layer of the Android adaptive icon
 ios/App/App/
 └── SceneDelegate.swift           # Boot overlay (logo, version) over the web view
+electron/                       # Desktop app: main.js, preload.js, notifications.js
 public/
 ├── favicon.svg · favicon.ico · apple-touch-icon.png
 docs/

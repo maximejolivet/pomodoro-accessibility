@@ -85,6 +85,7 @@ introduire de pression ni de jugement.
 | Web (navigateur moderne) | Cible principale | Sons Web Audio, Wake Lock si disponible                   |
 | iOS                      | Via Capacitor    | Notifications locales, haptique                           |
 | Android                  | Via Capacitor    | Notifications locales avec canaux sonores, haptique       |
+| macOS, Windows           | Via Electron     | Application de bureau, notifications du système, installeurs non signés |
 
 ### Écrans
 
@@ -334,7 +335,7 @@ arrive irrémédiablement discret, et une alerte qui ne s'entend pas ne remplit 
 | EF-NAT-4 | Le widget est mis à jour à chaque changement.                                 | C    |
 | EF-NAT-5 | Le widget suit le thème de l'application, clair ou sombre.                    | C    |
 | EF-NAT-6 | Toucher le widget ouvre l'application, sans rien démarrer.                    | C    |
-| EF-NAT-7 | L'application ouvre sur un fond beige avec son logo et sa version, jusqu'à ce qu'elle soit prête. | S    |
+| EF-NAT-7 | L'application ouvre sur un fond beige avec son logo (et sa version sur iOS), jusqu'à ce qu'elle soit prête. | S    |
 | EF-NAT-8 | Le logo de l'ouverture cesse de pulser si l'appareil demande moins d'animation. | M    |
 
 #### Précisions
@@ -350,11 +351,9 @@ l'objectif du jour.
 
 **EF-NAT-6** - il montre, il ne commande pas.
 
-**EF-NAT-7** - puis le voile s'efface.
+**EF-NAT-7** - le fond et le logo sont posés dès la première ligne de `index.html`, en ligne, avant tout téléchargement ; sur iOS, une vue native affiche le même logo et la version par-dessus la WebView. Ils s'effacent quand l'application démarre.
 
-**EF-NAT-8** - il se fige sous `prefers-reduced-motion`, et le voile s'efface **quoi qu'il
-arrive**, même si le démarrage échoue : un voile resté en place laisserait un écran noir
-incompréhensible.
+**EF-NAT-8** - le logo pulse doucement ; sous `prefers-reduced-motion`, il reste immobile.
 
 ### Page d'accessibilité (`EF-A11`)
 
@@ -552,6 +551,7 @@ Publiés dans la déclaration d'accessibilité :
 | Navigateurs | Navigateurs modernes supportant Web Audio et les propriétés logiques CSS                           |
 | iOS         | iOS 15 ou plus                                                                                     |
 | Android     | Notifications à canaux ; la permission d'alarme exacte peut être nécessaire à partir d'Android 12  |
+| macOS, Windows | Application Electron : DMG macOS (Apple Silicon) et installeur Windows x64 |
 | Écrans      | Conception mobile d'abord ; thème clair et sombre ; sens d'écriture gauche→droite et droite→gauche |
 
 ### Maintenabilité
@@ -701,6 +701,7 @@ passes, so that a calculation is replaced by an image. Add to it the mechanisms 
 | Web (modern browser) | Main target   | Web Audio sounds, Wake Lock where available      |
 | iOS                  | Via Capacitor | Local notifications, haptics                     |
 | Android              | Via Capacitor | Local notifications with sound channels, haptics |
+| macOS, Windows       | Via Electron  | Desktop app, system notifications, unsigned installers |
 
 ### Screens
 
@@ -949,7 +950,7 @@ irremediably quiet, and an alert that cannot be heard does not fulfil its role.
 | EF-NAT-4 | The widget is updated at every change.                                               | C    |
 | EF-NAT-5 | The widget follows the application's theme, light or dark.                           | C    |
 | EF-NAT-6 | Tapping the widget opens the application, without starting anything.                 | C    |
-| EF-NAT-7 | The application opens on a beige background with its logo and version, until ready.  | S    |
+| EF-NAT-7 | The application opens on a beige background with its logo (and its version on iOS), until ready. | S    |
 | EF-NAT-8 | The opening logo stops pulsing if the device asks for less animation.                | M    |
 
 #### Details
@@ -964,10 +965,9 @@ irremediably quiet, and an alert that cannot be heard does not fulfil its role.
 
 **EF-NAT-6** - it shows, it does not command.
 
-**EF-NAT-7** - then the veil fades away.
+**EF-NAT-7** - the background and the logo are laid down from the very first line of `index.html`, inline, before any download; on iOS, a native view shows the same logo and the version over the web view. They go away when the application starts.
 
-**EF-NAT-8** - it freezes under `prefers-reduced-motion`, and the veil fades **whatever happens**, even if
-startup fails: a veil left in place would leave an incomprehensible black screen.
+**EF-NAT-8** - the logo pulses gently; under `prefers-reduced-motion`, it stays still.
 
 ### Accessibility page (`EF-A11`)
 
@@ -1159,6 +1159,7 @@ Published in the accessibility statement:
 | Browsers | Modern browsers supporting Web Audio and CSS logical properties                               |
 | iOS      | iOS 15 or later                                                                               |
 | Android  | Channel-based notifications; the exact alarm permission may be required from Android 12       |
+| macOS, Windows | Electron app: macOS DMG (Apple Silicon) and Windows x64 installer |
 | Screens  | Mobile-first design; light and dark themes; left-to-right and right-to-left writing direction |
 
 ### Maintainability
