@@ -1257,27 +1257,32 @@ test.describe('mode sport (design)', () => {
 });
 
 /**
- * Voile d'amorçage : il tient l'écran entre l'image de lancement du système et la première
- * image de l'app. Deux choses comptent - qu'il s'en aille, sinon il ne reste qu'un écran
- * noir dont personne ne sait rien ; et qu'il se fige pour qui demande moins de mouvement.
+ * Écran de démarrage : le logo en SVG est dans `index.html`, dans `<app-root>`, pour qu'aucune page
+ * blanche ne s'affiche pendant le chargement. Deux choses comptent - qu'il s'en aille quand l'app
+ * est prête, sinon il resterait par-dessus ; et qu'il cesse de pulser pour qui demande moins de
+ * mouvement. Le script principal est bloqué pour voir le logo tel qu'il est avant Angular.
  */
-test.describe('voile d’amorçage', () => {
+test.describe('écran de démarrage', () => {
   test('il s’efface une fois l’application prête', async ({ page }) => {
     await page.goto('/');
     await ready(page);
-    await expect(page.locator('#boot')).toHaveCount(0);
-    await expect(page.locator('html')).not.toHaveClass(/booting/);
+    await expect(page.locator('.boot-logo')).toHaveCount(0);
   });
 
-  test('le cadran se fige sous prefers-reduced-motion', async ({ page }) => {
-    await page.emulateMedia({ reducedMotion: 'reduce' });
+  test('le logo pulse, et se fige sous prefers-reduced-motion', async ({ page }) => {
+    // Sans le script principal, Angular ne remplace jamais le contenu : le logo reste
+    await page.route('**/main*.js', route => route.abort());
+    const animationName = () =>
+      page.evaluate(() => {
+        const logo = document.querySelector('.boot-logo svg');
+        return logo ? getComputedStyle(logo).animationName : 'absent';
+      });
+
     await page.goto('/');
-    // Avant que l'app ne l'ait retiré, l'anneau ne doit porter aucune animation
-    const animation = await page.evaluate(() => {
-      const ring = document.querySelector('.boot-ring');
-      return ring ? getComputedStyle(ring).animationName : 'absent';
-    });
-    expect(['none', 'absent']).toContain(animation);
-    await ready(page);
+    await expect(page.locator('.boot-logo svg')).toBeVisible();
+    expect(await animationName()).toBe('boot-pulse');
+
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    expect(await animationName()).toBe('none');
   });
 });
