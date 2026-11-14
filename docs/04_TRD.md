@@ -7,6 +7,7 @@
 | Navigateurs | Navigateurs modernes supportant Web Audio et les propriétés logiques CSS                           |
 | iOS         | iOS 15 ou plus                                                                                     |
 | Android     | Notifications à canaux ; la permission d'alarme exacte peut être nécessaire à partir d'Android 12  |
+| macOS, Windows | Application Electron : DMG macOS (Apple Silicon) et installeur Windows x64 |
 | Écrans      | Conception mobile d'abord ; thème clair et sombre ; sens d'écriture gauche→droite et droite→gauche |
 
 ## Technologies
@@ -18,6 +19,7 @@
 | Flux asynchrones      | RxJS                          | 7.8                            | Ticks du décompte                                             |
 | Styles                | Tailwind CSS + PostCSS        | 4 / 8                          | Utilitaires, jetons de thème                                  |
 | Natif                 | Capacitor                     | 8                              | Pont web ↔ iOS / Android                                      |
+| Bureau                | Electron, electron-builder    | 44 / 26                        | Application macOS et Windows |
 | Widget Android        | Java, `AppWidgetProvider`     | Android 7+ (API 24)            | Widget d'écran d'accueil                                      |
 | Tests unitaires       | Karma + Jasmine               | 6 / 7                          | Outillage en place, **aucune spécification écrite à ce jour** |
 | Tests d'accessibilité | Playwright + axe-core         | 1.63 / 4.13                    | Non-régression RGAA / WCAG                                    |
@@ -167,6 +169,16 @@ Android 9 - la question ne se pose pas : l'alarme exacte est accordée d'office.
 Icônes et écrans de lancement des deux plateformes sont générés par `make icons`
 (`scripts/generate-icons.ts`, rendu par Chromium) depuis `resources/app-icon.svg` et
 `resources/app-icon-foreground.svg` - voir « Guide du build mobile », ci-dessous.
+
+### Application de bureau (Electron)
+
+L'application tourne aussi sur macOS et Windows, dans une fenêtre Electron (`electron/`) qui charge le build web (`dist/pomodoro-tdah/browser`).
+
+- **Fenêtre** : 1100 × 800 par défaut, 360 × 600 au minimum. `contextIsolation` est actif et `nodeIntegration` coupé ; les liens externes s'ouvrent dans le navigateur par défaut.
+- **Passerelle** : `electron/preload.js` n'expose à la page que `window.electronAPI` : la plateforme et les fonctions de notification (programmer, tout annuler, rappels, test, clic en attente, changement d'état).
+- **État de l'application** : la fenêtre est « en arrière-plan » quand elle perd le focus, est réduite ou cachée. Les alertes de session prennent alors le relais, comme avec Capacitor.
+- **Notifications** (`electron/notifications.js`) : échéances vérifiées une fois par seconde ; sons système macOS `Glass` (fin de session) et `Ping` (paliers) ; rappels hebdomadaires de routine ; notification de test au bout de cinq secondes ; un clic sur un rappel ramène la fenêtre au premier plan et prévient la page.
+- **Livraison** : `electron-builder` produit un DMG macOS (Apple Silicon) et un installeur Windows NSIS x64 dans `release/`. Les installeurs ne sont pas signés : macOS demande une confirmation au premier lancement, Windows SmartScreen avertit.
 
 ## Guide du build mobile
 
@@ -329,7 +341,9 @@ Lancer `make` seul affiche l'aide.
 | `make icons`                          | Génère icônes et écrans de lancement (iOS, Android, web) depuis `resources/*.svg`  |
 | `make ios` / `make android`           | Ajoute la plateforme native (une seule fois)                                       |
 | `make open-ios` / `make open-android` | Sync puis ouvre Xcode / Android Studio                                             |
-| `make clean`                          | Supprime `dist/`, `www/` et le cache Angular                                       |
+| `make electron-dev`                   | Build puis lance l'app Electron (macOS)                                            |
+| `make electron-dmg` / `electron-win`  | Génère le DMG macOS / l'installeur Windows x64 dans `release/`                     |
+| `make clean`                          | Supprime `dist/`, `www/`, `release/` et le cache Angular                                       |
 
 La première exécution de `make test-a11y` demande le navigateur de test :
 `npx playwright install chromium`. Les mêmes tests tournent en CI à chaque push
@@ -445,6 +459,7 @@ alternative et améliorée) où les symboles sont déjà ceux de la personne.
 | Browsers | Modern browsers supporting Web Audio and CSS logical properties                               |
 | iOS      | iOS 15 or later                                                                               |
 | Android  | Channel-based notifications; the exact alarm permission may be required from Android 12       |
+| macOS, Windows | Electron app: macOS DMG (Apple Silicon) and Windows x64 installer |
 | Screens  | Mobile-first design; light and dark themes; left-to-right and right-to-left writing direction |
 
 ## Technologies
@@ -456,6 +471,7 @@ alternative et améliorée) où les symboles sont déjà ceux de la personne.
 | Asynchronous streams | RxJS                          | 7.8                            | Countdown ticks                                        |
 | Styles               | Tailwind CSS + PostCSS        | 4 / 8                          | Utilities, theme tokens                                |
 | Native               | Capacitor                     | 8                              | Web ↔ iOS / Android bridge                             |
+| Desktop              | Electron, electron-builder    | 44 / 26                        | macOS and Windows app |
 | Android widget       | Java, `AppWidgetProvider`     | Android 7+ (API 24)            | Home screen widget                                     |
 | Unit tests           | Karma + Jasmine               | 6 / 7                          | Tooling in place, **no specification written to date** |
 | Accessibility tests  | Playwright + axe-core         | 1.63 / 4.13                    | RGAA / WCAG regression testing                         |
@@ -593,6 +609,16 @@ granted by default.
 `appId`: `com.maximejolivet.pomodorotdah` · `appName`: Pomodoro Accessibilité · `webDir`: `www`.
 The icons and launch screens of both platforms are generated by `make icons` (`scripts/generate-icons.ts`, rendered by Chromium)
 from `resources/app-icon.svg` and `resources/app-icon-foreground.svg` - see "Mobile build guide", below.
+
+### Desktop app (Electron)
+
+The application also runs on macOS and Windows, in an Electron window (`electron/`) that loads the web build (`dist/pomodoro-tdah/browser`).
+
+- **Window**: 1100 × 800 by default, 360 × 600 at the least. `contextIsolation` is on and `nodeIntegration` off; external links open in the default browser.
+- **Bridge**: `electron/preload.js` exposes only `window.electronAPI` to the page: the platform and the notification functions (schedule, cancel all, reminders, test, pending tap, state change).
+- **Application state**: the window is "in the background" when it loses focus, is minimised or hidden. Session alerts then take over, as with Capacitor.
+- **Notifications** (`electron/notifications.js`): deadlines checked once per second; macOS system sounds `Glass` (end of session) and `Ping` (milestones); weekly routine reminders; a test notification after five seconds; a click on a reminder brings the window to the front and tells the page.
+- **Delivery**: `electron-builder` produces a macOS DMG (Apple Silicon) and a Windows NSIS x64 installer in `release/`. The installers are not signed: macOS asks for a confirmation on first launch, Windows SmartScreen warns.
 
 ## Mobile build guide
 
@@ -748,7 +774,9 @@ Running `make` on its own shows the help.
 | `make icons`                          | Generates icons and launch screens (iOS, Android, web) from `resources/*.svg`           |
 | `make ios` / `make android`           | Adds the native platform (once only)                                                    |
 | `make open-ios` / `make open-android` | Syncs, then opens Xcode / Android Studio                                                |
-| `make clean`                          | Removes `dist/`, `www/` and the Angular cache                                           |
+| `make electron-dev`                   | Builds then runs the Electron app (macOS)                                 |
+| `make electron-dmg` / `electron-win`  | Builds the macOS DMG / the Windows x64 installer into `release/`          |
+| `make clean`                          | Removes `dist/`, `www/`, `release/` and the Angular cache                                           |
 
 The first run of `make test-a11y` requires the test browser:
 `npx playwright install chromium`. The same tests run in CI on every push
