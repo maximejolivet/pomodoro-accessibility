@@ -70,6 +70,5 @@ The documentation lives in [`docs/`](docs/00_INDEX.md).
 
 The branch flow is written down in the [Kanban](docs/10_KANBAN.md) ("Flow rules").
 
-- [ ] `develop` tracks `origin/main`, so a plain `git pull` is ambiguous. Run
-      `git branch -u origin/develop`.
+- [x] `develop` tracked `origin/main`, so a plain `git pull` was ambiguous. It now tracks `origin/develop`.
 - [ ] Decide how `main` is merged back into `develop` after a release, so the two branches stop diverging.
