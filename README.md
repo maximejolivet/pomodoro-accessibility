@@ -189,10 +189,10 @@ verrouille : au retour, tout est à jour.
 ## Téléchargements
 
 <p align="center">
-<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-1.0.0-arm64.dmg"><img src="https://img.shields.io/badge/macOS-.dmg-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Télécharger pour macOS" height="40"></a>
-<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-Setup-1.0.0.exe"><img src="https://img.shields.io/badge/Windows-.exe-0078D4?style=for-the-badge&logo=windows&logoColor=white" alt="Télécharger pour Windows" height="40"></a>
-<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/latest"><img src="https://img.shields.io/badge/Android-.apk-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Télécharger pour Android (APK)" height="40"></a>
-<a href="https://altstore.io/"><img src="https://img.shields.io/badge/iOS-AltStore-00C2B2?style=for-the-badge&logo=altstore&logoColor=white" alt="iOS via AltStore" height="40"></a>
+<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-1.0.0-arm64.dmg"><img src="docs/badges/macos.svg" alt="Télécharger pour macOS" height="54"></a>
+<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-Setup-1.0.0.exe"><img src="docs/badges/windows.svg" alt="Télécharger pour Windows" height="54"></a>
+<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/latest"><img src="docs/badges/android.svg" alt="Télécharger pour Android (APK)" height="54"></a>
+<a href="https://altstore.io/"><img src="docs/badges/ios.svg" alt="iOS via AltStore" height="54"></a>
 </p>
 
 Récupère la dernière version sur la [page des releases](https://github.com/maximejolivet/pomodoro-accessibility/releases/latest) :
@@ -529,10 +529,10 @@ when you come back, everything is up to date.
 ## Download
 
 <p align="center">
-<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-1.0.0-arm64.dmg"><img src="https://img.shields.io/badge/macOS-.dmg-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Download for macOS" height="40"></a>
-<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-Setup-1.0.0.exe"><img src="https://img.shields.io/badge/Windows-.exe-0078D4?style=for-the-badge&logo=windows&logoColor=white" alt="Download for Windows" height="40"></a>
-<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/latest"><img src="https://img.shields.io/badge/Android-.apk-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Download for Android (APK)" height="40"></a>
-<a href="https://altstore.io/"><img src="https://img.shields.io/badge/iOS-AltStore-00C2B2?style=for-the-badge&logo=altstore&logoColor=white" alt="iOS via AltStore" height="40"></a>
+<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-1.0.0-arm64.dmg"><img src="docs/badges/macos.svg" alt="Download for macOS" height="54"></a>
+<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/download/v1.0.0/Pomodoro-TDAH-Setup-1.0.0.exe"><img src="docs/badges/windows.svg" alt="Download for Windows" height="54"></a>
+<a href="https://github.com/maximejolivet/pomodoro-accessibility/releases/latest"><img src="docs/badges/android.svg" alt="Download for Android (APK)" height="54"></a>
+<a href="https://altstore.io/"><img src="docs/badges/ios.svg" alt="iOS via AltStore" height="54"></a>
 </p>
 
 Get the latest version from the [Releases page](https://github.com/maximejolivet/pomodoro-accessibility/releases/latest):
