@@ -52,7 +52,7 @@
     "@tailwindcss/postcss": "^4.3.3",
     "@types/jasmine": "^7.0.0",
     "autoprefixer": "^10.6.1",
-    "electron": "^44.9.0",
+    "electron": "^45.0.0",
     "electron-builder": "^26.15.3",
     "jasmine-core": "~7.0.2",
     "karma": "~6.4.4",
